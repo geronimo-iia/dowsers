@@ -3,10 +3,8 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import javax.annotation.PostConstruct;
-
-import com.google.common.eventbus.Subscribe;
 import com.iia.cqrs.DomainRepository;
+import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
 import com.iia.cqrs.sample.commands.AddContactToAddressBookCommand;
 import com.iia.cqrs.sample.domain.AddressBook;
@@ -16,32 +14,30 @@ import com.iia.cqrs.sample.domain.Contact;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class AddContactToAddressBookCommandHandler {
+public class AddContactToAddressBookCommandHandler extends CommandHandler<AddContactToAddressBookCommand> {
 
 	private final DomainRepository domainRepository;
-	private final CommandRegistry commandRegistry;
 
 	/**
-	 * Build a new instance of <code>AddContactToAddressBookCommandHandler</code>
+	 * Build a new instance of AddContactToAddressBookCommandHandler.
 	 * 
-	 * @param domainRepository
 	 * @param commandRegistry
+	 * @param domainRepository
+	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommandHandler(DomainRepository domainRepository, CommandRegistry commandRegistry) {
-		super();
+	public AddContactToAddressBookCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+		super(commandRegistry);
 		this.domainRepository = domainRepository;
-		this.commandRegistry = commandRegistry;
 	}
 
-	@PostConstruct
-	protected void initalize() {
-		commandRegistry.register(this);
-	}
-
-	@Subscribe
-	public void onAddContactToAddressBookCommand(AddContactToAddressBookCommand command) {
+	/**
+	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
+	 */
+	@Override
+	public void onCommand(AddContactToAddressBookCommand command) {
 		AddressBook addressBook = domainRepository.findByIdentifier(command.getAddressBookIdentifier());
 		Contact contact = domainRepository.findByIdentifier(command.getContact());
 		addressBook.add(contact);
 	}
+
 }

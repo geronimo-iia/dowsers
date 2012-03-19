@@ -4,6 +4,7 @@
 package com.iia.cqrs.sample.commands;
 
 import com.iia.cqrs.command.Command;
+import com.iia.cqrs.command.CommandInvoker;
 
 /**
  * 
@@ -14,12 +15,14 @@ public class CreateContactCommand extends Command {
 	private final String name;
 
 	/**
-	 * Build a new instance of <code>CreateContactCommand</code>
+	 * Build a new instance of CreateContactCommand.
 	 * 
+	 * @param commandInvoker
 	 * @param name
+	 * @throws NullPointerException
 	 */
-	public CreateContactCommand(String name) {
-		super();
+	public CreateContactCommand(CommandInvoker commandInvoker, String name) throws NullPointerException {
+		super(commandInvoker);
 		this.name = name;
 	}
 

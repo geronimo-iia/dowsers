@@ -3,10 +3,8 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import javax.annotation.PostConstruct;
-
-import com.google.common.eventbus.Subscribe;
 import com.iia.cqrs.DomainRepository;
+import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
 import com.iia.cqrs.sample.commands.CreateContactCommand;
 import com.iia.cqrs.sample.domain.Contact;
@@ -15,30 +13,27 @@ import com.iia.cqrs.sample.domain.Contact;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class CreateContactCommandHandler {
+public class CreateContactCommandHandler extends CommandHandler<CreateContactCommand> {
 
 	private final DomainRepository domainRepository;
-	private final CommandRegistry commandRegistry;
 
 	/**
-	 * Build a new instance of <code>CreateContactCommandHandler</code>
+	 * Build a new instance of CreateContactCommandHandler.
 	 * 
-	 * @param domainRepository
 	 * @param commandRegistry
+	 * @param domainRepository
+	 * @throws NullPointerException
 	 */
-	public CreateContactCommandHandler(DomainRepository domainRepository, CommandRegistry commandRegistry) {
-		super();
+	public CreateContactCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+		super(commandRegistry);
 		this.domainRepository = domainRepository;
-		this.commandRegistry = commandRegistry;
 	}
 
-	@PostConstruct
-	protected void initalize() {
-		commandRegistry.register(this);
-	}
-
-	@Subscribe
-	public void onCreateContactCommand(CreateContactCommand command) {
+	/**
+	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
+	 */
+	@Override
+	public void onCommand(CreateContactCommand command) {
 		Contact contact = new Contact(command.getName());
 		domainRepository.add(contact);
 	}

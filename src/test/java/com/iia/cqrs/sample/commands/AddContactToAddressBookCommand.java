@@ -6,6 +6,7 @@ package com.iia.cqrs.sample.commands;
 import java.util.UUID;
 
 import com.iia.cqrs.command.Command;
+import com.iia.cqrs.command.CommandInvoker;
 
 /**
  * 
@@ -16,13 +17,15 @@ public class AddContactToAddressBookCommand extends Command {
 	private final UUID contact;
 
 	/**
-	 * Build a new instance of <code>AddContactToAddressBookCommand</code>
+	 * Build a new instance of AddContactToAddressBookCommand.
 	 * 
+	 * @param commandInvoker
 	 * @param addressBookIdentifier
-	 * @param name
+	 * @param contact
+	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommand(UUID addressBookIdentifier, UUID contact) {
-		super();
+	public AddContactToAddressBookCommand(CommandInvoker commandInvoker, UUID addressBookIdentifier, UUID contact) throws NullPointerException {
+		super(commandInvoker);
 		this.addressBookIdentifier = addressBookIdentifier;
 		this.contact = contact;
 	}

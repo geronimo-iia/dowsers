@@ -24,6 +24,6 @@ public class Sample {
 	}
 
 	public void createContact(String name) {
-		commandInvoker.invoke(new CreateContactCommand(name));
+		new CreateContactCommand(commandInvoker, name).execute();
 	}
 }

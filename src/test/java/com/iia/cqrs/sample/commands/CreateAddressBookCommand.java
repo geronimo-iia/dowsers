@@ -4,6 +4,7 @@
 package com.iia.cqrs.sample.commands;
 
 import com.iia.cqrs.command.Command;
+import com.iia.cqrs.command.CommandInvoker;
 
 /**
  * 
@@ -12,10 +13,14 @@ import com.iia.cqrs.command.Command;
 public class CreateAddressBookCommand extends Command {
 
 	/**
-	 * Build a new instance of <code>CreateAddressBookCommand</code>
+	 * Build a new instance of CreateAddressBookCommand.
+	 * @param commandInvoker
+	 * @throws NullPointerException
 	 */
-	public CreateAddressBookCommand() {
-		super();
+	public CreateAddressBookCommand(CommandInvoker commandInvoker) throws NullPointerException {
+		super(commandInvoker);
 	}
+
+ 
 
 }

@@ -3,10 +3,8 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import javax.annotation.PostConstruct;
-
-import com.google.common.eventbus.Subscribe;
 import com.iia.cqrs.DomainRepository;
+import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
 import com.iia.cqrs.sample.commands.CreateAddressBookCommand;
 import com.iia.cqrs.sample.domain.AddressBook;
@@ -15,30 +13,27 @@ import com.iia.cqrs.sample.domain.AddressBook;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class CreateAddressBookCommandHandler {
+public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddressBookCommand> {
 
 	private final DomainRepository domainRepository;
-	private final CommandRegistry commandRegistry;
 
 	/**
-	 * Build a new instance of <code>CreateAddressBookCommandHandler</code>
+	 * Build a new instance of CreateAddressBookCommandHandler.
 	 * 
-	 * @param domainRepository
 	 * @param commandRegistry
+	 * @param domainRepository
+	 * @throws NullPointerException
 	 */
-	public CreateAddressBookCommandHandler(DomainRepository domainRepository, CommandRegistry commandRegistry) {
-		super();
+	public CreateAddressBookCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+		super(commandRegistry);
 		this.domainRepository = domainRepository;
-		this.commandRegistry = commandRegistry;
 	}
 
-	@PostConstruct
-	protected void initalize() {
-		commandRegistry.register(this);
-	}
-
-	@Subscribe
-	public void onCreateAddressBookCommand(CreateAddressBookCommand command) {
+	/**
+	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
+	 */
+	@Override
+	public void onCommand(CreateAddressBookCommand command) {
 		domainRepository.add(new AddressBook());
 	}
 }
