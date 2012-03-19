@@ -4,55 +4,73 @@
 package com.iia.cqrs.command;
 
 import java.util.UUID;
-import java.util.concurrent.Executor;
 
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 
 /**
- * CommandHandler is just a marker for CommandBus.
- * Register methods with
+ * CommandBus implements a CommandRegistry and a CommandInvoker based on
+ * {@link EventBus} guava framework.<br/>
+ * To process command in a synchrony way use {@link EventBus} or
+ * {@link AsyncEventBus} for asynchrony way.
  * 
- * <pre>
- * &#064;Subscribe
- * void onCreateContactCommand(CreateContactCommand e) {
- * 	recordChange(e.getContact());
- * }
- * </pre>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class CommandBus implements CommandInvoker, CommandRegistry {
 
+	/**
+	 * EventBus instance.
+	 */
 	private EventBus eventBus;
 
 	/**
-	 * Build a new instance of <code>CommandBusImpl</code> which process command handler in a synchrony way.
+	 * Build a new instance of <code>CommandBus</code> which process command
+	 * handler in a synchrony way.
 	 * 
-	 * @see EventBus
 	 */
 	public CommandBus() {
-		eventBus = new EventBus(UUID.randomUUID().toString());
+		this(new EventBus(UUID.randomUUID().toString()));
 	}
 
 	/**
 	 * 
-	 * Build a new instance of <code>CommandBusImpl</code> which process command handler asynchronously.
+	 * Build a new instance of <code>CommandBus</code>.
 	 * 
-	 * @see AsyncEventBus
-	 * @param executor
+	 * To use in a synchrony way use {@link EventBus} or {@link AsyncEventBus}
+	 * to asynchrony way.
+	 * 
+	 * 
+	 * @see eventBus
+	 * @param eventBus
+	 *            event bus instance (@see {@link AsyncEventBus} or @see
+	 *            {@link EventBus} )
+	 * @throws NullPointerException
+	 *             if eventBus is null
 	 */
-	public CommandBus(Executor executor) {
-		eventBus = new AsyncEventBus(UUID.randomUUID().toString(), executor);
+	public CommandBus(EventBus eventBus) throws NullPointerException {
+		this.eventBus = Preconditions.checkNotNull(eventBus);
 	}
 
+	/**
+	 * @see com.iia.cqrs.command.CommandInvoker#invoke(com.iia.cqrs.command.Command)
+	 */
 	@Override
-	public void invoke(Command command) {
+	public void invoke(final Command command) {
 		eventBus.post(command);
 	}
 
+	/**
+	 * @see com.iia.cqrs.command.CommandRegistry#register(java.lang.Object)
+	 */
 	@Override
-	public void register(Object commandHandler) {
+	public void register(final Object commandHandler) {
 		eventBus.register(commandHandler);
 	}
+
+	public void unregister(final Object commandHandler) {
+		eventBus.unregister(commandHandler);
+	}
+
 }

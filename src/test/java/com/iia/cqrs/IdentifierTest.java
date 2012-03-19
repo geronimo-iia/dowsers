@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * IdentifierTest.
  * 
- * @author jgt
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
 public class IdentifierTest {

@@ -4,9 +4,17 @@
 package com.iia.cqrs.command;
 
 /**
- *
+ * CommandInvoker asks the command to carry out the request.
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface CommandInvoker {
-	public void invoke(Command command);
+	/**
+	 * Invoke specified command.
+	 * 
+	 * @param command
+	 *            command to execute
+	 */
+	public void invoke(final Command command);
 }
