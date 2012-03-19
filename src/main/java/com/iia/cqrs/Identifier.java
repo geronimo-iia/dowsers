@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Identifier implements Serializable {
+public class Identifier implements Serializable, Comparable<Identifier> {
 	/**
 	 * serialVersionUID.
 	 */
@@ -259,5 +259,14 @@ public class Identifier implements Serializable {
 		}
 		final Identifier other = (Identifier) obj;
 		return Objects.equal(other.getIdentity(), getIdentity()) && Objects.equal(other.getVersion(), getVersion());
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Identifier o) {
+		if (hasSameIdentity(o))
+		return 0;
 	}
 }

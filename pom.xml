@@ -1,10 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia</groupId>
+		<artifactId>intelligents-ia</artifactId>
+		<version>1.2</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cqrs</groupId>
 	<artifactId>cqrs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
 	<dependencies>
 		<!-- ******************************************************************* -->
 		<!-- GUAVA FRAMEWORK -->
@@ -13,6 +17,20 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TIME FRAMEWORK -->
+		<!-- ******************************************************************* -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>joda-time</groupId> -->
+<!-- 			<artifactId>joda-time</artifactId> -->
+<!-- 			<version>${joda-time.version}</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>date4j</groupId>
+			<artifactId>date4j</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<!-- ******************************************************************* -->
 		<!-- TESTING JUNIT FRAMEWORK -->
@@ -38,7 +56,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>$[slf4j.version}]</version>
+			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- ******************************************************************* -->
@@ -78,5 +96,13 @@
 		<h2database.version>1.3.153</h2database.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<junit.version>4.8.2</junit.version>
+		<joda-time.version>1.6</joda-time.version><!-- 2.1 -->
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+	</repositories>
 </project>
