@@ -3,35 +3,261 @@
  */
 package com.iia.cqrs;
 
+import java.io.Serializable;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+
 /**
+ * Identifier manage pair of identity # version.
+ * 
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Identifier {
-
-	private UUID identity;
-	private long version;
+public class Identifier implements Serializable {
+	/**
+	 * serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Initial Version Value (0).
+	 */
+	@VisibleForTesting
+	static final long INITIAL_VERSION = 0;
+	/**
+	 * Latest version value (Long.MAX_VALUE).
+	 */
+	@VisibleForTesting
+	static final long LATEST_VERSION = Long.MAX_VALUE;
+	/**
+	 * Identity instance (UUID implementation).
+	 */
+	private final UUID identity;
+	/**
+	 * Version instance (long).
+	 */
+	private final long version;
 
 	/**
-	 * Build a new instance of <code>Identifier</code>
+	 * Build a new instance of Identifier.
 	 * 
 	 * @param identity
+	 *            identity value
 	 * @param version
+	 *            version value (must be greater than or equal to
+	 *            INITIAL_VERSION)
+	 * @throws NullPointerException
+	 *             if identity is null
+	 * @throws IllegalArgumentException
+	 *             if version < INITIAL_VERSION
 	 */
-	public Identifier(UUID identity, long version) {
-		super();
-		this.identity = identity;
+	private Identifier(final UUID identity, final long version) throws NullPointerException, IllegalArgumentException {
+		this.identity = Preconditions.checkNotNull(identity, "identity is required");
+		Preconditions.checkArgument(version >= Identifier.INITIAL_VERSION, "version must be greater than or equal to INITIAL_VERSION");
 		this.version = version;
 	}
 
+	/**
+	 * @return a randomized Identifier instance.
+	 */
+	public static Identifier random() {
+		return Identifier.forInitialVersion(UUID.randomUUID());
+	}
+
+	/**
+	 * 
+	 * @param identity
+	 *            identity value
+	 * @return an initial Identifier instance for specified identity
+	 * @throws NullPointerException
+	 *             if identity is null
+	 */
+	public static Identifier forInitialVersion(final UUID identity) throws NullPointerException {
+		return Identifier.forSpecificVersion(identity, Identifier.INITIAL_VERSION);
+	}
+
+	/**
+	 * 
+	 * @param identity
+	 *            identity value
+	 * @return an latest Identifier instance for specified identity
+	 * @throws NullPointerException
+	 *             if identity is null
+	 */
+	public static Identifier forLatestVersion(final UUID identity) throws NullPointerException {
+		return Identifier.forSpecificVersion(identity, Identifier.LATEST_VERSION);
+	}
+
+	/**
+	 * 
+	 * @param identity
+	 *            identity value
+	 * @param version
+	 *            version value
+	 * @return an Identifier instance for specified identity and version
+	 * @throws NullPointerException
+	 *             if identity is null
+	 * @throws IllegalArgumentException
+	 *             if version < INITIAL_VERSION
+	 */
+	public static Identifier forSpecificVersion(final UUID identity, final long version) throws NullPointerException, IllegalArgumentException {
+		return new Identifier(identity, version);
+	}
+
+	/**
+	 * @return identity value
+	 */
 	public UUID getIdentity() {
-		return this.identity;
+		return identity;
 	}
 
+	/**
+	 * @return version value
+	 */
 	public long getVersion() {
-		return this.version;
+		return version;
 	}
 
+	/**
+	 * @return Boolean.TRUE if this version is an initial version.
+	 */
+	public boolean isForInitialVersion() {
+		return version == Identifier.INITIAL_VERSION;
+	}
+
+	/**
+	 * @return Boolean.TRUE if this version is a latest version.
+	 */
+	public boolean isForLatestVersion() {
+		return version == Identifier.LATEST_VERSION;
+	}
+
+	/**
+	 * @return Boolean.TRUE if this version is specific (not latest version)
+	 */
+	public boolean isForSpecificVersion() {
+		return !isForLatestVersion();
+	}
+
+	/**
+	 * @param version
+	 *            version value
+	 * @return an Identifier instance for specified version with the same
+	 *         identity as this instance.
+	 * @throws IllegalArgumentException
+	 *             if version < INITIAL_VERSION
+	 */
+	public Identifier withVersion(final long version) throws IllegalArgumentException {
+		return Identifier.forSpecificVersion(identity, version);
+	}
+
+	/**
+	 * @return next version of Identifier.
+	 */
+	public Identifier nextVersion() {
+		if (isForLatestVersion()) {
+			return this;
+		} else {
+			return withVersion(version + 1);
+		}
+	}
+
+	/**
+	 * Compare this Identifier instance with the other ignoring version.
+	 * 
+	 * @param other
+	 * @return Boolean.TRUE if identity of both are the same.
+	 */
+	public boolean hasSameIdentity(final Identifier other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null) {
+			return false;
+		}
+		return identity.equals(other.identity);
+	}
+
+	/**
+	 * @param other
+	 *            other version identifier
+	 * @return Boolean.TRUE if other instance is compatible with this instance.
+	 * @throws IllegalArgumentException
+	 *             if other version identifier is not a specific version.
+	 */
+	public boolean isCompatible(final Identifier other) throws IllegalArgumentException {
+		Preconditions.checkArgument(other.isForSpecificVersion(), "cannot check for compatibility with non-specific version");
+		if (isForLatestVersion()) {
+			return hasSameIdentity(other);
+		} else {
+			return equals(other);
+		}
+	}
+
+	/**
+	 * String representation follow this pattern:
+	 * <ul>
+	 * <li>for all no latest version; ${identity}#${version}</li>
+	 * <li>for latest version: ${identity}</li>
+	 * </ul>
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder(identity.toString());
+		if (!isForLatestVersion()) {
+			builder.append("#").append(version);
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * Parse specified string as an Identifier @see {@link #toString()} for
+	 * pattern. Accept AZZZ#1, etc..
+	 * 
+	 * @param value
+	 * @return an instance of Identifier
+	 * @throws IllegalArgumentException
+	 *             if value is not an Identifier, not conform to @see
+	 *             {@link #toString()} call
+	 * @throws NullPointerException
+	 *             if value is null
+	 */
+	public static Identifier parseIdentifier(final String value) throws IllegalArgumentException, NullPointerException {
+		final StringTokenizer tokenizer = new StringTokenizer(Preconditions.checkNotNull(value), "#");
+		// parse UUID
+		final UUID uuid = UUID.fromString(tokenizer.nextToken());
+		// parse version
+		final long version = tokenizer.hasMoreTokens() ? Long.parseLong(tokenizer.nextToken()) : Identifier.LATEST_VERSION;
+		return new Identifier(uuid, version);
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public final int hashCode() {
+		return Objects.hashCode(identity, version);
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Identifier other = (Identifier) obj;
+		return Objects.equal(other.getIdentity(), getIdentity()) && Objects.equal(other.getVersion(), getVersion());
+	}
 }

@@ -4,12 +4,57 @@
 	<groupId>cqrs</groupId>
 	<artifactId>cqrs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<dependencies>
 
+	<dependencies>
+		<!-- ******************************************************************* -->
+		<!-- GUAVA FRAMEWORK -->
+		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0.2</version>
+			<version>${guava.version}</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TESTING JUNIT FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TESTING H2 FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2database.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TESTING LOGGER FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>$[slf4j.version}]</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TESTING SPRING FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -27,4 +72,11 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<guava.version>11.0.2</guava.version>
+		<h2database.version>1.3.153</h2database.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<junit.version>4.8.2</junit.version>
+	</properties>
 </project>
