@@ -5,6 +5,8 @@ package com.iia.cqrs.storage.memento;
 
 import java.util.UUID;
 
+import com.iia.cqrs.storage.Memento;
+
 /**
  * EntityMemento.
  * 
@@ -15,7 +17,7 @@ public abstract class EntityMemento implements Memento {
 	private static final long serialVersionUID = 1L;
 
 	private UUID identity;
-	
+
 	private long version;
 
 	/**

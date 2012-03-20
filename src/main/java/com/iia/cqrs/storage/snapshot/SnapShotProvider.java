@@ -6,6 +6,8 @@ package com.iia.cqrs.storage.snapshot;
 import java.util.UUID;
 
 import com.iia.cqrs.Identifier;
+import com.iia.cqrs.storage.ConcurrencyException;
+import com.iia.cqrs.storage.EmptyResultException;
 
 /**
  * 
@@ -19,11 +21,6 @@ public interface SnapShotProvider {
 	 */
 	public <T> SnapShot findLatestSnapShot(Class<T> type, UUID identity) throws EmptyResultException;
 
-	
-	
-	
-	
-	
 	/**
 	 * @param identifier
 	 * @return Snapshot instance for specified identity and version.

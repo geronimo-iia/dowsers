@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iia.cqrs.storage.snapshot;
+package com.iia.cqrs.storage;
 
 import java.util.UUID;
 

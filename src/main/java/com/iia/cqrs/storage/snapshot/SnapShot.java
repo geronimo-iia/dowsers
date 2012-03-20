@@ -2,55 +2,106 @@
  * 
  */
 package com.iia.cqrs.storage.snapshot;
- 
-
-import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
-import com.iia.cqrs.Identifier;
-import com.iia.cqrs.storage.memento.Memento;
+import java.io.Serializable;
+import java.util.TimeZone;
+import java.util.UUID;
+
+import com.google.common.base.Objects;
+import com.iia.cqrs.storage.Memento;
 
 /**
  * SnapShot class.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class SnapShot {
-
-	private final Identifier identifier;
-	private final DateTime timestamp;
+public class SnapShot implements Serializable {
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -6312392494419572709L;
+	/**
+	 * Identity of snapshot and entity.
+	 */
+	private UUID identity;
+	/**
+	 * Version of entity that this snapshot represents.
+	 */
+	private long version;
+	/**
+	 * Memento instance of this entity.
+	 */
 	private final Memento memento;
+
+	/**
+	 * Time stamp of this snapshot.
+	 */
+	private final DateTime timestamp;
 
 	/**
 	 * Build a new instance of SnapShot.
 	 * 
-	 * @param identifier
+	 * @param identity
+	 * @param version
 	 * @param memento
 	 */
-	public SnapShot(Identifier identifier, Memento memento) {
-		this(identifier, DateTime.now(TimeZone.getTimeZone("GMT")), memento);
+	public SnapShot(final UUID identity, final long version, final Memento memento) {
+		this(identity, version, DateTime.now(TimeZone.getTimeZone("GMT")), memento);
 	}
 
 	/**
 	 * Build a new instance of SnapShot.
 	 * 
-	 * @param identifier
+	 * @param identity
+	 * @param version
 	 * @param timestamp
 	 * @param memento
 	 */
-	public SnapShot(Identifier identifier, DateTime timestamp, Memento memento) {
+	public SnapShot(final UUID identity, final long version, final DateTime timestamp, final Memento memento) {
 		super();
-		this.identifier = identifier;
+		this.identity = identity;
+		this.version = version;
 		this.timestamp = timestamp;
 		this.memento = memento;
 	}
 
 	/**
-	 * @return the identifier
+	 * @return the identity
 	 */
-	public Identifier getIdentifier() {
-		return identifier;
+	public UUID getIdentity() {
+		return identity;
+	}
+
+	/**
+	 * @param identity
+	 *            the identity to set
+	 */
+	public void setIdentity(final UUID identity) {
+		this.identity = identity;
+	}
+
+	/**
+	 * @return the version
+	 */
+	public long getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version
+	 *            the version to set
+	 */
+	public void setVersion(final long version) {
+		this.version = version;
+	}
+
+	/**
+	 * @return the memento
+	 */
+	public Memento getMemento() {
+		return memento;
 	}
 
 	/**
@@ -61,10 +112,37 @@ public class SnapShot {
 	}
 
 	/**
-	 * @return the memento
+	 * @see java.lang.Object#toString()
 	 */
-	public Memento getMemento() {
-		return memento;
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("identity", identity).add("version", version).add("timestamp", timestamp).toString();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(identity, memento, timestamp);
+	}
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final SnapShot other = (SnapShot) obj;
+		return Objects.equal(other.getIdentity(), getIdentity()) && Objects.equal(other.getVersion(), getVersion()) && Objects.equal(other.getTimestamp(), getTimestamp());
 	}
 
 }

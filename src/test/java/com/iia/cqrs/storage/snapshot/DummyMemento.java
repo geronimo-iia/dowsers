@@ -3,7 +3,7 @@
  */
 package com.iia.cqrs.storage.snapshot;
 
-import com.iia.cqrs.storage.memento.Memento;
+import com.iia.cqrs.storage.Memento;
 
 /**
  * DummyMemento.

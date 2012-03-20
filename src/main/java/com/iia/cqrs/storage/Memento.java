@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iia.cqrs.storage.memento;
+package com.iia.cqrs.storage;
 
 import java.io.Serializable;
 
