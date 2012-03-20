@@ -11,14 +11,19 @@ import com.iia.cqrs.Identifier;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface SnapShotStorage {
+public interface SnapShotProvider {
 
 	/**
 	 * @param identity
 	 * @return latest Snapshot for specified identity.
 	 */
-	public SnapShot getLatestSnapShot(UUID identity) throws EmptyResultException;
+	public <T> SnapShot findLatestSnapShot(Class<T> type, UUID identity) throws EmptyResultException;
 
+	
+	
+	
+	
+	
 	/**
 	 * @param identifier
 	 * @return Snapshot instance for specified identity and version.

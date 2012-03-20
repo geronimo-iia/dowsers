@@ -19,14 +19,29 @@
 			<version>${guava.version}</version>
 		</dependency>
 		<!-- ******************************************************************* -->
+		<!-- Serializer FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+			<version>${org.codehaus.jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>kryo</artifactId>
+			<scope>provided</scope>
+			<version>${kryo.version}</version>
+		</dependency>
+		<!-- ******************************************************************* -->
 		<!-- TIME FRAMEWORK -->
 		<!-- ******************************************************************* -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>joda-time</groupId> -->
-<!-- 			<artifactId>joda-time</artifactId> -->
-<!-- 			<version>${joda-time.version}</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>joda-time</groupId> -->
+		<!-- <artifactId>joda-time</artifactId> -->
+		<!-- <version>${joda-time.version}</version> -->
+		<!-- <scope>provided</scope> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>date4j</groupId>
 			<artifactId>date4j</artifactId>
@@ -97,6 +112,8 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<junit.version>4.8.2</junit.version>
 		<joda-time.version>1.6</joda-time.version><!-- 2.1 -->
+		<org.codehaus.jackson.version>1.9.2</org.codehaus.jackson.version>
+		<kryo.version>1.04</kryo.version>
 	</properties>
 
 	<repositories>

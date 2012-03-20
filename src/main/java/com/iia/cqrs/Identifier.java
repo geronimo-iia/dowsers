@@ -12,9 +12,15 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
- * Identifier manage pair of identity # version.
+ * Identifier manage pair of identity # version. Identifier have a natural order
+ * based on their version value.
  * 
- * 
+ * Reasons to expose UUID class rather than String:
+ * <ul>
+ * <li>in order to keep other way to generate UUID instance,</li>
+ * <li>avoid deal with UUID casting to and from String,</li>
+ * <li>keep that UUID is unique,</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -62,7 +68,10 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 	}
 
 	/**
-	 * @return a randomized Identifier instance.
+	 * Equivalent to call
+	 * <code>Identifier.forInitialVersion(UUID.randomUUID())</code>
+	 * 
+	 * @return a randomized Identifier instance with an initial version.
 	 */
 	public static Identifier random() {
 		return Identifier.forInitialVersion(UUID.randomUUID());
@@ -262,11 +271,17 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 	}
 
 	/**
+	 * Returns a negative integer, zero, or a positive integer as this object
+	 * version is less than, equal to, or greater than the specified object
+	 * version.
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
 	public int compareTo(Identifier o) {
-		if (hasSameIdentity(o))
-		return 0;
+		if (!hasSameIdentity(o)) {
+			throw new ClassCastException("Objects haven't same identity");
+		}
+		return Long.valueOf(version).compareTo(Long.valueOf(o.version));
 	}
 }

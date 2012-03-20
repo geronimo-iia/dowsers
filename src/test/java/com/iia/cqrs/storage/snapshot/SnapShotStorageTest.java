@@ -25,6 +25,7 @@ public class SnapShotStorageTest {
 	public void testDefaultDayTimeOfSnapshot() {
 		DateTime dateTime = DateTime.now(TimeZone.getTimeZone("GMT"));
 		SnapShot snapShot = new SnapShot(Identifier.random(), new DummyMemento());
-		Assert.assertEquals(dateTime.format("YYYY-MM-DD hh:mm:ss.f"), snapShot.getTimestamp().format("YYYY-MM-DD hh:mm:ss.f"));
+		Assert.assertNotNull(snapShot.getTimestamp());
+		Assert.assertEquals(dateTime.format("YYYY-MM-DD hh:mm:ss"), snapShot.getTimestamp().format("YYYY-MM-DD hh:mm:ss"));
 	}
 }

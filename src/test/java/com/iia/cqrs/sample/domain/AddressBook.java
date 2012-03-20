@@ -49,4 +49,11 @@ public class AddressBook extends Entity {
 	public List<Link<Contact>> getContacts() {
 		return this.contacts;
 	}
+
+	/**
+	 * @return
+	 */
+	public int size() {
+		return contacts.size();
+	}
 }

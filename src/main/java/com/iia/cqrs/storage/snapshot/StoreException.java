@@ -6,7 +6,7 @@ package com.iia.cqrs.storage.snapshot;
 import java.util.UUID;
 
 /**
- * StoreException extends RuntimeException. Root of event sore exception.
+ * StoreException extends RuntimeException. Root of store exception.
  * 
  *  @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 

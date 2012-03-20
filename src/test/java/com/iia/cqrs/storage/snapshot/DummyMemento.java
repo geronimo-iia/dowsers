@@ -8,10 +8,12 @@ import com.iia.cqrs.storage.memento.Memento;
 /**
  * DummyMemento.
  * 
- *  @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
 public class DummyMemento implements Memento {
+
+	private static final long serialVersionUID = 3514645948366096698L;
 	private String value;
 
 	/**

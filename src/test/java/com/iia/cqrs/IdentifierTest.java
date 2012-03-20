@@ -18,7 +18,7 @@ public class IdentifierTest {
 	private final static UUID FOO = UUID.randomUUID();
 	private final static UUID BAR = UUID.randomUUID();
 	private final static String ID = "ae7e2185-46a3-4d5c-b939-3c441aa5e085";
-	
+
 	private final Identifier a = Identifier.forSpecificVersion(FOO, 3);
 
 	@Test
@@ -51,26 +51,26 @@ public class IdentifierTest {
 
 	@Test
 	public void testParseIdentifier() {
-		
+
 		Identifier identifier = Identifier.parseIdentifier(ID);
 		assertNotNull(identifier);
 		assertTrue(identifier.isForLatestVersion());
 		assertEquals(ID, identifier.getIdentity().toString());
 		assertEquals(Identifier.LATEST_VERSION, identifier.getVersion());
-		
+
 		Identifier identifierWithVersion = Identifier.parseIdentifier(ID + "#6");
 		assertNotNull(identifierWithVersion);
 		assertEquals(ID, identifierWithVersion.getIdentity().toString());
 		assertEquals(6, identifierWithVersion.getVersion());
 		assertTrue(identifierWithVersion.isForSpecificVersion());
-		
+
 		try {
 			Identifier.parseIdentifier("not an identifier");
 			fail("expected IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 		}
 	}
-	
+
 	@Test
 	public void testForLatestVersion() {
 		Identifier identifier = Identifier.forLatestVersion(IdentifierTest.FOO);
@@ -101,4 +101,30 @@ public class IdentifierTest {
 		assertTrue(identifier.isForSpecificVersion());
 	}
 
+	@Test
+	public void testCompareVersion() {
+		Identifier initial = Identifier.forInitialVersion(IdentifierTest.FOO);
+		Identifier latest = Identifier.forLatestVersion(IdentifierTest.FOO);
+		Identifier otherLatest = Identifier.forLatestVersion(IdentifierTest.BAR);
+		Identifier specific = Identifier.forSpecificVersion(IdentifierTest.FOO, 69);
+
+		assertTrue(initial.compareTo(initial) == 0);
+		assertTrue(initial.compareTo(specific) < 0);
+		assertTrue(initial.compareTo(latest) < 0);
+
+		assertTrue(specific.compareTo(initial) > 0);
+		assertTrue(specific.compareTo(specific) == 0);
+		assertTrue(specific.compareTo(latest) < 0);
+
+		assertTrue(latest.compareTo(initial) > 0);
+		assertTrue(latest.compareTo(specific) > 0);
+		assertTrue(latest.compareTo(latest) == 0);
+
+		try {
+			latest.compareTo(otherLatest);
+			fail("Attended ClassCastException");
+		} catch (ClassCastException e) {
+		}
+
+	}
 }
