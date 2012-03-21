@@ -35,8 +35,8 @@ public class AddContactToAddressBookCommandHandler extends CommandHandler<AddCon
 	 */
 	@Override
 	public void onCommand(AddContactToAddressBookCommand command) {
-		AddressBook addressBook = domainRepository.findByIdentifier(command.getAddressBookIdentifier());
-		Contact contact = domainRepository.findByIdentifier(command.getContact());
+		AddressBook addressBook = domainRepository.findByIdentifier(AddressBook.class, command.getAddressBookIdentifier());
+		Contact contact = domainRepository.findByIdentifier(Contact.class, command.getContact());
 		addressBook.add(contact);
 	}
 

@@ -6,7 +6,9 @@ package com.iia.cqrs.events;
 import java.util.UUID;
 
 /**
- *
+ * “Captures all changes to an application state as a sequence of events.”
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface DomainEventStorage {

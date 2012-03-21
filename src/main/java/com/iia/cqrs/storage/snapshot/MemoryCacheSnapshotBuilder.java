@@ -6,7 +6,7 @@ package com.iia.cqrs.storage.snapshot;
 import java.util.UUID;
 
 import com.google.common.base.Preconditions;
-import com.google.common.cache.Cache;
+import com.google.common.cache.LoadingCache;
 import com.iia.cqrs.storage.ConcurrencyException;
 
 /**
@@ -16,9 +16,9 @@ import com.iia.cqrs.storage.ConcurrencyException;
  */
 public class MemoryCacheSnapshotBuilder implements SnapShotStorage {
 
-	private final Cache<UUID, SnapShot> snapshots;
+	private final LoadingCache<UUID, SnapShot> snapshots;
 
-	public MemoryCacheSnapshotBuilder(final Cache<UUID, SnapShot> cache) {
+	public MemoryCacheSnapshotBuilder(final LoadingCache<UUID, SnapShot> cache) {
 		super();
 		snapshots = Preconditions.checkNotNull(cache);
 	}

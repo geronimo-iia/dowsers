@@ -22,6 +22,12 @@ import com.google.common.base.Preconditions;
  * <li>keep that UUID is unique,</li>
  * </ul>
  * 
+ * Note about version member.<br/>
+ * The version is used to detect concurrency violations, meaning this is used to
+ * prevent conflicts that occur because between the time the command was send
+ * and the entity was saved an other user or process has updated the same
+ * entity.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class Identifier implements Serializable, Comparable<Identifier> {
@@ -33,12 +39,12 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 	 * Initial Version Value (0).
 	 */
 	@VisibleForTesting
-	static final long INITIAL_VERSION = 0;
+	static final transient long INITIAL_VERSION = 0;
 	/**
 	 * Latest version value (Long.MAX_VALUE).
 	 */
 	@VisibleForTesting
-	static final long LATEST_VERSION = Long.MAX_VALUE;
+	static final transient long LATEST_VERSION = Long.MAX_VALUE;
 	/**
 	 * Identity instance (UUID implementation).
 	 */

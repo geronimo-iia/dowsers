@@ -39,6 +39,13 @@ import com.google.common.base.Objects;
  * </ul>
  * 
  * 
+ * All Entities are not "Root entities" according Event sourcing pattern.<bt />
+ * We can have a root entity as "lotteries" which be constituted by a list of
+ * entity "ticket". <br />
+ * As ticket have an identifier, it's an entity.<br />
+ * BUT, all changes occurred against Lottery entity.
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public abstract class Entity {
@@ -73,6 +80,11 @@ public abstract class Entity {
 		return this.identifier;
 	}
 
+	/**
+	 * hashCode based on identity.
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public final int hashCode() {
 		return Objects.hashCode(getIdentifier().getIdentity());

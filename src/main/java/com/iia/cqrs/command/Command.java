@@ -11,6 +11,17 @@ import com.google.common.base.Preconditions;
 /**
  * Command declares an interface for executing an operation.<br />
  * 
+ * Commands are created on the client application and then send to the Domain
+ * layer.<br />
+ * Their purpose is to capture "Why did this change happen?".<br />
+ * All these commands will be send to the Command Bus which will delegate each
+ * command to the command handler or command handlers.<br />
+ * This also effectively means that there is only one entry point into the
+ * domain and that is via the Bus.<br />
+ * The responsibility of these command handlers is to execute the appropriate
+ * behavior on the domain.
+ * 
+ * 
  * The Command concept encapsulates method calls in objects allowing us to issue
  * requests without knowing the requested operation or the requesting object.
  * 

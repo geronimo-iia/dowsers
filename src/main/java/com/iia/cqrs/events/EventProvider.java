@@ -11,13 +11,20 @@ import com.iia.cqrs.Identifier;
  */
 public interface EventProvider {
 
-	Identifier getIdentifier();
+	/**
+	 * @return identifier of entity (must have an Id and a Version).
+	 */
+	public Identifier getIdentifier();
 
-	void loadFromHistory(Iterable<DomainEvent> domainEvents);
+	/**
+	 * 
+	 * @param domainEvents
+	 */
+	public void loadFromHistory(Iterable<DomainEvent> domainEvents);
 
-	void updateVersion(int version);
+	public void updateVersion(int version);
 
-	Iterable<DomainEvent> uncommitedChanges();
+	public Iterable<DomainEvent> uncommitedChanges();
 
-	void clear();
+	public void clear();
 }
