@@ -5,10 +5,9 @@ package com.iia.cqrs.sample.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.iia.cqrs.Entity;
-import com.iia.cqrs.Identifier;
-import com.iia.cqrs.Link;
 import com.iia.cqrs.annotation.DomainEntity;
 import com.iia.cqrs.annotation.Property;
 
@@ -20,33 +19,24 @@ import com.iia.cqrs.annotation.Property;
 public class AddressBook extends Entity {
 
 	@Property
-	private List<Link<Contact>> contacts;
+	private List<UUID> contacts;
 
 	/**
 	 * Build a new instance of <code>AddressBook</code>
 	 */
 	public AddressBook() {
 		super();
-		contacts = new ArrayList<Link<Contact>>();
-	}
-
-	/**
-	 * Build a new instance of <code>AddressBook</code>
-	 * 
-	 * @param identifier
-	 */
-	public AddressBook(Identifier identifier) {
-		super(identifier);
+		contacts = new ArrayList<UUID>();
 	}
 
 	public void add(Contact contact) {
-		contacts.add(new Link<Contact>(contact));
+		contacts.add(contact.getIdentifier().getIdentity());
 	}
 
 	/**
 	 * @return the contacts
 	 */
-	public List<Link<Contact>> getContacts() {
+	public List<UUID> getContacts() {
 		return this.contacts;
 	}
 

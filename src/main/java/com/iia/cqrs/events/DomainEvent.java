@@ -39,7 +39,7 @@ public abstract class DomainEvent {
 	 * Entity identifier instance.
 	 */
 	@TODO("may we expose this member as two attribut ")
-	private Identifier entityIdentifier;
+	private final Identifier entityIdentifier;
 
 	/**
 	 * Build a new instance of DomainEvent.
@@ -70,14 +70,6 @@ public abstract class DomainEvent {
 	 */
 	public Identifier getEntityIdentifier() {
 		return entityIdentifier;
-	}
-
-	/**
-	 * @param entityIdentifier
-	 *            the entityIdentifier to set
-	 */
-	public void setEntityIdentifier(Identifier entityIdentifier) {
-		this.entityIdentifier = entityIdentifier;
 	}
 
 	/**

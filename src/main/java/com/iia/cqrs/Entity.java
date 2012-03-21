@@ -4,6 +4,9 @@
 package com.iia.cqrs;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.iia.cqrs.events.DomainEvent;
+import com.iia.cqrs.events.EventProcessor;
 
 /**
  * Entity
@@ -39,12 +42,18 @@ import com.google.common.base.Objects;
  * </ul>
  * 
  * 
- * All Entities are not "Root entities" according Event sourcing pattern.<bt />
- * We can have a root entity as "lotteries" which be constituted by a list of
- * entity "ticket". <br />
- * As ticket have an identifier, it's an entity.<br />
- * BUT, all changes occurred against Lottery entity.
+ * DDD pattern:
  * 
+ * A collection of objects that are bound together by a root entity, otherwise
+ * known as an aggregate root. The aggregate root guarantees the consistency of
+ * changes being made within the aggregate by forbidding external objects from
+ * holding references to its members.
+ * 
+ * Other reference:
+ * 
+ * @see DDD: {@link http://en.wikipedia.org/wiki/Domain-driven_design}
+ * @see Nacked Object: {@link http://en.wikipedia.org/wiki/Naked_objects}
+ * @see CQRS: {@link http://en.wikipedia.org/wiki/Command-query_separation}
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -56,10 +65,23 @@ public abstract class Entity {
 	private Identifier identifier;
 
 	/**
+	 * EventProcessor instance.
+	 */
+	private EventProcessor eventProcessor;
+
+	public Entity() {
+		this(null, Identifier.random());
+	}
+
+	public Entity(final Identifier identifier) {
+		this(null, identifier);
+	}
+
+	/**
 	 * Build a new instance of <code>Entity</code>
 	 */
-	public Entity() {
-		this(Identifier.random());
+	public Entity(final EventProcessor domainEventBusInvoker) {
+		this(domainEventBusInvoker, Identifier.random());
 	}
 
 	/**
@@ -67,10 +89,30 @@ public abstract class Entity {
 	 * 
 	 * @param identifier
 	 *            specified entity
+	 * @throws NullPointerException
+	 *             if identifier is null
 	 */
-	public Entity(final Identifier identifier) {
+	protected Entity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
 		super();
-		this.identifier = identifier;
+		this.identifier = Preconditions.checkNotNull(identifier);
+		this.eventProcessor = eventProcessor;
+	}
+
+	/**
+	 * Apply specified domain event.
+	 * 
+	 * @param domainEvent
+	 *            domain Event apply
+	 * @throws IllegalStateException
+	 *             if no event processor instance is set on this
+	 *             entity.
+	 */
+	protected <T extends DomainEvent> void apply(T domainEvent) throws IllegalStateException {
+		// check if domain event bus invoker is set
+		if (eventProcessor == null) {
+			new IllegalStateException("No event processor instance");
+		}
+		eventProcessor.apply(this, domainEvent);
 	}
 
 	/**

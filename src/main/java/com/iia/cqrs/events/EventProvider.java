@@ -20,11 +20,11 @@ public interface EventProvider {
 	 * 
 	 * @param domainEvents
 	 */
-	public void loadFromHistory(Iterable<DomainEvent> domainEvents);
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history);
 
 	public void updateVersion(int version);
 
-	public Iterable<DomainEvent> uncommitedChanges();
+	public Iterable<DomainEvent> getUncommittedChanges();
 
-	public void clear();
+	public void markChangesCommitted();
 }

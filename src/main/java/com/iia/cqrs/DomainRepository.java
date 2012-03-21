@@ -9,7 +9,9 @@ import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.annotation.TODOs;
 
 /**
- * DomainRepository interfaces.
+ * DomainRepository interfaces declare methods for retrieving domain objects
+ * should delegate to a specialized Repository object such that alternative
+ * storage implementations may be easily interchanged.
  * 
  * 
  * Domain is completely write only, so the repository only has to be able to Get

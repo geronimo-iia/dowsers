@@ -15,13 +15,6 @@ public class Contact extends Entity {
 	private String name;
 
 	/**
-	 * Build a new instance of Contact.
-	 */
-	public Contact() {
-		super();
-	}
-
-	/**
 	 * Build a new instance of <code>Contact</code>
 	 */
 	public Contact(final String name) {
