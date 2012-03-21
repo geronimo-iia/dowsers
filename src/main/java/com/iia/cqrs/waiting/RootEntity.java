@@ -4,7 +4,7 @@
 package com.iia.cqrs.waiting;
 
 import com.iia.cqrs.Entity;
-import com.iia.cqrs.events.Aggregate;
+import com.iia.cqrs.events.EventProcessor;
 
 /**
  * RootEntity. Its a special entity related to a context.
@@ -27,7 +27,7 @@ public class RootEntity extends Entity {
 	 *             if domainEventBusInvoker is null
 	 */
 	public RootEntity() throws NullPointerException {
-		
+
 	}
 
 	/**
@@ -36,8 +36,8 @@ public class RootEntity extends Entity {
 	 * @param aggregate
 	 * @param random
 	 */
-	public RootEntity(Aggregate aggregate ) {
-		super(aggregate, aggregate.getIdentifier());
+	public RootEntity(EventProcessor aggregate) {
+		super(aggregate, null);
 	}
 
 }

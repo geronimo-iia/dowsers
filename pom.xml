@@ -121,5 +121,10 @@
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
 		</repository>
+		<repository>
+			<id>intelligents-ia</id>
+			<name>Intelligents-ia Repository</name>
+			<url>http://intelligents-ia.com/maven2</url>
+		</repository>
 	</repositories>
 </project>
