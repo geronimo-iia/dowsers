@@ -284,7 +284,7 @@ public class Identifier implements Serializable, Comparable<Identifier> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(Identifier o) {
+	public int compareTo(final Identifier o) {
 		if (!hasSameIdentity(o)) {
 			throw new ClassCastException("Objects haven't same identity");
 		}

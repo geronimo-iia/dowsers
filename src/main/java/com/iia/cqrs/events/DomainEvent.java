@@ -47,7 +47,7 @@ public abstract class DomainEvent {
 	 * @param entityIdentifier
 	 *            identifier of entity which event carries on
 	 */
-	public DomainEvent(Identifier entityIdentifier) {
+	public DomainEvent(final Identifier entityIdentifier) {
 		this(UUID.randomUUID(), entityIdentifier);
 	}
 
@@ -59,7 +59,7 @@ public abstract class DomainEvent {
 	 * @param entityIdentifier
 	 *            identifier of entity which event carries on
 	 */
-	public DomainEvent(UUID eventIdentity, Identifier entityIdentifier) {
+	public DomainEvent(final UUID eventIdentity, final Identifier entityIdentifier) {
 		super();
 		this.eventIdentity = eventIdentity;
 		this.entityIdentifier = entityIdentifier;

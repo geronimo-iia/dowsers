@@ -77,7 +77,7 @@ public abstract class Command {
 	 * @throws NullPointerException
 	 *             if commandInvoker is null
 	 */
-	public Command(CommandInvoker commandInvoker) throws NullPointerException {
+	public Command(final CommandInvoker commandInvoker) throws NullPointerException {
 		this(UUID.randomUUID(), commandInvoker);
 	}
 
@@ -91,7 +91,7 @@ public abstract class Command {
 	 * @throws NullPointerException
 	 *             if id or commandInvoker is null
 	 */
-	protected Command(final UUID id, CommandInvoker commandInvoker) throws NullPointerException {
+	protected Command(final UUID id, final CommandInvoker commandInvoker) throws NullPointerException {
 		super();
 		this.id = Preconditions.checkNotNull(id);
 		this.commandInvoker = Preconditions.checkNotNull(commandInvoker);
@@ -134,14 +134,17 @@ public abstract class Command {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
+	public final boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Command other = (Command) obj;
+		}
+		final Command other = (Command) obj;
 		return Objects.equal(other.getId(), getId());
 	}
 

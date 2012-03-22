@@ -25,7 +25,7 @@ public class AddContactToAddressBookCommandHandler extends CommandHandler<AddCon
 	 * @param domainRepository
 	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+	public AddContactToAddressBookCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
 	}
@@ -34,9 +34,9 @@ public class AddContactToAddressBookCommandHandler extends CommandHandler<AddCon
 	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
 	 */
 	@Override
-	public void onCommand(AddContactToAddressBookCommand command) {
-		AddressBook addressBook = domainRepository.findByIdentifier(AddressBook.class, command.getAddressBookIdentifier());
-		Contact contact = domainRepository.findByIdentifier(Contact.class, command.getContact());
+	public void onCommand(final AddContactToAddressBookCommand command) {
+		final AddressBook addressBook = domainRepository.findByIdentifier(AddressBook.class, command.getAddressBookIdentifier());
+		final Contact contact = domainRepository.findByIdentifier(Contact.class, command.getContact());
 		addressBook.add(contact);
 	}
 

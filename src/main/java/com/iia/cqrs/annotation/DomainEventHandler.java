@@ -10,8 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Declare a method as an domain event handler.
- * Method has an event signature when:
+ * Declare a method as an domain event handler. Method has an event signature
+ * when:
  * <ul>
  * <li>declare annotation @DomainEventHandler</li>
  * <li>have a return type void</li>

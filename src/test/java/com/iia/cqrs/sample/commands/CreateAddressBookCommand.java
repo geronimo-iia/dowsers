@@ -14,13 +14,12 @@ public class CreateAddressBookCommand extends Command {
 
 	/**
 	 * Build a new instance of CreateAddressBookCommand.
+	 * 
 	 * @param commandInvoker
 	 * @throws NullPointerException
 	 */
-	public CreateAddressBookCommand(CommandInvoker commandInvoker) throws NullPointerException {
+	public CreateAddressBookCommand(final CommandInvoker commandInvoker) throws NullPointerException {
 		super(commandInvoker);
 	}
-
- 
 
 }

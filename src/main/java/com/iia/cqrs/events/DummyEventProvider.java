@@ -29,7 +29,7 @@ import com.iia.cqrs.events.processor.EventProcessor;
  * @author jgt
  * 
  */
-public class DummyEventProvider implements EventProvider  {
+public class DummyEventProvider implements EventProvider {
 
 	private EventProcessor eventProcessor;
 	private Identifier identifier;
@@ -66,7 +66,7 @@ public class DummyEventProvider implements EventProvider  {
 	 */
 	@Override
 	@TODO("Resolve duplicate instance of identifier")
-	public void updateVersion(int version) {
+	public void updateVersion(final int version) {
 		identifier = identifier.withVersion(version);
 	}
 
@@ -101,10 +101,11 @@ public class DummyEventProvider implements EventProvider  {
 	 * finally we will add this domain event to the internal list of applied
 	 * events.
 	 * 
-	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.Entity, com.iia.cqrs.events.DomainEvent)
+	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.Entity,
+	 *      com.iia.cqrs.events.DomainEvent)
 	 */
 	@TODO("remove source, because its normaly equals to root?")
-	public void apply(DomainEvent domainEvent) {
+	public void apply(final DomainEvent domainEvent) {
 		// assert source.equals(root)
 
 		// this is ever done in constructor

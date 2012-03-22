@@ -36,7 +36,7 @@ public class RootEntity extends Entity {
 	 * @param aggregate
 	 * @param random
 	 */
-	public RootEntity(EventProcessor aggregate) {
+	public RootEntity(final EventProcessor aggregate) {
 		super(aggregate, null);
 	}
 

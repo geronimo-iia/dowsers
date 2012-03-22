@@ -62,14 +62,14 @@ import com.iia.cqrs.events.processor.EventProcessor;
 public abstract class Entity {
 
 	/**
-	 * Entity identifier. 
+	 * Entity identifier.
 	 */
 	private Identifier identifier;
 
 	/**
 	 * EventProcessor instance.
 	 */
-	private EventProcessor eventProcessor;
+	private final EventProcessor eventProcessor;
 
 	public Entity() {
 		this(null, Identifier.random());
@@ -108,7 +108,7 @@ public abstract class Entity {
 	 * @throws IllegalStateException
 	 *             if no event processor instance is set on this entity.
 	 */
-	protected <T extends DomainEvent> void apply(T domainEvent) throws IllegalStateException {
+	protected <T extends DomainEvent> void apply(final T domainEvent) throws IllegalStateException {
 		// check if domain event bus invoker is set
 		if (eventProcessor == null) {
 			new IllegalStateException("No event processor instance");
@@ -120,7 +120,7 @@ public abstract class Entity {
 	 * @return identifier value
 	 */
 	public final Identifier getIdentifier() {
-		return this.identifier;
+		return identifier;
 	}
 
 	/**
@@ -139,14 +139,17 @@ public abstract class Entity {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
+	public final boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Entity other = (Entity) obj;
+		}
+		final Entity other = (Entity) obj;
 		return Objects.equal(other.getIdentifier().getIdentity(), getIdentifier().getIdentity());
 	}
 
@@ -157,17 +160,19 @@ public abstract class Entity {
 	public String toString() {
 		return Objects.toStringHelper(this).add("identifier", identifier).toString();
 	}
-	
-	
+
 	/**
-	 * @param identifier the identifier to set
-	 * @throws IllegalArgumentException if identity of this entity isn't the same.
-	 * @throws IllegalArgumentException if identity is null
+	 * @param identifier
+	 *            the identifier to set
+	 * @throws IllegalArgumentException
+	 *             if identity of this entity isn't the same.
+	 * @throws IllegalArgumentException
+	 *             if identity is null
 	 */
 	@Note("Package visibility")
 	@TODO("May we can find a better way to deal with that ?")
-	void setIdentifier(Identifier identifier) throws IllegalArgumentException, NullPointerException{
-		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier())); 
+	void setIdentifier(final Identifier identifier) throws IllegalArgumentException, NullPointerException {
+		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier()));
 		this.identifier = identifier;
 	}
 }

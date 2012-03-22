@@ -12,7 +12,7 @@ import com.iia.cqrs.annotation.Property;
 public class Contact extends Entity {
 
 	@Property
-	private String name;
+	private final String name;
 
 	/**
 	 * Build a new instance of <code>Contact</code>
@@ -23,7 +23,7 @@ public class Contact extends Entity {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 }

@@ -24,7 +24,7 @@ public class AddContactToAddressBookCommand extends Command {
 	 * @param contact
 	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommand(CommandInvoker commandInvoker, UUID addressBookIdentifier, UUID contact) throws NullPointerException {
+	public AddContactToAddressBookCommand(final CommandInvoker commandInvoker, final UUID addressBookIdentifier, final UUID contact) throws NullPointerException {
 		super(commandInvoker);
 		this.addressBookIdentifier = addressBookIdentifier;
 		this.contact = contact;
@@ -34,10 +34,10 @@ public class AddContactToAddressBookCommand extends Command {
 	 * @return the contact
 	 */
 	public UUID getContact() {
-		return this.contact;
+		return contact;
 	}
 
 	public UUID getAddressBookIdentifier() {
-		return this.addressBookIdentifier;
+		return addressBookIdentifier;
 	}
 }

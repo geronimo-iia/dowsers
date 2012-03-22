@@ -24,7 +24,7 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 	 * @param domainRepository
 	 * @throws NullPointerException
 	 */
-	public CreateContactCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+	public CreateContactCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
 	}
@@ -33,8 +33,8 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
 	 */
 	@Override
-	public void onCommand(CreateContactCommand command) {
-		Contact contact = new Contact(command.getName());
+	public void onCommand(final CreateContactCommand command) {
+		final Contact contact = new Contact(command.getName());
 		domainRepository.add(contact);
 	}
 }

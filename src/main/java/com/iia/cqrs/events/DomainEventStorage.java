@@ -13,12 +13,12 @@ import java.util.UUID;
  */
 public interface DomainEventStorage {
 
-	  Iterable<DomainEvent> GetAllEvents(UUID eventProviderId);
-	  void Save(EventProvider eventProvider);
-	  
-	  
-	  Iterable<DomainEvent> GetEventsSinceLastSnapShot(UUID eventProviderId);
-      int GetEventCountSinceLastSnapShot(UUID eventProviderId);
-     
-      
+	Iterable<DomainEvent> GetAllEvents(UUID eventProviderId);
+
+	void Save(EventProvider eventProvider);
+
+	Iterable<DomainEvent> GetEventsSinceLastSnapShot(UUID eventProviderId);
+
+	int GetEventCountSinceLastSnapShot(UUID eventProviderId);
+
 }

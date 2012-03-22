@@ -23,7 +23,7 @@ public class CommandBus implements CommandInvoker, CommandRegistry {
 	/**
 	 * EventBus instance.
 	 */
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	/**
 	 * Build a new instance of <code>CommandBus</code> which process command
@@ -49,7 +49,7 @@ public class CommandBus implements CommandInvoker, CommandRegistry {
 	 * @throws NullPointerException
 	 *             if eventBus is null
 	 */
-	public CommandBus(EventBus eventBus) throws NullPointerException {
+	public CommandBus(final EventBus eventBus) throws NullPointerException {
 		this.eventBus = Preconditions.checkNotNull(eventBus);
 	}
 

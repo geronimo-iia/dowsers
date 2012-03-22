@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 @Documented
-@Retention(RetentionPolicy.SOURCE) 
+@Retention(RetentionPolicy.SOURCE)
 public @interface Note {
 	String value();
 }

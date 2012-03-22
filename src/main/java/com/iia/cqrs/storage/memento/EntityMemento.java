@@ -38,7 +38,7 @@ public abstract class EntityMemento implements Memento {
 	 * @param identity
 	 *            the identity to set
 	 */
-	public void setIdentity(UUID identity) {
+	public void setIdentity(final UUID identity) {
 		this.identity = identity;
 	}
 
@@ -53,7 +53,7 @@ public abstract class EntityMemento implements Memento {
 	 * @param version
 	 *            the version to set
 	 */
-	public void setVersion(long version) {
+	public void setVersion(final long version) {
 		this.version = version;
 	}
 

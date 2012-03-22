@@ -17,11 +17,9 @@ public interface EventProcessorProvider {
 	 * @param entityType
 	 *            entity Type
 	 * @return EventProcessor for specified entity type
-	 * @throws IllegalStateException
+	 * @throws RuntimeException
 	 *             if no EventProcessor if found for specified entity type.
 	 */
-	public <T extends Entity> EventProcessor get(Class<T> entityType) throws IllegalStateException;
-
-
+	public <T extends Entity> EventProcessor get(Class<T> entityType) throws RuntimeException;
 
 }

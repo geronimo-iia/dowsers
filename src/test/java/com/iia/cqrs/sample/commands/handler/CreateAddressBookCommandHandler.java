@@ -24,7 +24,7 @@ public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddres
 	 * @param domainRepository
 	 * @throws NullPointerException
 	 */
-	public CreateAddressBookCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository) throws NullPointerException {
+	public CreateAddressBookCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
 	}
@@ -33,7 +33,7 @@ public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddres
 	 * @see com.iia.cqrs.command.CommandHandler#onCommand(com.iia.cqrs.command.Command)
 	 */
 	@Override
-	public void onCommand(CreateAddressBookCommand command) {
+	public void onCommand(final CreateAddressBookCommand command) {
 		domainRepository.add(new AddressBook());
 	}
 }

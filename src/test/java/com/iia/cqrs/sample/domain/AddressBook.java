@@ -19,7 +19,7 @@ import com.iia.cqrs.annotation.Property;
 public class AddressBook extends Entity {
 
 	@Property
-	private List<UUID> contacts;
+	private final List<UUID> contacts;
 
 	/**
 	 * Build a new instance of <code>AddressBook</code>
@@ -29,7 +29,7 @@ public class AddressBook extends Entity {
 		contacts = new ArrayList<UUID>();
 	}
 
-	public void add(Contact contact) {
+	public void add(final Contact contact) {
 		contacts.add(contact.getIdentifier().getIdentity());
 	}
 
@@ -37,7 +37,7 @@ public class AddressBook extends Entity {
 	 * @return the contacts
 	 */
 	public List<UUID> getContacts() {
-		return this.contacts;
+		return contacts;
 	}
 
 	/**

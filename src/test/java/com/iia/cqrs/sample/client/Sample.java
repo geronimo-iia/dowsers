@@ -18,12 +18,12 @@ public class Sample {
 	 * 
 	 * @param commandInvoker
 	 */
-	public Sample(CommandInvoker commandInvoker) {
+	public Sample(final CommandInvoker commandInvoker) {
 		super();
 		this.commandInvoker = commandInvoker;
 	}
 
-	public void createContact(String name) {
+	public void createContact(final String name) {
 		new CreateContactCommand(commandInvoker, name).execute();
 	}
 }

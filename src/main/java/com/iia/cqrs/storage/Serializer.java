@@ -20,7 +20,7 @@ public abstract class Serializer<T> {
 	 * @throws NullPointerException
 	 *             if innerType is null
 	 */
-	public Serializer(Class<T> innerType) throws NullPointerException {
+	public Serializer(final Class<T> innerType) throws NullPointerException {
 		super();
 		this.innerType = Preconditions.checkNotNull(innerType);
 	}

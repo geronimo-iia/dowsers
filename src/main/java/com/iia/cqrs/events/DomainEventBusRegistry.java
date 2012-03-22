@@ -9,7 +9,8 @@ import com.iia.cqrs.Entity;
  * DomainEventBusRegistry.
  * 
  * 
- * Each entity has to register the domain events and the internal event handlers with the base class.
+ * Each entity has to register the domain events and the internal event handlers
+ * with the base class.
  * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>

@@ -12,14 +12,14 @@ import com.iia.cqrs.annotation.DomainEventHandler;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class FakeEntity extends Entity {
+public class FakeBeautifullEntity extends Entity {
 
 	private long handledCounter = 0;
 
 	/**
 	 * Build a new instance of FakeEntity.
 	 */
-	public FakeEntity() {
+	public FakeBeautifullEntity() {
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class FakeEntity extends Entity {
 	 * 
 	 * @param identifier
 	 */
-	public FakeEntity(final Identifier identifier) {
+	public FakeBeautifullEntity(final Identifier identifier) {
 		super(identifier);
 	}
 
@@ -36,7 +36,7 @@ public class FakeEntity extends Entity {
 	 * 
 	 * @param domainEventBusInvoker
 	 */
-	public FakeEntity(final EventProcessor domainEventBusInvoker) {
+	public FakeBeautifullEntity(final EventProcessor domainEventBusInvoker) {
 		super(domainEventBusInvoker);
 	}
 
@@ -47,21 +47,8 @@ public class FakeEntity extends Entity {
 	 * @param identifier
 	 * @throws NullPointerException
 	 */
-	public FakeEntity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
+	public FakeBeautifullEntity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
 		super(eventProcessor, identifier);
-	}
-
-	@DomainEventHandler
-	public Integer badReturnType(final FakeDomainEventA a) {
-		return null;
-	}
-
-	@DomainEventHandler
-	public void wrongParameterNumber(final FakeDomainEventA a, final String hell) {
-	}
-
-	@DomainEventHandler
-	public void wrongParameterType(final String devil) {
 	}
 
 	@DomainEventHandler

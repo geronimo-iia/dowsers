@@ -29,6 +29,8 @@ public interface EventProcessor {
 	 * @param <T>
 	 * @param entityType
 	 *            entity Type
+	 * @throws IllegalStateException
+	 *             if entity type cannot be registered
 	 */
-	public <T extends Entity> void register(Class<T> entityType);
+	public <T extends Entity> void register(Class<T> entityType) throws IllegalStateException;
 }

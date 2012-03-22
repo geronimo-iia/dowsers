@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * StoreException extends RuntimeException. Root of store exception.
  * 
- *  @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
 public class StoreException extends RuntimeException {

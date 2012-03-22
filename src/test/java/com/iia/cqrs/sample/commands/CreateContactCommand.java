@@ -21,13 +21,13 @@ public class CreateContactCommand extends Command {
 	 * @param name
 	 * @throws NullPointerException
 	 */
-	public CreateContactCommand(CommandInvoker commandInvoker, String name) throws NullPointerException {
+	public CreateContactCommand(final CommandInvoker commandInvoker, final String name) throws NullPointerException {
 		super(commandInvoker);
 		this.name = name;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 }

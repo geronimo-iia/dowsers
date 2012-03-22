@@ -9,7 +9,6 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-
 /**
  * SnapShotStorageTest.
  * 
@@ -20,7 +19,7 @@ public class SnapShotStorageTest {
 
 	@Test
 	public void testDefaultDayTimeOfSnapshot() {
-		SnapShot snapShot = new SnapShot(UUID.randomUUID(), 1, new DummyMemento());
+		final SnapShot snapShot = new SnapShot(UUID.randomUUID(), 1, new DummyMemento());
 		Assert.assertNotNull(snapShot.getTimestamp());
 	}
 }

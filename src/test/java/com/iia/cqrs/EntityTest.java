@@ -3,8 +3,7 @@
  */
 package com.iia.cqrs;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -16,27 +15,27 @@ public class EntityTest {
 
 	@Test
 	public void testIdentitySetter() {
-		DummyEntity entity = new DummyEntity();
+		final DummyEntity entity = new DummyEntity();
 
 		try {
 			entity.setIdentifier(null);
-			fail("expected NullPointerException");
-		} catch (NullPointerException e) {
+			Assert.fail("expected NullPointerException");
+		} catch (final NullPointerException e) {
 		}
 
 		// next version identifier
 		Identifier identifier = entity.getIdentifier().nextVersion();
-		assertTrue(identifier.hasSameIdentity(entity.getIdentifier()));
+		Assert.assertTrue(identifier.hasSameIdentity(entity.getIdentifier()));
 
 		// set a next version
 		entity.setIdentifier(identifier);
 
 		identifier = Identifier.random();
-		assertNotSame(identifier.getIdentity(), entity.getIdentifier().getIdentity());
+		Assert.assertNotSame(identifier.getIdentity(), entity.getIdentifier().getIdentity());
 		try {
 			entity.setIdentifier(identifier);
-			fail("expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
+			Assert.fail("expected IllegalArgumentException");
+		} catch (final IllegalArgumentException e) {
 		}
 
 	}

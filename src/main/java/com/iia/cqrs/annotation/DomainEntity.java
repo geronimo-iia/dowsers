@@ -10,8 +10,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Declare a class as a Domain entity.
- * This class must have one field of type Identifier.
+ * Declare a class as a Domain entity. This class must have one field of type
+ * Identifier.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

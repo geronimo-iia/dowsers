@@ -34,7 +34,7 @@ public class DummyMemento implements Memento {
 	 * @param value
 	 *            the value to set
 	 */
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * EmptyResultException.
  * 
- *  @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
 public class EmptyResultException extends StoreException {

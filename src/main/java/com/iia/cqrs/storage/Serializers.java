@@ -47,7 +47,7 @@ public final class Serializers {
 	 *            a kryo instance.
 	 * @return a <code>Serializer</code> instance.
 	 */
-	public static <T> Serializer<T> newKryoSerializer(Class<T> innerType, Kryo kryo) {
+	public static <T> Serializer<T> newKryoSerializer(final Class<T> innerType, final Kryo kryo) {
 		return new KryoSerializer<T>(innerType, kryo);
 	}
 
@@ -59,10 +59,10 @@ public final class Serializers {
 	 *            type to serialize.
 	 * @return a <code>Serializer</code> instance.
 	 */
-	public static <T> Serializer<T> newJacksonSerializer(Class<T> innerType) {
-		ObjectMapper mapper = new ObjectMapper();
+	public static <T> Serializer<T> newJacksonSerializer(final Class<T> innerType) {
+		final ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		return newJacksonSerializer(innerType, mapper);
+		return Serializers.newJacksonSerializer(innerType, mapper);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public final class Serializers {
 	 *            Object mapper to use
 	 * @return a <code>Serializer</code> instance.
 	 */
-	public static <T> Serializer<T> newJacksonSerializer(Class<T> innerType, ObjectMapper mapper) {
+	public static <T> Serializer<T> newJacksonSerializer(final Class<T> innerType, final ObjectMapper mapper) {
 		return new JacksonSerializer<T>(innerType, mapper);
 	}
 
@@ -86,7 +86,7 @@ public final class Serializers {
 	 *            type to serialize.
 	 * @return a <code>Serializer</code> instance.
 	 */
-	public static <T> Serializer<T> newJavaSerializer(Class<T> innerType) {
+	public static <T> Serializer<T> newJavaSerializer(final Class<T> innerType) {
 		return new JavaSerializer<T>(innerType);
 	}
 
@@ -94,7 +94,7 @@ public final class Serializers {
 	 * @return a new instance of kryo with most of java type registered.
 	 */
 	public static Kryo newKryo() {
-		Kryo kryo = new Kryo();
+		final Kryo kryo = new Kryo();
 		// array
 		kryo.register(String[].class);
 		kryo.register(Boolean[].class);
@@ -127,18 +127,20 @@ public final class Serializers {
 
 		private final Kryo kryo;
 
-		public KryoSerializer(Class<T> innerType, Kryo kryo) {
+		public KryoSerializer(final Class<T> innerType, final Kryo kryo) {
 			super(innerType);
 			this.kryo = Preconditions.checkNotNull(kryo);
 		}
 
-		public T deserialize(byte[] array) throws Exception {
-			ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
+		@Override
+		public T deserialize(final byte[] array) throws Exception {
+			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
 			return objectBuffer.readObjectData(array, innerType);
 		}
 
-		public byte[] serialize(T content) throws Exception {
-			ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
+		@Override
+		public byte[] serialize(final T content) throws Exception {
+			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
 			return objectBuffer.writeObjectData(content);
 		}
 	}
@@ -159,17 +161,19 @@ public final class Serializers {
 		 * @param mapper
 		 * @throws NullPointerException
 		 */
-		public JacksonSerializer(Class<T> innerType, ObjectMapper mapper) throws NullPointerException {
+		public JacksonSerializer(final Class<T> innerType, final ObjectMapper mapper) throws NullPointerException {
 			super(innerType);
 			this.mapper = Preconditions.checkNotNull(mapper);
 		}
 
-		public final byte[] serialize(T content) throws Exception {
+		@Override
+		public final byte[] serialize(final T content) throws Exception {
 			return mapper.writeValueAsBytes(content);
 		}
 
-		public final T deserialize(byte[] array) throws Exception {
-			return (T) mapper.readValue(array, 0, array.length, innerType);
+		@Override
+		public final T deserialize(final byte[] array) throws Exception {
+			return mapper.readValue(array, 0, array.length, innerType);
 		}
 	}
 
@@ -180,21 +184,23 @@ public final class Serializers {
 	 */
 	public static class JavaSerializer<T> extends Serializer<T> {
 
-		public JavaSerializer(Class<T> innerType) {
+		public JavaSerializer(final Class<T> innerType) {
 			super(innerType);
 		}
 
+		@Override
 		@SuppressWarnings("unchecked")
-		public T deserialize(byte[] array) throws Exception {
-			ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(array));
+		public T deserialize(final byte[] array) throws Exception {
+			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(array));
 			return (T) ois.readObject();
 		}
 
-		public byte[] serialize(T content) throws IOException, Exception {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+		@Override
+		public byte[] serialize(final T content) throws IOException, Exception {
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream(512);
+			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(content);
-			byte[] array = baos.toByteArray();
+			final byte[] array = baos.toByteArray();
 			return array;
 		}
 	}
