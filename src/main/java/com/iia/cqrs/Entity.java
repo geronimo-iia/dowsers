@@ -67,32 +67,38 @@ public abstract class Entity {
 	private Identifier identifier;
 
 	/**
-	 * EventProcessor instance.
+	 * DomainEventInvoker instance.
 	 */
 	private DomainEventInvoker domainEventInvoker;
 
 	/**
-	 * Build a new instance of Entity.
+	 * Build a new instance of root Entity.
 	 */
 	public Entity() {
 		this(Identifier.random());
 	}
 
 	/**
-	 * Build a new instance of <code>Entity</code>
+	 * Build a new instance of root <code>Entity</code>
 	 * 
 	 * @param identifier
 	 *            specified entity
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	protected Entity(final Identifier identifier) throws NullPointerException {
+	public Entity(final Identifier identifier) throws NullPointerException {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		Aggregate aggregate = new Aggregate();
+		Aggregate aggregate = new Aggregate(this);
 		aggregate.attach(this);
 	}
 
+	public Entity(Aggregate aggregate, final Identifier identifier) {
+		super();
+		this.identifier = Preconditions.checkNotNull(identifier);
+		aggregate.attach(this);
+	}
+	
 	/**
 	 * Apply specified domain event.
 	 * 

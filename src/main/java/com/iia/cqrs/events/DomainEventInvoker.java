@@ -3,11 +3,10 @@
  */
 package com.iia.cqrs.events;
 
-
 /**
- * DomainEventInvoker.
+ * DomainEventInvoker declares methods to apply Domain Event from Entity.
  * 
- * @author jgt
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
 public interface DomainEventInvoker {

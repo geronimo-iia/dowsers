@@ -12,19 +12,37 @@ import com.iia.cqrs.Identifier;
 public interface EventProvider {
 
 	/**
-	 * @return identifier of entity (must have an Id and a Version).
+	 * @return identifier of root entity
 	 */
 	public Identifier getIdentifier();
 
 	/**
+	 * Loading historical domain events.It is basically apply events of the
+	 * given aggregate.
 	 * 
 	 * @param domainEvents
 	 */
 	public void loadFromHistory(final Iterable<? extends DomainEvent> history);
 
-	public void updateVersion(int version);
+	/**
+	 * Increment version of this root entity.
+	 */
+	public void incrementVersion();
 
+	/**
+	 * Update version with specified value.
+	 * 
+	 * @param version
+	 */
+	public void updateVersion(long version);
+
+	/**
+	 * @return an iterable instance of of uncommitted changes.
+	 */
 	public Iterable<DomainEvent> getUncommittedChanges();
 
+	/**
+	 * Mark all changes as committed.
+	 */
 	public void markChangesCommitted();
 }

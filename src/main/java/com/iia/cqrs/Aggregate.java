@@ -11,7 +11,9 @@ import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
 import com.iia.cqrs.events.DomainEventInvoker;
 import com.iia.cqrs.events.EventProvider;
+import com.iia.cqrs.events.RegisterEventProvider;
 import com.iia.cqrs.events.processor.EventProcessor;
+import com.iia.cqrs.events.processor.EventProcessorProvider;
 
 /**
  * Aggregate act as a context of a root entity.
@@ -30,8 +32,9 @@ import com.iia.cqrs.events.processor.EventProcessor;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements EventProvider, DomainEventInvoker {
+public class Aggregate implements EventProvider, DomainEventInvoker, RegisterEventProvider {
 
+	private EventProcessorProvider eventProcessorProvider;
 	private EventProcessor eventProcessor;
 	private Entity root = null;
 
@@ -43,26 +46,25 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 	/**
 	 * Build a new instance of Aggregate.
 	 */
-	public Aggregate() {
+	public Aggregate(Entity root ) {
 		super();
+		this.root = Preconditions.checkNotNull(root);
+		root.setDomainEventInvoker(this);
 	}
 
 	/**
-	 * Attache specified entity as root entoty for this aggregate.
+	 * Attache specified entity to this aggregate.
 	 * 
-	 * @param root
+	 * @param entity
 	 *            entity
 	 * @throws NullPointerException
-	 *             if root is null
-	 * @throws IllegalStateException
-	 *             if root is ever set
+	 *             if entity is null 
 	 */
-	public void attach(Entity root) throws NullPointerException, IllegalStateException {
-		 Preconditions.checkNotNull(root);
-		 Preconditions.checkState(this.root==null);
-		 this.root=root;
-		 // call back entity
-		 this.root.setDomainEventInvoker(this);
+	public void attach(Entity entity) throws NullPointerException {
+		Preconditions.checkNotNull(root); 
+		// call back entity
+		entity.setDomainEventInvoker(this);
+		//this.eventProcessor = eventProcessorProvider.get(this.root.getClass());
 	}
 
 	/**
@@ -81,27 +83,27 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 	 */
 	@Override
 	public void loadFromHistory(final Iterable<? extends DomainEvent> history) {
-		for (final DomainEvent domainEvent : history) {
-			eventProcessor.apply(root, domainEvent);
+		if (history != null) {
+			for (final DomainEvent domainEvent : history) {
+				//warn entity
+				///this.eventProcessor = eventProcessorProvider.get(this.root.getClass());
+				eventProcessor.apply(root, domainEvent);
+			}
 		}
 	}
 
 	/**
-	 * @see com.iia.cqrs.events.EventProvider#updateVersion(int)
+	 * Increment version of this aggregate context.
 	 */
 	@Override
-	@TODO("Resolve duplicate instance of identifier")
-	public void updateVersion(final int version) {
-		root.setIdentifier(root.getIdentifier().withVersion(version));
-	}
-
-	/**
-	 * Increment version of this aggregate context.
-	 * 
-	 */
-	@TODO("Resolve duplicate instance of identifier")
 	public void incrementVersion() {
 		root.setIdentifier(root.getIdentifier().nextVersion());
+	}
+
+	@TODO("Choose between incrementVersion and updateVersion")
+	@Override
+	public void updateVersion(final long version) {
+		root.setIdentifier(root.getIdentifier().withVersion(version));
 	}
 
 	@Override
@@ -118,24 +120,28 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 	}
 
 	/**
+	 * 
 	 * When we Apply a domain event we will first assign the aggregate root Id
 	 * to the event so that we can keep track to which aggregate root this event
-	 * belongs to. Secondly we get a new version and assign this to the event,
-	 * this is to maintain the correct order of the events. Then we call the
-	 * apply method which will make the state change to the aggregate root. And
-	 * finally we will add this domain event to the internal list of applied
-	 * events.
+	 * belongs to.<br />
+	 * This is ever done by constructor of all DomainEvent type.
+	 * 
+	 * Secondly we get a new version and assign this to the event, this is to
+	 * maintain the correct order of the events. Then we call the apply method
+	 * which will make the state change to the aggregate root. And finally we
+	 * will add this domain event to the internal list of applied events.
 	 * 
 	 */
 	@Override
 	public void apply(final DomainEvent domainEvent) {
-		// assert source.equals(root)
-
-		// this is ever done in constructor
-		// domainEvent.setEntityIdentifier(source.getIdentifier());
-
+		// call the apply method which will make the state change to the entity
+		// root
 		eventProcessor.apply(root, domainEvent);
+		// add add this domain event to the internal list of applied events.
 		uncommittedChanges.add(domainEvent);
 	}
 
+	public void register(EventProvider eventProvider) {
+
+	}
 }
