@@ -3,9 +3,7 @@
  */
 package com.iia.cqrs.events.processor;
 
-import java.util.UUID;
-
-import com.iia.cqrs.Identifier;
+import com.iia.cqrs.Entity;
 import com.iia.cqrs.events.DomainEvent;
 
 /**
@@ -18,20 +16,10 @@ public class FakeDomainEventB extends DomainEvent {
 	/**
 	 * Build a new instance of FakeDomainEventB.
 	 * 
-	 * @param entityIdentifier
+	 * @param entity
 	 */
-	public FakeDomainEventB(final Identifier entityIdentifier) {
-		super(entityIdentifier);
-	}
-
-	/**
-	 * Build a new instance of FakeDomainEventB.
-	 * 
-	 * @param eventIdentity
-	 * @param entityIdentifier
-	 */
-	public FakeDomainEventB(final UUID eventIdentity, final Identifier entityIdentifier) {
-		super(eventIdentity, entityIdentifier);
+	public FakeDomainEventB(Entity entity) {
+		super(entity);
 	}
 
 }

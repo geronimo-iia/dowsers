@@ -31,26 +31,6 @@ public class FakeBeautifullEntity extends Entity {
 		super(identifier);
 	}
 
-	/**
-	 * Build a new instance of FakeEntity.
-	 * 
-	 * @param domainEventBusInvoker
-	 */
-	public FakeBeautifullEntity(final EventProcessor domainEventBusInvoker) {
-		super(domainEventBusInvoker);
-	}
-
-	/**
-	 * Build a new instance of FakeEntity.
-	 * 
-	 * @param eventProcessor
-	 * @param identifier
-	 * @throws NullPointerException
-	 */
-	public FakeBeautifullEntity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
-		super(eventProcessor, identifier);
-	}
-
 	@DomainEventHandler
 	protected void theGoodOne(final FakeDomainEventA a) {
 		// so simple

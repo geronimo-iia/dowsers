@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import com.iia.cqrs.annotation.Note;
 import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
-import com.iia.cqrs.events.processor.EventProcessor;
+import com.iia.cqrs.events.DomainEventInvoker;
 
 /**
  * Entity
@@ -69,21 +69,13 @@ public abstract class Entity {
 	/**
 	 * EventProcessor instance.
 	 */
-	private final EventProcessor eventProcessor;
-
-	public Entity() {
-		this(null, Identifier.random());
-	}
-
-	public Entity(final Identifier identifier) {
-		this(null, identifier);
-	}
+	private DomainEventInvoker domainEventInvoker;
 
 	/**
-	 * Build a new instance of <code>Entity</code>
+	 * Build a new instance of Entity.
 	 */
-	public Entity(final EventProcessor domainEventBusInvoker) {
-		this(domainEventBusInvoker, Identifier.random());
+	public Entity() {
+		this(Identifier.random());
 	}
 
 	/**
@@ -94,10 +86,11 @@ public abstract class Entity {
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	protected Entity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
+	protected Entity(final Identifier identifier) throws NullPointerException {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		this.eventProcessor = eventProcessor;
+		Aggregate aggregate = new Aggregate();
+		aggregate.attach(this);
 	}
 
 	/**
@@ -110,10 +103,10 @@ public abstract class Entity {
 	 */
 	protected <T extends DomainEvent> void apply(final T domainEvent) throws IllegalStateException {
 		// check if domain event bus invoker is set
-		if (eventProcessor == null) {
-			new IllegalStateException("No event processor instance");
+		if (domainEventInvoker == null) {
+			new IllegalStateException("No domain event invoker instance");
 		}
-		eventProcessor.apply(this, domainEvent);
+		domainEventInvoker.apply(domainEvent);
 	}
 
 	/**
@@ -169,10 +162,21 @@ public abstract class Entity {
 	 * @throws IllegalArgumentException
 	 *             if identity is null
 	 */
-	@Note("Package visibility")
+	@Note("Package visibility is set to deal with aggregate")
 	@TODO("May we can find a better way to deal with that ?")
 	void setIdentifier(final Identifier identifier) throws IllegalArgumentException, NullPointerException {
 		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier()));
 		this.identifier = identifier;
+	}
+
+	/**
+	 * @param domainEventInvoker
+	 *            the domainEventInvoker to set
+	 * @throws NullPointerException
+	 *             if domainEventInvoker is null
+	 */
+	@Note("Package visibility is set to deal with aggregate")
+	void setDomainEventInvoker(DomainEventInvoker domainEventInvoker) throws NullPointerException {
+		this.domainEventInvoker = Preconditions.checkNotNull(domainEventInvoker);
 	}
 }

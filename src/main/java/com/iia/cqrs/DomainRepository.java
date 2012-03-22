@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.iia.cqrs.annotation.Note;
 import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.annotation.TODOs;
+import com.iia.cqrs.storage.ConcurrencyException;
 
 /**
  * DomainRepository interfaces declare methods for retrieving domain objects
@@ -44,6 +45,29 @@ public interface DomainRepository {
 	 */
 	@TODO("Evaluate gain of adding expected type parameter.")
 	public <T> T findByIdentifier(Class<T> expectedType, UUID identity) throws NullPointerException;
+
+	/**
+	 * Find entity with the specified identity, expecting the version of the
+	 * aggregate to be equal to the given expectedVersion.
+	 * 
+	 * @param expectedType
+	 *            expected type entity
+	 * @param identity
+	 *            identity what we looking for
+	 * @param expectedVersion
+	 *            expected Version value
+	 * @return an entity instance of the expected type, identity an version or
+	 *         null if none exists
+	 * @throws NullPointerException
+	 *             if expectedType or identity is null
+	 * @throws IllegalStateException
+	 *             if expectedVersion < 0
+	 * @throws ConcurrencyException
+	 *             if the <code>expectedVersion</code> did not match the
+	 *             entity's actual version
+	 * 
+	 */
+	public <T> T findByIdentifier(Class<T> expectedType, UUID identity, long expectedVersion) throws NullPointerException, IllegalStateException, ConcurrencyException;
 
 	/**
 	 * Add specific entity to the domain repository.

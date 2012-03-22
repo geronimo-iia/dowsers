@@ -5,6 +5,7 @@ package com.iia.cqrs.events;
 
 import java.util.UUID;
 
+import com.iia.cqrs.Entity;
 import com.iia.cqrs.Identifier;
 import com.iia.cqrs.annotation.TODO;
 
@@ -44,11 +45,11 @@ public abstract class DomainEvent {
 	/**
 	 * Build a new instance of DomainEvent.
 	 * 
-	 * @param entityIdentifier
-	 *            identifier of entity which event carries on
+	 * @param entity
+	 *            entity which event carries on
 	 */
-	public DomainEvent(final Identifier entityIdentifier) {
-		this(UUID.randomUUID(), entityIdentifier);
+	public DomainEvent(final Entity entity) {
+		this(UUID.randomUUID(), entity.getIdentifier());
 	}
 
 	/**
@@ -59,7 +60,7 @@ public abstract class DomainEvent {
 	 * @param entityIdentifier
 	 *            identifier of entity which event carries on
 	 */
-	public DomainEvent(final UUID eventIdentity, final Identifier entityIdentifier) {
+	protected DomainEvent(final UUID eventIdentity, final Identifier entityIdentifier) {
 		super();
 		this.eventIdentity = eventIdentity;
 		this.entityIdentifier = entityIdentifier;

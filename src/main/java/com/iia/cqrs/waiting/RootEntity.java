@@ -30,14 +30,4 @@ public class RootEntity extends Entity {
 
 	}
 
-	/**
-	 * Build a new instance of RootEntity.
-	 * 
-	 * @param aggregate
-	 * @param random
-	 */
-	public RootEntity(final EventProcessor aggregate) {
-		super(aggregate, null);
-	}
-
 }

@@ -1,14 +1,16 @@
 /**
  * 
  */
-package com.iia.cqrs.events;
+package com.iia.cqrs;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.iia.cqrs.Entity;
-import com.iia.cqrs.Identifier;
+import com.google.common.base.Preconditions;
 import com.iia.cqrs.annotation.TODO;
+import com.iia.cqrs.events.DomainEvent;
+import com.iia.cqrs.events.DomainEventInvoker;
+import com.iia.cqrs.events.EventProvider;
 import com.iia.cqrs.events.processor.EventProcessor;
 
 /**
@@ -26,14 +28,12 @@ import com.iia.cqrs.events.processor.EventProcessor;
  * <li>Aggregates are consistency boundaries</li>
  * </ul>
  * 
- * @author jgt
- * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DummyEventProvider implements EventProvider {
+public class Aggregate implements EventProvider, DomainEventInvoker {
 
 	private EventProcessor eventProcessor;
-	private Identifier identifier;
-	private Entity root;
+	private Entity root = null;
 
 	/**
 	 * List of uncommitted changes.
@@ -41,11 +41,36 @@ public class DummyEventProvider implements EventProvider {
 	private final List<DomainEvent> uncommittedChanges = new ArrayList<DomainEvent>();;
 
 	/**
+	 * Build a new instance of Aggregate.
+	 */
+	public Aggregate() {
+		super();
+	}
+
+	/**
+	 * Attache specified entity as root entoty for this aggregate.
+	 * 
+	 * @param root
+	 *            entity
+	 * @throws NullPointerException
+	 *             if root is null
+	 * @throws IllegalStateException
+	 *             if root is ever set
+	 */
+	public void attach(Entity root) throws NullPointerException, IllegalStateException {
+		 Preconditions.checkNotNull(root);
+		 Preconditions.checkState(this.root==null);
+		 this.root=root;
+		 // call back entity
+		 this.root.setDomainEventInvoker(this);
+	}
+
+	/**
 	 * @see com.iia.cqrs.events.EventProvider#getIdentifier()
 	 */
 	@Override
 	public Identifier getIdentifier() {
-		return identifier;
+		return root.getIdentifier();
 	}
 
 	/**
@@ -67,7 +92,7 @@ public class DummyEventProvider implements EventProvider {
 	@Override
 	@TODO("Resolve duplicate instance of identifier")
 	public void updateVersion(final int version) {
-		identifier = identifier.withVersion(version);
+		root.setIdentifier(root.getIdentifier().withVersion(version));
 	}
 
 	/**
@@ -76,7 +101,7 @@ public class DummyEventProvider implements EventProvider {
 	 */
 	@TODO("Resolve duplicate instance of identifier")
 	public void incrementVersion() {
-		identifier = identifier.nextVersion();
+		root.setIdentifier(root.getIdentifier().nextVersion());
 	}
 
 	@Override
@@ -101,10 +126,8 @@ public class DummyEventProvider implements EventProvider {
 	 * finally we will add this domain event to the internal list of applied
 	 * events.
 	 * 
-	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.Entity,
-	 *      com.iia.cqrs.events.DomainEvent)
 	 */
-	@TODO("remove source, because its normaly equals to root?")
+	@Override
 	public void apply(final DomainEvent domainEvent) {
 		// assert source.equals(root)
 

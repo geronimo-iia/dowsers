@@ -31,26 +31,6 @@ public class FakeEntity extends Entity {
 		super(identifier);
 	}
 
-	/**
-	 * Build a new instance of FakeEntity.
-	 * 
-	 * @param domainEventBusInvoker
-	 */
-	public FakeEntity(final EventProcessor domainEventBusInvoker) {
-		super(domainEventBusInvoker);
-	}
-
-	/**
-	 * Build a new instance of FakeEntity.
-	 * 
-	 * @param eventProcessor
-	 * @param identifier
-	 * @throws NullPointerException
-	 */
-	public FakeEntity(final EventProcessor eventProcessor, final Identifier identifier) throws NullPointerException {
-		super(eventProcessor, identifier);
-	}
-
 	@DomainEventHandler
 	public Integer badReturnType(final FakeDomainEventA a) {
 		return null;

@@ -78,14 +78,14 @@ public class EntityEventProcessorTest {
 
 		// no handler
 		Assert.assertEquals(0L, entity.getHandledCounter());
-		processor.apply(entity, new FakeDomainEventA(entity.getIdentifier()));
+		processor.apply(entity, new FakeDomainEventA(entity));
 		Assert.assertEquals(0L, entity.getHandledCounter());
 
 		// with handler
 		final Method theGoodOne = EntityEventProcessorTest.findMethodNamed(FakeEntity.class, "theGoodOne");
 		Assert.assertNotNull(theGoodOne);
 		processor.register(FakeEntity.class, theGoodOne);
-		processor.apply(entity, new FakeDomainEventA(entity.getIdentifier()));
+		processor.apply(entity, new FakeDomainEventA(entity));
 		Assert.assertEquals(1L, entity.getHandledCounter());
 	}
 
