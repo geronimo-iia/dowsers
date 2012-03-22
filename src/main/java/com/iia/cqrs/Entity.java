@@ -72,10 +72,15 @@ public abstract class Entity {
 	private DomainEventInvoker domainEventInvoker;
 
 	/**
+	 * Aggregate instance essentially used to register child entity.
+	 */
+	private Aggregate aggregate;
+	
+	/**
 	 * Build a new instance of root Entity.
 	 */
-	public Entity() {
-		this(Identifier.random());
+	public Entity(final AggregateFactory aggregateFactory) {
+		this(aggregateFactory, Identifier.random());
 	}
 
 	/**
@@ -86,11 +91,10 @@ public abstract class Entity {
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	public Entity(final Identifier identifier) throws NullPointerException {
+	public Entity(final AggregateFactory aggregateFactory, final Identifier identifier) throws NullPointerException {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		Aggregate aggregate = new Aggregate(this);
-		aggregate.attach(this);
+		new Aggregate(this);
 	}
 
 	/**
@@ -102,7 +106,7 @@ public abstract class Entity {
 	public Entity(Aggregate aggregate, final Identifier identifier) {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		aggregate.attach(this);
+		aggregate.register(this);
 	}
 	
 	/**

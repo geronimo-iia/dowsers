@@ -5,8 +5,11 @@ package com.iia.cqrs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
 import com.iia.cqrs.events.DomainEventInvoker;
@@ -31,11 +34,12 @@ import com.iia.cqrs.events.processor.EventProcessorProvider;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements EventProvider, DomainEventInvoker {
+public class Aggregate implements EventProvider, RegisterEntity {
 
 	private EventProcessorProvider eventProcessorProvider;
 	private EventProcessor eventProcessor;
-	private final  Entity root;
+	private final Entity root;
+	private Map<UUID, Entity> entities;
 	private long eventVersion = 0l;
 	/**
 	 * List of uncommitted changes.
@@ -51,29 +55,8 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 	public Aggregate(final Entity root) {
 		super();
 		this.root = Preconditions.checkNotNull(root);
-		root.setDomainEventInvoker(this);
-	}
-
-	/**
-	 * Attache specified entity to this aggregate.
-	 * 
-	 * @param entity
-	 *            entity
-	 * @throws NullPointerException
-	 *             if entity is null
-	 */
-	public void attach(final Entity entity) throws NullPointerException {
-		Preconditions.checkNotNull(root);
-		// call back entity
-		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
-		entity.setDomainEventInvoker(new DomainEventInvoker() {
-			@Override
-			public <T extends DomainEvent> void apply(T domainEvent) {
-				Preconditions.checkState(domainEvent.getEntityIdentity().equals(entity.getIdentifier().getIdentity()));
-				domainEvent.setVersion(getNewEventVersion());
-				eventProcessor.apply(entity, domainEvent);
-			}
-		});
+		entities = Maps.newHashMap();
+		register(root);
 	}
 
 	/**
@@ -96,8 +79,7 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 			long lastEventVersion = 0l;
 			for (final DomainEvent domainEvent : history) {
 				// warn entity
-				// /this.eventProcessor =
-				// eventProcessorProvider.get(this.root.getClass());
+				// some DE are not for root but for child. => getChild(UUID id)
 				eventProcessor.apply(root, domainEvent);
 				lastEventVersion = domainEvent.getVersion();
 			}
@@ -132,30 +114,49 @@ public class Aggregate implements EventProvider, DomainEventInvoker {
 		uncommittedChanges.clear();
 	}
 
-	/**
-	 * 
-	 * When we Apply a domain event we will first assign the aggregate root Id
-	 * to the event so that we can keep track to which aggregate root this event
-	 * belongs to.<br />
-	 * This is ever done by constructor of all DomainEvent type.
-	 * 
-	 * Secondly we get a new version and assign this to the event, this is to
-	 * maintain the correct order of the events. Then we call the apply method
-	 * which will make the state change to the aggregate root. And finally we
-	 * will add this domain event to the internal list of applied events.
-	 * 
-	 */
-	@Override
-	public void apply(final DomainEvent domainEvent) {
-		// call the apply method which will make the state change to the entity
-		// root
-		domainEvent.setVersion(getNewEventVersion());
-		eventProcessor.apply(root, domainEvent);
-		// add add this domain event to the internal list of applied events.
-		uncommittedChanges.add(domainEvent);
-	}
-
 	private long getNewEventVersion() {
 		return ++eventVersion;
 	}
+
+	/**
+	 * @see com.iia.cqrs.RegisterEntity#register(com.iia.cqrs.Entity)
+	 */
+	@Override
+	public void register(final Entity entity) {
+		/**
+		 * 
+		 * When we Apply a domain event we will first assign the aggregate root
+		 * Id to the event so that we can keep track to which aggregate root
+		 * this event belongs to.<br />
+		 * This is ever done by constructor of all DomainEvent type.
+		 * 
+		 * Secondly we get a new version and assign this to the event, this is
+		 * to maintain the correct order of the events. Then we call the apply
+		 * method which will make the state change to the aggregate root. And
+		 * finally we will add this domain event to the internal list of applied
+		 * events.
+		 * 
+		 */
+
+		// entity.setDomainEventInvoker(this);
+		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+		entity.setDomainEventInvoker(new DomainEventInvoker() {
+			@Override
+			public <T extends DomainEvent> void apply(T domainEvent) {
+				Preconditions.checkState(domainEvent.getEntityIdentity().equals(entity.getIdentifier().getIdentity()));
+				// inc version
+				domainEvent.setVersion(getNewEventVersion());
+				// call the apply method which will make the state change to the
+				// entity
+				eventProcessor.apply(entity, domainEvent);
+				// add add this domain event to the internal list of applied
+				// events.
+				uncommittedChanges.add(domainEvent);
+			}
+		});
+		
+		// add in map
+		entities.put(entity.getIdentifier().getIdentity(), entity);
+	}
+
 }
