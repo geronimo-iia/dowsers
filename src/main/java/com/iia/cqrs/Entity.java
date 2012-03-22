@@ -5,6 +5,8 @@ package com.iia.cqrs;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.iia.cqrs.annotation.Note;
+import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
 import com.iia.cqrs.events.processor.EventProcessor;
 
@@ -60,7 +62,7 @@ import com.iia.cqrs.events.processor.EventProcessor;
 public abstract class Entity {
 
 	/**
-	 * Entity identifier.
+	 * Entity identifier. 
 	 */
 	private Identifier identifier;
 
@@ -104,8 +106,7 @@ public abstract class Entity {
 	 * @param domainEvent
 	 *            domain Event apply
 	 * @throws IllegalStateException
-	 *             if no event processor instance is set on this
-	 *             entity.
+	 *             if no event processor instance is set on this entity.
 	 */
 	protected <T extends DomainEvent> void apply(T domainEvent) throws IllegalStateException {
 		// check if domain event bus invoker is set
@@ -155,5 +156,18 @@ public abstract class Entity {
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("identifier", identifier).toString();
+	}
+	
+	
+	/**
+	 * @param identifier the identifier to set
+	 * @throws IllegalArgumentException if identity of this entity isn't the same.
+	 * @throws IllegalArgumentException if identity is null
+	 */
+	@Note("Package visibility")
+	@TODO("May we can find a better way to deal with that ?")
+	void setIdentifier(Identifier identifier) throws IllegalArgumentException, NullPointerException{
+		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier())); 
+		this.identifier = identifier;
 	}
 }

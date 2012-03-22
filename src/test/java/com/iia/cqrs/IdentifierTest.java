@@ -127,4 +127,20 @@ public class IdentifierTest {
 		}
 
 	}
+
+	@Test
+	public void testNextVersion() {
+		Identifier initial = Identifier.forInitialVersion(IdentifierTest.FOO);
+		Identifier next = initial.nextVersion();
+
+		assertTrue(initial.hasSameIdentity(next));
+		assertTrue(initial.getVersion() < next.getVersion());
+		assertEquals(initial.getVersion(), next.getVersion() - 1);
+
+		Identifier latest = Identifier.forLatestVersion(IdentifierTest.FOO);
+		next = latest.nextVersion();
+
+		assertTrue(latest.hasSameIdentity(next));
+		assertEquals(latest.getVersion(), next.getVersion());
+	}
 }

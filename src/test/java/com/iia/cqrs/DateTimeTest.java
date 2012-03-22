@@ -5,7 +5,7 @@ package com.iia.cqrs;
 
 import java.util.TimeZone;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import hirondelle.date4j.DateTime;
 
@@ -28,7 +28,7 @@ public class DateTimeTest {
 		} catch (InterruptedException e) {
 		}
 		DateTime time2 = new DateTime(stamp);
-		Assert.assertEquals(time, time2);
+		assertEquals(time, time2);
 	}
 
 	@Test
@@ -36,10 +36,10 @@ public class DateTimeTest {
 		DateTime gmt = DateTime.now(TimeZone.getTimeZone("GMT"));
 		DateTime current = DateTime.now(TimeZone.getDefault());
 
-		Assert.assertNotSame(gmt.format("YYYY-MM-DD hh:mm:ss.f"), current.format("YYYY-MM-DD hh:mm:ss.f"));
+		assertNotSame(gmt.format("YYYY-MM-DD hh:mm:ss.f"), current.format("YYYY-MM-DD hh:mm:ss.f"));
 
 		current = current.changeTimeZone(TimeZone.getDefault(), TimeZone.getTimeZone("GMT"));
-		Assert.assertEquals(gmt.format("YYYY-MM-DD hh:mm:ss.f"), current.format("YYYY-MM-DD hh:mm:ss.f"));
+		assertEquals(gmt.format("YYYY-MM-DD hh:mm:ss.f"), current.format("YYYY-MM-DD hh:mm:ss.f"));
 	}
  
 }

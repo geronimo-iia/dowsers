@@ -40,6 +40,11 @@ import com.google.common.eventbus.Subscribe;
  * 
  * </pre>
  * 
+ * CommandHandler act as transaction boundaries for change on domain model.
+ * CommandHandler should have a singleton scope.
+ * 
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */

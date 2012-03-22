@@ -5,6 +5,7 @@ package com.iia.cqrs;
 
 import java.util.UUID;
 
+import com.iia.cqrs.annotation.Note;
 import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.annotation.TODOs;
 
@@ -18,6 +19,12 @@ import com.iia.cqrs.annotation.TODOs;
  * an Entity by its Id and it must be able to save it.<br />
  * DomainRepository completely get rid of any impedance mismatch between the
  * domain and the persistence layer.
+ * 
+ * From "DDD using naked object":
+ * 
+ * A repository provides a mechanism to acquire references to existing objects.
+ * It decouples the rest of the model from the persistence mechanism of such
+ * objects.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -47,6 +54,7 @@ public interface DomainRepository {
 	 *             if entity is null
 	 */
 	@TODOs({ @TODO("Specify concurrent runtime exception?"), @TODO("Raise something if we add a deleted entity ?") })
+	@Note("acquire references to existing objects ==> ONLY EXISTING ?")
 	public <T> void add(T entity) throws NullPointerException;
 
 	/**
@@ -59,6 +67,7 @@ public interface DomainRepository {
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
 	 */
+	@Note("acquire references to existing objects ==> ONLY EXISTING ?")
 	public <T> void remove(Class<T> expectedType, UUID identity) throws NullPointerException;
 
 }
