@@ -114,6 +114,10 @@ public class Aggregate implements EventProvider, RegisterEntity {
 		uncommittedChanges.clear();
 	}
 
+	/**
+	 * 
+	 * @return next event sequence.
+	 */
 	private long getNewEventVersion() {
 		return ++eventVersion;
 	}
@@ -123,6 +127,29 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	 */
 	@Override
 	public void register(final Entity entity) {
+		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+		entity.setDomainEventInvoker(new DefaultDomainEventInvoker(eventProcessor, entity));
+		// add in map
+		entities.put(entity.getIdentifier().getIdentity(), entity);
+	}
+
+	/**
+	 * 
+	 * DefaultDomainEventInvoker implements a default DomainEventInvoker.
+	 * 
+	 * @author jgt
+	 * 
+	 */
+	private class DefaultDomainEventInvoker implements DomainEventInvoker {
+		private final EventProcessor eventProcessor;
+		private final Entity target;
+
+		public DefaultDomainEventInvoker(EventProcessor eventProcessor, Entity target) {
+			super();
+			this.eventProcessor = eventProcessor;
+			this.target = target;
+		}
+
 		/**
 		 * 
 		 * When we Apply a domain event we will first assign the aggregate root
@@ -136,27 +163,19 @@ public class Aggregate implements EventProvider, RegisterEntity {
 		 * finally we will add this domain event to the internal list of applied
 		 * events.
 		 * 
+		 * @see com.iia.cqrs.events.DomainEventInvoker#apply(com.iia.cqrs.events.DomainEvent)
 		 */
+		@Override
+		public <T extends DomainEvent> void apply(T domainEvent) {
+			// inc version
+			domainEvent.setVersion(getNewEventVersion());
+			// call the apply method which will make the state change to the
+			// entity
+			eventProcessor.apply(target, domainEvent);
+			// add add this domain event to the internal list of applied
+			// events.
+			uncommittedChanges.add(domainEvent);
+		}
 
-		// entity.setDomainEventInvoker(this);
-		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
-		entity.setDomainEventInvoker(new DomainEventInvoker() {
-			@Override
-			public <T extends DomainEvent> void apply(T domainEvent) {
-				Preconditions.checkState(domainEvent.getEntityIdentity().equals(entity.getIdentifier().getIdentity()));
-				// inc version
-				domainEvent.setVersion(getNewEventVersion());
-				// call the apply method which will make the state change to the
-				// entity
-				eventProcessor.apply(entity, domainEvent);
-				// add add this domain event to the internal list of applied
-				// events.
-				uncommittedChanges.add(domainEvent);
-			}
-		});
-		
-		// add in map
-		entities.put(entity.getIdentifier().getIdentity(), entity);
 	}
-
 }

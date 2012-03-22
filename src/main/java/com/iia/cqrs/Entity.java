@@ -74,8 +74,8 @@ public abstract class Entity {
 	/**
 	 * Aggregate instance essentially used to register child entity.
 	 */
-	private Aggregate aggregate;
-	
+	private final Aggregate aggregate;
+
 	/**
 	 * Build a new instance of root Entity.
 	 */
@@ -94,21 +94,24 @@ public abstract class Entity {
 	public Entity(final AggregateFactory aggregateFactory, final Identifier identifier) throws NullPointerException {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		new Aggregate(this);
+		aggregate = new Aggregate(this);
 	}
 
 	/**
-	 * Build a new instance of Entity.
-	 * All change in this entity will be bounded by root entity of the specifie aggregate.
+	 * Build a new instance of Entity. All change in this entity will be bounded
+	 * by root entity of the specifie aggregate.
+	 * 
 	 * @param aggregate
 	 * @param identifier
 	 */
 	public Entity(Aggregate aggregate, final Identifier identifier) {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
+		//here its reference is duplicated, may we should attach a parent entity instead ?
+		this.aggregate = aggregate;
 		aggregate.register(this);
 	}
-	
+
 	/**
 	 * Apply specified domain event.
 	 * 
