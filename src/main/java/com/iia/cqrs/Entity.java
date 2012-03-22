@@ -93,6 +93,12 @@ public abstract class Entity {
 		aggregate.attach(this);
 	}
 
+	/**
+	 * Build a new instance of Entity.
+	 * All change in this entity will be bounded by root entity of the specifie aggregate.
+	 * @param aggregate
+	 * @param identifier
+	 */
 	public Entity(Aggregate aggregate, final Identifier identifier) {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);

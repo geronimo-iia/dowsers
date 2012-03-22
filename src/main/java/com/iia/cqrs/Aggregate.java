@@ -11,7 +11,6 @@ import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
 import com.iia.cqrs.events.DomainEventInvoker;
 import com.iia.cqrs.events.EventProvider;
-import com.iia.cqrs.events.RegisterEventProvider;
 import com.iia.cqrs.events.processor.EventProcessor;
 import com.iia.cqrs.events.processor.EventProcessorProvider;
 
@@ -32,21 +31,24 @@ import com.iia.cqrs.events.processor.EventProcessorProvider;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements EventProvider, DomainEventInvoker, RegisterEventProvider {
+public class Aggregate implements EventProvider, DomainEventInvoker {
 
 	private EventProcessorProvider eventProcessorProvider;
 	private EventProcessor eventProcessor;
-	private Entity root = null;
-
+	private final  Entity root;
+	private long eventVersion = 0l;
 	/**
 	 * List of uncommitted changes.
 	 */
 	private final List<DomainEvent> uncommittedChanges = new ArrayList<DomainEvent>();;
 
 	/**
-	 * Build a new instance of Aggregate.
+	 * Build a new instance of Aggregate with specified root entity.
+	 * 
+	 * @param root
+	 *            root entity
 	 */
-	public Aggregate(Entity root ) {
+	public Aggregate(final Entity root) {
 		super();
 		this.root = Preconditions.checkNotNull(root);
 		root.setDomainEventInvoker(this);
@@ -58,13 +60,20 @@ public class Aggregate implements EventProvider, DomainEventInvoker, RegisterEve
 	 * @param entity
 	 *            entity
 	 * @throws NullPointerException
-	 *             if entity is null 
+	 *             if entity is null
 	 */
-	public void attach(Entity entity) throws NullPointerException {
-		Preconditions.checkNotNull(root); 
+	public void attach(final Entity entity) throws NullPointerException {
+		Preconditions.checkNotNull(root);
 		// call back entity
-		entity.setDomainEventInvoker(this);
-		//this.eventProcessor = eventProcessorProvider.get(this.root.getClass());
+		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+		entity.setDomainEventInvoker(new DomainEventInvoker() {
+			@Override
+			public <T extends DomainEvent> void apply(T domainEvent) {
+				Preconditions.checkState(domainEvent.getEntityIdentity().equals(entity.getIdentifier().getIdentity()));
+				domainEvent.setVersion(getNewEventVersion());
+				eventProcessor.apply(entity, domainEvent);
+			}
+		});
 	}
 
 	/**
@@ -84,11 +93,15 @@ public class Aggregate implements EventProvider, DomainEventInvoker, RegisterEve
 	@Override
 	public void loadFromHistory(final Iterable<? extends DomainEvent> history) {
 		if (history != null) {
+			long lastEventVersion = 0l;
 			for (final DomainEvent domainEvent : history) {
-				//warn entity
-				///this.eventProcessor = eventProcessorProvider.get(this.root.getClass());
+				// warn entity
+				// /this.eventProcessor =
+				// eventProcessorProvider.get(this.root.getClass());
 				eventProcessor.apply(root, domainEvent);
+				lastEventVersion = domainEvent.getVersion();
 			}
+			eventVersion = lastEventVersion;
 		}
 	}
 
@@ -136,12 +149,13 @@ public class Aggregate implements EventProvider, DomainEventInvoker, RegisterEve
 	public void apply(final DomainEvent domainEvent) {
 		// call the apply method which will make the state change to the entity
 		// root
+		domainEvent.setVersion(getNewEventVersion());
 		eventProcessor.apply(root, domainEvent);
 		// add add this domain event to the internal list of applied events.
 		uncommittedChanges.add(domainEvent);
 	}
 
-	public void register(EventProvider eventProvider) {
-
+	private long getNewEventVersion() {
+		return ++eventVersion;
 	}
 }

@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import com.iia.cqrs.Entity;
 import com.iia.cqrs.Identifier;
-import com.iia.cqrs.annotation.TODO;
 
 /**
  * DomainEvent are internal events with the purpose to capturing intent.
@@ -35,12 +34,14 @@ public abstract class DomainEvent {
 	 * Event identity instance.
 	 */
 	private final UUID eventIdentity;
-
 	/**
-	 * Entity identifier instance.
+	 * version .
 	 */
-	@TODO("may we expose this member as two attribut ")
-	private final Identifier entityIdentifier;
+	private long version;
+	/**
+	 * Entity identity instance.
+	 */
+	private final UUID entityIdentity;
 
 	/**
 	 * Build a new instance of DomainEvent.
@@ -63,14 +64,15 @@ public abstract class DomainEvent {
 	protected DomainEvent(final UUID eventIdentity, final Identifier entityIdentifier) {
 		super();
 		this.eventIdentity = eventIdentity;
-		this.entityIdentifier = entityIdentifier;
+		this.entityIdentity = entityIdentifier.getIdentity();
+		version = 0;
 	}
 
 	/**
-	 * @return the entityIdentifier
+	 * @return the entityIdentity
 	 */
-	public Identifier getEntityIdentifier() {
-		return entityIdentifier;
+	public UUID getEntityIdentity() {
+		return entityIdentity;
 	}
 
 	/**
@@ -80,4 +82,17 @@ public abstract class DomainEvent {
 		return eventIdentity;
 	}
 
+	/**
+	 * @return the version
+	 */
+	public long getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(long version) {
+		this.version = version;
+	}
 }
