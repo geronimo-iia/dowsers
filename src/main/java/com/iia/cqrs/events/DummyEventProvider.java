@@ -9,9 +9,10 @@ import java.util.List;
 import com.iia.cqrs.Entity;
 import com.iia.cqrs.Identifier;
 import com.iia.cqrs.annotation.TODO;
+import com.iia.cqrs.events.processor.EventProcessor;
 
 /**
- *  Aggregate act as a context of a root entity.
+ * Aggregate act as a context of a root entity.
  * 
  * A collection of objects that are bound together by a root entity, otherwise
  * known as an aggregate root. The aggregate root guarantees the consistency of
@@ -28,7 +29,7 @@ import com.iia.cqrs.annotation.TODO;
  * @author jgt
  * 
  */
-public class DummyEventProvider implements EventProvider, EventProcessor {
+public class DummyEventProvider implements EventProvider  {
 
 	private EventProcessor eventProcessor;
 	private Identifier identifier;
@@ -100,26 +101,17 @@ public class DummyEventProvider implements EventProvider, EventProcessor {
 	 * finally we will add this domain event to the internal list of applied
 	 * events.
 	 * 
-	 * @see com.iia.cqrs.events.EventProcessor#apply(com.iia.cqrs.Entity,
-	 *      com.iia.cqrs.events.DomainEvent)
+	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.Entity, com.iia.cqrs.events.DomainEvent)
 	 */
-	@Override
 	@TODO("remove source, because its normaly equals to root?")
-	public <T extends DomainEvent> void apply(Entity source, T domainEvent) {
+	public void apply(DomainEvent domainEvent) {
 		// assert source.equals(root)
 
 		// this is ever done in constructor
 		// domainEvent.setEntityIdentifier(source.getIdentifier());
 
-		eventProcessor.apply(source, domainEvent);
+		eventProcessor.apply(root, domainEvent);
 		uncommittedChanges.add(domainEvent);
 	}
 
-	/**
-	 * @see com.iia.cqrs.events.EventProcessor#register(java.lang.Class)
-	 */
-	@Override
-	public <T extends Entity> void register(Class<T> entityType) {
-		eventProcessor.register(entityType);
-	}
 }

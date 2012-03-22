@@ -4,7 +4,7 @@
 package com.iia.cqrs.waiting;
 
 import com.iia.cqrs.Entity;
-import com.iia.cqrs.events.EventProcessor;
+import com.iia.cqrs.events.processor.EventProcessor;
 
 /**
  * RootEntity. Its a special entity related to a context.

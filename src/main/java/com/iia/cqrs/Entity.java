@@ -6,7 +6,7 @@ package com.iia.cqrs;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.iia.cqrs.events.DomainEvent;
-import com.iia.cqrs.events.EventProcessor;
+import com.iia.cqrs.events.processor.EventProcessor;
 
 /**
  * Entity

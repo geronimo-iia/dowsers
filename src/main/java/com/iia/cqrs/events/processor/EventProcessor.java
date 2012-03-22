@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.iia.cqrs.events;
+package com.iia.cqrs.events.processor;
 
 import com.iia.cqrs.Entity;
-import com.iia.cqrs.annotation.TODO;
+import com.iia.cqrs.events.DomainEvent;
 
 /**
- * EventProcessor.
+ * EventProcessor manage event processing.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -16,18 +16,19 @@ public interface EventProcessor {
 	/**
 	 * Process specified domain event on source entity.
 	 * 
-	 * @param source
+	 * @param entity
+	 *            entity which raise event and listen
 	 * @param domainEvent
 	 *            domain Event to process.
 	 */
-	public <T extends DomainEvent> void apply(Entity source, T domainEvent);
+	public void apply(Entity entity, DomainEvent domainEvent);
 
 	/**
-	 * Register an entity on thiso processor.
+	 * Register handler of specified entity type.
 	 * 
+	 * @param <T>
 	 * @param entityType
-	 *            entity type
+	 *            entity Type
 	 */
-	@TODO("Considere to remove this method from EventProcesor Interface")
 	public <T extends Entity> void register(Class<T> entityType);
 }
