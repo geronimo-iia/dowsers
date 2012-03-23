@@ -8,86 +8,108 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cqrs</groupId>
 	<artifactId>cqrs</artifactId>
+	<packaging>pom</packaging>
+	<name>ddd cqrs es root project</name>
 	<version>0.0.1-SNAPSHOT</version>
+	<dependencyManagement>
+		<dependencies>
+			<!-- ******************************************************************* -->
+			<!-- GUAVA FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- Serializer FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<scope>provided</scope>
+				<version>${org.codehaus.jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.googlecode</groupId>
+				<artifactId>kryo</artifactId>
+				<scope>provided</scope>
+				<version>${kryo.version}</version>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- TIME FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<!-- <dependency> -->
+			<!-- <groupId>joda-time</groupId> -->
+			<!-- <artifactId>joda-time</artifactId> -->
+			<!-- <version>${joda-time.version}</version> -->
+			<!-- <scope>provided</scope> -->
+			<!-- </dependency> -->
+			<dependency>
+				<groupId>date4j</groupId>
+				<artifactId>date4j</artifactId>
+				<version>1.2.0</version>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- TESTING JUNIT FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- TESTING H2 FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2database.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- TESTING LOGGER FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- ******************************************************************* -->
+			<!-- TESTING SPRING FRAMEWORK -->
+			<!-- ******************************************************************* -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
-		<!-- ******************************************************************* -->
-		<!-- GUAVA FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- Serializer FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<scope>provided</scope>
-			<version>${org.codehaus.jackson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>kryo</artifactId>
-			<scope>provided</scope>
-			<version>${kryo.version}</version>
-		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TIME FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<!-- <dependency> -->
-		<!-- <groupId>joda-time</groupId> -->
-		<!-- <artifactId>joda-time</artifactId> -->
-		<!-- <version>${joda-time.version}</version> -->
-		<!-- <scope>provided</scope> -->
-		<!-- </dependency> -->
-		<dependency>
-			<groupId>date4j</groupId>
-			<artifactId>date4j</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TESTING JUNIT FRAMEWORK -->
-		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
 		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TESTING H2 FRAMEWORK -->
-		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>${h2database.version}</version>
-			<scope>test</scope>
 		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TESTING LOGGER FRAMEWORK -->
-		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TESTING SPRING FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -115,7 +137,6 @@
 		<org.codehaus.jackson.version>1.9.2</org.codehaus.jackson.version>
 		<kryo.version>1.04</kryo.version>
 	</properties>
-
 	<repositories>
 		<repository>
 			<id>clojars.org</id>
@@ -127,4 +148,8 @@
 			<url>http://intelligents-ia.com/maven2</url>
 		</repository>
 	</repositories>
+	<modules>
+		<module>core</module>
+		<module>sample</module>
+	</modules> 
 </project>

@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>cqrs</groupId>
+		<artifactId>cqrs</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>core</artifactId>
+	<packaging>jar</packaging>
+	<name>cqrs-es core</name>
+	<dependencies>
+		<!-- ******************************************************************* -->
+		<!-- GUAVA FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- Serializer FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>kryo</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TIME FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<!-- <dependency> -->
+		<!-- <groupId>joda-time</groupId> -->
+		<!-- <artifactId>joda-time</artifactId> -->
+		<!-- <version>${joda-time.version}</version> -->
+		<!-- <scope>provided</scope> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>date4j</groupId>
+			<artifactId>date4j</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+	</dependencies>
+</project>
