@@ -1,12 +1,14 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.domain;
 
 import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.iia.cqrs.domain.Identifier;
 
 /**
  * IdentifierTest.

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import java.util.UUID;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.iia.cqrs.annotation.TODO;
 import com.iia.cqrs.events.DomainEvent;
 import com.iia.cqrs.events.DomainEventInvoker;
 import com.iia.cqrs.events.EventProvider;
@@ -20,14 +19,15 @@ import com.iia.cqrs.events.processor.EventProcessorProvider;
 /**
  * Aggregate act as a context of a root entity.
  * 
- * A collection of objects that are bound together by a root entity, otherwise
- * known as an aggregate root. The aggregate root guarantees the consistency of
+ * A collection of objects and entities that are bound together by a root entity, otherwise
+ * known as an aggregate root or domain entity. <br />
+ * The aggregate root guarantees the consistency of
  * changes being made within the aggregate by forbidding external objects from
  * holding references to its members.
  * 
  * <ul>
- * <li>Group of Value Objects</li>
- * <li>One entity within the aggregate is the aggregate root</li>
+ * <li>Group of Value Objects and entities</li>
+ * <li>One entity within the aggregate is the aggregate root (domain entity)</li>
  * <li>All access to the objects inside go through the root entity</li>
  * <li>Aggregates are consistency boundaries</li>
  * </ul>
@@ -36,11 +36,23 @@ import com.iia.cqrs.events.processor.EventProcessorProvider;
  */
 public class Aggregate implements EventProvider, RegisterEntity {
 
-	private EventProcessorProvider eventProcessorProvider;
-	private EventProcessor eventProcessor;
-	private final Entity root;
-	private Map<UUID, Entity> entities;
-	private long eventVersion = 0l;
+	/**
+	 * EventProcessorProvider instance.
+	 */
+	private final EventProcessorProvider eventProcessorProvider;
+
+	/**
+	 * The domain entity root instance.
+	 */
+	private final DomainEntity root;
+	/**
+	 * Entities used in this aggregate (included the domain entity root)
+	 */
+	private final Map<UUID, Entity> entities;
+	/**
+	 * Event ordinal.
+	 */
+	private long eventOrdinal = 0l;
 	/**
 	 * List of uncommitted changes.
 	 */
@@ -49,12 +61,16 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	/**
 	 * Build a new instance of Aggregate with specified root entity.
 	 * 
-	 * @param root
-	 *            root entity
+	 * @param domainEntity
+	 *            root domain entity
+	 * @throws NullPointerException
+	 *             if eventProcessorProvider or domainEntity is null
 	 */
-	public Aggregate(final Entity root) {
+	public Aggregate(final EventProcessorProvider eventProcessorProvider, final DomainEntity domainEntity)
+			throws NullPointerException {
 		super();
-		this.root = Preconditions.checkNotNull(root);
+		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
+		this.root = Preconditions.checkNotNull(domainEntity);
 		entities = Maps.newHashMap();
 		register(root);
 	}
@@ -74,16 +90,26 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	 *            events history
 	 */
 	@Override
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history) {
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history) throws IllegalStateException {
 		if (history != null) {
-			long lastEventVersion = 0l;
+			long ordinal = 0l;
 			for (final DomainEvent domainEvent : history) {
-				// warn entity
-				// some DE are not for root but for child. => getChild(UUID id)
-				eventProcessor.apply(root, domainEvent);
-				lastEventVersion = domainEvent.getVersion();
+				// Which entity
+				Entity entity = entities.get(domainEvent.getEntityIdentity());
+				if (entity == null) {
+					throw new IllegalStateException("No entity for " + domainEvent.getEntityIdentity());
+				}
+				// obtain processor
+				EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+				if (eventProcessor == null) {
+					throw new IllegalStateException("No event processor for " + entity.getClass().getName());
+				}
+				// apply event
+				eventProcessor.apply(entity, domainEvent);
+				// obtain ordinal
+				ordinal = domainEvent.getOrdinal();
 			}
-			eventVersion = lastEventVersion;
+			eventOrdinal = ordinal;
 		}
 	}
 
@@ -93,12 +119,6 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	@Override
 	public void incrementVersion() {
 		root.setIdentifier(root.getIdentifier().nextVersion());
-	}
-
-	@TODO("Choose between incrementVersion and updateVersion")
-	@Override
-	public void updateVersion(final long version) {
-		root.setIdentifier(root.getIdentifier().withVersion(version));
 	}
 
 	@Override
@@ -111,43 +131,58 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	 */
 	@Override
 	public void markChangesCommitted() {
+		eventOrdinal = 0l;
 		uncommittedChanges.clear();
 	}
 
 	/**
-	 * 
-	 * @return next event sequence.
-	 */
-	private long getNewEventVersion() {
-		return ++eventVersion;
-	}
-
-	/**
-	 * @see com.iia.cqrs.RegisterEntity#register(com.iia.cqrs.Entity)
+	 * @see com.iia.cqrs.domain.RegisterEntity#register(com.iia.cqrs.domain.Entity)
 	 */
 	@Override
 	public void register(final Entity entity) {
+		// get specific event processor
 		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+		// set domain invoker
 		entity.setDomainEventInvoker(new DefaultDomainEventInvoker(eventProcessor, entity));
 		// add in map
 		entities.put(entity.getIdentifier().getIdentity(), entity);
 	}
 
 	/**
+	 * @return next event ordinal.
+	 */
+	private long nextEventOrdinal() {
+		return ++eventOrdinal;
+	}
+
+	/**
 	 * 
-	 * DefaultDomainEventInvoker implements a default DomainEventInvoker.
+	 * DefaultDomainEventInvoker implements a default DomainEventInvoker for a specific entity.
 	 * 
-	 * @author jgt
-	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
 	private class DefaultDomainEventInvoker implements DomainEventInvoker {
+		/**
+		 * attached event processor instance.
+		 */
 		private final EventProcessor eventProcessor;
+		/**
+		 * Target entity instance.
+		 */
 		private final Entity target;
 
-		public DefaultDomainEventInvoker(EventProcessor eventProcessor, Entity target) {
+		/**
+		 * Build a new instance of <code>DefaultDomainEventInvoker</code>
+		 * 
+		 * @param eventProcessor
+		 * @param target
+		 * @throws NullPointerException
+		 *             if eventProcessor or target is null
+		 */
+		public DefaultDomainEventInvoker(EventProcessor eventProcessor, Entity target) throws NullPointerException {
 			super();
-			this.eventProcessor = eventProcessor;
-			this.target = target;
+			this.eventProcessor = Preconditions.checkNotNull(eventProcessor);
+			this.target = Preconditions.checkNotNull(target);
 		}
 
 		/**
@@ -167,8 +202,8 @@ public class Aggregate implements EventProvider, RegisterEntity {
 		 */
 		@Override
 		public <T extends DomainEvent> void apply(T domainEvent) {
-			// inc version
-			domainEvent.setVersion(getNewEventVersion());
+			// set ordinal value from aggregate
+			domainEvent.setOrdinal(nextEventOrdinal());
 			// call the apply method which will make the state change to the
 			// entity
 			eventProcessor.apply(target, domainEvent);

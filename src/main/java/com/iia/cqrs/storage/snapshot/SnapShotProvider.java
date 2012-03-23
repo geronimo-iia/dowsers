@@ -5,7 +5,7 @@ package com.iia.cqrs.storage.snapshot;
 
 import java.util.UUID;
 
-import com.iia.cqrs.Identifier;
+import com.iia.cqrs.domain.Identifier;
 import com.iia.cqrs.storage.ConcurrencyException;
 import com.iia.cqrs.storage.EmptyResultException;
 

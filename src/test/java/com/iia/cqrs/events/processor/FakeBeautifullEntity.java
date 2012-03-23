@@ -3,9 +3,9 @@
  */
 package com.iia.cqrs.events.processor;
 
-import com.iia.cqrs.Entity;
-import com.iia.cqrs.Identifier;
 import com.iia.cqrs.annotation.DomainEventHandler;
+import com.iia.cqrs.domain.Entity;
+import com.iia.cqrs.domain.Identifier;
 
 /**
  * FakeEntity.
@@ -15,12 +15,6 @@ import com.iia.cqrs.annotation.DomainEventHandler;
 public class FakeBeautifullEntity extends Entity {
 
 	private long handledCounter = 0;
-
-	/**
-	 * Build a new instance of FakeEntity.
-	 */
-	public FakeBeautifullEntity() {
-	}
 
 	/**
 	 * Build a new instance of FakeEntity.

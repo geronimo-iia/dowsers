@@ -3,11 +3,12 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import com.iia.cqrs.DomainRepository;
 import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
+import com.iia.cqrs.domain.AggregateFactory;
+import com.iia.cqrs.domain.DomainRepository;
 import com.iia.cqrs.sample.commands.CreateContactCommand;
-import com.iia.cqrs.sample.domain.Contact;
+import com.iia.cqrs.sample.domain.contact.Contact;
 
 /**
  * 
@@ -17,16 +18,21 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 
 	private final DomainRepository domainRepository;
 
+	private final AggregateFactory aggregateFactory;
+
 	/**
-	 * Build a new instance of CreateContactCommandHandler.
+	 * Build a new instance of <code>CreateContactCommandHandler</code>
 	 * 
 	 * @param commandRegistry
 	 * @param domainRepository
+	 * @param aggregateFactory
 	 * @throws NullPointerException
 	 */
-	public CreateContactCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
+	public CreateContactCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository,
+			AggregateFactory aggregateFactory) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
+		this.aggregateFactory = aggregateFactory;
 	}
 
 	/**
@@ -34,7 +40,7 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 	 */
 	@Override
 	public void onCommand(final CreateContactCommand command) {
-		final Contact contact = new Contact(command.getName());
+		final Contact contact = new Contact(aggregateFactory, command.getName());
 		domainRepository.add(contact);
 	}
 }

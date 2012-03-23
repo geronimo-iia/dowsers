@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.domain;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;

@@ -1,10 +1,13 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.domain;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.iia.cqrs.domain.Entity;
+import com.iia.cqrs.domain.Identifier;
 
 /**
  * EntityTest.
@@ -53,7 +56,7 @@ public class EntityTest {
 		 * Build a new instance of DummyEntity.
 		 */
 		public DummyEntity() {
-			super();
+			super(Identifier.random());
 		}
 
 	}

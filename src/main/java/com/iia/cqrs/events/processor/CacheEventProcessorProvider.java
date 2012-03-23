@@ -10,7 +10,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import com.iia.cqrs.Entity;
+import com.iia.cqrs.domain.Entity;
 import com.iia.cqrs.events.DomainEvent;
 
 /**
@@ -61,7 +61,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 	}
 
 	/**
-	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.Entity,
+	 * @see com.iia.cqrs.events.processor.EventProcessor#apply(com.iia.cqrs.domain.Entity,
 	 *      com.iia.cqrs.events.DomainEvent)
 	 */
 	@Override

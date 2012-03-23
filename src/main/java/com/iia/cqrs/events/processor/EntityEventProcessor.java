@@ -10,8 +10,8 @@ import java.util.Map;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
-import com.iia.cqrs.Entity;
 import com.iia.cqrs.annotation.DomainEventHandler;
+import com.iia.cqrs.domain.Entity;
 import com.iia.cqrs.events.DomainEvent;
 
 /**

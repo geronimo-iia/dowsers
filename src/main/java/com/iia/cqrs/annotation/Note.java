@@ -9,8 +9,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Note.
- * 
- * 
+ *  
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 @Documented

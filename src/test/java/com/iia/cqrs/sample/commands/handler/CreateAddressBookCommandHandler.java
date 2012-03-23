@@ -3,11 +3,12 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import com.iia.cqrs.DomainRepository;
 import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
+import com.iia.cqrs.domain.AggregateFactory;
+import com.iia.cqrs.domain.DomainRepository;
 import com.iia.cqrs.sample.commands.CreateAddressBookCommand;
-import com.iia.cqrs.sample.domain.AddressBook;
+import com.iia.cqrs.sample.domain.addressbook.AddressBook;
 
 /**
  * 
@@ -16,17 +17,21 @@ import com.iia.cqrs.sample.domain.AddressBook;
 public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddressBookCommand> {
 
 	private final DomainRepository domainRepository;
+	private final AggregateFactory aggregateFactory;
 
 	/**
-	 * Build a new instance of CreateAddressBookCommandHandler.
+	 * Build a new instance of <code>CreateAddressBookCommandHandler</code>
 	 * 
 	 * @param commandRegistry
 	 * @param domainRepository
+	 * @param aggregateFactory
 	 * @throws NullPointerException
 	 */
-	public CreateAddressBookCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
+	public CreateAddressBookCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository,
+			AggregateFactory aggregateFactory) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
+		this.aggregateFactory = aggregateFactory;
 	}
 
 	/**
@@ -34,6 +39,6 @@ public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddres
 	 */
 	@Override
 	public void onCommand(final CreateAddressBookCommand command) {
-		domainRepository.add(new AddressBook());
+		domainRepository.add(new AddressBook(aggregateFactory));
 	}
 }

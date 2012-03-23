@@ -1,10 +1,13 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.collections;
 
 import java.util.Iterator;
 import java.util.List;
+
+import com.iia.cqrs.domain.Entity;
+import com.iia.cqrs.domain.RegisterEntity;
 
 /**
  * EntityList.

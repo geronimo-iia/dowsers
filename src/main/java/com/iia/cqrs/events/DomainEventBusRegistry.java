@@ -3,7 +3,7 @@
  */
 package com.iia.cqrs.events;
 
-import com.iia.cqrs.Entity;
+import com.iia.cqrs.domain.Entity;
 
 /**
  * DomainEventBusRegistry.

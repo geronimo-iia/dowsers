@@ -5,8 +5,8 @@ package com.iia.cqrs.events;
 
 import java.util.UUID;
 
-import com.iia.cqrs.Entity;
-import com.iia.cqrs.Identifier;
+import com.google.common.base.Preconditions;
+import com.iia.cqrs.domain.Entity;
 
 /**
  * DomainEvent are internal events with the purpose to capturing intent.
@@ -35,9 +35,9 @@ public abstract class DomainEvent {
 	 */
 	private final UUID eventIdentity;
 	/**
-	 * version .
+	 * Event ordinal value.
 	 */
-	private long version;
+	private long ordinal;
 	/**
 	 * Entity identity instance.
 	 */
@@ -48,9 +48,11 @@ public abstract class DomainEvent {
 	 * 
 	 * @param entity
 	 *            entity which event carries on
+	 * @throws NullPointerException
+	 *             if entity is null
 	 */
-	public DomainEvent(final Entity entity) {
-		this(UUID.randomUUID(), entity.getIdentifier());
+	public DomainEvent(final Entity entity) throws NullPointerException {
+		this(UUID.randomUUID(), Preconditions.checkNotNull(entity).getIdentifier().getIdentity());
 	}
 
 	/**
@@ -58,14 +60,14 @@ public abstract class DomainEvent {
 	 * 
 	 * @param eventIdentity
 	 *            identity of this event
-	 * @param entityIdentifier
-	 *            identifier of entity which event carries on
+	 * @param entityIdentity
+	 *            identity of entity which event carries on
 	 */
-	protected DomainEvent(final UUID eventIdentity, final Identifier entityIdentifier) {
+	protected DomainEvent(final UUID eventIdentity, final UUID entityIdentity) {
 		super();
 		this.eventIdentity = eventIdentity;
-		this.entityIdentity = entityIdentifier.getIdentity();
-		version = 0;
+		this.entityIdentity = entityIdentity;
+		ordinal = 0;
 	}
 
 	/**
@@ -82,17 +84,12 @@ public abstract class DomainEvent {
 		return eventIdentity;
 	}
 
-	/**
-	 * @return the version
-	 */
-	public long getVersion() {
-		return version;
+	public long getOrdinal() {
+		return this.ordinal;
 	}
 
-	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(long version) {
-		this.version = version;
+	public void setOrdinal(long ordinal) {
+		this.ordinal = ordinal;
 	}
+
 }

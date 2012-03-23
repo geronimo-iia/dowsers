@@ -3,12 +3,12 @@
  */
 package com.iia.cqrs.sample.commands.handler;
 
-import com.iia.cqrs.DomainRepository;
 import com.iia.cqrs.command.CommandHandler;
 import com.iia.cqrs.command.CommandRegistry;
+import com.iia.cqrs.domain.DomainRepository;
 import com.iia.cqrs.sample.commands.AddContactToAddressBookCommand;
-import com.iia.cqrs.sample.domain.AddressBook;
-import com.iia.cqrs.sample.domain.Contact;
+import com.iia.cqrs.sample.domain.addressbook.AddressBook;
+import com.iia.cqrs.sample.domain.contact.Contact;
 
 /**
  * 

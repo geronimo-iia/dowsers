@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.iia.cqrs.domain.Identifier;
+
 /**
  * EntityEventProcessorTest.
  * 
@@ -74,7 +76,7 @@ public class EntityEventProcessorTest {
 
 	@Test
 	public void testHandledInvokation() {
-		final FakeEntity entity = new FakeEntity();
+		final FakeEntity entity = new FakeEntity(Identifier.random());
 
 		// no handler
 		Assert.assertEquals(0L, entity.getHandledCounter());

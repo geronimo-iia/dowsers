@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iia.cqrs;
+package com.iia.cqrs.domain;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -37,8 +37,8 @@ import com.iia.cqrs.events.DomainEventInvoker;
  * <ul>
  * <li>have all attributes with final keyword</li>
  * <li>have a constructor with attributes</li>
- * <li>implements 'equal' methods. Value objects compare by the values of their
- * attributes, they don't have an identity.</li>
+ * <li>implements 'equal' methods. Value objects compare by the values of their attributes, they don't have an identity.
+ * </li>
  * <li>implements 'hashCode' methods</li>
  * <li>implements 'toString' methods</li>
  * </ul>
@@ -72,44 +72,17 @@ public abstract class Entity {
 	private DomainEventInvoker domainEventInvoker;
 
 	/**
-	 * Aggregate instance essentially used to register child entity.
-	 */
-	private final Aggregate aggregate;
-
-	/**
-	 * Build a new instance of root Entity.
-	 */
-	public Entity(final AggregateFactory aggregateFactory) {
-		this(aggregateFactory, Identifier.random());
-	}
-
-	/**
-	 * Build a new instance of root <code>Entity</code>
+	 * Build a new instance of Entity. All change in this entity will be bounded
+	 * by root entity of the specific aggregate.
 	 * 
 	 * @param identifier
-	 *            specified entity
+	 * 
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	public Entity(final AggregateFactory aggregateFactory, final Identifier identifier) throws NullPointerException {
+	public Entity(final Identifier identifier) throws NullPointerException {
 		super();
 		this.identifier = Preconditions.checkNotNull(identifier);
-		aggregate = new Aggregate(this);
-	}
-
-	/**
-	 * Build a new instance of Entity. All change in this entity will be bounded
-	 * by root entity of the specifie aggregate.
-	 * 
-	 * @param aggregate
-	 * @param identifier
-	 */
-	public Entity(Aggregate aggregate, final Identifier identifier) {
-		super();
-		this.identifier = Preconditions.checkNotNull(identifier);
-		//here its reference is duplicated, may we should attach a parent entity instead ?
-		this.aggregate = aggregate;
-		aggregate.register(this);
 	}
 
 	/**
