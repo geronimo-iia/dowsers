@@ -5,6 +5,8 @@ package com.iia.cqrs.domain;
 
 /**
  * RegisterEntity declare methods to register entity on a container like domain entity.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface RegisterEntity {
 
