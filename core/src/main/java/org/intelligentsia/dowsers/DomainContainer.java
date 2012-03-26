@@ -1,0 +1,25 @@
+/**
+ * 
+ */
+package org.intelligentsia.dowsers;
+
+import org.intelligentsia.dowsers.command.CommandInvoker;
+import org.intelligentsia.dowsers.command.CommandRegistry;
+import org.intelligentsia.dowsers.domain.AggregateFactory;
+import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
+
+/**
+ * DomainContainer declares methods to access on configured components.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
+public interface DomainContainer {
+
+	public AggregateFactory getAggregateFactory();
+
+	public CommandInvoker getCommandInvoker();
+
+	public CommandRegistry getCommandRegistry();
+
+	public EventProcessorProvider getEventProcessorProvider();
+}
