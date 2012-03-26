@@ -1,19 +1,17 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.domain;
 
 import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.domain.DomainEvent;
-import org.intelligentsia.dowsers.domain.Identifier;
 
 /**
- * EventProvider declares methods.
+ * DomainEventProvider declares methods.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 @Note("May we move this interface to domain package ?")
-public interface EventProvider {
+public interface DomainEventProvider {
 
 	/**
 	 * @return identifier of root entity

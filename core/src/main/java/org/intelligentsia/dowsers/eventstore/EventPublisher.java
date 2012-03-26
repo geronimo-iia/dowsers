@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.eventstore;
 
 import java.util.List;
 

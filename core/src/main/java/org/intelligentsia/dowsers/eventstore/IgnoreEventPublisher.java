@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.eventstore;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class IgnoreEventPublisher implements EventPublisher {
 	/**
 	 * All events are ignored.
 	 * 
-	 * @see org.intelligentsia.dowsers.events.EventPublisher#publish(java.util.List)
+	 * @see org.intelligentsia.dowsers.eventstore.EventPublisher#publish(java.util.List)
 	 */
 	@Override
 	public <T extends DomainEvent> void publish(List<T> events) {

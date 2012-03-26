@@ -1,11 +1,12 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.eventstore;
 
 import java.util.UUID;
 
 import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.domain.DomainEventProvider;
 
 /**
  * “Captures all changes to an application state as a sequence of events.”
@@ -17,7 +18,7 @@ public interface DomainEventStorage {
 
 	Iterable<DomainEvent> GetAllEvents(UUID eventProviderId);
 
-	void Save(EventProvider eventProvider);
+	void Save(DomainEventProvider eventProvider);
 
 	Iterable<DomainEvent> GetEventsSinceLastSnapShot(UUID eventProviderId);
 

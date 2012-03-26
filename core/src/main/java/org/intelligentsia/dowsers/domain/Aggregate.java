@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.events.EventProvider;
 import org.intelligentsia.dowsers.events.processor.EventProcessor;
 import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
 
@@ -33,7 +32,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements EventProvider, EntityRegistry {
+public class Aggregate implements DomainEventProvider, EntityRegistry {
 
 	/**
 	 * EventProcessorProvider instance.
@@ -74,7 +73,7 @@ public class Aggregate implements EventProvider, EntityRegistry {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.EventProvider#getIdentifier()
+	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getIdentifier()
 	 */
 	@Override
 	public Identifier getIdentifier() {

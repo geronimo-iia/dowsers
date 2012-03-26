@@ -6,8 +6,8 @@ package org.intelligentsia.dowsers;
 import org.intelligentsia.dowsers.command.CommandInvoker;
 import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
-import org.intelligentsia.dowsers.events.EventPublisher;
 import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
+import org.intelligentsia.dowsers.eventstore.EventPublisher;
 
 /**
  * DomainContainer declares methods to access on configured components.
