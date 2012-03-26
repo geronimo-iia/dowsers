@@ -16,7 +16,7 @@ public class EmptyResultException extends StoreException {
 	/**
 	 * serialVersionUID:long
 	 */
-	private static final long serialVersionUID = 1814427702420293630L;
+	private static final long serialVersionUID =  1L;
 
 	/**
 	 * Build a new instance of EmptyResultException.

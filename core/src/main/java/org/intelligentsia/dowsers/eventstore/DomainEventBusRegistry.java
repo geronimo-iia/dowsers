@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.eventstore;
 
 import org.intelligentsia.dowsers.annotation.Note;
 import org.intelligentsia.dowsers.domain.Entity;

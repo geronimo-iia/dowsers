@@ -9,4 +9,5 @@ package org.intelligentsia.dowsers.domain;
  */
 public interface DomainEntityFactory {
 
+	public <T extends DomainEntity> T create(Class<T> exceptedType);
 }

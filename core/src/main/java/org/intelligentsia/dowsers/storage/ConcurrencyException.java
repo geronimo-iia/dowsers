@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public class ConcurrencyException extends StoreException {
 
-	private static final long serialVersionUID = 8541946754385925170L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Build a new instance of ConcurrencyException.

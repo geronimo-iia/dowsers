@@ -5,82 +5,66 @@ package org.intelligentsia.dowsers.storage;
 
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.DowsersException;
+
+ 
+
 /**
  * StoreException extends RuntimeException. Root of store exception.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class StoreException extends RuntimeException {
+public class StoreException extends DowsersException {
 
 	/**
 	 * serialVersionUID:long
 	 */
-	private static final long serialVersionUID = -8148778302923827851L;
-
-	/**
-	 * identity instance.
-	 */
-	private final UUID identity;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Build a new instance of StoreException.
-	 * 
 	 * @param message
 	 */
-	public StoreException(final String message) {
+	public StoreException(String message) {
 		super(message);
-		identity = null;
 	}
 
 	/**
 	 * Build a new instance of StoreException.
-	 * 
 	 * @param identity
-	 */
-	public StoreException(final UUID identity) {
-		super();
-		this.identity = identity;
-	}
-
-	/**
-	 * Build a new instance of StoreException.
-	 * 
-	 * @param message
-	 */
-	public StoreException(final UUID identity, final String message) {
-		super(message);
-		this.identity = identity;
-	}
-
-	/**
-	 * 
-	 * Build a new instance of StoreException.
-	 * 
-	 * @param identity
-	 * @param cause
-	 */
-	public StoreException(final UUID identity, final Throwable cause) {
-		super(cause);
-		this.identity = identity;
-	}
-
-	/**
-	 * Build a new instance of StoreException.
-	 * 
 	 * @param message
 	 * @param cause
 	 */
-	public StoreException(final UUID identity, final String message, final Throwable cause) {
-		super(message, cause);
-		this.identity = identity;
+	public StoreException(UUID identity, String message, Throwable cause) {
+		super(identity, message, cause);
 	}
 
 	/**
-	 * @return the identity
+	 * Build a new instance of StoreException.
+	 * @param identity
+	 * @param message
 	 */
-	public UUID getIdentity() {
-		return identity;
+	public StoreException(UUID identity, String message) {
+		super(identity, message);
 	}
 
+	/**
+	 * Build a new instance of StoreException.
+	 * @param identity
+	 * @param cause
+	 */
+	public StoreException(UUID identity, Throwable cause) {
+		super(identity, cause);
+	}
+
+	/**
+	 * Build a new instance of StoreException.
+	 * @param identity
+	 */
+	public StoreException(UUID identity) {
+		super(identity);
+	}
+
+	
 }

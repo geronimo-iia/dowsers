@@ -3,6 +3,7 @@
  */
 package org.intelligentsia.dowsers.events;
 
+import org.intelligentsia.dowsers.annotation.Note;
 import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Identifier;
 
@@ -11,6 +12,7 @@ import org.intelligentsia.dowsers.domain.Identifier;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
+@Note("May we move this interface to domain package ?")
 public interface EventProvider {
 
 	/**

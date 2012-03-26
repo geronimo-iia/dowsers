@@ -60,4 +60,10 @@ public class DomainEntity extends Entity implements EntityRegistry {
 		aggregate.register(entity);
 	}
 
+	/**
+	 * @return aggregate
+	 */
+	Aggregate getAggregate() {
+		return aggregate;
+	}
 }
