@@ -3,10 +3,16 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+import java.lang.reflect.Constructor;
+import java.util.concurrent.TimeUnit;
+
 import org.intelligentsia.dowsers.annotation.TODO;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  * DefaultDomainEntityFactory implements DomainEntityFactory .
@@ -20,6 +26,8 @@ public class DefaultDomainEntityFactory implements DomainEntityFactory {
 	 */
 	private final AggregateFactory aggregateFactory;
 
+	private LoadingCache<Class<?>, Constructor<?>> constructors;
+
 	/**
 	 * Build a new instance of DefaultDomainEntityFactory.
 	 * 
@@ -31,16 +39,27 @@ public class DefaultDomainEntityFactory implements DomainEntityFactory {
 	public DefaultDomainEntityFactory(final AggregateFactory aggregateFactory) throws NullPointerException {
 		super();
 		this.aggregateFactory = Preconditions.checkNotNull(aggregateFactory);
+		constructors = CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.DAYS).build(new CacheLoader<Class<?>, Constructor<?>>() {
+			/**
+			 * @see com.google.common.cache.CacheLoader#load(java.lang.Object)
+			 */
+			@Override
+			public Constructor<?> load(Class<?> exceptedType) throws Exception {
+				return exceptedType.getConstructor(AggregateFactory.class);
+			}
+
+		});
 	}
 
 	/**
 	 * @see org.intelligentsia.dowsers.domain.DomainEntityFactory#create(java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	@TODO("Add a better implementation")
 	public <T extends DomainEntity> T create(final Class<T> exceptedType) throws RuntimeException {
 		try {
-			return exceptedType.getConstructor(AggregateFactory.class).newInstance(aggregateFactory);
+			return (T) constructors.get(exceptedType).newInstance(aggregateFactory);
 		} catch (final Throwable e) {
 			throw Throwables.propagate(e);
 		}
