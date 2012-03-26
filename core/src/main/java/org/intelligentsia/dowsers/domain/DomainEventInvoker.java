@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.domain;
 
 /**
  * DomainEventInvoker declares methods to apply Domain Event from Entity.
@@ -9,7 +6,7 @@ package org.intelligentsia.dowsers.events;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface DomainEventInvoker {
+interface DomainEventInvoker {
 	/**
 	 * Process specified domain event
 	 * 

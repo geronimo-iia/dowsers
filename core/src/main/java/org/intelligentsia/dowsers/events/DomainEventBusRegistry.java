@@ -3,6 +3,7 @@
  */
 package org.intelligentsia.dowsers.events;
 
+import org.intelligentsia.dowsers.annotation.Note;
 import org.intelligentsia.dowsers.domain.Entity;
 
 /**
@@ -15,6 +16,7 @@ import org.intelligentsia.dowsers.domain.Entity;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
+@Note("Not used")
 public interface DomainEventBusRegistry {
 
 	/**

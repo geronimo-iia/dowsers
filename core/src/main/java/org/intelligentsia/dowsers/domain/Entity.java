@@ -5,8 +5,6 @@ package org.intelligentsia.dowsers.domain;
 
 import org.intelligentsia.dowsers.annotation.Note;
 import org.intelligentsia.dowsers.annotation.TODO;
-import org.intelligentsia.dowsers.events.DomainEvent;
-import org.intelligentsia.dowsers.events.DomainEventInvoker;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -38,8 +36,8 @@ import com.google.common.base.Preconditions;
  * <ul>
  * <li>have all attributes with final keyword</li>
  * <li>have a constructor with attributes</li>
- * <li>implements 'equal' methods. Value objects compare by the values of their attributes, they don't have an identity.
- * </li>
+ * <li>implements 'equal' methods. Value objects compare by the values of their
+ * attributes, they don't have an identity.</li>
  * <li>implements 'hashCode' methods</li>
  * <li>implements 'toString' methods</li>
  * </ul>
@@ -169,7 +167,7 @@ public abstract class Entity {
 	 *             if domainEventInvoker is null
 	 */
 	@Note("Package visibility is set to deal with aggregate")
-	void setDomainEventInvoker(DomainEventInvoker domainEventInvoker) throws NullPointerException {
+	void setDomainEventInvoker(final DomainEventInvoker domainEventInvoker) throws NullPointerException {
 		this.domainEventInvoker = Preconditions.checkNotNull(domainEventInvoker);
 	}
 }

@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.events.processor;
 
+import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.events.DomainEvent;
 
 /**
  * EventProcessor manage event processing.

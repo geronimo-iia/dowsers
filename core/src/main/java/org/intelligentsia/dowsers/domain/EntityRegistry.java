@@ -1,14 +1,12 @@
-/**
- * 
- */
 package org.intelligentsia.dowsers.domain;
 
 /**
- * RegisterEntity declare methods to register entity on a container like domain entity.
+ * EntityRegistry declare methods to register entity on a container like domain
+ * entity.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface RegisterEntity {
+public interface EntityRegistry {
 
 	/**
 	 * Register specified entity.
@@ -18,5 +16,5 @@ public interface RegisterEntity {
 	 * @throws NullPointerException
 	 *             if entity is null
 	 */
-	public void register(Entity entity) throws NullPointerException;
+	public void register(final Entity entity) throws NullPointerException;
 }

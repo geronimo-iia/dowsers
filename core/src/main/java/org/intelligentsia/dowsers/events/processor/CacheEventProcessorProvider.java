@@ -4,9 +4,10 @@
 package org.intelligentsia.dowsers.events.processor;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.events.DomainEvent;
 
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
@@ -22,6 +23,17 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 public class CacheEventProcessorProvider implements EventProcessorProvider, EventProcessor {
 
 	private LoadingCache<Class<? extends Entity>, EntityEventProcessor> processors;
+
+	/**
+	 * Build a new instance of CacheEventProcessorProvider with default cache:
+	 * <ul>
+	 * <li>Mmaximum size : 1000 elements</li>
+	 * <li>expire after access : 1 days</li>
+	 * </ul>
+	 */
+	public CacheEventProcessorProvider() {
+		this(CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.DAYS));
+	}
 
 	/**
 	 * Build a new instance of <code>CacheEventProcessorProvider</code>
@@ -63,7 +75,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 
 	/**
 	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
-	 *      org.intelligentsia.dowsers.events.DomainEvent)
+	 *      org.intelligentsia.dowsers.domain.DomainEvent)
 	 */
 	@Override
 	public void apply(final Entity entity, final DomainEvent domainEvent) {

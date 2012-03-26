@@ -4,8 +4,9 @@
 package org.intelligentsia.dowsers;
 
 import org.intelligentsia.dowsers.command.CommandInvoker;
-import org.intelligentsia.dowsers.command.CommandRegistry;
+import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
+import org.intelligentsia.dowsers.events.EventPublisher;
 import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
 
 /**
@@ -19,7 +20,9 @@ public interface DomainContainer {
 
 	public CommandInvoker getCommandInvoker();
 
-	public CommandRegistry getCommandRegistry();
+	public CommandHandlerRegistry getCommandRegistry();
 
 	public EventProcessorProvider getEventProcessorProvider();
+
+	public EventPublisher getEventPublisher();
 }

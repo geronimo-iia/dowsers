@@ -4,7 +4,7 @@
 package org.intelligentsia.dowsers.sample.commands.handler;
 
 import org.intelligentsia.dowsers.command.CommandHandler;
-import org.intelligentsia.dowsers.command.CommandRegistry;
+import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
 import org.intelligentsia.dowsers.domain.DomainRepository;
 import org.intelligentsia.dowsers.sample.commands.CreateContactCommand;
@@ -29,7 +29,7 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 	 * @param aggregateFactory
 	 * @throws NullPointerException
 	 */
-	public CreateContactCommandHandler(CommandRegistry commandRegistry, DomainRepository domainRepository,
+	public CreateContactCommandHandler(CommandHandlerRegistry commandRegistry, DomainRepository domainRepository,
 			AggregateFactory aggregateFactory) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;

@@ -23,7 +23,7 @@ import com.google.common.eventbus.Subscribe;
  * 
  * 	private String lastCalled;
  * 
- * 	public FakeHelloCommandHandler(final CommandRegistry commandRegistry) throws NullPointerException {
+ * 	public FakeHelloCommandHandler(final CommandHandlerRegistry commandRegistry) throws NullPointerException {
  * 		super(commandRegistry);
  * 	}
  * 
@@ -59,7 +59,7 @@ public abstract class CommandHandler<T extends Command> {
 	 * @throws NullPointerException
 	 *             if commandRegistry is null
 	 */
-	public CommandHandler(final CommandRegistry commandRegistry) throws NullPointerException {
+	public CommandHandler(final CommandHandlerRegistry commandRegistry) throws NullPointerException {
 		Preconditions.checkNotNull(commandRegistry).register(this);
 	}
 

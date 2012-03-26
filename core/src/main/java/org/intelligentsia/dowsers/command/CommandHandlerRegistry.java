@@ -4,7 +4,7 @@
 package org.intelligentsia.dowsers.command;
 
 /**
- * CommandRegistry register command handlers instance.
+ * CommandHandlerRegistry register command handlers instance.
  * 
  * A command handler subscribe to a particular command like this:
  * 
@@ -18,7 +18,7 @@ package org.intelligentsia.dowsers.command;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface CommandRegistry {
+public interface CommandHandlerRegistry {
 
 	/**
 	 * Register a new command handler instance.

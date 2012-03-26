@@ -10,7 +10,7 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 
 /**
- * CommandBus implements a CommandRegistry and a CommandInvoker based on
+ * CommandBus implements a CommandHandlerRegistry and a CommandInvoker based on
  * {@link EventBus} guava framework.<br/>
  * To process command in a synchrony way use {@link EventBus} or
  * {@link AsyncEventBus} for asynchrony way.
@@ -18,7 +18,7 @@ import com.google.common.eventbus.EventBus;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class CommandBus implements CommandInvoker, CommandRegistry {
+public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 
 	/**
 	 * EventBus instance.
@@ -62,7 +62,7 @@ public class CommandBus implements CommandInvoker, CommandRegistry {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.command.CommandRegistry#register(java.lang.Object)
+	 * @see org.intelligentsia.dowsers.command.CommandHandlerRegistry#register(java.lang.Object)
 	 */
 	@Override
 	public void register(final Object commandHandler) {

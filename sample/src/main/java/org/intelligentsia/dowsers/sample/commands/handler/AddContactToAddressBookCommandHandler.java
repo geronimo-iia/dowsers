@@ -4,7 +4,7 @@
 package org.intelligentsia.dowsers.sample.commands.handler;
 
 import org.intelligentsia.dowsers.command.CommandHandler;
-import org.intelligentsia.dowsers.command.CommandRegistry;
+import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.domain.DomainRepository;
 import org.intelligentsia.dowsers.sample.commands.AddContactToAddressBookCommand;
 import org.intelligentsia.dowsers.sample.domain.addressbook.AddressBook;
@@ -26,7 +26,7 @@ public class AddContactToAddressBookCommandHandler extends CommandHandler<AddCon
 	 * @param domainRepository
 	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommandHandler(final CommandRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
+	public AddContactToAddressBookCommandHandler(final CommandHandlerRegistry commandRegistry, final DomainRepository domainRepository) throws NullPointerException {
 		super(commandRegistry);
 		this.domainRepository = domainRepository;
 	}

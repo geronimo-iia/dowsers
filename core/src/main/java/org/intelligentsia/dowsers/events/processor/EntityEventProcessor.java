@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.annotation.DomainEventHandler;
+import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.events.DomainEvent;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
@@ -59,6 +59,10 @@ public class EntityEventProcessor implements EventProcessor {
 		managedEntityType = null;
 	}
 
+	/**
+	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
+	 *      org.intelligentsia.dowsers.domain.DomainEvent)
+	 */
 	@Override
 	public void apply(final Entity entity, final DomainEvent domainEvent) {
 		final Method method = handlers.get(domainEvent.getClass());
@@ -68,6 +72,9 @@ public class EntityEventProcessor implements EventProcessor {
 		}
 	}
 
+	/**
+	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#register(java.lang.Class)
+	 */
 	@Override
 	public <T extends Entity> void register(final Class<T> entityType) throws IllegalStateException {
 		if (isInitialized()) {

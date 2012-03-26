@@ -19,5 +19,5 @@ public interface AggregateFactory {
 	 * @throws NullPointerException
 	 *             if domainEntity is null
 	 */
-	public Aggregate create(DomainEntity domainEntity) throws NullPointerException;
+	public <T extends DomainEntity> Aggregate create(T domainEntity) throws NullPointerException;
 }

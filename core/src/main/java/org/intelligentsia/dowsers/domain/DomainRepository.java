@@ -10,7 +10,6 @@ import org.intelligentsia.dowsers.annotation.TODO;
 import org.intelligentsia.dowsers.annotation.TODOs;
 import org.intelligentsia.dowsers.storage.ConcurrencyException;
 
-
 /**
  * DomainRepository interfaces declare methods for retrieving domain objects
  * should delegate to a specialized Repository object such that alternative

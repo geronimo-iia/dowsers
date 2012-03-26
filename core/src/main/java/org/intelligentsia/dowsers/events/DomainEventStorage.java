@@ -5,6 +5,8 @@ package org.intelligentsia.dowsers.events;
 
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.domain.DomainEvent;
+
 /**
  * “Captures all changes to an application state as a sequence of events.”
  * 

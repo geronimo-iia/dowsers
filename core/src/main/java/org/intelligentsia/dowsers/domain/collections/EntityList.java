@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.RegisterEntity;
+import org.intelligentsia.dowsers.domain.EntityRegistry;
 
 import com.google.common.base.Preconditions;
 
@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
  */
 public class EntityList<T extends Entity> implements Iterable<T> {
 
-	private final RegisterEntity registerEntity;
+	private final EntityRegistry registerEntity;
 
 	private final List<T> entities;
 
@@ -32,7 +32,7 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	 * @throws NullPointerException
 	 *             if domainEntity is null
 	 */
-	public EntityList(DomainEntity domainEntity) throws NullPointerException {
+	public EntityList(final DomainEntity domainEntity) throws NullPointerException {
 		this(domainEntity, new ArrayList<T>());
 	}
 
@@ -45,13 +45,13 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	 * @throws NullPointerException
 	 *             if domainEntity or entities is null
 	 */
-	public EntityList(DomainEntity domainEntity, List<T> entities) throws NullPointerException {
+	public EntityList(final DomainEntity domainEntity, final List<T> entities) throws NullPointerException {
 		super();
 		this.registerEntity = Preconditions.checkNotNull(domainEntity);
 		this.entities = Preconditions.checkNotNull(entities);
 	}
 
-	public void add(T entity) {
+	public void add(final T entity) {
 		registerEntity.register(entity);
 		entities.add(entity);
 	}
@@ -64,4 +64,7 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 		return entities.iterator();
 	}
 
+	public boolean contains(final T entity) {
+		return entities.contains(entity);
+	}
 }

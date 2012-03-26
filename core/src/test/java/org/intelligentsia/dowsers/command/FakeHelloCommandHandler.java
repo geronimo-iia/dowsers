@@ -4,7 +4,7 @@
 package org.intelligentsia.dowsers.command;
 
 import org.intelligentsia.dowsers.command.CommandHandler;
-import org.intelligentsia.dowsers.command.CommandRegistry;
+import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 
 /**
  * FakeHelloCommandHandler.
@@ -25,7 +25,7 @@ public class FakeHelloCommandHandler extends CommandHandler<FakeHelloCommand> {
 	 * @param commandRegistry
 	 * @throws NullPointerException
 	 */
-	public FakeHelloCommandHandler(final CommandRegistry commandRegistry) throws NullPointerException {
+	public FakeHelloCommandHandler(final CommandHandlerRegistry commandRegistry) throws NullPointerException {
 		super(commandRegistry);
 	}
 

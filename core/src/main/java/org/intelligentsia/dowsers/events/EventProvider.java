@@ -3,6 +3,7 @@
  */
 package org.intelligentsia.dowsers.events;
 
+import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Identifier;
 
 /**
@@ -33,14 +34,6 @@ public interface EventProvider {
 	 * Increment version of this root entity.
 	 */
 	public void incrementVersion();
-
-	//
-	// /**
-	// * Update version with specified value.
-	// *
-	// * @param version
-	// */
-	// public void updateVersion(long version);
 
 	/**
 	 * @return an iterable instance of of uncommitted changes.

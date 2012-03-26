@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.events.DomainEvent;
-import org.intelligentsia.dowsers.events.DomainEventInvoker;
 import org.intelligentsia.dowsers.events.EventProvider;
 import org.intelligentsia.dowsers.events.processor.EventProcessor;
 import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
@@ -20,11 +18,11 @@ import com.google.common.collect.Maps;
 /**
  * Aggregate act as a context of a root entity.
  * 
- * A collection of objects and entities that are bound together by a root entity, otherwise
- * known as an aggregate root or domain entity. <br />
- * The aggregate root guarantees the consistency of
- * changes being made within the aggregate by forbidding external objects from
- * holding references to its members.
+ * A collection of objects and entities that are bound together by a root
+ * entity, otherwise known as an aggregate root or domain entity. <br />
+ * The aggregate root guarantees the consistency of changes being made within
+ * the aggregate by forbidding external objects from holding references to its
+ * members.
  * 
  * <ul>
  * <li>Group of Value Objects and entities</li>
@@ -35,7 +33,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements EventProvider, RegisterEntity {
+public class Aggregate implements EventProvider, EntityRegistry {
 
 	/**
 	 * EventProcessorProvider instance.
@@ -67,11 +65,10 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	 * @throws NullPointerException
 	 *             if eventProcessorProvider or domainEntity is null
 	 */
-	public Aggregate(final EventProcessorProvider eventProcessorProvider, final DomainEntity domainEntity)
-			throws NullPointerException {
+	public Aggregate(final EventProcessorProvider eventProcessorProvider, final DomainEntity domainEntity) throws NullPointerException {
 		super();
 		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
-		this.root = Preconditions.checkNotNull(domainEntity);
+		root = Preconditions.checkNotNull(domainEntity);
 		entities = Maps.newHashMap();
 		register(root);
 	}
@@ -96,12 +93,12 @@ public class Aggregate implements EventProvider, RegisterEntity {
 			long ordinal = 0l;
 			for (final DomainEvent domainEvent : history) {
 				// Which entity
-				Entity entity = entities.get(domainEvent.getEntityIdentity());
+				final Entity entity = entities.get(domainEvent.getEntityIdentity());
 				if (entity == null) {
 					throw new IllegalStateException("No entity for " + domainEvent.getEntityIdentity());
 				}
 				// obtain processor
-				EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
+				final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
 				if (eventProcessor == null) {
 					throw new IllegalStateException("No event processor for " + entity.getClass().getName());
 				}
@@ -137,7 +134,7 @@ public class Aggregate implements EventProvider, RegisterEntity {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.domain.RegisterEntity#register(org.intelligentsia.dowsers.domain.Entity)
+	 * @see org.intelligentsia.dowsers.domain.EntityRegistry#register(org.intelligentsia.dowsers.domain.Entity)
 	 */
 	@Override
 	public void register(final Entity entity) {
@@ -158,7 +155,8 @@ public class Aggregate implements EventProvider, RegisterEntity {
 
 	/**
 	 * 
-	 * DefaultDomainEventInvoker implements a default DomainEventInvoker for a specific entity.
+	 * DefaultDomainEventInvoker implements a default DomainEventInvoker for a
+	 * specific entity.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
@@ -180,7 +178,7 @@ public class Aggregate implements EventProvider, RegisterEntity {
 		 * @throws NullPointerException
 		 *             if eventProcessor or target is null
 		 */
-		public DefaultDomainEventInvoker(EventProcessor eventProcessor, Entity target) throws NullPointerException {
+		public DefaultDomainEventInvoker(final EventProcessor eventProcessor, final Entity target) throws NullPointerException {
 			super();
 			this.eventProcessor = Preconditions.checkNotNull(eventProcessor);
 			this.target = Preconditions.checkNotNull(target);
@@ -199,10 +197,10 @@ public class Aggregate implements EventProvider, RegisterEntity {
 		 * finally we will add this domain event to the internal list of applied
 		 * events.
 		 * 
-		 * @see org.intelligentsia.dowsers.events.DomainEventInvoker#apply(org.intelligentsia.dowsers.events.DomainEvent)
+		 * @see org.intelligentsia.dowsers.domain.DomainEventInvoker#apply(org.intelligentsia.dowsers.domain.DomainEvent)
 		 */
 		@Override
-		public <T extends DomainEvent> void apply(T domainEvent) {
+		public <T extends DomainEvent> void apply(final T domainEvent) {
 			// set ordinal value from aggregate
 			domainEvent.setOrdinal(nextEventOrdinal());
 			// call the apply method which will make the state change to the

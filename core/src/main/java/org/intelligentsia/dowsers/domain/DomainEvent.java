@@ -1,11 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events;
+package org.intelligentsia.dowsers.domain;
 
 import java.util.UUID;
-
-import org.intelligentsia.dowsers.domain.Entity;
 
 import com.google.common.base.Preconditions;
 
@@ -86,10 +84,15 @@ public abstract class DomainEvent {
 	}
 
 	public long getOrdinal() {
-		return this.ordinal;
+		return ordinal;
 	}
 
-	public void setOrdinal(long ordinal) {
+	/**
+	 * Set ordinal value.
+	 * 
+	 * @param ordinal
+	 */
+	void setOrdinal(final long ordinal) {
 		this.ordinal = ordinal;
 	}
 
