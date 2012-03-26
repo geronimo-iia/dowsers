@@ -6,11 +6,16 @@
 		<version>1.2</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cqrs</groupId>
-	<artifactId>cqrs</artifactId>
+	<groupId>org.intelligents-ia.dowsers</groupId>
+	<artifactId>dowsers</artifactId>
 	<packaging>pom</packaging>
-	<name>ddd cqrs es root project</name>
+	<name>dowsers</name>
 	<version>0.0.1-SNAPSHOT</version>
+	<inceptionYear>2012</inceptionYear>
+	<description>
+		Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
+		
+	</description>
 	<dependencyManagement>
 		<dependencies>
 			<!-- ******************************************************************* -->
@@ -39,12 +44,12 @@
 			<!-- ******************************************************************* -->
 			<!-- TIME FRAMEWORK -->
 			<!-- ******************************************************************* -->
-			<!-- <dependency> -->
-			<!-- <groupId>joda-time</groupId> -->
-			<!-- <artifactId>joda-time</artifactId> -->
-			<!-- <version>${joda-time.version}</version> -->
-			<!-- <scope>provided</scope> -->
-			<!-- </dependency> -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>date4j</groupId>
 				<artifactId>date4j</artifactId>
@@ -151,5 +156,5 @@
 	<modules>
 		<module>core</module>
 		<module>sample</module>
-	</modules> 
+	</modules>
 </project>
