@@ -55,6 +55,10 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 		entities.add(entity);
 	}
 
+	public boolean contains(T entity) {
+		return entities.contains(entity);
+	}
+
 	/**
 	 * @see java.lang.Iterable#iterator()
 	 */
