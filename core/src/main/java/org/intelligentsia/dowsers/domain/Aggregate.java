@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.intelligentsia.dowsers.annotation.TODO;
 import org.intelligentsia.dowsers.events.processor.EventProcessor;
 import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
+import org.intelligentsia.dowsers.eventstore.DomainEventProvider;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -33,7 +34,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Aggregate implements DomainEventProvider, EntityRegistry {
+class Aggregate implements DomainEventProvider, EntityRegistry {
 
 	/**
 	 * EventProcessorProvider instance.
@@ -74,7 +75,7 @@ public class Aggregate implements DomainEventProvider, EntityRegistry {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getIdentifier()
+	 * @see org.intelligentsia.dowsers.eventstore.DomainEventProvider#getIdentifier()
 	 */
 	@Override
 	public Identifier getIdentifier() {
@@ -124,9 +125,11 @@ public class Aggregate implements DomainEventProvider, EntityRegistry {
 		return uncommittedChanges;
 	}
 
-	/**
-	 * Mark all changes as committed (clear all uncommittedChanges).
-	 */
+	@Override
+	public int getUncommittedChangesCount() {
+		return uncommittedChanges.size();
+	}
+
 	@Override
 	public void markChangesCommitted() {
 		eventOrdinal = 0l;
@@ -146,21 +149,22 @@ public class Aggregate implements DomainEventProvider, EntityRegistry {
 		entities.put(entity.getIdentifier().getIdentity(), entity);
 	}
 
-	
-	   /**
-     * Indicates whether this aggregate has been marked as deleted. When <code>true</code>, it is an instruction
-     * to the repository to remove this instance at an appropriate time.
-     * <p/>
-     * Repositories should not return any instances of Aggregates that return <code>true</code> on
-     * <code>isDeleted()</code>.
-     *
-     * @return <code>true</code> if this aggregate was marked as deleted, otherwise <code>false</code>.
-     */
+	/**
+	 * Indicates whether this aggregate has been marked as deleted. When
+	 * <code>true</code>, it is an instruction to the repository to remove this
+	 * instance at an appropriate time.
+	 * <p/>
+	 * Repositories should not return any instances of Aggregates that return
+	 * <code>true</code> on <code>isDeleted()</code>.
+	 * 
+	 * @return <code>true</code> if this aggregate was marked as deleted,
+	 *         otherwise <code>false</code>.
+	 */
 	@TODO("implements this")
-    boolean isDeleted() {
-    	return true;
-    }
-    
+	boolean isDeleted() {
+		return true;
+	}
+
 	/**
 	 * @return next event ordinal.
 	 */

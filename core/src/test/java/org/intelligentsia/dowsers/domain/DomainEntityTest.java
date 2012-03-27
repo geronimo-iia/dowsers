@@ -20,13 +20,13 @@ public class DomainEntityTest {
 
 	@Before
 	public void initialize() {
-		aggregateFactory = new DefaultAggregateFactory(new CacheEventProcessorProvider());
+		aggregateFactory = new GenericAggregateFactory(new CacheEventProcessorProvider());
 	}
 
 	@Test
 	public void testFactory() {
 		assertNotNull(aggregateFactory);
-		DefaultDomainEntityFactory defaultDomainEntityFactory = new DefaultDomainEntityFactory(aggregateFactory);
+		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity);
 		assertNotNull(domainEntity.getIdentifier());

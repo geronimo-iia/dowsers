@@ -15,11 +15,11 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 /**
- * DefaultDomainEntityFactory implements DomainEntityFactory .
+ * GenericDomainEntityFactory implements DomainEntityFactory .
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultDomainEntityFactory implements DomainEntityFactory {
+public class GenericDomainEntityFactory implements DomainEntityFactory {
 
 	/**
 	 * AggregateFactory instance.
@@ -36,7 +36,7 @@ public class DefaultDomainEntityFactory implements DomainEntityFactory {
 	 * @throws NullPointerException
 	 *             if aggregateFactory is null
 	 */
-	public DefaultDomainEntityFactory(final AggregateFactory aggregateFactory) throws NullPointerException {
+	public GenericDomainEntityFactory(final AggregateFactory aggregateFactory) throws NullPointerException {
 		super();
 		this.aggregateFactory = Preconditions.checkNotNull(aggregateFactory);
 		constructors = CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.DAYS).build(new CacheLoader<Class<?>, Constructor<?>>() {
@@ -45,7 +45,11 @@ public class DefaultDomainEntityFactory implements DomainEntityFactory {
 			 */
 			@Override
 			public Constructor<?> load(Class<?> exceptedType) throws Exception {
-				return exceptedType.getConstructor(AggregateFactory.class);
+				Constructor<?> constructor = exceptedType.getConstructor(AggregateFactory.class);
+				if (!constructor.isAccessible()) {
+					constructor.setAccessible(Boolean.TRUE);
+				}
+				return constructor;
 			}
 
 		});

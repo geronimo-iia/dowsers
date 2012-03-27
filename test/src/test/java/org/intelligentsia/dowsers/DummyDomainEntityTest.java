@@ -14,8 +14,8 @@ import junit.framework.Assert;
 
 import org.intelligentsia.dowsers.annotation.Property;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
-import org.intelligentsia.dowsers.domain.DefaultAggregateFactory;
-import org.intelligentsia.dowsers.domain.DefaultDomainEntityFactory;
+import org.intelligentsia.dowsers.domain.GenericAggregateFactory;
+import org.intelligentsia.dowsers.domain.GenericDomainEntityFactory;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.events.processor.CacheEventProcessorProvider;
 import org.junit.Before;
@@ -29,12 +29,12 @@ import org.junit.Test;
  */
 public class DummyDomainEntityTest {
 	private AggregateFactory aggregateFactory;
-	DefaultDomainEntityFactory defaultDomainEntityFactory;
+	GenericDomainEntityFactory defaultDomainEntityFactory;
 
 	@Before
 	public void initialize() {
-		aggregateFactory = new DefaultAggregateFactory(new CacheEventProcessorProvider());
-		defaultDomainEntityFactory = new DefaultDomainEntityFactory(aggregateFactory);
+		aggregateFactory = new GenericAggregateFactory(new CacheEventProcessorProvider());
+		defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 	}
 
 	@Test

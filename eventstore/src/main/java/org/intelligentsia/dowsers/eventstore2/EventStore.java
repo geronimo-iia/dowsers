@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers.eventstore;
+package org.intelligentsia.dowsers.eventstore2;
 
 import java.util.UUID;
 
@@ -92,5 +92,21 @@ public interface EventStore<EventType> {
 	 *             lower than the initial version of the stream.
 	 */
 	public void loadEventsFromStreamUptoVersion(UUID streamId, long version, EventSink<EventType> sink) throws EmptyResultException;
+
+	/**
+	 * Loads the events associated with the stream into the provided sink. Only
+	 * the events that existed before and at the requested timestamp are loaded.
+	 * 
+	 * @param streamId
+	 *            the stream id
+	 * @param timestamp
+	 *            the timestamp (inclusive) of the event stream to load.
+	 * @param sink
+	 *            the sink to send the stream data and events to.
+	 * @throws EmptyResultException
+	 *             no stream with the specified id exists or the version is
+	 *             lower than the initial version of the stream.
+	 */
+	public void loadEventsFromStreamUptoTimestamp(UUID streamId, long timestamp, EventSink<EventType> sink) throws EmptyResultException;
 
 }

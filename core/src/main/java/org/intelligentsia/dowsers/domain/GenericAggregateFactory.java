@@ -8,22 +8,22 @@ import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
 import com.google.common.base.Preconditions;
 
 /**
- * DefaultAggregateFactory implement a default Factory for Aggregate class.
+ * GenericAggregateFactory implement a generic Factory for Aggregate class.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultAggregateFactory implements AggregateFactory {
+public class GenericAggregateFactory implements AggregateFactory {
 
 	private final EventProcessorProvider eventProcessorProvider;
 
 	/**
-	 * Build a new instance of DefaultAggregateFactory.
+	 * Build a new instance of GenericAggregateFactory.
 	 * 
 	 * @param eventProcessorProvider
 	 * @throws NullPointerException
 	 *             if eventProcessorProvider is null
 	 */
-	public DefaultAggregateFactory(final EventProcessorProvider eventProcessorProvider) throws NullPointerException {
+	public GenericAggregateFactory(final EventProcessorProvider eventProcessorProvider) throws NullPointerException {
 		super();
 		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
 	}

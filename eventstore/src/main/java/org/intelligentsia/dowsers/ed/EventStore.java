@@ -1,7 +1,9 @@
-package org.intelligentsia.dowsers.eventstore;
+package org.intelligentsia.dowsers.ed;
 
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 import org.intelligentsia.dowsers.storage.ConcurrencyException;
 import org.intelligentsia.dowsers.storage.EmptyResultException;
 
@@ -11,6 +13,7 @@ import org.intelligentsia.dowsers.storage.EmptyResultException;
  * 
  * Check OptimisticLocking necessity
  * 
+ * @author jgt
  */
 public interface EventStore<EventType> {
 
@@ -26,7 +29,7 @@ public interface EventStore<EventType> {
 	 * @throws StreamEverExistsException
 	 *             a stream with the specified id already exists.
 	 */
-	public void createEventStream(UUID streamId, EventSource<EventType> source) throws StreamEverExistsException;
+	public void createEventStream(UUID streamId, long initialVersion, Class<?> entityTypeName, Iterable<? extends DomainEvent> events) throws StreamEverExistsException;
 
 	/**
 	 * Adds the events from source to the specified stream.
@@ -46,7 +49,20 @@ public interface EventStore<EventType> {
 	 *             if expectedVersion is strictly lower or equal than current in
 	 *             store
 	 */
-	public void storeEventsIntoStream(UUID streamId, long expectedVersion, EventSource<EventType> source) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
+	public void storeEventsIntoStream(UUID streamId, long expectedVersion, Class<?> entityTypeName, Iterable<? extends DomainEvent> events) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
+
+	/**
+	 * 
+	 * @param streamId
+	 * @param entityTypeName
+	 * @param events
+	 * @throws EmptyResultException
+	 * @throws ConcurrencyException
+	 * @throws IllegalArgumentException
+	 */
+	public void appendEventsIntoStream(UUID streamId, Class<?> entityTypeName, Iterable<? extends DomainEvent> events) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
+
+	public Iterable<? extends DomainEvent> loadAllDomainEvents(UUID identity, Class<?> entityTypeName) throws EmptyResultException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink.
@@ -58,7 +74,7 @@ public interface EventStore<EventType> {
 	 * @throws EmptyResultException
 	 *             no stream with the specified id exists.
 	 */
-	public void loadEventsFromLatestStreamVersion(UUID streamId, EventSink<EventType> sink) throws EmptyResultException;
+	public Iterable<? extends DomainEvent> loadEventsFromLatestStreamVersion(UUID streamId, Class<?> entityTypeName) throws EmptyResultException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink.
@@ -75,7 +91,7 @@ public interface EventStore<EventType> {
 	 *             thrown when the expected version does not match the actual
 	 *             version of the stream.
 	 */
-	public void loadEventsFromExpectedStreamVersion(UUID streamId, long expectedVersion, EventSink<EventType> sink) throws EmptyResultException, ConcurrencyException;
+	public Iterable<? extends DomainEvent> loadEventsFromExpectedStreamVersion(UUID streamId, long expectedVersion, Class<?> entityTypeName) throws EmptyResultException, ConcurrencyException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink. Only
@@ -91,6 +107,6 @@ public interface EventStore<EventType> {
 	 *             no stream with the specified id exists or the version is
 	 *             lower than the initial version of the stream.
 	 */
-	public void loadEventsFromStreamUptoVersion(UUID streamId, long version, EventSink<EventType> sink) throws EmptyResultException;
+	public Iterable<? extends DomainEvent> loadEventsFromStreamUptoVersion(UUID streamId, long maximumVersion, Class<?> entityTypeName) throws EmptyResultException;
 
 }

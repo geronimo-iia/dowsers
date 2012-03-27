@@ -5,6 +5,9 @@ package org.intelligentsia.dowsers.domain;
 
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.annotation.Note;
+import org.intelligentsia.dowsers.annotation.TODO;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -42,6 +45,10 @@ public abstract class DomainEvent {
 	 */
 	private final UUID entityIdentity;
 
+	@Note("This member could simplify event storage, and provide more control about event provider.")
+	@TODO("status on this ")
+	protected final long version = 0l;
+	
 	/**
 	 * Build a new instance of DomainEvent.
 	 * 

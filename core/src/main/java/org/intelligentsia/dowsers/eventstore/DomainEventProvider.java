@@ -1,9 +1,11 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain;
+package org.intelligentsia.dowsers.eventstore;
 
 import org.intelligentsia.dowsers.annotation.Note;
+import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.domain.Identifier;
 
 /**
  * DomainEventProvider declares methods.
@@ -62,11 +64,9 @@ public interface DomainEventProvider {
 	public Iterable<DomainEvent> getUncommittedChanges();
 	
 	 /**
-     * Returns the number of uncommitted events currently available in the aggregate.
-     *
-     * @return the number of uncommitted events currently available in the aggregate.
+     * @return the number of uncommitted changes currently available in the aggregate.
      */
-    //int getUncommittedEventCount();
+    public int getUncommittedChangesCount();
 
 	/**
 	 * Mark all changes as committed: Clears the events currently marked as

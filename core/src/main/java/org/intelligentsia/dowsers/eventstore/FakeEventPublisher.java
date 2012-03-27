@@ -8,12 +8,12 @@ import java.util.List;
 import org.intelligentsia.dowsers.domain.DomainEvent;
 
 /**
- * IgnoreEventPublisher implements a dummy EventPublisher: all events are ignored.
+ * FakeEventPublisher implements a dummy EventPublisher: all events are ignored.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class IgnoreEventPublisher implements EventPublisher {
+public class FakeEventPublisher implements EventPublisher {
 
 	/**
 	 * All events are ignored.
