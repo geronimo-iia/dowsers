@@ -19,6 +19,24 @@ public interface DomainEventProvider {
 	public Identifier getIdentifier();
 
 	/**
+	 * Returns the current version number of the aggregate, or <code>null</code>
+	 * if the aggregate is newly created. This version must reflect the version
+	 * number of the aggregate on which changes are applied.
+	 * <p/>
+	 * Each time the aggregate is <em>modified and stored</em> in a repository,
+	 * the version number must be increased by at least 1. This version number
+	 * can be used by optimistic locking strategies and detection of conflicting
+	 * concurrent modification.
+	 * <p/>
+	 * Typically the sequence number of the last committed event on this
+	 * aggregate is used as version number.
+	 * 
+	 * @return the current version number of this aggregate, or
+	 *         <code>null</code> if no events were ever committed
+	 */
+	// Long getVersion();
+
+	/**
 	 * Loading historical domain events.It is basically apply events of the
 	 * given aggregate.
 	 * 
@@ -36,12 +54,23 @@ public interface DomainEventProvider {
 	public void incrementVersion();
 
 	/**
+	 * Returns an Iterable<DomainEvent> to the events in the aggregate that have
+	 * been raised since creation or the last commit.
+	 * 
 	 * @return an iterable instance of of uncommitted changes.
 	 */
 	public Iterable<DomainEvent> getUncommittedChanges();
+	
+	 /**
+     * Returns the number of uncommitted events currently available in the aggregate.
+     *
+     * @return the number of uncommitted events currently available in the aggregate.
+     */
+    //int getUncommittedEventCount();
 
 	/**
-	 * Mark all changes as committed.
+	 * Mark all changes as committed: Clears the events currently marked as
+	 * "uncommitted".
 	 */
 	public void markChangesCommitted();
 }

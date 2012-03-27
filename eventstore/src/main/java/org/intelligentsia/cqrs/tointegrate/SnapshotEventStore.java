@@ -27,7 +27,7 @@ import org.axonframework.domain.DomainEvent;
  * @author Allard Buijze
  * @since 0.5
  */
-public interface SnapshotEventStore extends EventStore {
+public interface SnapshotEventStore extends SimpleEventStore {
 
     /**
      * Append the given <code>snapshotEvent</code> to the snapshot event log for the given type <code>type</code>. The

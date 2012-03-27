@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.intelligentsia.cqrs.tointegrate;
+package org.intelligentsia.dowsers.eventstore;
 
-import org.intelligentsia.cqrs.domain.DomainEvent;
+import org.intelligentsia.dowsers.domain.DomainEvent;
 
 /**
  * The DomainEventStream represents a stream of historical domain events. The order of events in this stream must

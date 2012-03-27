@@ -1,8 +1,9 @@
-package org.intelligentsia.cqrs.eventstore;
+package org.intelligentsia.dowsers.eventstore;
 
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
+import org.intelligentsia.dowsers.storage.ConcurrencyException;
+import org.intelligentsia.dowsers.storage.EmptyResultException;
 
 /**
  * Stores and tracks ordered streams of events.

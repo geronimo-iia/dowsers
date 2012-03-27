@@ -15,7 +15,7 @@ import org.intelligentsia.cqrs.eventstore.EventSerializer;
 import org.intelligentsia.cqrs.eventstore.EventSink;
 import org.intelligentsia.cqrs.eventstore.EventSource;
 import org.intelligentsia.cqrs.eventstore.EventStore;
-import org.intelligentsia.cqrs.eventstore.StreamEverExistsException;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;

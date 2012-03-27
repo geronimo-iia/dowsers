@@ -9,7 +9,7 @@ import org.intelligentsia.cqrs.eventstore.EmptyResultException;
 import org.intelligentsia.cqrs.eventstore.EventSink;
 import org.intelligentsia.cqrs.eventstore.EventSource;
 import org.intelligentsia.cqrs.eventstore.EventStore;
-import org.intelligentsia.cqrs.eventstore.StreamEverExistsException;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 
 /**
  * Stores and tracks ordered streams of events.

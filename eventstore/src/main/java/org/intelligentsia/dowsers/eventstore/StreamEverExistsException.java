@@ -1,9 +1,11 @@
 /**
  * 
  */
-package org.intelligentsia.cqrs.eventstore;
+package org.intelligentsia.dowsers.eventstore;
 
 import java.util.UUID;
+
+import org.intelligentsia.dowsers.DowsersException;
 
 /**
  * StreamEverExistsException.
@@ -11,12 +13,12 @@ import java.util.UUID;
  * @author JGT
  * 
  */
-public class StreamEverExistsException extends EventStoreException {
+public class StreamEverExistsException extends DowsersException {
 
 	/**
 	 * serialVersionUID:long
 	 */
-	private static final long serialVersionUID = 7145436474310916670L;
+	private static final long serialVersionUID = -1L;
 
 	/**
 	 * Build a new instance of StreamEverExistsException.

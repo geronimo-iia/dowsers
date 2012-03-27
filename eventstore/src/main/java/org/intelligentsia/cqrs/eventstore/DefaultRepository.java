@@ -13,7 +13,7 @@ import org.intelligentsia.cqrs.domain.VersionedIdentifier;
 import org.intelligentsia.cqrs.eventstore.ConcurrencyException;
 import org.intelligentsia.cqrs.eventstore.EmptyResultException;
 import org.intelligentsia.cqrs.eventstore.EventStore;
-import org.intelligentsia.cqrs.eventstore.StreamEverExistsException;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 
 import com.google.common.base.Preconditions;
 

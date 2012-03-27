@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.intelligentsia.cqrs.eventstore.ConcurrencyException;
 import org.intelligentsia.cqrs.eventstore.EmptyResultException;
-import org.intelligentsia.cqrs.eventstore.StreamEverExistsException;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 
 /**
  * Repository act as a repository for RootEntity instance.

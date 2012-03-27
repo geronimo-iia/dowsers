@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

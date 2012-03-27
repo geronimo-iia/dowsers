@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.intelligentsia.cqrs.tointegrate;
+package org.intelligentsia.dowsers.eventstore;
 
-import org.axonframework.domain.AggregateIdentifier;
-import org.axonframework.domain.DomainEventStream;
+import java.util.UUID;
+
+import org.intelligentsia.cqrs.eventstore.EventStoreException;
 
 /**
  * Abstraction of the event storage mechanism. Domain Events are stored and read as {@link
@@ -26,7 +27,7 @@ import org.axonframework.domain.DomainEventStream;
  * @author Allard Buijze
  * @since 0.1
  */
-public interface EventStore {
+public interface SimpleEventStore {
 
     /**
      * Append the events in the given {@link org.axonframework.domain.DomainEventStream stream} to the event store.
@@ -48,5 +49,5 @@ public interface EventStore {
      *
      * @throws EventStoreException if an error occurs while reading the events in the event stream
      */
-    DomainEventStream readEvents(String type, AggregateIdentifier identifier);
+    DomainEventStream readEvents(String type, UUID identifier);
 }
