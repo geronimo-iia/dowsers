@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 
 /**
- * DomainEventStore stores and tracks ordered streams of events.
+ * DomainEventStore stores and reads ordered streams of events.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

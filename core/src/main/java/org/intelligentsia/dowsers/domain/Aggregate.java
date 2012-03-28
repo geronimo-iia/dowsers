@@ -55,7 +55,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	/**
 	 * List of uncommitted changes.
 	 */
-	private final List<DomainEvent> uncommittedChanges = new ArrayList<DomainEvent>();;
+	private final List<DomainEvent> uncommittedChanges = new ArrayList<DomainEvent>();
 
 	/**
 	 * Build a new instance of Aggregate with specified root entity.

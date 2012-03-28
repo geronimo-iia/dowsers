@@ -7,11 +7,18 @@ import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSource;
 /**
  * DomainEventStream.
  * 
- *@author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * The DomainEventStream represents a stream of historical domain events.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class DomainEventStream implements DomainEventStreamSink, DomainEventStreamSource {
-
-	private long version;
+	/**
+	 * Version of which this domainEvents apply.
+	 */
+	private long version = -1l;
+	/**
+	 * Ordered collection of DomainEvent.
+	 */
 	private Iterable<? extends DomainEvent> domainEvents;
 
 	/**
