@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.domain.Identifier;
-import org.intelligentsia.dowsers.storage.EmptyResultException;
+import org.intelligentsia.dowsers.repository.eventstore.EmptyResultException;
 
 
 /**

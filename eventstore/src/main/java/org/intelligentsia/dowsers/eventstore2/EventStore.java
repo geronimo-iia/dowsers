@@ -3,7 +3,7 @@ package org.intelligentsia.dowsers.eventstore2;
 import java.util.UUID;
 
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
-import org.intelligentsia.dowsers.storage.EmptyResultException;
+import org.intelligentsia.dowsers.repository.eventstore.EmptyResultException;
 
 /**
  * Stores and tracks ordered streams of events.

@@ -1,9 +1,8 @@
-/**
- * 
- */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.repository.eventstore;
 
 import java.util.UUID;
+
+import org.intelligentsia.dowsers.DowsersException;
 
 /**
  * EmptyResultException.
@@ -11,12 +10,12 @@ import java.util.UUID;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class EmptyResultException extends StoreException {
+public class EmptyResultException extends DowsersException {
 
 	/**
 	 * serialVersionUID:long
 	 */
-	private static final long serialVersionUID =  1L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Build a new instance of EmptyResultException.

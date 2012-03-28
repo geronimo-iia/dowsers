@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.intelligentsia.dowsers.eventstore;
+package org.intelligentsia.dowsers.repository.eventstore;
 
 import java.util.List;
 
@@ -11,7 +8,6 @@ import org.intelligentsia.dowsers.domain.DomainEvent;
  * EventPublisher declares method to publish Domain event to an external bus.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public interface EventPublisher {
 

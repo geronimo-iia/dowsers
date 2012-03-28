@@ -55,10 +55,10 @@ public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
 	}
 
 	/**
-	 * @return aggregate instance.
+	 * @return DomainEventProvider instance.
 	 */
 	@VisibleForTesting
-	Aggregate getAggregate() {
+	DomainEventProvider getDomainEventProvider() {
 		return aggregate;
 	}
 

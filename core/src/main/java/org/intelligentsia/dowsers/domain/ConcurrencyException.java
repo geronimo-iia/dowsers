@@ -5,7 +5,7 @@ package org.intelligentsia.dowsers.domain;
 
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.storage.StoreException;
+import org.intelligentsia.dowsers.DowsersException;
 
 /**
  * ConcurrencyException.
@@ -13,7 +13,7 @@ import org.intelligentsia.dowsers.storage.StoreException;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class ConcurrencyException extends StoreException {
+public class ConcurrencyException extends DowsersException {
 
 	private static final long serialVersionUID = 1L;
 

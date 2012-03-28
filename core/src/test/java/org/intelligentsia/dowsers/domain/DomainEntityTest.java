@@ -30,8 +30,8 @@ public class DomainEntityTest {
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity);
 		assertNotNull(domainEntity.getIdentifier());
-		assertNotNull(domainEntity.getAggregate());
-		assertEquals(domainEntity.getIdentifier(), domainEntity.getAggregate().getIdentifier());
+		assertNotNull(domainEntity.getDomainEventProvider());
+		assertEquals(domainEntity.getIdentifier(), domainEntity.getDomainEventProvider().getIdentifier());
 	}
 
 	@Test
