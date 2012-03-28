@@ -25,6 +25,16 @@ public class LocalDomainEntityTest {
 	}
 
 	@Test
+	public void checkSetVersionMustThrowIllegalStateException() {
+		DummyLocalEntity domainEntity = new DummyLocalEntity();
+		try {
+			domainEntity.setVersion(123l);
+			fail("Expected IllegalStateException");
+		} catch (IllegalStateException e) {
+		}
+	}
+	
+	@Test
 	public void checkVersionMustBeInitial() {
 		DummyLocalEntity domainEntity = new DummyLocalEntity();
 		assertTrue(domainEntity.getIdentifier().isForInitialVersion());

@@ -3,7 +3,6 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-
 /**
  * DomainEventProvider declares methods.
  * 
@@ -40,11 +39,13 @@ public interface DomainEventProvider {
 	 * 
 	 * @param history
 	 *            list of DomainEvent
+	 * @param version
+	 *            current version of this event provider
 	 * 
 	 * @throws IllegalStateException
 	 *             if error occurs when load history
 	 */
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history) throws IllegalStateException;
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, long version) throws IllegalStateException;
 
 	/**
 	 * Increment version of this root entity.

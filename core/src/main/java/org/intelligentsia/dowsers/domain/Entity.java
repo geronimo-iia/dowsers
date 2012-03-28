@@ -145,13 +145,22 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Increment version number of this entity. This should call only on a DomainEntity.
+	 * Increment version number of this entity. This should call only on a
+	 * DomainEntity.
 	 */
 	@Note("Package visibility is set to deal with aggregate")
 	void nextVersion() {
 		this.identifier = identifier.nextVersion();
 	}
-	
+
+	/**
+	 * @param version set version value
+	 */
+	@Note("Package visibility is set to deal with aggregate")
+	void setVersion(long version) {
+		this.identifier = identifier.withVersion(version);
+	}
+
 	/**
 	 * @param domainEventInvoker
 	 *            the domainEventInvoker to set

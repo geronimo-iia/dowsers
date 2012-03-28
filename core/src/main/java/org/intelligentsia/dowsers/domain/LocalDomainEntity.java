@@ -39,4 +39,13 @@ public class LocalDomainEntity extends Entity {
 	void nextVersion() throws IllegalStateException {
 		throw new IllegalStateException("Entity#nextVersion must be only called on a DomainEntity instance.");
 	}
+
+	/**
+	 * @throws IllegalStateException
+	 *             always
+	 */
+	@Override
+	void setVersion(long version) throws IllegalStateException {
+		throw new IllegalStateException("Entity#setVersion must be only called on a DomainEntity instance.");
+	}
 }

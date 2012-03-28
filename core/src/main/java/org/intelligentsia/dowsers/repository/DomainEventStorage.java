@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore;
+package org.intelligentsia.dowsers.repository;
 
 import java.util.UUID;
 
@@ -17,11 +17,16 @@ import org.intelligentsia.dowsers.domain.DomainEventProvider;
 public interface DomainEventStorage {
 
 	Iterable<DomainEvent> findAllDomainEvents(UUID identity);
+	
+	long getCurrentVersion(UUID identity);
+	
+	
 
 	Iterable<DomainEvent> findDomainEventsSinceLastSnapShot(UUID identity);
 	
 	void store(DomainEventProvider eventProvider);
 
 	int getDomainEventCountSinceLastSnapShot(UUID identity);
+
 
 }

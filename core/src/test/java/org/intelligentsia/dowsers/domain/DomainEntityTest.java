@@ -33,10 +33,16 @@ public class DomainEntityTest {
 		assertNotNull(domainEntity.getAggregate());
 		assertEquals(domainEntity.getIdentifier(), domainEntity.getAggregate().getIdentifier());
 	}
-	
+
 	@Test
 	public void checkNextVersionAccess() {
 		DummyDomainEntity domainEntity = new DummyDomainEntity(aggregateFactory);
-		domainEntity.nextVersion(); 
+		domainEntity.nextVersion();
+	}
+
+	@Test
+	public void checkSetVersionAccess() {
+		DummyDomainEntity domainEntity = new DummyDomainEntity(aggregateFactory);
+		domainEntity.setVersion(2L);
 	}
 }

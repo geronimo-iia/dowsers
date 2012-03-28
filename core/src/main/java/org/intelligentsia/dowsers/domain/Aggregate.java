@@ -96,7 +96,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	 *            events history
 	 */
 	@Override
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history) throws IllegalStateException {
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final long version) throws IllegalStateException {
 		if (history != null) {
 			long ordinal = 0l;
 			for (final DomainEvent domainEvent : history) {
@@ -117,6 +117,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 			}
 			eventOrdinal = ordinal;
 		}
+		root.setVersion(version);
 	}
 
 	/**
