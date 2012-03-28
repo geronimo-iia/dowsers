@@ -5,9 +5,8 @@ package org.intelligentsia.dowsers.domain;
 
 import org.intelligentsia.dowsers.domain.Entity;
 import org.intelligentsia.dowsers.domain.Identifier;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
-
 
 /**
  * EntityTest.
@@ -17,30 +16,16 @@ import org.junit.Test;
 public class EntityTest {
 
 	@Test
-	public void testIdentitySetter() {
+	public void testNextVersion() {
 		final DummyEntity entity = new DummyEntity();
-
-		try {
-			entity.setIdentifier(null);
-			Assert.fail("expected NullPointerException");
-		} catch (final NullPointerException e) {
-		}
-
-		// next version identifier
-		Identifier identifier = entity.getIdentifier().nextVersion();
-		Assert.assertTrue(identifier.hasSameIdentity(entity.getIdentifier()));
-
-		// set a next version
-		entity.setIdentifier(identifier);
-
-		identifier = Identifier.random();
-		Assert.assertNotSame(identifier.getIdentity(), entity.getIdentifier().getIdentity());
-		try {
-			entity.setIdentifier(identifier);
-			Assert.fail("expected IllegalArgumentException");
-		} catch (final IllegalArgumentException e) {
-		}
-
+		Identifier identifier = entity.getIdentifier();
+		// increment version
+		entity.nextVersion();
+		Identifier nextVersion = entity.getIdentifier();
+		// check
+		assertNotSame(identifier, nextVersion);
+		assertTrue(identifier.hasSameIdentity(nextVersion));
+		assertTrue(identifier.compareTo(nextVersion) < 0);
 	}
 
 	/**

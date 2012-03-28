@@ -5,7 +5,7 @@ package org.intelligentsia.dowsers.storage.snapshot;
 
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.storage.ConcurrencyException;
+import org.intelligentsia.dowsers.domain.ConcurrencyException;
 
 
 /**

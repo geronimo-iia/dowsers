@@ -3,11 +3,10 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.annotation.TODO;
-
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -28,10 +27,17 @@ import com.google.common.base.Preconditions;
  * setting the state, the logic should be in the domain method.
  * 
  * 
+ * DomainEvent class has a natural order on ordinal value and her equality is based on event identity.
+ * 
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public abstract class DomainEvent {
-
+public abstract class DomainEvent implements Comparable<DomainEvent>, Serializable {
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -1L;
 	/**
 	 * Event identity instance.
 	 */
@@ -45,10 +51,6 @@ public abstract class DomainEvent {
 	 */
 	private final UUID entityIdentity;
 
-	@Note("This member could simplify event storage, and provide more control about event provider.")
-	@TODO("status on this ")
-	protected final long version = 0l;
-	
 	/**
 	 * Build a new instance of DomainEvent.
 	 * 
@@ -90,6 +92,9 @@ public abstract class DomainEvent {
 		return eventIdentity;
 	}
 
+	/**
+	 * @return ordinal value of this event.
+	 */
 	public long getOrdinal() {
 		return ordinal;
 	}
@@ -98,9 +103,46 @@ public abstract class DomainEvent {
 	 * Set ordinal value.
 	 * 
 	 * @param ordinal
+	 *            ordinal value to set
 	 */
 	void setOrdinal(final long ordinal) {
 		this.ordinal = ordinal;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("eventIdentity", eventIdentity).add("ordinal", ordinal).add("entityIdentity", entityIdentity).toString();
+	}
+
+	/**
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(DomainEvent o) {
+		return Long.valueOf(ordinal).compareTo(o.ordinal);
+	}
+
+	/**
+	 * DomainEvent compare by identity, not by attributes.
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public final boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final DomainEvent other = (DomainEvent) obj;
+		return Objects.equal(other.getEventIdentity(), getEventIdentity());
 	}
 
 }

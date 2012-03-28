@@ -9,9 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.intelligentsia.dowsers.annotation.TODO;
-import org.intelligentsia.dowsers.events.processor.EventProcessor;
-import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
-import org.intelligentsia.dowsers.eventstore.DomainEventProvider;
+import org.intelligentsia.dowsers.eventprocessor.EventProcessor;
+import org.intelligentsia.dowsers.eventprocessor.EventProcessorProvider;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -34,7 +33,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-class Aggregate implements DomainEventProvider, EntityRegistry {
+class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 
 	/**
 	 * EventProcessorProvider instance.
@@ -75,11 +74,19 @@ class Aggregate implements DomainEventProvider, EntityRegistry {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.eventstore.DomainEventProvider#getIdentifier()
+	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getIdentifier()
 	 */
 	@Override
 	public Identifier getIdentifier() {
 		return root.getIdentifier();
+	}
+
+	/**
+	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getVersion()
+	 */
+	@Override
+	public long getVersion() {
+		return root.getIdentifier().getVersion();
 	}
 
 	/**
@@ -117,7 +124,7 @@ class Aggregate implements DomainEventProvider, EntityRegistry {
 	 */
 	@Override
 	public void incrementVersion() {
-		root.setIdentifier(root.getIdentifier().nextVersion());
+		root.nextVersion();
 	}
 
 	@Override
@@ -136,11 +143,12 @@ class Aggregate implements DomainEventProvider, EntityRegistry {
 		uncommittedChanges.clear();
 	}
 
-	/**
-	 * @see org.intelligentsia.dowsers.domain.EntityRegistry#register(org.intelligentsia.dowsers.domain.Entity)
-	 */
 	@Override
-	public void register(final Entity entity) {
+	public void register(final LocalDomainEntity localDomainEntity) {
+		register((Entity) localDomainEntity);
+	}
+
+	public void register(Entity entity) {
 		// get specific event processor
 		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
 		// set domain invoker

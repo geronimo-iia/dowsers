@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -60,7 +60,7 @@ public class EntityEventProcessor implements EventProcessor {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
+	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
 	 *      org.intelligentsia.dowsers.domain.DomainEvent)
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class EntityEventProcessor implements EventProcessor {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#register(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#register(java.lang.Class)
 	 */
 	@Override
 	public <T extends Entity> void register(final Class<T> entityType) throws IllegalStateException {

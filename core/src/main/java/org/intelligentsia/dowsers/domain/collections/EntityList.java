@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.EntityRegistry;
+import org.intelligentsia.dowsers.domain.LocalDomainEntity;
+import org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry;
 
 import com.google.common.base.Preconditions;
 
@@ -18,9 +17,9 @@ import com.google.common.base.Preconditions;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityList<T extends Entity> implements Iterable<T> {
+public class EntityList<T extends LocalDomainEntity> implements Iterable<T> {
 
-	private final EntityRegistry registerEntity;
+	private final LocalDomainEntityRegistry registerEntity;
 
 	private final List<T> entities;
 
@@ -32,7 +31,7 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	 * @throws NullPointerException
 	 *             if domainEntity is null
 	 */
-	public EntityList(final DomainEntity domainEntity) throws NullPointerException {
+	public EntityList(final LocalDomainEntityRegistry domainEntity) throws NullPointerException {
 		this(domainEntity, new ArrayList<T>());
 	}
 
@@ -45,7 +44,7 @@ public class EntityList<T extends Entity> implements Iterable<T> {
 	 * @throws NullPointerException
 	 *             if domainEntity or entities is null
 	 */
-	public EntityList(final DomainEntity domainEntity, final List<T> entities) throws NullPointerException {
+	public EntityList(final LocalDomainEntityRegistry domainEntity, final List<T> entities) throws NullPointerException {
 		super();
 		this.registerEntity = Preconditions.checkNotNull(domainEntity);
 		this.entities = Preconditions.checkNotNull(entities);

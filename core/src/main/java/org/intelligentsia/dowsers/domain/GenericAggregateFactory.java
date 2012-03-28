@@ -3,23 +3,27 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.events.processor.EventProcessorProvider;
+import org.intelligentsia.dowsers.eventprocessor.EventProcessorProvider;
 
 import com.google.common.base.Preconditions;
 
 /**
- * GenericAggregateFactory implement a generic Factory for Aggregate class.
+ * GenericAggregateFactory implement a generic Factory for Aggregate class. Hide
+ * EventProcessorProvider initialization.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class GenericAggregateFactory implements AggregateFactory {
 
+	/**
+	 * EventProcessorProvider instance to use to create Aggregate instance.
+	 */
 	private final EventProcessorProvider eventProcessorProvider;
 
 	/**
 	 * Build a new instance of GenericAggregateFactory.
 	 * 
-	 * @param eventProcessorProvider
+	 * @param eventProcessorProvider eventProcessorProvider instance
 	 * @throws NullPointerException
 	 *             if eventProcessorProvider is null
 	 */

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 	/**
 	 * Build a new instance of CacheEventProcessorProvider with default cache:
 	 * <ul>
-	 * <li>Mmaximum size : 1000 elements</li>
+	 * <li>Maximum size : 1000 elements</li>
 	 * <li>expire after access : 1 days</li>
 	 * </ul>
 	 */
@@ -56,7 +56,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.processor.EventProcessorProvider#get(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessorProvider#get(java.lang.Class)
 	 */
 	@Override
 	public <T extends Entity> EventProcessor get(final Class<T> entityType) throws RuntimeException {
@@ -69,12 +69,16 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 		}
 	}
 
+	/**
+	 * Unregister specified entity type.
+	 * @param entityType entity type to remove
+	 */
 	public <T extends Entity> void unregister(final Class<T> entityType) {
 		processors.invalidate(entityType);
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
+	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
 	 *      org.intelligentsia.dowsers.domain.DomainEvent)
 	 */
 	@Override
@@ -83,7 +87,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.events.processor.EventProcessor#register(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#register(java.lang.Class)
 	 */
 	@Override
 	public <T extends Entity> void register(final Class<T> entityType) throws IllegalStateException {

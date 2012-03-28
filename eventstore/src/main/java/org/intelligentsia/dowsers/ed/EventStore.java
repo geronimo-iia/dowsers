@@ -2,9 +2,9 @@ package org.intelligentsia.dowsers.ed;
 
 import java.util.UUID;
 
+import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
-import org.intelligentsia.dowsers.storage.ConcurrencyException;
 import org.intelligentsia.dowsers.storage.EmptyResultException;
 
 /**

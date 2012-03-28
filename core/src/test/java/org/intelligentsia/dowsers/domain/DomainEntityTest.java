@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.events.processor.CacheEventProcessorProvider;
+import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -32,5 +32,11 @@ public class DomainEntityTest {
 		assertNotNull(domainEntity.getIdentifier());
 		assertNotNull(domainEntity.getAggregate());
 		assertEquals(domainEntity.getIdentifier(), domainEntity.getAggregate().getIdentifier());
+	}
+	
+	@Test
+	public void checkNextVersionAccess() {
+		DummyDomainEntity domainEntity = new DummyDomainEntity(aggregateFactory);
+		domainEntity.nextVersion(); 
 	}
 }

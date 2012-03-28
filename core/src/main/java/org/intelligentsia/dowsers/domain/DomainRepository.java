@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.intelligentsia.dowsers.annotation.Note;
 import org.intelligentsia.dowsers.annotation.TODO;
 import org.intelligentsia.dowsers.annotation.TODOs;
-import org.intelligentsia.dowsers.storage.ConcurrencyException;
 
 /**
  * DomainRepository interfaces declare methods for retrieving domain objects
@@ -38,13 +37,14 @@ public interface DomainRepository {
 	 *            expected type entity
 	 * @param identity
 	 *            identity what we looking for
-	 * @return an entity instance of the expected type and identity or null if
-	 *         none exists.
+	 * @return an entity instance of the expected type and identity
+	 * 
+	 * @throws DomainEntityNotFoundException
+	 *             if no entity with specifed identity and type exists.
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
 	 */
-	@TODO("Evaluate gain of adding expected type parameter.")
-	public <T> T findByIdentifier(Class<T> expectedType, UUID identity) throws NullPointerException;
+	public <T> T findByIdentifier(Class<T> expectedType, UUID identity) throws DomainEntityNotFoundException, NullPointerException;
 
 	/**
 	 * Find entity with the specified identity, expecting the version of the
@@ -56,18 +56,19 @@ public interface DomainRepository {
 	 *            identity what we looking for
 	 * @param expectedVersion
 	 *            expected Version value
-	 * @return an entity instance of the expected type, identity an version or
-	 *         null if none exists
+	 * @return an entity instance of the expected type, identity an version
+	 * @throws DomainEntityNotFoundException
+	 *             if no entity with specifed parameters did not exists.
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
 	 * @throws IllegalStateException
 	 *             if expectedVersion < 0
 	 * @throws ConcurrencyException
 	 *             if the <code>expectedVersion</code> did not match the
-	 *             entity's actual version
+	 *             entity's actual version in current uncommited session
 	 * 
 	 */
-	public <T> T findByIdentifier(Class<T> expectedType, UUID identity, long expectedVersion) throws NullPointerException, IllegalStateException, ConcurrencyException;
+	public <T> T findByIdentifier(Class<T> expectedType, UUID identity, long expectedVersion) throws DomainEntityNotFoundException, NullPointerException, IllegalStateException, ConcurrencyException;
 
 	/**
 	 * Add specific entity to the domain repository.

@@ -4,7 +4,6 @@
 package org.intelligentsia.dowsers.domain;
 
 import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.annotation.TODO;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -146,20 +145,13 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param identifier
-	 *            the identifier to set
-	 * @throws IllegalArgumentException
-	 *             if identity of this entity isn't the same.
-	 * @throws IllegalArgumentException
-	 *             if identity is null
+	 * Increment version number of this entity. This should call only on a DomainEntity.
 	 */
 	@Note("Package visibility is set to deal with aggregate")
-	@TODO("May we can find a better way to deal with that ?")
-	void setIdentifier(final Identifier identifier) throws IllegalArgumentException, NullPointerException {
-		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier()));
-		this.identifier = identifier;
+	void nextVersion() {
+		this.identifier = identifier.nextVersion();
 	}
-
+	
 	/**
 	 * @param domainEventInvoker
 	 *            the domainEventInvoker to set

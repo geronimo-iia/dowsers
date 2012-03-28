@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
-import org.intelligentsia.dowsers.events.processor.CacheEventProcessorProvider;
+import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

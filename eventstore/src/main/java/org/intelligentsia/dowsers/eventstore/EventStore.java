@@ -2,7 +2,7 @@ package org.intelligentsia.dowsers.eventstore;
 
 import java.util.UUID;
 
-import org.intelligentsia.dowsers.storage.ConcurrencyException;
+import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.storage.EmptyResultException;
 
 /**

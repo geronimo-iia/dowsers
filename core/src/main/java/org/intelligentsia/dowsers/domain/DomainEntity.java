@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import com.google.common.base.Preconditions;
+import com.google.common.annotations.VisibleForTesting;
 
 /**
  * DomainEntity represent a domain entity.
@@ -15,15 +15,12 @@ import com.google.common.base.Preconditions;
  * <li>can be referenced by other domain entity</li>
  * </ul>
  * 
- * 
- * 
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DomainEntity extends Entity implements EntityRegistry {
+public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
 
 	/**
-	 * Aggregate instance essentially used to register child entity.
+	 * Aggregate instance essentially used to register local domain entity.
 	 */
 	private final Aggregate aggregate;
 
@@ -50,20 +47,19 @@ public class DomainEntity extends Entity implements EntityRegistry {
 	/**
 	 * Register specified entity onto this aggregate.
 	 * 
-	 * @throws IllegalStateException
-	 *             if identifier of specified entity is a initial version.
-	 * @see org.intelligentsia.dowsers.domain.EntityRegistry#register(org.intelligentsia.dowsers.domain.Entity)
+	 * @see org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry#register(org.intelligentsia.dowsers.domain.Entity)
 	 */
 	@Override
-	public final void register(final Entity entity) throws NullPointerException, IllegalStateException {
-		Preconditions.checkState(entity.getIdentifier().isForInitialVersion());
+	public final void register(final LocalDomainEntity entity) throws NullPointerException, IllegalStateException {
 		aggregate.register(entity);
 	}
 
 	/**
-	 * @return aggregate
+	 * @return aggregate instance.
 	 */
+	@VisibleForTesting
 	Aggregate getAggregate() {
 		return aggregate;
 	}
+
 }

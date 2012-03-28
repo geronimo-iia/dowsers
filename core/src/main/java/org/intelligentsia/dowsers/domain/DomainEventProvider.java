@@ -1,18 +1,14 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore;
+package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.domain.DomainEvent;
-import org.intelligentsia.dowsers.domain.Identifier;
 
 /**
  * DomainEventProvider declares methods.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@Note("May we move this interface to domain package ?")
 public interface DomainEventProvider {
 
 	/**
@@ -36,7 +32,7 @@ public interface DomainEventProvider {
 	 * @return the current version number of this aggregate, or
 	 *         <code>null</code> if no events were ever committed
 	 */
-	// Long getVersion();
+	public long getVersion();
 
 	/**
 	 * Loading historical domain events.It is basically apply events of the
@@ -62,11 +58,12 @@ public interface DomainEventProvider {
 	 * @return an iterable instance of of uncommitted changes.
 	 */
 	public Iterable<DomainEvent> getUncommittedChanges();
-	
-	 /**
-     * @return the number of uncommitted changes currently available in the aggregate.
-     */
-    public int getUncommittedChangesCount();
+
+	/**
+	 * @return the number of uncommitted changes currently available in the
+	 *         aggregate.
+	 */
+	public int getUncommittedChangesCount();
 
 	/**
 	 * Mark all changes as committed: Clears the events currently marked as

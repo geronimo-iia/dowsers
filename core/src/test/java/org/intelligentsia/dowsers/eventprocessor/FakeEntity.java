@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
 import org.intelligentsia.dowsers.annotation.DomainEventHandler;
 import org.intelligentsia.dowsers.domain.Entity;

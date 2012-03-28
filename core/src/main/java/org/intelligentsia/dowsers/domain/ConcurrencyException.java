@@ -1,9 +1,11 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.domain;
 
 import java.util.UUID;
+
+import org.intelligentsia.dowsers.storage.StoreException;
 
 /**
  * ConcurrencyException.

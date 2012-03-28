@@ -7,25 +7,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.EntityRegistry;
+import org.intelligentsia.dowsers.domain.LocalDomainEntity;
+import org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityMap<K, T extends Entity> implements Iterable<T> {
+public class EntityMap<K, T extends LocalDomainEntity> implements Iterable<T> {
 
-	private final EntityRegistry registerEntity;
+	private final LocalDomainEntityRegistry registerEntity;
 
 	private final Map<K, T> entities;
 
-	public EntityMap(final DomainEntity domainEntity) {
+	public EntityMap(final LocalDomainEntityRegistry domainEntity) {
 		this(domainEntity, new HashMap<K, T>());
 	}
 
-	public EntityMap(final DomainEntity domainEntity, final Map<K, T> entities) {
+	public EntityMap(final LocalDomainEntityRegistry domainEntity, final Map<K, T> entities) {
 		super();
 		this.registerEntity = domainEntity;
 		this.entities = entities;

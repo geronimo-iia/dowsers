@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
 import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
@@ -12,6 +12,11 @@ import org.intelligentsia.dowsers.domain.Entity;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class FakeDomainEventB extends DomainEvent {
+
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -8220197363563967951L;
 
 	/**
 	 * Build a new instance of FakeDomainEventB.

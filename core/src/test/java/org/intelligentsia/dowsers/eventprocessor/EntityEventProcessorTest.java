@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.events.processor;
+package org.intelligentsia.dowsers.eventprocessor;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.intelligentsia.dowsers.domain.Identifier;
-import org.intelligentsia.dowsers.events.processor.EntityEventProcessor;
+import org.intelligentsia.dowsers.eventprocessor.EntityEventProcessor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
