@@ -3,10 +3,7 @@
  */
 package org.intelligentsia.dowsers.storage.snapshot;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
-
 
 /**
  * SnapShotStorage.
@@ -19,7 +16,7 @@ public interface SnapShotStorage {
 	 * @param identity
 	 * @return latest Snapshot for specified identity.
 	 */
-	public <T> SnapShot findLatestSnapShot(UUID identity);
+	public <T> SnapShot findLatestSnapShot(String identity);
 
 	/**
 	 * Store specified snapshot.

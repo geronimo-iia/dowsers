@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers.storage.snapshot;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 
 import com.google.common.base.Preconditions;
@@ -17,9 +15,9 @@ import com.google.common.cache.LoadingCache;
  */
 public class MemoryCacheSnapshotBuilder implements SnapShotStorage {
 
-	private final LoadingCache<UUID, SnapShot> snapshots;
+	private final LoadingCache<String, SnapShot> snapshots;
 
-	public MemoryCacheSnapshotBuilder(final LoadingCache<UUID, SnapShot> cache) {
+	public MemoryCacheSnapshotBuilder(final LoadingCache<String, SnapShot> cache) {
 		super();
 		snapshots = Preconditions.checkNotNull(cache);
 	}
@@ -28,7 +26,7 @@ public class MemoryCacheSnapshotBuilder implements SnapShotStorage {
 	 * @see org.intelligentsia.dowsers.storage.snapshot.SnapShotStorage#findLatestSnapShot(java.util.UUID)
 	 */
 	@Override
-	public <T> SnapShot findLatestSnapShot(final UUID identity) {
+	public <T> SnapShot findLatestSnapShot(final String identity) {
 		return snapshots.getIfPresent(identity);
 	}
 

@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.annotation.DomainEventHandler;
-import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
+import org.intelligentsia.dowsers.events.DomainEvent;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
@@ -61,7 +61,7 @@ public class EntityEventProcessor implements EventProcessor {
 
 	/**
 	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
-	 *      org.intelligentsia.dowsers.domain.DomainEvent)
+	 *      org.intelligentsia.dowsers.events.DomainEvent)
 	 */
 	@Override
 	public void apply(final Entity entity, final DomainEvent domainEvent) {

@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.DowsersException;
 
 /**
@@ -25,7 +23,7 @@ public class DomainEntityNotFoundException extends DowsersException {
 	 * 
 	 * @param identity
 	 */
-	public DomainEntityNotFoundException(UUID identity) {
+	public DomainEntityNotFoundException(final String identity) {
 		super(identity);
 	}
 
@@ -35,7 +33,7 @@ public class DomainEntityNotFoundException extends DowsersException {
 	 * @param identity
 	 * @param message
 	 */
-	public DomainEntityNotFoundException(UUID identity, String message) {
+	public DomainEntityNotFoundException(final String identity, final String message) {
 		super(identity, message);
 	}
 
@@ -45,7 +43,7 @@ public class DomainEntityNotFoundException extends DowsersException {
 	 * @param identity
 	 * @param cause
 	 */
-	public DomainEntityNotFoundException(UUID identity, Throwable cause) {
+	public DomainEntityNotFoundException(final String identity, final Throwable cause) {
 		super(identity, cause);
 	}
 
@@ -56,7 +54,7 @@ public class DomainEntityNotFoundException extends DowsersException {
 	 * @param message
 	 * @param cause
 	 */
-	public DomainEntityNotFoundException(UUID identity, String message, Throwable cause) {
+	public DomainEntityNotFoundException(final String identity, final String message, final Throwable cause) {
 		super(identity, message, cause);
 	}
 

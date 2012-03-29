@@ -1,7 +1,5 @@
 package org.intelligentsia.dowsers.repository.eventstore;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.DowsersException;
 
 /**
@@ -19,19 +17,12 @@ public class EmptyResultException extends DowsersException {
 
 	/**
 	 * Build a new instance of EmptyResultException.
-	 */
-	public EmptyResultException(final String message) {
-		super(message);
-	}
-
-	/**
-	 * Build a new instance of EmptyResultException.
 	 * 
 	 * @param identity
 	 * @param message
 	 * @param cause
 	 */
-	public EmptyResultException(final UUID identity, final String message, final Throwable cause) {
+	public EmptyResultException(final String identity, final String message, final Throwable cause) {
 		super(identity, message, cause);
 	}
 
@@ -41,7 +32,7 @@ public class EmptyResultException extends DowsersException {
 	 * @param identity
 	 * @param message
 	 */
-	public EmptyResultException(final UUID identity, final String message) {
+	public EmptyResultException(final String identity, final String message) {
 		super(identity, message);
 	}
 
@@ -51,7 +42,7 @@ public class EmptyResultException extends DowsersException {
 	 * @param identity
 	 * @param cause
 	 */
-	public EmptyResultException(final UUID identity, final Throwable cause) {
+	public EmptyResultException(final String identity, final Throwable cause) {
 		super(identity, cause);
 	}
 
@@ -60,7 +51,7 @@ public class EmptyResultException extends DowsersException {
 	 * 
 	 * @param identity
 	 */
-	public EmptyResultException(final UUID identity) {
+	public EmptyResultException(final String identity) {
 		super(identity);
 	}
 

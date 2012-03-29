@@ -3,19 +3,13 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.intelligentsia.dowsers.annotation.TODO;
-import org.intelligentsia.dowsers.eventprocessor.EventProcessor;
-import org.intelligentsia.dowsers.eventprocessor.EventProcessorProvider;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
+import org.intelligentsia.dowsers.Registry;
+import org.intelligentsia.dowsers.events.DomainEventInvoker;
 
 /**
+ * Aggregate declare methods to manage an aggregate of entities.
+ * 
+ * 
  * Aggregate act as a context of a root entity.
  * 
  * A collection of objects and entities that are bound together by a root
@@ -33,215 +27,30 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
+public interface Aggregate extends Registry<LocalDomainEntity> {
 
 	/**
-	 * EventProcessorProvider instance.
-	 */
-	private final EventProcessorProvider eventProcessorProvider;
-
-	/**
-	 * The domain entity root instance.
-	 */
-	private final DomainEntity root;
-	/**
-	 * Aggregate version.
-	 */
-	private long version = Identifier.INITIAL_VERSION;
-	/**
-	 * Entities used in this aggregate (included the domain entity root)
-	 */
-	private final Map<UUID, Entity> entities;
-	/**
-	 * Event ordinal.
-	 */
-	private long eventOrdinal = 0l;
-	/**
-	 * List of uncommitted changes.
-	 */
-	private final List<DomainEvent> uncommittedChanges = new ArrayList<DomainEvent>();
-
-	/**
-	 * Build a new instance of Aggregate with specified root entity.
+	 * Register the root domain entity for this aggregate.
 	 * 
 	 * @param domainEntity
-	 *            root domain entity
+	 *            domain entity root for this aggregate
 	 * @throws NullPointerException
-	 *             if eventProcessorProvider or domainEntity is null
+	 *             if domainEntity is null
+	 * @throws IllegalStateException
+	 *             if a root entity is ever registered
 	 */
-	public Aggregate(final EventProcessorProvider eventProcessorProvider, final DomainEntity domainEntity) throws NullPointerException {
-		super();
-		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
-		root = Preconditions.checkNotNull(domainEntity);
-		entities = Maps.newHashMap();
-		register(root);
-	}
+	public void registerRoot(final DomainEntity domainEntity) throws NullPointerException, IllegalStateException;
 
 	/**
-	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getIdentifier()
-	 */
-	@Override
-	public UUID getIdentity() {
-		return root.getIdentity();
-	}
-
-	/**
-	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getVersion()
-	 */
-	@Override
-	public long getVersion() {
-		return version;
-	}
-
-	/**
-	 * It is basically apply events of the given aggregate.
+	 * Get an instance of DomainEventInvoker dedicated for this entity.
 	 * 
-	 * @param history
-	 *            events history
+	 * @param entity
+	 *            entity instance.
+	 * @return a DomainEventInvoker instance
+	 * @throws NullPointerException
+	 *             if entity is null
+	 * @throws IllegalStateException
+	 *             if entity is not register in this aggregate
 	 */
-	@Override
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final long version) throws IllegalStateException {
-		if (history != null) {
-			long ordinal = 0l;
-			for (final DomainEvent domainEvent : history) {
-				// Which entity
-				final Entity entity = entities.get(domainEvent.getEntityIdentity());
-				if (entity == null) {
-					throw new IllegalStateException("No entity for " + domainEvent.getEntityIdentity());
-				}
-				// obtain processor
-				final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
-				if (eventProcessor == null) {
-					throw new IllegalStateException("No event processor for " + entity.getClass().getName());
-				}
-				// apply event
-				eventProcessor.apply(entity, domainEvent);
-				// obtain ordinal
-				ordinal = domainEvent.getOrdinal();
-			}
-			eventOrdinal = ordinal;
-		}
-		this.version=version;
-	}
-
-	/**
-	 * Increment version of this aggregate context.
-	 */
-	@Override
-	public void incrementVersion() {
-		version++;
-	}
-
-	@Override
-	public Iterable<DomainEvent> getUncommittedChanges() {
-		return uncommittedChanges;
-	}
-
-	@Override
-	public int getUncommittedChangesCount() {
-		return uncommittedChanges.size();
-	}
-
-	@Override
-	public void markChangesCommitted() {
-		eventOrdinal = 0l;
-		uncommittedChanges.clear();
-	}
-
-	@Override
-	public void register(final LocalDomainEntity localDomainEntity) {
-		register((Entity) localDomainEntity);
-	}
-
-	public void register(Entity entity) {
-		// get specific event processor
-		final EventProcessor eventProcessor = eventProcessorProvider.get(entity.getClass());
-		// set domain invoker
-		entity.setDomainEventInvoker(new DefaultDomainEventInvoker(eventProcessor, entity));
-		// add in map
-		entities.put(entity.getIdentity(), entity);
-	}
-
-	/**
-	 * Indicates whether this aggregate has been marked as deleted. When
-	 * <code>true</code>, it is an instruction to the repository to remove this
-	 * instance at an appropriate time.
-	 * <p/>
-	 * Repositories should not return any instances of Aggregates that return
-	 * <code>true</code> on <code>isDeleted()</code>.
-	 * 
-	 * @return <code>true</code> if this aggregate was marked as deleted,
-	 *         otherwise <code>false</code>.
-	 */
-	@TODO("implements this")
-	boolean isDeleted() {
-		return true;
-	}
-
-	/**
-	 * @return next event ordinal.
-	 */
-	private long nextEventOrdinal() {
-		return ++eventOrdinal;
-	}
-
-	/**
-	 * 
-	 * DefaultDomainEventInvoker implements a default DomainEventInvoker for a
-	 * specific entity.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 */
-	private class DefaultDomainEventInvoker implements DomainEventInvoker {
-		/**
-		 * attached event processor instance.
-		 */
-		private final EventProcessor eventProcessor;
-		/**
-		 * Target entity instance.
-		 */
-		private final Entity target;
-
-		/**
-		 * Build a new instance of <code>DefaultDomainEventInvoker</code>
-		 * 
-		 * @param eventProcessor
-		 * @param target
-		 * @throws NullPointerException
-		 *             if eventProcessor or target is null
-		 */
-		public DefaultDomainEventInvoker(final EventProcessor eventProcessor, final Entity target) throws NullPointerException {
-			super();
-			this.eventProcessor = Preconditions.checkNotNull(eventProcessor);
-			this.target = Preconditions.checkNotNull(target);
-		}
-
-		/**
-		 * 
-		 * When we Apply a domain event we will first assign the aggregate root
-		 * Id to the event so that we can keep track to which aggregate root
-		 * this event belongs to.<br />
-		 * This is ever done by constructor of all DomainEvent type.
-		 * 
-		 * Secondly we get a new version and assign this to the event, this is
-		 * to maintain the correct order of the events. Then we call the apply
-		 * method which will make the state change to the aggregate root. And
-		 * finally we will add this domain event to the internal list of applied
-		 * events.
-		 * 
-		 * @see org.intelligentsia.dowsers.domain.DomainEventInvoker#apply(org.intelligentsia.dowsers.domain.DomainEvent)
-		 */
-		@Override
-		public <T extends DomainEvent> void apply(final T domainEvent) {
-			// set ordinal value from aggregate
-			domainEvent.setOrdinal(nextEventOrdinal());
-			// call the apply method which will make the state change to the
-			// entity
-			eventProcessor.apply(target, domainEvent);
-			// add add this domain event to the internal list of applied
-			// events.
-			uncommittedChanges.add(domainEvent);
-		}
-
-	}
+	public DomainEventInvoker getDomainEventInvoker(Entity entity) throws NullPointerException, IllegalStateException;
 }

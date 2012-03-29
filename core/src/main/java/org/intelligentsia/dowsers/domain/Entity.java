@@ -3,7 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.annotation.Note;
+import org.intelligentsia.dowsers.events.DomainEvent;
+import org.intelligentsia.dowsers.events.DomainEventInvoker;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -145,13 +146,15 @@ public abstract class Entity {
 	}
 
 	/**
+	 * Set DomainEventInvoker instance for this entity. This methode has a
+	 * package visibility in order to deal with aggregate interface.
+	 * 
 	 * @param domainEventInvoker
 	 *            the domainEventInvoker to set
 	 * @throws NullPointerException
 	 *             if domainEventInvoker is null
 	 */
-	@Note("Package visibility is set to deal with aggregate")
-	void setDomainEventInvoker(final DomainEventInvoker domainEventInvoker) throws NullPointerException {
+	final void setDomainEventInvoker(final DomainEventInvoker domainEventInvoker) throws NullPointerException {
 		this.domainEventInvoker = Preconditions.checkNotNull(domainEventInvoker);
 	}
 }

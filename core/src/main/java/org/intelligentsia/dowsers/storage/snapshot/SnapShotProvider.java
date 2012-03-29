@@ -6,9 +6,7 @@ package org.intelligentsia.dowsers.storage.snapshot;
 import java.util.UUID;
 
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
-import org.intelligentsia.dowsers.domain.Identifier;
 import org.intelligentsia.dowsers.repository.eventstore.EmptyResultException;
-
 
 /**
  * 
@@ -28,7 +26,7 @@ public interface SnapShotProvider {
 	 * @throw EmptyResultException if no snapshot exist for specified
 	 *        identifier.
 	 */
-	public SnapShot getSpecificSnapShot(Identifier identifier) throws EmptyResultException;
+	public SnapShot getSpecificSnapShot(String identifier) throws EmptyResultException;
 
 	/**
 	 * @param identifier
@@ -36,7 +34,7 @@ public interface SnapShotProvider {
 	 * @throw EmptyResultException if no snapshot exist for specified identity
 	 *        and/or before specified version
 	 */
-	public SnapShot getSnapShotBefore(Identifier identifier) throws EmptyResultException;
+	public SnapShot getSnapShotBefore(String identifier, long version) throws EmptyResultException;
 
 	/**
 	 * Store specified snapshot.
@@ -61,5 +59,5 @@ public interface SnapShotProvider {
 	 * @param identifier
 	 *            identifier
 	 */
-	public void remove(Identifier identifier);
+	public void remove(String identifier, long version);
 }

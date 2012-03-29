@@ -2,7 +2,7 @@ package org.intelligentsia.dowsers.repository.eventstore;
 
 import java.util.List;
 
-import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.events.DomainEvent;
 
 /**
  * FakeEventPublisher implements a dummy EventPublisher: all events are ignored.

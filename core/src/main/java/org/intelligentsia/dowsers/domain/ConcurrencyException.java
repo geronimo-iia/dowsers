@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.DowsersException;
 
 /**
@@ -21,19 +19,10 @@ public class ConcurrencyException extends DowsersException {
 	 * Build a new instance of ConcurrencyException.
 	 * 
 	 * @param identity
-	 */
-	public ConcurrencyException(final UUID identity) {
-		super(identity);
-	}
-
-	/**
-	 * Build a new instance of ConcurrencyException.
-	 * 
-	 * @param identity
 	 * @param message
 	 * @param cause
 	 */
-	public ConcurrencyException(final UUID identity, final String message, final Throwable cause) {
+	public ConcurrencyException(final String identity, final String message, final Throwable cause) {
 		super(identity, message, cause);
 	}
 
@@ -43,7 +32,7 @@ public class ConcurrencyException extends DowsersException {
 	 * @param identity
 	 * @param message
 	 */
-	public ConcurrencyException(final UUID identity, final String message) {
+	public ConcurrencyException(final String identity, final String message) {
 		super(identity, message);
 	}
 
@@ -53,7 +42,7 @@ public class ConcurrencyException extends DowsersException {
 	 * @param identity
 	 * @param cause
 	 */
-	public ConcurrencyException(final UUID identity, final Throwable cause) {
+	public ConcurrencyException(final String identity, final Throwable cause) {
 		super(identity, cause);
 	}
 

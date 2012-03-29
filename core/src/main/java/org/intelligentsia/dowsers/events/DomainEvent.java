@@ -1,9 +1,12 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain;
+package org.intelligentsia.dowsers.events;
 
 import java.io.Serializable;
+
+import org.intelligentsia.dowsers.domain.Entity;
+import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -26,7 +29,8 @@ import com.google.common.base.Preconditions;
  * setting the state, the logic should be in the domain method.
  * 
  * 
- * DomainEvent class has a natural order on ordinal value and her equality is based on event identity.
+ * DomainEvent class has a natural order on ordinal value and her equality is
+ * based on event identity.
  * 
  * 
  * 
@@ -40,7 +44,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * Event identity instance.
 	 */
-	private final Identifier eventIdentity;
+	private final String eventIdentity;
 	/**
 	 * Event ordinal value.
 	 */
@@ -48,7 +52,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * Entity identity instance.
 	 */
-	private final Identifier entityIdentity;
+	private final String entityIdentity;
 
 	/**
 	 * Build a new instance of DomainEvent.
@@ -59,7 +63,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 *             if entity is null
 	 */
 	public DomainEvent(final Entity entity) throws NullPointerException {
-		this(Identifier.random(), Preconditions.checkNotNull(entity).getIdentity());
+		this(IdentifierFactoryProvider.generateNewIdentifier(), Preconditions.checkNotNull(entity).getIdentity());
 	}
 
 	/**
@@ -70,7 +74,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 * @param entityIdentity
 	 *            identity of entity which event carries on
 	 */
-	protected DomainEvent(final Identifier eventIdentity, final Identifier entityIdentity) {
+	protected DomainEvent(final String eventIdentity, final String entityIdentity) {
 		super();
 		this.eventIdentity = eventIdentity;
 		this.entityIdentity = entityIdentity;
@@ -80,14 +84,14 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * @return the entityIdentity
 	 */
-	public Identifier getEntityIdentity() {
+	public String getEntityIdentity() {
 		return entityIdentity;
 	}
 
 	/**
 	 * @return the eventIdentity
 	 */
-	public Identifier getEventIdentity() {
+	public String getEventIdentity() {
 		return eventIdentity;
 	}
 
@@ -120,7 +124,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(DomainEvent o) {
+	public int compareTo(final DomainEvent o) {
 		return Long.valueOf(ordinal).compareTo(o.ordinal);
 	}
 

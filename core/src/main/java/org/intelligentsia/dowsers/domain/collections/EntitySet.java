@@ -7,19 +7,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.intelligentsia.dowsers.Registry;
 import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntitySet<T extends LocalDomainEntity> implements Iterable<T> {
-	private final LocalDomainEntityRegistry registerEntity;
+	private final Registry<LocalDomainEntity> registerEntity;
 
 	private final Set<T> entities;
 
-	public EntitySet(final LocalDomainEntityRegistry registry) {
+	public EntitySet(final Registry<LocalDomainEntity> registry) {
 		this(registry, new HashSet<T>());
 	}
 
@@ -29,7 +29,7 @@ public class EntitySet<T extends LocalDomainEntity> implements Iterable<T> {
 	 * @param domainEntity
 	 * @param entities
 	 */
-	public EntitySet(final LocalDomainEntityRegistry registry, final Set<T> entities) {
+	public EntitySet(final Registry<LocalDomainEntity> registry, final Set<T> entities) {
 		super();
 		this.registerEntity = registry;
 		this.entities = entities;

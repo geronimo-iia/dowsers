@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers;
 
-import java.util.UUID;
-
 /**
  * DowsersException extends RuntimeException. Root exception of dowsers project.
  * 
@@ -18,29 +16,14 @@ public class DowsersException extends RuntimeException {
 	/**
 	 * identity instance.
 	 */
-	private final UUID identity;
+	private final String identity;
 
-	/**
-	 * Build a new instance of DowsersException.
-	 * 
-	 * @param message
-	 */
-	public DowsersException(final String message) {
-		super(message);
-		identity = null;
-	}
-
-	/**
-	 * Build a new instance of DowsersException.
-	 * 
-	 * @param identity
-	 */
-	public DowsersException(final UUID identity) {
+	public DowsersException(final String identity) {
 		super();
 		this.identity = identity;
 	}
 
-	public DowsersException(final UUID identity, final String message) {
+	public DowsersException(final String identity, final String message) {
 		super(message);
 		this.identity = identity;
 	}
@@ -52,7 +35,7 @@ public class DowsersException extends RuntimeException {
 	 * @param identity
 	 * @param cause
 	 */
-	public DowsersException(final UUID identity, final Throwable cause) {
+	public DowsersException(final String identity, final Throwable cause) {
 		super(cause);
 		this.identity = identity;
 	}
@@ -63,7 +46,7 @@ public class DowsersException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public DowsersException(final UUID identity, final String message, final Throwable cause) {
+	public DowsersException(final String identity, final String message, final Throwable cause) {
 		super(message, cause);
 		this.identity = identity;
 	}
@@ -71,7 +54,7 @@ public class DowsersException extends RuntimeException {
 	/**
 	 * @return the identity
 	 */
-	public UUID getIdentity() {
+	public String getIdentity() {
 		return identity;
 	}
 

@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.intelligentsia.dowsers.storage.Memento;
 
-
 /**
  * EntityMemento.
  * 

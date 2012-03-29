@@ -2,7 +2,7 @@ package org.intelligentsia.dowsers.repository.eventstore;
 
 import java.util.List;
 
-import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.events.DomainEvent;
 
 /**
  * EventPublisher declares method to publish Domain event to an external bus.

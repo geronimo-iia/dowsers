@@ -1,6 +1,6 @@
 package org.intelligentsia.dowsers.repository;
 
-import org.intelligentsia.dowsers.domain.DomainEvent;
+import org.intelligentsia.dowsers.events.DomainEvent;
 import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSink;
 import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSource;
 
@@ -15,7 +15,7 @@ public class DomainEventStream implements DomainEventStreamSink, DomainEventStre
 	/**
 	 * Version of which this domainEvents apply.
 	 */
-	private long version = -1l;
+	private long version = -1L;
 	/**
 	 * Ordered collection of DomainEvent.
 	 */

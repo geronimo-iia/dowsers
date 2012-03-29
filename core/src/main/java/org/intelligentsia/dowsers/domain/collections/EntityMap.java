@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.Registry;
 import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry;
 
 /**
  * 
@@ -16,15 +16,15 @@ import org.intelligentsia.dowsers.domain.LocalDomainEntityRegistry;
  */
 public class EntityMap<K, T extends LocalDomainEntity> implements Iterable<T> {
 
-	private final LocalDomainEntityRegistry registerEntity;
+	private final Registry<LocalDomainEntity> registerEntity;
 
 	private final Map<K, T> entities;
 
-	public EntityMap(final LocalDomainEntityRegistry domainEntity) {
+	public EntityMap(final Registry<LocalDomainEntity> domainEntity) {
 		this(domainEntity, new HashMap<K, T>());
 	}
 
-	public EntityMap(final LocalDomainEntityRegistry domainEntity, final Map<K, T> entities) {
+	public EntityMap(final Registry<LocalDomainEntity> domainEntity, final Map<K, T> entities) {
 		super();
 		this.registerEntity = domainEntity;
 		this.entities = entities;

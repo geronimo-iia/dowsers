@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.eventprocessor;
 
-import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
+import org.intelligentsia.dowsers.events.DomainEvent;
 
 /**
  * FakeDomainEventB.

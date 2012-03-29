@@ -1,9 +1,12 @@
 package org.intelligentsia.dowsers.domain;
 
+import org.intelligentsia.dowsers.container.DomainEntityFactory;
+
 import com.google.common.base.Preconditions;
 
 /**
- * AbstractDomainRepository provides access on DomainEventProvider interace associated with DomainEntity.
+ * AbstractDomainRepository provides access on DomainEventProvider interace
+ * associated with DomainEntity.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -21,7 +24,7 @@ public abstract class AbstractDomainRepository implements DomainRepository {
 	 * @throws NullPointerException
 	 *             if domainEntityFactory is null
 	 */
-	public AbstractDomainRepository(DomainEntityFactory domainEntityFactory) throws NullPointerException {
+	public AbstractDomainRepository(final DomainEntityFactory domainEntityFactory) throws NullPointerException {
 		super();
 		this.domainEntityFactory = Preconditions.checkNotNull(domainEntityFactory);
 	}
@@ -32,7 +35,7 @@ public abstract class AbstractDomainRepository implements DomainRepository {
 	 * @return DomainEventProvider instance associated with specified domain
 	 *         entity.
 	 */
-	protected <T extends DomainEntity> DomainEventProvider getDomainEventProvider(T domainEntity) {
-		return domainEntity.getDomainEventProvider();
+	protected <T extends DomainEntity> Aggregate getAggregate(final T domainEntity) {
+		return domainEntity.getAggregate();
 	}
 }

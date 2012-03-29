@@ -3,14 +3,14 @@
  */
 package org.intelligentsia.dowsers.repository;
 
-import java.util.UUID;
-
+import org.intelligentsia.dowsers.container.DomainEntityFactory;
 import org.intelligentsia.dowsers.domain.AbstractDomainRepository;
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.domain.DomainEntityFactory;
 import org.intelligentsia.dowsers.domain.DomainEntityNotFoundException;
-import org.intelligentsia.dowsers.domain.DomainEventProvider;
+import org.intelligentsia.dowsers.domain.Version;
+import org.intelligentsia.dowsers.events.DomainAggregate;
+import org.intelligentsia.dowsers.events.DomainEventProvider;
 import org.intelligentsia.dowsers.repository.eventstore.DomainEventStore;
 
 import com.google.common.base.Preconditions;
@@ -45,17 +45,17 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 	 *      java.util.UUID)
 	 */
 	@Override
-	public <T extends DomainEntity> T find(final Class<T> expectedType, final UUID identity) throws DomainEntityNotFoundException, NullPointerException {
+	public <T extends DomainEntity> T find(final Class<T> expectedType, final String identity) throws DomainEntityNotFoundException, NullPointerException {
 		Preconditions.checkNotNull(identity);
 		// instanciate a new domain entity
 		final T entity = domainEntityFactory.create(Preconditions.checkNotNull(expectedType));
 		// retreive DomainEventProvider
-		final DomainEventProvider domainEventProvider = getDomainEventProvider(entity);
+		final DomainEventProvider domainEventProvider = getDomainAggregate(entity);
 		// retreive domain event stream
-		DomainEventStream domainEventStream = new DomainEventStream();
+		final DomainEventStream domainEventStream = new DomainEventStream();
 		domainEventStore.loadDomainEventsFromLatestStreamVersion(identity, domainEventStream);
 		// load from history
-		domainEventProvider.loadFromHistory(domainEventStream.getDomainEvents(), domainEventStream.getVersion());
+		domainEventProvider.loadFromHistory(domainEventStream.getDomainEvents(), Version.forSpecificVersion(domainEventStream.getVersion()));
 		return entity;
 	}
 
@@ -65,17 +65,27 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 	@Override
 	public <T extends DomainEntity> void store(final T domainEntity) throws NullPointerException, ConcurrencyException {
 		// retreive DomainEventProvider.
-		final DomainEventProvider domainEventProvider = getDomainEventProvider(Preconditions.checkNotNull(domainEntity));
+		final DomainEventProvider domainEventProvider = getDomainAggregate(domainEntity);
 		// increment version
 		domainEventProvider.incrementVersion();
 		// create DomainEventStream
-		DomainEventStream domainEventStream = new DomainEventStream();
-		domainEventStream.setVersion(domainEventProvider.getVersion());
+		final DomainEventStream domainEventStream = new DomainEventStream();
+		domainEventStream.setVersion(domainEventProvider.getVersion().toLong());
 		domainEventStream.setDomainEvents(domainEventProvider.getUncommittedChanges());
 		// store
-		domainEventStore.storeDomainEventsIntoStream(domainEventProvider.getIdentifier().getIdentity(), domainEventStream);
+		domainEventStore.storeDomainEventsIntoStream(domainEventProvider.getIdentity(), domainEventStream);
 		// mark change as committed
 		domainEventProvider.markChangesCommitted();
 	}
 
+	/**
+	 * @param domainEntity
+	 *            domain entity instance
+	 * @return associated DomainAggregate instance with specified domain entity.
+	 * @throws NullPointerException
+	 *             if domainEntity is null
+	 */
+	protected <T extends DomainEntity> DomainAggregate getDomainAggregate(final T domainEntity) throws NullPointerException {
+		return (DomainAggregate) getAggregate(Preconditions.checkNotNull(domainEntity));
+	}
 }

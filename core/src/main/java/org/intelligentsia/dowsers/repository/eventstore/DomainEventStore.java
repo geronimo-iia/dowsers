@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers.repository.eventstore;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 
 /**
@@ -25,7 +23,7 @@ public interface DomainEventStore {
 	 * @throws StreamEverExistsException
 	 *             a stream with the specified id already exists.
 	 */
-	public void createDomainEventStream(UUID identity, DomainEventStreamSource source) throws StreamEverExistsException;
+	public void createDomainEventStream(String identity, DomainEventStreamSource source) throws StreamEverExistsException;
 
 	/**
 	 * Adds the events from source to the specified stream.
@@ -44,7 +42,7 @@ public interface DomainEventStore {
 	 *             if expectedVersion is strictly lower or equal than current in
 	 *             store
 	 */
-	void storeDomainEventsIntoStream(UUID identity, DomainEventStreamSource source) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
+	void storeDomainEventsIntoStream(String identity, DomainEventStreamSource source) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink.
@@ -56,7 +54,7 @@ public interface DomainEventStore {
 	 * @throws EmptyResultException
 	 *             no stream with the specified id exists.
 	 */
-	public void loadDomainEventsFromLatestStreamVersion(UUID streamId, DomainEventStreamSink sink) throws EmptyResultException;
+	public void loadDomainEventsFromLatestStreamVersion(String streamId, DomainEventStreamSink sink) throws EmptyResultException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink. Only

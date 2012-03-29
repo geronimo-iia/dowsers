@@ -5,7 +5,6 @@ package org.intelligentsia.dowsers.eventprocessor;
 
 import org.intelligentsia.dowsers.annotation.DomainEventHandler;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.Identifier;
 
 /**
  * FakeEntity.
@@ -21,7 +20,7 @@ public class FakeEntity extends Entity {
 	 * 
 	 * @param identifier
 	 */
-	public FakeEntity(final Identifier identifier) {
+	public FakeEntity(final String identifier) {
 		super(identifier);
 	}
 

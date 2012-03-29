@@ -7,7 +7,6 @@ import hirondelle.date4j.DateTime;
 
 import java.io.Serializable;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import org.intelligentsia.dowsers.storage.Memento;
 
@@ -26,7 +25,7 @@ public class SnapShot implements Serializable {
 	/**
 	 * Identity of snapshot and entity.
 	 */
-	private UUID identity;
+	private String identity;
 	/**
 	 * Version of entity that this snapshot represents.
 	 */
@@ -48,7 +47,7 @@ public class SnapShot implements Serializable {
 	 * @param version
 	 * @param memento
 	 */
-	public SnapShot(final UUID identity, final long version, final Memento memento) {
+	public SnapShot(final String identity, final long version, final Memento memento) {
 		this(identity, version, DateTime.now(TimeZone.getTimeZone("GMT")), memento);
 	}
 
@@ -60,7 +59,7 @@ public class SnapShot implements Serializable {
 	 * @param timestamp
 	 * @param memento
 	 */
-	public SnapShot(final UUID identity, final long version, final DateTime timestamp, final Memento memento) {
+	public SnapShot(final String identity, final long version, final DateTime timestamp, final Memento memento) {
 		super();
 		this.identity = identity;
 		this.version = version;
@@ -71,7 +70,7 @@ public class SnapShot implements Serializable {
 	/**
 	 * @return the identity
 	 */
-	public UUID getIdentity() {
+	public String getIdentity() {
 		return identity;
 	}
 
@@ -79,7 +78,7 @@ public class SnapShot implements Serializable {
 	 * @param identity
 	 *            the identity to set
 	 */
-	public void setIdentity(final UUID identity) {
+	public void setIdentity(final String identity) {
 		this.identity = identity;
 	}
 

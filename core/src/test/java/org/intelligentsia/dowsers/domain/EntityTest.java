@@ -3,9 +3,11 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.Identifier;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 
 /**
@@ -16,16 +18,35 @@ import org.junit.Test;
 public class EntityTest {
 
 	@Test
-	public void testNextVersion() {
-		final DummyEntity entity = new DummyEntity();
-		Identifier identifier = entity.getIdentifier();
-		// increment version
-		entity.nextVersion();
-		Identifier nextVersion = entity.getIdentifier();
-		// check
-		assertNotSame(identifier, nextVersion);
-		assertTrue(identifier.hasSameIdentity(nextVersion));
-		assertTrue(identifier.compareTo(nextVersion) < 0);
+	public void testInstanciation() {
+		try {
+			new DummyEntity(null);
+			fail("Expected NullPointerException");
+		} catch (NullPointerException e) {
+		}
+		new DummyEntity("test");
+	}
+
+	@Test
+	public void shoudlStore() {
+		final String id = IdentifierFactoryProvider.generateNewIdentifier();
+		final DummyEntity entity = new DummyEntity(id);
+		assertEquals(id, entity.getIdentity());
+	}
+
+	@Test
+	public void testEquals() {
+		DummyEntity a = new DummyEntity(IdentifierFactoryProvider.generateNewIdentifier());
+		DummyEntity ap = new DummyEntity(a.getIdentity());
+		DummyEntity b = new DummyEntity(IdentifierFactoryProvider.generateNewIdentifier());
+
+		assertEquals(a.getIdentity(), ap.getIdentity());
+		assertTrue(a.equals(ap));
+		assertTrue(ap.equals(a));
+
+		assertNotSame(a.getIdentity(), b.getIdentity());
+		assertTrue(!a.equals(b));
+		assertTrue(!b.equals(a));
 	}
 
 	/**
@@ -40,8 +61,8 @@ public class EntityTest {
 		/**
 		 * Build a new instance of DummyEntity.
 		 */
-		public DummyEntity() {
-			super(Identifier.random());
+		public DummyEntity(String id) {
+			super(id);
 		}
 
 	}

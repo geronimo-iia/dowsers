@@ -1,10 +1,13 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain;
+package org.intelligentsia.dowsers.container;
 
 import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
+
+import org.intelligentsia.dowsers.domain.AggregateFactory;
+import org.intelligentsia.dowsers.domain.DomainEntity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
@@ -64,8 +67,8 @@ public class GenericDomainEntityFactory implements DomainEntityFactory {
 			 * @see com.google.common.cache.CacheLoader#load(java.lang.Object)
 			 */
 			@Override
-			public Constructor<?> load(Class<?> exceptedType) throws Exception {
-				Constructor<?> constructor = exceptedType.getConstructor(AggregateFactory.class);
+			public Constructor<?> load(final Class<?> exceptedType) throws Exception {
+				final Constructor<?> constructor = exceptedType.getConstructor(AggregateFactory.class);
 				if (!constructor.isAccessible()) {
 					constructor.setAccessible(Boolean.TRUE);
 				}
@@ -75,7 +78,7 @@ public class GenericDomainEntityFactory implements DomainEntityFactory {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.domain.DomainEntityFactory#create(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.container.DomainEntityFactory#create(java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

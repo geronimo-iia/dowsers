@@ -1,7 +1,5 @@
 package org.intelligentsia.dowsers.repository.eventstore;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.DowsersException;
 
 /**
@@ -21,7 +19,7 @@ public class StreamEverExistsException extends DowsersException {
 	 * 
 	 * @param identity
 	 */
-	public StreamEverExistsException(final UUID identity) {
+	public StreamEverExistsException(final String identity) {
 		super(identity);
 	}
 
@@ -32,7 +30,7 @@ public class StreamEverExistsException extends DowsersException {
 	 * @param message
 	 * @param cause
 	 */
-	public StreamEverExistsException(final UUID identity, final String message, final Throwable cause) {
+	public StreamEverExistsException(final String identity, final String message, final Throwable cause) {
 		super(identity, message, cause);
 	}
 
@@ -42,7 +40,7 @@ public class StreamEverExistsException extends DowsersException {
 	 * @param identity
 	 * @param message
 	 */
-	public StreamEverExistsException(final UUID identity, final String message) {
+	public StreamEverExistsException(final String identity, final String message) {
 		super(identity, message);
 	}
 
@@ -52,7 +50,7 @@ public class StreamEverExistsException extends DowsersException {
 	 * @param identity
 	 * @param cause
 	 */
-	public StreamEverExistsException(final UUID identity, final Throwable cause) {
+	public StreamEverExistsException(final String identity, final Throwable cause) {
 		super(identity, cause);
 	}
 

@@ -109,7 +109,7 @@ public class Version implements Serializable, Comparable<Version> {
 		if (isForLatestVersion()) {
 			return this;
 		} else {
-			return forSpecificVersion(version + 1);
+			return Version.forSpecificVersion(version + 1);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class Version implements Serializable, Comparable<Version> {
 	 * @throws IllegalArgumentException
 	 *             if value < INITIAL_VERSION
 	 */
-	public static Version parseVersion(String value) throws NumberFormatException, IllegalArgumentException {
+	public static Version parseVersion(final String value) throws NumberFormatException, IllegalArgumentException {
 		return Version.parseVersion(Long.parseLong(value));
 	}
 
@@ -145,7 +145,7 @@ public class Version implements Serializable, Comparable<Version> {
 	 * @throws IllegalArgumentException
 	 *             if value < INITIAL_VERSION
 	 */
-	public static Version parseVersion(Long value) throws IllegalArgumentException {
+	public static Version parseVersion(final Long value) throws IllegalArgumentException {
 		return Version.forSpecificVersion(value);
 	}
 
@@ -155,7 +155,7 @@ public class Version implements Serializable, Comparable<Version> {
 	@Override
 	public final int hashCode() {
 		// take long implementation of hashCode
-		return (int) (version ^ (version >>> 32));
+		return (int) (version ^ version >>> 32);
 	}
 
 	/**
@@ -185,8 +185,8 @@ public class Version implements Serializable, Comparable<Version> {
 	 */
 	@Override
 	public int compareTo(final Version o) {
-		long thisVal = this.version;
-		long anotherVal = o.version;
-		return (thisVal < anotherVal ? -1 : (thisVal == anotherVal ? 0 : 1));
+		final long thisVal = version;
+		final long anotherVal = o.version;
+		return thisVal < anotherVal ? -1 : thisVal == anotherVal ? 0 : 1;
 	}
 }

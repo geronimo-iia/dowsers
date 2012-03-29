@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.feature;
+package org.intelligentsia.dowsers.container;
 
 /**
- * Feature. 
- *
+ * Feature.
+ * 
  * @author jgt
- *
+ * 
  */
 public interface Feature {
 	public String getName();

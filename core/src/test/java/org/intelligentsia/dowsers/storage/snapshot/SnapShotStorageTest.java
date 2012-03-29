@@ -3,11 +3,9 @@
  */
 package org.intelligentsia.dowsers.storage.snapshot;
 
-import java.util.UUID;
-
 import junit.framework.Assert;
 
-import org.intelligentsia.dowsers.storage.snapshot.SnapShot;
+import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
 import org.junit.Test;
 
 /**
@@ -20,7 +18,7 @@ public class SnapShotStorageTest {
 
 	@Test
 	public void testDefaultDayTimeOfSnapshot() {
-		final SnapShot snapShot = new SnapShot(UUID.randomUUID(), 1, new DummyMemento());
+		final SnapShot snapShot = new SnapShot(IdentifierFactoryProvider.generateNewIdentifier(), 1, new DummyMemento());
 		Assert.assertNotNull(snapShot.getTimestamp());
 	}
 }

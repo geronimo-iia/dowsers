@@ -6,8 +6,7 @@ package org.intelligentsia.dowsers.eventprocessor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.intelligentsia.dowsers.domain.Identifier;
-import org.intelligentsia.dowsers.eventprocessor.EntityEventProcessor;
+import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +76,7 @@ public class EntityEventProcessorTest {
 
 	@Test
 	public void testHandledInvokation() {
-		final FakeEntity entity = new FakeEntity(Identifier.random());
+		final FakeEntity entity = new FakeEntity(IdentifierFactoryProvider.generateNewIdentifier());
 
 		// no handler
 		Assert.assertEquals(0L, entity.getHandledCounter());

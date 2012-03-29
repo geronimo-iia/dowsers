@@ -3,21 +3,21 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import com.google.common.annotations.VisibleForTesting;
+import org.intelligentsia.dowsers.Registry;
 
 /**
  * DomainEntity represent a domain entity.
  * 
  * <ul>
  * <li>has a immutable Identity</li>
- * <li>has a version</li>
- * <li>can aggregate simple entity</li>
+ * <li>can aggregate local domain entity (implement a registry of
+ * LocalDomainEntity)</li>
  * <li>can be referenced by other domain entity</li>
  * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
+public class DomainEntity extends Entity implements Registry<LocalDomainEntity> {
 
 	/**
 	 * Aggregate instance essentially used to register local domain entity.
@@ -28,7 +28,7 @@ public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
 	 * Build a new instance of root Entity.
 	 */
 	public DomainEntity(final AggregateFactory aggregateFactory) {
-		this(aggregateFactory, Identifier.random());
+		this(aggregateFactory, IdentifierFactoryProvider.generateNewIdentifier());
 	}
 
 	/**
@@ -39,9 +39,12 @@ public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	public DomainEntity(final AggregateFactory aggregateFactory, final Identifier identifier) throws NullPointerException {
+	public DomainEntity(final AggregateFactory aggregateFactory, final String identifier) throws NullPointerException {
 		super(identifier);
-		aggregate = aggregateFactory.create(this);
+		// create aggregate with this root instance
+		aggregate = aggregateFactory.newInstance(this);
+		// set domain event invoker for root
+		setDomainEventInvoker(aggregate.getDomainEventInvoker(this));
 	}
 
 	/**
@@ -51,15 +54,18 @@ public class DomainEntity extends Entity implements LocalDomainEntityRegistry {
 	 */
 	@Override
 	public final void register(final LocalDomainEntity entity) throws NullPointerException, IllegalStateException {
+		// regsiter on aggregate
 		aggregate.register(entity);
+		// set domain event invoker
+		entity.setDomainEventInvoker(aggregate.getDomainEventInvoker(entity));
+		// callback
+		entity.onRegister(this);
 	}
 
 	/**
-	 * @return DomainEventProvider instance.
+	 * @return aggegate instance
 	 */
-	@VisibleForTesting
-	DomainEventProvider getDomainEventProvider() {
+	Aggregate getAggregate() {
 		return aggregate;
 	}
-
 }

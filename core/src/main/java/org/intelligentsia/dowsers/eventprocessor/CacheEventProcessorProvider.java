@@ -6,8 +6,8 @@ package org.intelligentsia.dowsers.eventprocessor;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.intelligentsia.dowsers.domain.DomainEvent;
 import org.intelligentsia.dowsers.domain.Entity;
+import org.intelligentsia.dowsers.events.DomainEvent;
 
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
@@ -71,7 +71,9 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 
 	/**
 	 * Unregister specified entity type.
-	 * @param entityType entity type to remove
+	 * 
+	 * @param entityType
+	 *            entity type to remove
 	 */
 	public <T extends Entity> void unregister(final Class<T> entityType) {
 		processors.invalidate(entityType);
@@ -79,7 +81,7 @@ public class CacheEventProcessorProvider implements EventProcessorProvider, Even
 
 	/**
 	 * @see org.intelligentsia.dowsers.eventprocessor.EventProcessor#apply(org.intelligentsia.dowsers.domain.Entity,
-	 *      org.intelligentsia.dowsers.domain.DomainEvent)
+	 *      org.intelligentsia.dowsers.events.DomainEvent)
 	 */
 	@Override
 	public void apply(final Entity entity, final DomainEvent domainEvent) {

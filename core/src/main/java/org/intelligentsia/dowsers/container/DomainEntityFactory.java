@@ -1,7 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain;
+package org.intelligentsia.dowsers.container;
+
+import org.intelligentsia.dowsers.domain.DomainEntity;
 
 /**
  * DomainEntityFactory declare method to create DomainEntity instance.

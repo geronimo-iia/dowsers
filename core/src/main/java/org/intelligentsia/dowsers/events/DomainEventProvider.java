@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain;
+package org.intelligentsia.dowsers.events;
 
-import java.util.UUID;
+import org.intelligentsia.dowsers.domain.Version;
 
 /**
  * DomainEventProvider declares methods.
@@ -15,7 +15,7 @@ public interface DomainEventProvider {
 	/**
 	 * @return identity of root entity
 	 */
-	public UUID getIdentity();
+	public String getIdentity();
 
 	/**
 	 * Returns the current version number of the aggregate, or <code>null</code>
@@ -33,7 +33,7 @@ public interface DomainEventProvider {
 	 * @return the current version number of this aggregate, or
 	 *         <code>null</code> if no events were ever committed
 	 */
-	public long getVersion();
+	public Version getVersion();
 
 	/**
 	 * Loading historical domain events.It is basically apply events of the
@@ -47,7 +47,7 @@ public interface DomainEventProvider {
 	 * @throws IllegalStateException
 	 *             if error occurs when load history
 	 */
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history, long version) throws IllegalStateException;
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, Version version) throws IllegalStateException;
 
 	/**
 	 * Increment version of this root entity.
