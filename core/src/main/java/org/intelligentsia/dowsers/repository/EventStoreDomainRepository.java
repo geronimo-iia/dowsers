@@ -70,7 +70,7 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 		domainEventProvider.incrementVersion();
 		// create DomainEventStream
 		DomainEventStream domainEventStream = new DomainEventStream();
-		domainEventStream.setVersion(domainEventProvider.getIdentifier().getVersion());
+		domainEventStream.setVersion(domainEventProvider.getVersion());
 		domainEventStream.setDomainEvents(domainEventProvider.getUncommittedChanges());
 		// store
 		domainEventStore.storeDomainEventsIntoStream(domainEventProvider.getIdentifier().getIdentity(), domainEventStream);

@@ -45,6 +45,10 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	 */
 	private final DomainEntity root;
 	/**
+	 * Aggregate version.
+	 */
+	private long version = Identifier.INITIAL_VERSION;
+	/**
 	 * Entities used in this aggregate (included the domain entity root)
 	 */
 	private final Map<UUID, Entity> entities;
@@ -77,8 +81,8 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	 * @see org.intelligentsia.dowsers.domain.DomainEventProvider#getIdentifier()
 	 */
 	@Override
-	public Identifier getIdentifier() {
-		return root.getIdentifier();
+	public UUID getIdentity() {
+		return root.getIdentity();
 	}
 
 	/**
@@ -86,7 +90,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	 */
 	@Override
 	public long getVersion() {
-		return root.getIdentifier().getVersion();
+		return version;
 	}
 
 	/**
@@ -117,7 +121,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 			}
 			eventOrdinal = ordinal;
 		}
-		root.setVersion(version);
+		this.version=version;
 	}
 
 	/**
@@ -125,7 +129,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 	 */
 	@Override
 	public void incrementVersion() {
-		root.nextVersion();
+		version++;
 	}
 
 	@Override
@@ -155,7 +159,7 @@ class Aggregate implements DomainEventProvider, LocalDomainEntityRegistry {
 		// set domain invoker
 		entity.setDomainEventInvoker(new DefaultDomainEventInvoker(eventProcessor, entity));
 		// add in map
-		entities.put(entity.getIdentifier().getIdentity(), entity);
+		entities.put(entity.getIdentity(), entity);
 	}
 
 	/**

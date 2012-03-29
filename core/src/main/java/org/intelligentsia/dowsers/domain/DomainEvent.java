@@ -4,7 +4,6 @@
 package org.intelligentsia.dowsers.domain;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -41,7 +40,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * Event identity instance.
 	 */
-	private final UUID eventIdentity;
+	private final Identifier eventIdentity;
 	/**
 	 * Event ordinal value.
 	 */
@@ -49,7 +48,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * Entity identity instance.
 	 */
-	private final UUID entityIdentity;
+	private final Identifier entityIdentity;
 
 	/**
 	 * Build a new instance of DomainEvent.
@@ -60,7 +59,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 *             if entity is null
 	 */
 	public DomainEvent(final Entity entity) throws NullPointerException {
-		this(UUID.randomUUID(), Preconditions.checkNotNull(entity).getIdentifier().getIdentity());
+		this(Identifier.random(), Preconditions.checkNotNull(entity).getIdentity());
 	}
 
 	/**
@@ -71,7 +70,7 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 * @param entityIdentity
 	 *            identity of entity which event carries on
 	 */
-	protected DomainEvent(final UUID eventIdentity, final UUID entityIdentity) {
+	protected DomainEvent(final Identifier eventIdentity, final Identifier entityIdentity) {
 		super();
 		this.eventIdentity = eventIdentity;
 		this.entityIdentity = entityIdentity;
@@ -81,14 +80,14 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	/**
 	 * @return the entityIdentity
 	 */
-	public UUID getEntityIdentity() {
+	public Identifier getEntityIdentity() {
 		return entityIdentity;
 	}
 
 	/**
 	 * @return the eventIdentity
 	 */
-	public UUID getEventIdentity() {
+	public Identifier getEventIdentity() {
 		return eventIdentity;
 	}
 

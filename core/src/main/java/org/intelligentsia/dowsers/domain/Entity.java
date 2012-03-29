@@ -60,9 +60,9 @@ import com.google.common.base.Preconditions;
 public abstract class Entity {
 
 	/**
-	 * Entity identifier.
+	 * Entity identity.
 	 */
-	private Identifier identifier;
+	private final String identity;
 
 	/**
 	 * DomainEventInvoker instance.
@@ -73,14 +73,14 @@ public abstract class Entity {
 	 * Build a new instance of Entity. All change in this entity will be bounded
 	 * by root entity of the specific aggregate.
 	 * 
-	 * @param identifier
+	 * @param identity
 	 * 
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	public Entity(final Identifier identifier) throws NullPointerException {
+	public Entity(final String identity) throws NullPointerException {
 		super();
-		this.identifier = Preconditions.checkNotNull(identifier);
+		this.identity = Preconditions.checkNotNull(identity);
 	}
 
 	/**
@@ -100,10 +100,10 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return identifier value
+	 * @return identity value
 	 */
-	public final Identifier getIdentifier() {
-		return identifier;
+	public final String getIdentity() {
+		return identity;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public abstract class Entity {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hashCode(getIdentifier().getIdentity());
+		return Objects.hashCode(identity);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public abstract class Entity {
 			return false;
 		}
 		final Entity other = (Entity) obj;
-		return Objects.equal(other.getIdentifier().getIdentity(), getIdentifier().getIdentity());
+		return Objects.equal(other.getIdentity(), identity);
 	}
 
 	/**
@@ -141,24 +141,7 @@ public abstract class Entity {
 	 */
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("identifier", identifier).toString();
-	}
-
-	/**
-	 * Increment version number of this entity. This should call only on a
-	 * DomainEntity.
-	 */
-	@Note("Package visibility is set to deal with aggregate")
-	void nextVersion() {
-		this.identifier = identifier.nextVersion();
-	}
-
-	/**
-	 * @param version set version value
-	 */
-	@Note("Package visibility is set to deal with aggregate")
-	void setVersion(long version) {
-		this.identifier = identifier.withVersion(version);
+		return Objects.toStringHelper(this).add("identity", identity).toString();
 	}
 
 	/**

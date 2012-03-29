@@ -3,6 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+import java.util.UUID;
+
 /**
  * DomainEventProvider declares methods.
  * 
@@ -11,9 +13,9 @@ package org.intelligentsia.dowsers.domain;
 public interface DomainEventProvider {
 
 	/**
-	 * @return identifier of root entity
+	 * @return identity of root entity
 	 */
-	public Identifier getIdentifier();
+	public UUID getIdentity();
 
 	/**
 	 * Returns the current version number of the aggregate, or <code>null</code>
