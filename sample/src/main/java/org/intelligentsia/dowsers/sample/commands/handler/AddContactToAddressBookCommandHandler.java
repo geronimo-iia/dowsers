@@ -10,7 +10,6 @@ import org.intelligentsia.dowsers.sample.commands.AddContactToAddressBookCommand
 import org.intelligentsia.dowsers.sample.domain.addressbook.AddressBook;
 import org.intelligentsia.dowsers.sample.domain.contact.Contact;
 
-
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
@@ -36,8 +35,8 @@ public class AddContactToAddressBookCommandHandler extends CommandHandler<AddCon
 	 */
 	@Override
 	public void onCommand(final AddContactToAddressBookCommand command) {
-		final AddressBook addressBook = domainRepository.findByIdentifier(AddressBook.class, command.getAddressBookIdentifier());
-		final Contact contact = domainRepository.findByIdentifier(Contact.class, command.getContact());
+		final AddressBook addressBook = domainRepository.find(AddressBook.class, command.getAddressBookIdentifier());
+		final Contact contact = domainRepository.find(Contact.class, command.getContact());
 		addressBook.add(contact);
 	}
 

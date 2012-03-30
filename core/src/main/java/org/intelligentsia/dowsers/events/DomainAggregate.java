@@ -154,7 +154,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.Registry#register(java.lang.Object)
+	 * @see org.intelligentsia.dowsers.util.Registry#register(java.lang.Object)
 	 */
 	@Override
 	public void register(final LocalDomainEntity object) throws NullPointerException {

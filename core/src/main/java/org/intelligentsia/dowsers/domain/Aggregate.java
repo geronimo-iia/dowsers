@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.Registry;
 import org.intelligentsia.dowsers.events.DomainEventInvoker;
+import org.intelligentsia.dowsers.util.Registry;
 
 /**
  * Aggregate declare methods to manage an aggregate of entities.
@@ -53,4 +53,9 @@ public interface Aggregate extends Registry<LocalDomainEntity> {
 	 *             if entity is not register in this aggregate
 	 */
 	public DomainEventInvoker getDomainEventInvoker(Entity entity) throws NullPointerException, IllegalStateException;
+	
+	/**
+	 * @return current version of this aggregate
+	 */
+	public Version getVersion();
 }

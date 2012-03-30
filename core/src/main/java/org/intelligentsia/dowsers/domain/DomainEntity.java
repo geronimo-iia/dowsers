@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.Registry;
+import org.intelligentsia.dowsers.util.Registry;
 
 /**
  * DomainEntity represent a domain entity.
@@ -63,7 +63,15 @@ public class DomainEntity extends Entity implements Registry<LocalDomainEntity> 
 	}
 
 	/**
-	 * @return aggegate instance
+	 * @return current version of this domain entity.
+	 */
+	public final Version getVersion() {
+		//delegate call to aggregate
+		return aggregate.getVersion();
+	}
+
+	/**
+	 * @return aggregate instance
 	 */
 	Aggregate getAggregate() {
 		return aggregate;

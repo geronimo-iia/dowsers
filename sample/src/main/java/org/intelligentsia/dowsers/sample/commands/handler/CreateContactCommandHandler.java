@@ -42,6 +42,6 @@ public class CreateContactCommandHandler extends CommandHandler<CreateContactCom
 	@Override
 	public void onCommand(final CreateContactCommand command) {
 		final Contact contact = new Contact(aggregateFactory, command.getName());
-		domainRepository.add(contact);
+		domainRepository.store(contact);
 	}
 }

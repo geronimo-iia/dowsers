@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
 import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
@@ -27,13 +27,21 @@ public class DomainEntityTest {
 	}
 
 	@Test
-	public void testFactory() {
+	public void testFactoryInstanciateIdentityAggregateAndVersion() {
 		assertNotNull(aggregateFactory);
 		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity);
 		assertNotNull(domainEntity.getIdentity());
 		assertNotNull(domainEntity.getAggregate());
+		assertNotNull(domainEntity.getVersion());
 	}
 
+	@Test
+	public void checkInitialVersionOnCreation() {
+		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
+		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
+		assertNotNull(domainEntity.getVersion());
+		assertEquals(Version.forInitialVersion(), domainEntity.getVersion());
+	}
 }

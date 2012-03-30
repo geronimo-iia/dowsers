@@ -3,8 +3,6 @@
  */
 package org.intelligentsia.dowsers.sample.commands;
 
-import java.util.UUID;
-
 import org.intelligentsia.dowsers.command.Command;
 import org.intelligentsia.dowsers.command.CommandInvoker;
 
@@ -14,8 +12,8 @@ import org.intelligentsia.dowsers.command.CommandInvoker;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class AddContactToAddressBookCommand extends Command {
-	private final UUID addressBookIdentifier;
-	private final UUID contact;
+	private final String addressBookIdentifier;
+	private final String contact;
 
 	/**
 	 * Build a new instance of AddContactToAddressBookCommand.
@@ -25,7 +23,7 @@ public class AddContactToAddressBookCommand extends Command {
 	 * @param contact
 	 * @throws NullPointerException
 	 */
-	public AddContactToAddressBookCommand(final CommandInvoker commandInvoker, final UUID addressBookIdentifier, final UUID contact) throws NullPointerException {
+	public AddContactToAddressBookCommand(final CommandInvoker commandInvoker, final String addressBookIdentifier, final String contact) throws NullPointerException {
 		super(commandInvoker);
 		this.addressBookIdentifier = addressBookIdentifier;
 		this.contact = contact;
@@ -34,11 +32,11 @@ public class AddContactToAddressBookCommand extends Command {
 	/**
 	 * @return the contact
 	 */
-	public UUID getContact() {
+	public String getContact() {
 		return contact;
 	}
 
-	public UUID getAddressBookIdentifier() {
+	public String getAddressBookIdentifier() {
 		return addressBookIdentifier;
 	}
 }

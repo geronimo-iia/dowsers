@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers;
+package org.intelligentsia.dowsers.util;
 
 /**
  * Registry declare methods to register an object.
