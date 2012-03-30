@@ -22,7 +22,27 @@
 			<artifactId>core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!--  FOR NOW -->
+		<!-- ******************************************************************* -->
+		<!-- Serializer FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>kryo</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TIME FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>date4j</groupId>
+			<artifactId>date4j</artifactId> 
+		</dependency>
+		<!-- FOR NOW -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>

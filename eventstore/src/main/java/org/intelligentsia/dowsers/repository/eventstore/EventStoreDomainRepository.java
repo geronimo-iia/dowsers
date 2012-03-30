@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.repository;
+package org.intelligentsia.dowsers.repository.eventstore;
 
 import org.intelligentsia.dowsers.container.DomainEntityFactory;
 import org.intelligentsia.dowsers.domain.AbstractDomainRepository;
@@ -11,7 +11,6 @@ import org.intelligentsia.dowsers.domain.DomainEntityNotFoundException;
 import org.intelligentsia.dowsers.domain.Version;
 import org.intelligentsia.dowsers.events.DomainAggregate;
 import org.intelligentsia.dowsers.events.DomainEventProvider;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStore;
 
 import com.google.common.base.Preconditions;
 

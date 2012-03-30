@@ -37,7 +37,7 @@ http://cre8ivethought.com/blog/2009/11/20/cqrs-domain-events
 
 
 https://raw.github.com/ncqrs/ncqrs/master/Extensions/src/Ncqrs.Eventing.Storage.SqlLite/Query.cs
-
+https://raw.github.com/ncqrs/ncqrs/master/Extensions/src/Ncqrs.Eventing.Storage.SqlLite/Query.cs
 
 
 

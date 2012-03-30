@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers.repository.eventstore;
+package org.intelligentsia.dowsers.repository.eventstore.publisher;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class FakeEventPublisher implements EventPublisher {
 	/**
 	 * All events are ignored.
 	 * 
-	 * @see org.intelligentsia.dowsers.repository.eventstore.EventPublisher#publish(java.util.List)
+	 * @see org.intelligentsia.dowsers.repository.eventstore.publisher.EventPublisher#publish(java.util.List)
 	 */
 	@Override
 	public <T extends DomainEvent> void publish(final List<T> events) {

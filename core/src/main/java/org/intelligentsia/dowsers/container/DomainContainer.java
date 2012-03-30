@@ -7,7 +7,6 @@ import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.command.CommandInvoker;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
 import org.intelligentsia.dowsers.eventprocessor.EventProcessorProvider;
-import org.intelligentsia.dowsers.repository.eventstore.EventPublisher;
 
 /**
  * DomainContainer declares methods to access on configured components.
@@ -24,5 +23,4 @@ public interface DomainContainer {
 
 	public EventProcessorProvider getEventProcessorProvider();
 
-	public EventPublisher getEventPublisher();
 }

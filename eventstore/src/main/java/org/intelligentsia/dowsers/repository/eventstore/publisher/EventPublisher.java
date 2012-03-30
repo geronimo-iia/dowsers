@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers.repository.eventstore;
+package org.intelligentsia.dowsers.repository.eventstore.publisher;
 
 import java.util.List;
 

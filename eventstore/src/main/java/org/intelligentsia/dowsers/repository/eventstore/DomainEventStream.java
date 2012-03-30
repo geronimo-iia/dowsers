@@ -1,8 +1,6 @@
-package org.intelligentsia.dowsers.repository;
+package org.intelligentsia.dowsers.repository.eventstore;
 
 import org.intelligentsia.dowsers.events.DomainEvent;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSink;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSource;
 
 /**
  * DomainEventStream.

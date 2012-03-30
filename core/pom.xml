@@ -17,25 +17,6 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- Serializer FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>kryo</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- TIME FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>date4j</groupId>
-			<artifactId>date4j</artifactId> 
-		</dependency>
+	
 	</dependencies>
 </project>
