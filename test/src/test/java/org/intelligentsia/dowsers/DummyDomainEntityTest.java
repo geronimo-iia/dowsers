@@ -16,8 +16,9 @@ import org.intelligentsia.dowsers.annotation.Property;
 import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
 import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
-import org.intelligentsia.dowsers.events.GenericDomainAggregateFactory;
+import org.intelligentsia.dowsers.event.GenericDomainAggregateFactory;
+import org.intelligentsia.dowsers.event.processor.CacheEventProcessorProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 

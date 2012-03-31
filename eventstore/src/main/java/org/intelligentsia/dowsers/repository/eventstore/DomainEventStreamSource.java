@@ -1,6 +1,8 @@
 package org.intelligentsia.dowsers.repository.eventstore;
 
-import org.intelligentsia.dowsers.events.DomainEvent;
+import java.util.Collection;
+
+import org.intelligentsia.dowsers.event.DomainEvent;
 
 /**
  * DomainEventStreamSource.
@@ -11,5 +13,5 @@ public interface DomainEventStreamSource {
 
 	public long getVersion();
 
-	public Iterable<? extends DomainEvent> getDomainEvents();
+	public Collection<? extends DomainEvent> getDomainEvents();
 }

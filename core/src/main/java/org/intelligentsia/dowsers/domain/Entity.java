@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.events.DomainEvent;
-import org.intelligentsia.dowsers.events.DomainEventInvoker;
+import org.intelligentsia.dowsers.event.DomainEvent;
+import org.intelligentsia.dowsers.event.DomainEventInvoker;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;

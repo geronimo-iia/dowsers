@@ -23,15 +23,18 @@ public interface DomainEventStore {
 	 * @throws StreamEverExistsException
 	 *             a stream with the specified id already exists.
 	 */
-	public void createDomainEventStream(String identity, DomainEventStreamSource source) throws StreamEverExistsException;
+	public void createDomainEventStream(String identity, DomainEventStreamSource source)
+			throws StreamEverExistsException;
 
 	/**
 	 * Adds the events from source to the specified stream.
 	 * 
 	 * @param identity
 	 *            stream identity.
+	 * @param expectedVersion
+	 *            expected version of stream
 	 * @param source
-	 *            provides the expected version of the stream and events to
+	 *            provides the final version of the stream and events to
 	 *            store
 	 * @throws EmptyResultException
 	 *             the specified stream does not exist.
@@ -42,19 +45,21 @@ public interface DomainEventStore {
 	 *             if expectedVersion is strictly lower or equal than current in
 	 *             store
 	 */
-	void storeDomainEventsIntoStream(String identity, DomainEventStreamSource source) throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
+	void storeDomainEventsIntoStream(String identity, final long expectedVersion, DomainEventStreamSource source)
+			throws EmptyResultException, ConcurrencyException, IllegalArgumentException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink.
 	 * 
-	 * @param streamId
-	 *            the stream id
+	 * @param identity
+	 *            the stream identity
 	 * @param sink
 	 *            the sink to send the stream version and events to.
 	 * @throws EmptyResultException
 	 *             no stream with the specified id exists.
 	 */
-	public void loadDomainEventsFromLatestStreamVersion(String streamId, DomainEventStreamSink sink) throws EmptyResultException;
+	public void loadDomainEventsFromLatestStreamVersion(String identity, DomainEventStreamSink sink)
+			throws EmptyResultException;
 
 	/**
 	 * Loads the events associated with the stream into the provided sink. Only

@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.events.DomainEventInvoker;
+import org.intelligentsia.dowsers.event.DomainEventInvoker;
 import org.intelligentsia.dowsers.util.Registry;
 
 /**

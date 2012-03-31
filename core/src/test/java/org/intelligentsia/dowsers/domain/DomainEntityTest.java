@@ -6,8 +6,9 @@ package org.intelligentsia.dowsers.domain;
 import static org.junit.Assert.*;
 
 import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
-import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
-import org.intelligentsia.dowsers.events.GenericDomainAggregateFactory;
+import org.intelligentsia.dowsers.event.GenericDomainAggregateFactory;
+import org.intelligentsia.dowsers.event.processor.CacheEventProcessorProvider;
+
 import org.junit.Before;
 import org.junit.Test;
 
