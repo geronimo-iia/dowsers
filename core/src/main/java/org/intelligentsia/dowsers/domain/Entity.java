@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.annotation.TODO;
+import org.intelligentsia.dowsers.events.DomainEvent;
+import org.intelligentsia.dowsers.events.DomainEventInvoker;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -61,9 +61,9 @@ import com.google.common.base.Preconditions;
 public abstract class Entity {
 
 	/**
-	 * Entity identifier.
+	 * Entity identity.
 	 */
-	private Identifier identifier;
+	private final String identity;
 
 	/**
 	 * DomainEventInvoker instance.
@@ -74,14 +74,14 @@ public abstract class Entity {
 	 * Build a new instance of Entity. All change in this entity will be bounded
 	 * by root entity of the specific aggregate.
 	 * 
-	 * @param identifier
+	 * @param identity
 	 * 
 	 * @throws NullPointerException
 	 *             if identifier is null
 	 */
-	public Entity(final Identifier identifier) throws NullPointerException {
+	public Entity(final String identity) throws NullPointerException {
 		super();
-		this.identifier = Preconditions.checkNotNull(identifier);
+		this.identity = Preconditions.checkNotNull(identity);
 	}
 
 	/**
@@ -101,10 +101,10 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return identifier value
+	 * @return identity value
 	 */
-	public final Identifier getIdentifier() {
-		return identifier;
+	public final String getIdentity() {
+		return identity;
 	}
 
 	/**
@@ -114,7 +114,7 @@ public abstract class Entity {
 	 */
 	@Override
 	public final int hashCode() {
-		return Objects.hashCode(getIdentifier().getIdentity());
+		return Objects.hashCode(identity);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public abstract class Entity {
 			return false;
 		}
 		final Entity other = (Entity) obj;
-		return Objects.equal(other.getIdentifier().getIdentity(), getIdentifier().getIdentity());
+		return Objects.equal(other.getIdentity(), identity);
 	}
 
 	/**
@@ -142,32 +142,19 @@ public abstract class Entity {
 	 */
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("identifier", identifier).toString();
+		return Objects.toStringHelper(this).add("identity", identity).toString();
 	}
 
 	/**
-	 * @param identifier
-	 *            the identifier to set
-	 * @throws IllegalArgumentException
-	 *             if identity of this entity isn't the same.
-	 * @throws IllegalArgumentException
-	 *             if identity is null
-	 */
-	@Note("Package visibility is set to deal with aggregate")
-	@TODO("May we can find a better way to deal with that ?")
-	void setIdentifier(final Identifier identifier) throws IllegalArgumentException, NullPointerException {
-		Preconditions.checkArgument(Preconditions.checkNotNull(identifier).hasSameIdentity(getIdentifier()));
-		this.identifier = identifier;
-	}
-
-	/**
+	 * Set DomainEventInvoker instance for this entity. This methode has a
+	 * package visibility in order to deal with aggregate interface.
+	 * 
 	 * @param domainEventInvoker
 	 *            the domainEventInvoker to set
 	 * @throws NullPointerException
 	 *             if domainEventInvoker is null
 	 */
-	@Note("Package visibility is set to deal with aggregate")
-	void setDomainEventInvoker(final DomainEventInvoker domainEventInvoker) throws NullPointerException {
+	final void setDomainEventInvoker(final DomainEventInvoker domainEventInvoker) throws NullPointerException {
 		this.domainEventInvoker = Preconditions.checkNotNull(domainEventInvoker);
 	}
 }

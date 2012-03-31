@@ -40,6 +40,6 @@ public class CreateAddressBookCommandHandler extends CommandHandler<CreateAddres
 	 */
 	@Override
 	public void onCommand(final CreateAddressBookCommand command) {
-		domainRepository.add(new AddressBook(aggregateFactory));
+		domainRepository.store(new AddressBook(aggregateFactory));
 	}
 }

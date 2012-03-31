@@ -13,11 +13,11 @@ import javassist.util.proxy.ProxyObject;
 import junit.framework.Assert;
 
 import org.intelligentsia.dowsers.annotation.Property;
+import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
-import org.intelligentsia.dowsers.domain.DefaultAggregateFactory;
-import org.intelligentsia.dowsers.domain.DefaultDomainEntityFactory;
 import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.events.processor.CacheEventProcessorProvider;
+import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
+import org.intelligentsia.dowsers.events.GenericDomainAggregateFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,12 +29,12 @@ import org.junit.Test;
  */
 public class DummyDomainEntityTest {
 	private AggregateFactory aggregateFactory;
-	DefaultDomainEntityFactory defaultDomainEntityFactory;
+	GenericDomainEntityFactory defaultDomainEntityFactory;
 
 	@Before
 	public void initialize() {
-		aggregateFactory = new DefaultAggregateFactory(new CacheEventProcessorProvider());
-		defaultDomainEntityFactory = new DefaultDomainEntityFactory(aggregateFactory);
+		aggregateFactory = new GenericDomainAggregateFactory(new CacheEventProcessorProvider());
+		defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 	}
 
 	@Test

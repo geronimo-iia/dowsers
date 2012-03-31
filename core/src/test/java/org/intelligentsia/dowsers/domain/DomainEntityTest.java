@@ -3,10 +3,13 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.events.processor.CacheEventProcessorProvider;
+import static org.junit.Assert.*;
+
+import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
+import org.intelligentsia.dowsers.eventprocessor.CacheEventProcessorProvider;
+import org.intelligentsia.dowsers.events.GenericDomainAggregateFactory;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * DomainEntityTest.
@@ -20,17 +23,25 @@ public class DomainEntityTest {
 
 	@Before
 	public void initialize() {
-		aggregateFactory = new DefaultAggregateFactory(new CacheEventProcessorProvider());
+		aggregateFactory = new GenericDomainAggregateFactory(new CacheEventProcessorProvider());
 	}
 
 	@Test
-	public void testFactory() {
+	public void testFactoryInstanciateIdentityAggregateAndVersion() {
 		assertNotNull(aggregateFactory);
-		DefaultDomainEntityFactory defaultDomainEntityFactory = new DefaultDomainEntityFactory(aggregateFactory);
+		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity);
-		assertNotNull(domainEntity.getIdentifier());
+		assertNotNull(domainEntity.getIdentity());
 		assertNotNull(domainEntity.getAggregate());
-		assertEquals(domainEntity.getIdentifier(), domainEntity.getAggregate().getIdentifier());
+		assertNotNull(domainEntity.getVersion());
+	}
+
+	@Test
+	public void checkInitialVersionOnCreation() {
+		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
+		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
+		assertNotNull(domainEntity.getVersion());
+		assertEquals(Version.forInitialVersion(), domainEntity.getVersion());
 	}
 }

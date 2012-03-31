@@ -155,6 +155,7 @@
 	</repositories>
 	<modules>
 		<module>core</module>
+		<module>eventstore</module>
 		<module>test</module>
 		<module>sample</module>
 	</modules>

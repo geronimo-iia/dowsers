@@ -3,13 +3,6 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import java.util.UUID;
-
-import org.intelligentsia.dowsers.annotation.Note;
-import org.intelligentsia.dowsers.annotation.TODO;
-import org.intelligentsia.dowsers.annotation.TODOs;
-import org.intelligentsia.dowsers.storage.ConcurrencyException;
-
 /**
  * DomainRepository interfaces declare methods for retrieving domain objects
  * should delegate to a specialized Repository object such that alternative
@@ -38,60 +31,67 @@ public interface DomainRepository {
 	 *            expected type entity
 	 * @param identity
 	 *            identity what we looking for
-	 * @return an entity instance of the expected type and identity or null if
-	 *         none exists.
+	 * @return an entity instance of the expected type and identity
+	 * 
+	 * @throws DomainEntityNotFoundException
+	 *             if no entity with specifed identity and type exists.
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
 	 */
-	@TODO("Evaluate gain of adding expected type parameter.")
-	public <T> T findByIdentifier(Class<T> expectedType, UUID identity) throws NullPointerException;
+	public <T extends DomainEntity> T find(Class<T> expectedType, String identity) throws DomainEntityNotFoundException, NullPointerException;
 
-	/**
-	 * Find entity with the specified identity, expecting the version of the
-	 * aggregate to be equal to the given expectedVersion.
-	 * 
-	 * @param expectedType
-	 *            expected type entity
-	 * @param identity
-	 *            identity what we looking for
-	 * @param expectedVersion
-	 *            expected Version value
-	 * @return an entity instance of the expected type, identity an version or
-	 *         null if none exists
-	 * @throws NullPointerException
-	 *             if expectedType or identity is null
-	 * @throws IllegalStateException
-	 *             if expectedVersion < 0
-	 * @throws ConcurrencyException
-	 *             if the <code>expectedVersion</code> did not match the
-	 *             entity's actual version
-	 * 
-	 */
-	public <T> T findByIdentifier(Class<T> expectedType, UUID identity, long expectedVersion) throws NullPointerException, IllegalStateException, ConcurrencyException;
+	// /**
+	// * Find entity with the specified identity, expecting the version of the
+	// * aggregate to be equal to the given expectedVersion.
+	// *
+	// * @param expectedType
+	// * expected type entity
+	// * @param identity
+	// * identity what we looking for
+	// * @param expectedVersion
+	// * expected Version value
+	// * @return an entity instance of the expected type, identity an version
+	// * @throws DomainEntityNotFoundException
+	// * if no entity with specifed parameters did not exists.
+	// * @throws NullPointerException
+	// * if expectedType or identity is null
+	// * @throws IllegalStateException
+	// * if expectedVersion < 0
+	// * @throws ConcurrencyException
+	// * if the <code>expectedVersion</code> did not match the
+	// * entity's actual version in current uncommited session
+	// *
+	// */
+	// public <T> T findByIdentifier(Class<T> expectedType, UUID identity, long
+	// expectedVersion) throws DomainEntityNotFoundException,
+	// NullPointerException, IllegalStateException, ConcurrencyException;
 
-	/**
-	 * Add specific entity to the domain repository.
-	 * 
-	 * @param entity
-	 *            entity to add
-	 * @throws NullPointerException
-	 *             if entity is null
-	 */
-	@TODOs({ @TODO("Specify concurrent runtime exception?"), @TODO("Raise something if we add a deleted entity ?") })
-	@Note("acquire references to existing objects ==> ONLY EXISTING ?")
-	public <T> void add(T entity) throws NullPointerException;
-
-	/**
-	 * Remove entity
-	 * 
-	 * @param expectedType
-	 *            expected type entity
-	 * @param identity
-	 *            identity of entity to remove
-	 * @throws NullPointerException
-	 *             if expectedType or identity is null
-	 */
-	@Note("acquire references to existing objects ==> ONLY EXISTING ?")
-	public <T> void remove(Class<T> expectedType, UUID identity) throws NullPointerException;
+	public <T extends DomainEntity> void store(T domainEntity) throws NullPointerException, ConcurrencyException;
+	// /**
+	// * Add specific entity to the domain repository.
+	// *
+	// * @param entity
+	// * entity to add
+	// * @throws NullPointerException
+	// * if entity is null
+	// */
+	// @TODOs({ @TODO("Specify concurrent runtime exception?"),
+	// @TODO("Raise something if we add a deleted entity ?") })
+	// @Note("acquire references to existing objects ==> ONLY EXISTING ?")
+	// public <T> void add(T entity) throws NullPointerException;
+	//
+	// /**
+	// * Remove entity
+	// *
+	// * @param expectedType
+	// * expected type entity
+	// * @param identity
+	// * identity of entity to remove
+	// * @throws NullPointerException
+	// * if expectedType or identity is null
+	// */
+	// @Note("acquire references to existing objects ==> ONLY EXISTING ?")
+	// public <T> void remove(Class<T> expectedType, UUID identity) throws
+	// NullPointerException;
 
 }

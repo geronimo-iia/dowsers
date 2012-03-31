@@ -3,11 +3,12 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.Identifier;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.junit.Test;
 
 /**
  * EntityTest.
@@ -17,30 +18,35 @@ import org.junit.Test;
 public class EntityTest {
 
 	@Test
-	public void testIdentitySetter() {
-		final DummyEntity entity = new DummyEntity();
-
+	public void testInstanciation() {
 		try {
-			entity.setIdentifier(null);
-			Assert.fail("expected NullPointerException");
-		} catch (final NullPointerException e) {
+			new DummyEntity(null);
+			fail("Expected NullPointerException");
+		} catch (NullPointerException e) {
 		}
+		new DummyEntity("test");
+	}
 
-		// next version identifier
-		Identifier identifier = entity.getIdentifier().nextVersion();
-		Assert.assertTrue(identifier.hasSameIdentity(entity.getIdentifier()));
+	@Test
+	public void shoudlStore() {
+		final String id = IdentifierFactoryProvider.generateNewIdentifier();
+		final DummyEntity entity = new DummyEntity(id);
+		assertEquals(id, entity.getIdentity());
+	}
 
-		// set a next version
-		entity.setIdentifier(identifier);
+	@Test
+	public void testEquals() {
+		DummyEntity a = new DummyEntity(IdentifierFactoryProvider.generateNewIdentifier());
+		DummyEntity ap = new DummyEntity(a.getIdentity());
+		DummyEntity b = new DummyEntity(IdentifierFactoryProvider.generateNewIdentifier());
 
-		identifier = Identifier.random();
-		Assert.assertNotSame(identifier.getIdentity(), entity.getIdentifier().getIdentity());
-		try {
-			entity.setIdentifier(identifier);
-			Assert.fail("expected IllegalArgumentException");
-		} catch (final IllegalArgumentException e) {
-		}
+		assertEquals(a.getIdentity(), ap.getIdentity());
+		assertTrue(a.equals(ap));
+		assertTrue(ap.equals(a));
 
+		assertNotSame(a.getIdentity(), b.getIdentity());
+		assertTrue(!a.equals(b));
+		assertTrue(!b.equals(a));
 	}
 
 	/**
@@ -55,8 +61,8 @@ public class EntityTest {
 		/**
 		 * Build a new instance of DummyEntity.
 		 */
-		public DummyEntity() {
-			super(Identifier.random());
+		public DummyEntity(String id) {
+			super(id);
 		}
 
 	}

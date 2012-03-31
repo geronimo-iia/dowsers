@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.intelligentsia.dowsers.domain;
 
 /**
@@ -11,7 +8,7 @@ package org.intelligentsia.dowsers.domain;
 public interface AggregateFactory {
 
 	/**
-	 * Create a new instance of aggregate for specified domain entity.
+	 * Create a new instance of aggregate for specified root domain entity.
 	 * 
 	 * @param domainEntity
 	 *            domain entity instance.
@@ -19,5 +16,12 @@ public interface AggregateFactory {
 	 * @throws NullPointerException
 	 *             if domainEntity is null
 	 */
-	public <T extends DomainEntity> Aggregate create(T domainEntity) throws NullPointerException;
+	public <T extends DomainEntity> Aggregate newInstance(T domainEntity) throws NullPointerException;
+
+	/**
+	 * Create a new instance of aggregate without root entity.
+	 * 
+	 * @return an instance of Aggregate
+	 */
+	public <T extends DomainEntity> Aggregate newInstance();
 }

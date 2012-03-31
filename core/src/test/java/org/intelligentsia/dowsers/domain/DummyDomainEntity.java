@@ -3,6 +3,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+
+
 /**
  * DummyDomainEntity.
  * 

@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia.dowsers</groupId>
+		<artifactId>dowsers</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>eventstore</artifactId>
+	<name>eventstore</name>
+	<description>
+		Event store related stuff:
+			Event Store interface
+			Snapshot Event store
+			Repository implementation based on event store
+			Event store implementation
+			Snapshot Event implementation 
+	</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.intelligents-ia.dowsers</groupId>
+			<artifactId>core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- Serializer FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>kryo</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- TIME FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>date4j</groupId>
+			<artifactId>date4j</artifactId> 
+		</dependency>
+		<!-- FOR NOW -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+	</dependencies>
+</project>

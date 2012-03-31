@@ -5,12 +5,10 @@ package org.intelligentsia.dowsers.sample.domain.addressbook;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.intelligentsia.dowsers.annotation.Property;
 import org.intelligentsia.dowsers.domain.AggregateFactory;
 import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.domain.Identifier;
 import org.intelligentsia.dowsers.sample.domain.contact.Contact;
 
 
@@ -21,7 +19,7 @@ import org.intelligentsia.dowsers.sample.domain.contact.Contact;
 public class AddressBook extends DomainEntity {
 
 	@Property
-	private final List<UUID> contacts = new ArrayList<UUID>();
+	private final List<String> contacts = new ArrayList<String>();
 
 	/**
 	 * Build a new instance of <code>AddressBook</code>
@@ -30,7 +28,7 @@ public class AddressBook extends DomainEntity {
 	 * @param identifier
 	 * @throws NullPointerException
 	 */
-	public AddressBook(AggregateFactory aggregateFactory, Identifier identifier) throws NullPointerException {
+	public AddressBook(AggregateFactory aggregateFactory, String identifier) throws NullPointerException {
 		super(aggregateFactory, identifier);
 	}
 
@@ -44,13 +42,13 @@ public class AddressBook extends DomainEntity {
 	}
 
 	public void add(final Contact contact) {
-		contacts.add(contact.getIdentifier().getIdentity());
+		contacts.add(contact.getIdentity());
 	}
 
 	/**
 	 * @return the contacts
 	 */
-	public List<UUID> getContacts() {
+	public List<String> getContacts() {
 		return contacts;
 	}
 
