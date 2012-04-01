@@ -73,7 +73,7 @@ public class DomainEntity extends Entity implements Registry<LocalDomainEntity> 
 	/**
 	 * @return aggregate instance
 	 */
-	Aggregate getAggregate() {
+	protected Aggregate getAggregate() {
 		return aggregate;
 	}
 }

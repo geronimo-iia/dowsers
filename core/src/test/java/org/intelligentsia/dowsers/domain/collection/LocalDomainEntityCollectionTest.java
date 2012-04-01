@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.domain.collections;
+package org.intelligentsia.dowsers.domain.collection;
 
 import static org.junit.Assert.assertTrue;
 

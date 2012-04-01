@@ -23,5 +23,5 @@ public interface AggregateFactory {
 	 * 
 	 * @return an instance of Aggregate
 	 */
-	public <T extends DomainEntity> Aggregate newInstance();
+	public Aggregate newInstance();
 }

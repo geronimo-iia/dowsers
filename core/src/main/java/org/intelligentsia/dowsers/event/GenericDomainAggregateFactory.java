@@ -31,7 +31,8 @@ public class GenericDomainAggregateFactory implements AggregateFactory {
 	 * @throws NullPointerException
 	 *             if eventProcessorProvider is null
 	 */
-	public GenericDomainAggregateFactory(final EventProcessorProvider eventProcessorProvider) throws NullPointerException {
+	public GenericDomainAggregateFactory(final EventProcessorProvider eventProcessorProvider)
+			throws NullPointerException {
 		super();
 		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
 	}
@@ -50,7 +51,7 @@ public class GenericDomainAggregateFactory implements AggregateFactory {
 	 * @see org.intelligentsia.dowsers.domain.AggregateFactory#newInstance()
 	 */
 	@Override
-	public <T extends DomainEntity> Aggregate newInstance() {
+	public Aggregate newInstance() {
 		return new DomainAggregate(eventProcessorProvider);
 	}
 
