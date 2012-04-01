@@ -10,8 +10,9 @@ import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.DomainEntityNotFoundException;
 import org.intelligentsia.dowsers.domain.Version;
 import org.intelligentsia.dowsers.event.DomainAggregate;
+import org.intelligentsia.dowsers.event.DomainEvent;
 import org.intelligentsia.dowsers.event.DomainEventProvider;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStore;
+import org.intelligentsia.dowsers.eventstore.EventStore;
 
 import com.google.common.base.Preconditions;
 
@@ -25,9 +26,9 @@ import com.google.common.base.Preconditions;
 public class EventStoreDomainRepository extends AbstractDomainRepository {
 
 	/**
-	 * DomainEventStore instance.
+	 * EventStore instance.
 	 */
-	private final DomainEventStore domainEventStore;
+	private final EventStore<DomainEvent> domainEventStore;
 
 	/**
 	 * Build a new instance of EventStoreDomainRepository.
@@ -35,7 +36,7 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 	 * @param domainEventStore
 	 * @param domainEntityFactory
 	 */
-	public EventStoreDomainRepository(final DomainEventStore domainEventStore,
+	public EventStoreDomainRepository(final EventStore<DomainEvent> domainEventStore,
 			final DomainEntityFactory domainEntityFactory) {
 		super(domainEntityFactory);
 		this.domainEventStore = Preconditions.checkNotNull(domainEventStore);
@@ -56,7 +57,7 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 		final DomainEventStream domainEventStream = new DomainEventStream();
 		domainEventStore.loadDomainEventsFromLatestStreamVersion(identity, domainEventStream);
 		// load from history
-		domainEventProvider.loadFromHistory(domainEventStream.getDomainEvents(),
+		domainEventProvider.loadFromHistory(domainEventStream.getEvents(),
 				Version.forSpecificVersion(domainEventStream.getVersion()));
 		return entity;
 	}
@@ -75,7 +76,8 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 		// create DomainEventStream
 		final DomainEventStream domainEventStream = new DomainEventStream();
 		domainEventStream.setVersion(domainEventProvider.getVersion().toLong());
-		domainEventStream.setDomainEvents(domainEventProvider.getUncommittedChanges());
+		domainEventStream.setEvents(domainEventProvider.getUncommittedChanges());
+		domainEventStream.setClassName(domainEntity.getClass().getName());
 		// store
 		domainEventStore.storeDomainEventsIntoStream(domainEventProvider.getIdentity(), expected.toLong(),
 				domainEventStream);

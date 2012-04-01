@@ -6,7 +6,7 @@ package org.intelligentsia.dowsers.repository.snapshot;
 import org.springframework.expression.spel.ast.Identifier;
 
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
-import org.intelligentsia.dowsers.repository.eventstore.EmptyResultException;
+import org.intelligentsia.dowsers.eventstore.EmptyResultException;
 
 /**
  * 

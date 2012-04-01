@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import org.intelligentsia.dowsers.event.DomainEvent;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSink;
-import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSource;
+import org.intelligentsia.dowsers.eventstore.EventStreamSink;
+import org.intelligentsia.dowsers.eventstore.EventStreamSource;
 
 /**
  * DomainEventStream.
@@ -14,7 +14,7 @@ import org.intelligentsia.dowsers.repository.eventstore.DomainEventStreamSource;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DomainEventStream implements DomainEventStreamSink, DomainEventStreamSource, Serializable {
+public class DomainEventStream implements EventStreamSink<DomainEvent>, EventStreamSource<DomainEvent>, Serializable {
 	/**
 	 * serialVersionUID:long.
 	 */
@@ -26,8 +26,10 @@ public class DomainEventStream implements DomainEventStreamSink, DomainEventStre
 	/**
 	 * Ordered collection of DomainEvent.
 	 */
-	private Collection<? extends DomainEvent> domainEvents;
+	private Collection<DomainEvent> domainEvents;
 
+	private String className;
+	
 	/**
 	 * Build a new instance of DomainEventStream.
 	 */
@@ -41,17 +43,18 @@ public class DomainEventStream implements DomainEventStreamSink, DomainEventStre
 	 * @param version
 	 * @param domainEvents
 	 */
-	public DomainEventStream(final long version, final Collection<? extends DomainEvent> domainEvents) {
+	public DomainEventStream(final long version, final Collection<DomainEvent> domainEvents, final String className) {
 		super();
 		this.version = version;
 		this.domainEvents = domainEvents;
+		this.className=className;
 	}
 
 	/**
 	 * @return the domainEvents
 	 */
 	@Override
-	public Collection<? extends DomainEvent> getDomainEvents() {
+	public Collection<DomainEvent> getEvents() {
 		return domainEvents;
 	}
 
@@ -60,8 +63,8 @@ public class DomainEventStream implements DomainEventStreamSink, DomainEventStre
 	 *            the domainEvents to set
 	 */
 	@Override
-	public void setDomainEvents(final Collection<? extends DomainEvent> domainEvents) {
-		this.domainEvents = domainEvents;
+	public void setEvents(final Collection<DomainEvent> events) {
+		this.domainEvents = events;
 	}
 
 	/**
@@ -79,6 +82,14 @@ public class DomainEventStream implements DomainEventStreamSink, DomainEventStre
 	@Override
 	public void setVersion(final long version) {
 		this.version = version;
+	}
+
+	public String getClassName() {
+		return this.className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
 }
