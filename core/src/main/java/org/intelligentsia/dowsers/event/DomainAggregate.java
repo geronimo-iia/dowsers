@@ -90,8 +90,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	 *            events history
 	 */
 	@Override
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final Version version)
-			throws IllegalStateException {
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final Version version) throws IllegalStateException {
 		if (history != null) {
 			long ordinal = 0l;
 			for (final DomainEvent domainEvent : history) {
@@ -115,14 +114,6 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 		this.version = version;
 	}
 
-	/**
-	 * Increment version of this aggregate context.
-	 */
-	@Override
-	public void incrementVersion() {
-		version.nextVersion();
-	}
-
 	@Override
 	public Collection<DomainEvent> getUncommittedChanges() {
 		return uncommittedChanges;
@@ -134,18 +125,19 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	@Override
-	public void markChangesCommitted() {
+	public void markChangesCommitted(Version version) {
 		eventOrdinal = 0l;
+		this.version = version;
 		uncommittedChanges.clear();
 	}
 
 	/**
-	 * Indicates whether this aggregate has been marked as deleted. When <code>true</code>, it is an instruction to the
-	 * repository to remove this
+	 * Indicates whether this aggregate has been marked as deleted. When
+	 * <code>true</code>, it is an instruction to the repository to remove this
 	 * instance at an appropriate time.
 	 * <p/>
-	 * Repositories should not return any instances of Aggregates that return <code>true</code> on
-	 * <code>isDeleted()</code>.
+	 * Repositories should not return any instances of Aggregates that return
+	 * <code>true</code> on <code>isDeleted()</code>.
 	 * 
 	 * @return <code>true</code> if this aggregate was marked as deleted,
 	 *         otherwise <code>false</code>.
@@ -231,8 +223,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 		 * @throws NullPointerException
 		 *             if eventProcessor or target is null
 		 */
-		public DefaultDomainEventInvoker(final EventProcessor eventProcessor, final Entity target)
-				throws NullPointerException {
+		public DefaultDomainEventInvoker(final EventProcessor eventProcessor, final Entity target) throws NullPointerException {
 			super();
 			this.eventProcessor = Preconditions.checkNotNull(eventProcessor);
 			this.target = Preconditions.checkNotNull(target);

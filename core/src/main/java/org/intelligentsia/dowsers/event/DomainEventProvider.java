@@ -52,11 +52,6 @@ public interface DomainEventProvider {
 	public void loadFromHistory(final Iterable<? extends DomainEvent> history, Version version) throws IllegalStateException;
 
 	/**
-	 * Increment version of this root entity.
-	 */
-	public void incrementVersion();
-
-	/**
 	 * Returns an Iterable<DomainEvent> to the events in the aggregate that have
 	 * been raised since creation or the last commit.
 	 * 
@@ -73,6 +68,10 @@ public interface DomainEventProvider {
 	/**
 	 * Mark all changes as committed: Clears the events currently marked as
 	 * "uncommitted".
+	 * 
+	 * @param version
+	 *            set specific version associated with this commit.
 	 */
-	public void markChangesCommitted();
+	public void markChangesCommitted(Version version);
+
 }
