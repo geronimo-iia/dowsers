@@ -35,7 +35,8 @@ public abstract class AbstractDomainRepository implements DomainRepository {
 	 * @return DomainEventProvider instance associated with specified domain
 	 *         entity.
 	 */
-	protected <T extends DomainEntity> Aggregate getAggregate(final T domainEntity) {
-		return domainEntity.getAggregate();
+	@SuppressWarnings("unchecked")
+	protected <T extends DomainEntity, A extends Aggregate> A getAggregate(final T domainEntity) {
+		return (A) domainEntity.getAggregate();
 	}
 }

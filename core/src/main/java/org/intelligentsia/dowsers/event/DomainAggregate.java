@@ -120,8 +120,8 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	@Override
-	public int getUncommittedChangesCount() {
-		return uncommittedChanges.size();
+	public boolean hasUncommittedChanges() {
+		return !uncommittedChanges.isEmpty();
 	}
 
 	@Override

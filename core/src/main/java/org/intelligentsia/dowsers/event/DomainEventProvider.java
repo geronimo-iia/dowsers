@@ -60,10 +60,9 @@ public interface DomainEventProvider {
 	public Collection<DomainEvent> getUncommittedChanges();
 
 	/**
-	 * @return the number of uncommitted changes currently available in the
-	 *         aggregate.
+	 * @return true if this aggregate has uncommite changes.
 	 */
-	public int getUncommittedChangesCount();
+	public boolean hasUncommittedChanges();
 
 	/**
 	 * Mark all changes as committed: Clears the events currently marked as
