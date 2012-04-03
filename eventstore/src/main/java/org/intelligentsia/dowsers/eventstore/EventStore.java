@@ -102,5 +102,22 @@ public interface EventStore<EventType> {
 	 *             lower than the initial version of the stream.
 	 */
 	public void loadUptoVersion(String identity, long version, Collection<EventType> events) throws EmptyResultException;
+	
+	/**
+	 * Loads the events associated with the stream into the provided sink. Only
+	 * the events that existed after the requested version are loaded.
+	 * 
+	 * @param identity
+	 *            the stream identity
+	 * @param version
+	 *            the version (exclusive) of the event stream to load.
+	 * @param events
+	 *            collection of events to send event to.
+	 * @throws EmptyResultException
+	 *             no stream with the specified id exists or the version is
+	 *             lower than the initial version of the stream.
+	 */
+	public void loadFromVersion(String identity, long version, Collection<EventType> events) throws EmptyResultException;
+	
 
 }
