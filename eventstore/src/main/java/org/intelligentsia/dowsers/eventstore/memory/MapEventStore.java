@@ -5,6 +5,7 @@ package org.intelligentsia.dowsers.eventstore.memory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 		public EventStream add(long version, Collection<EventType> initialEvents) {
 			this.currentVersion = version;
 			events.add(new Events(currentVersion, initialEvents));
+			Collections.sort(events);
 			return this;
 		}
 
