@@ -102,7 +102,6 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	}
 
 	/**
-	 * 
 	 * EventStream.
 	 * 
 	 */
@@ -191,7 +190,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 
 	/**
 	 * 
-	 * Event naturaly ordered on version
+	 * Event naturally ordered on version
 	 * 
 	 * 
 	 */
@@ -203,8 +202,8 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 		/**
 		 * Build a new instance of Event.
 		 * 
-		 * @param version
-		 * @param events
+		 * @param version stream version of which events sequence apply
+		 * @param events ordered events
 		 */
 		public Events(long version, Collection<EventType> events) {
 			super();

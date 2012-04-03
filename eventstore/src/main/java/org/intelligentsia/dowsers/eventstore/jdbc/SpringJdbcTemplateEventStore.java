@@ -9,18 +9,15 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
-import org.intelligentsia.cqrs.eventstore.ConcurrencyException;
-import org.intelligentsia.cqrs.eventstore.EmptyResultException;
-import org.intelligentsia.cqrs.eventstore.EventSerializer;
-import org.intelligentsia.cqrs.eventstore.EventSink;
-import org.intelligentsia.cqrs.eventstore.EventSource;
-import org.intelligentsia.cqrs.eventstore.EventStore;
-import org.intelligentsia.dowsers.event.definitiontore.StreamEverExistsException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+
+import org.intelligentsia.dowsers.domain.ConcurrencyException;
+import org.intelligentsia.dowsers.eventstore.EmptyResultException;
+import org.intelligentsia.dowsers.eventstore.EventStore;
+import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
 
 import com.google.common.annotations.VisibleForTesting;
 
