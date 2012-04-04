@@ -47,5 +47,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- PERSIST -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>net.sf.persist</groupId>
+			<artifactId>persist</artifactId>
+			<version>1.1.1</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/persist-1.1.1.jar</systemPath>
+		</dependency>
 	</dependencies>
 </project>

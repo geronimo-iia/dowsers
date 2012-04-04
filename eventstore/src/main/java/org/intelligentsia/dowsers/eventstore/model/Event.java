@@ -23,7 +23,7 @@ public class Event {
 	 */
 	private DateTime timestamp;
 	/**
-	 * Events data.
+	 * MemoryEvents data.
 	 */
 	private byte[] events;
 }

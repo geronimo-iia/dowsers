@@ -192,7 +192,7 @@ public class SpringJdbcTemplateEventStore<E> implements EventStore<E> {
 
 	/**
 	 * 
-	 * EventStream.
+	 * MemoryEventStream.
 	 * 
 	 * 
 	 * 
