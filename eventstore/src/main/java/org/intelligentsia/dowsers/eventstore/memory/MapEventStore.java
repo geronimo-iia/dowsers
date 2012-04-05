@@ -24,6 +24,9 @@ import com.google.common.collect.Maps;
  */
 public class MapEventStore<EventType> implements EventStore<EventType> {
 
+	/**
+	 * Map of Identity, MemoryEventStream.
+	 */
 	private final Map<String, MemoryEventStream> memoryEventStreams;
 
 	/**
@@ -105,7 +108,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 * MemoryEventStream.
 	 * 
 	 */
-	public class MemoryEventStream {
+	private class MemoryEventStream {
 		private final String identity;
 		// private final String name;
 		private final List<MemoryEvents> memoryEvents;
@@ -201,7 +204,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 * 
 	 * 
 	 */
-	public class MemoryEvents implements Comparable<MemoryEvents> {
+	private class MemoryEvents implements Comparable<MemoryEvents> {
 
 		private final long version;
 		private final Collection<EventType> events;
