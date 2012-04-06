@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.intelligentsia.dowsers.annotation.TODO;
 import org.intelligentsia.dowsers.domain.Aggregate;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.Entity;
@@ -142,7 +141,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	 * @return <code>true</code> if this aggregate was marked as deleted,
 	 *         otherwise <code>false</code>.
 	 */
-	@TODO("implements this")
+	//TODO implements this
 	boolean isDeleted() {
 		return true;
 	}
