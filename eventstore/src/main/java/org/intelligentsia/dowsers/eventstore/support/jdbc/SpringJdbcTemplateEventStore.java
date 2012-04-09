@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers.eventstore.jdbc;
+package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

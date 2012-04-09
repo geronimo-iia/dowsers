@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore.memory;
+package org.intelligentsia.dowsers.eventstore.support;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
+import org.intelligentsia.dowsers.event.DomainEvent;
 import org.intelligentsia.dowsers.eventstore.EmptyResultException;
 import org.intelligentsia.dowsers.eventstore.EventStore;
 import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
@@ -18,11 +19,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 /**
- * MapEventStore implement a full EventStore in memory using underlaying Map..
+ * MemoryMapEventStore implement a full EventStore in memory using underlaying Map..
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MapEventStore<EventType> implements EventStore<EventType> {
+public class MemoryMapEventStore<EventType> implements EventStore<EventType> {
 
 	/**
 	 * Map of Identity, MemoryEventStream.
@@ -30,9 +31,9 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	private final Map<String, MemoryEventStream> memoryEventStreams;
 
 	/**
-	 * Build a new instance of MapEventStore.
+	 * Build a new instance of MemoryMapEventStore.
 	 */
-	public MapEventStore() {
+	public MemoryMapEventStore() {
 		super();
 		memoryEventStreams = Maps.newHashMap();
 	}
@@ -56,10 +57,10 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	@Override
 	public long store(final String identity, long expectedVersion, final Collection<EventType> events) throws EmptyResultException, ConcurrencyException, IllegalArgumentException {
 		final MemoryEventStream memoryEventStream = getEventStream(identity);
-		if (memoryEventStream.getCurrentVersion() != expectedVersion) {
+		if (memoryEventStream.currentVersion != expectedVersion) {
 			throw new ConcurrencyException(identity, "");
 		}
-		return memoryEventStream.add(expectedVersion++, events).getCurrentVersion();
+		return memoryEventStream.add(expectedVersion++, events).currentVersion;
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 */
 	@Override
 	public long loadFromLatestVersion(final String identity, final Collection<EventType> events) throws EmptyResultException {
-		return getEventStream(identity).load(events).getCurrentVersion();
+		return getEventStream(identity).load(events).currentVersion;
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 */
 	@Override
 	public long currentVersion(final String identity) throws EmptyResultException {
-		return getEventStream(identity).getCurrentVersion();
+		return getEventStream(identity).currentVersion;
 	}
 
 	/**
@@ -109,12 +110,12 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 * 
 	 */
 	private class MemoryEventStream {
-		private final String identity;
+		public final String identity;
 		// private final String name;
-		private final List<MemoryEvents> memoryEvents;
-		private long currentVersion;
+		public final List<MemoryEvents> memoryEvents;
+		public long currentVersion;
 
-		public MemoryEventStream(final String identity, final long version, final String name, final Collection<EventType> initialEvents) {
+		public MemoryEventStream(final String identity, final long version, final String name, final Collection<Object> initialEvents) {
 			super();
 			this.identity = Preconditions.checkNotNull(identity);
 			this.currentVersion = version;
@@ -123,33 +124,33 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 			memoryEvents.add(new MemoryEvents(currentVersion, initialEvents));
 		}
 
-		public MemoryEventStream add(final long version, final Collection<EventType> initialEvents) {
+		public MemoryEventStream add(final long version, final Collection<Object> initialEvents) {
 			this.currentVersion = version;
 			memoryEvents.add(new MemoryEvents(currentVersion, initialEvents));
 			Collections.sort(memoryEvents);
 			return this;
 		}
 
-		public MemoryEventStream load(final Collection<EventType> dest) {
+		public MemoryEventStream load(final Collection<Object> dest) {
 			for (final MemoryEvents e : memoryEvents) {
-				dest.addAll(e.getEvents());
+				dest.addAll(e.events);
 			}
 			return this;
 		}
 
-		public MemoryEventStream loadUpToVersion(final long version, final Collection<EventType> dest) {
+		public MemoryEventStream loadUpToVersion(final long version, final Collection<Object> dest) {
 			for (final MemoryEvents e : memoryEvents) {
-				if (e.getVersion() <= version) {
-					dest.addAll(e.getEvents());
+				if (e.version <= version) {
+					dest.addAll(e.events);
 				}
 			}
 			return this;
 		}
 
-		public MemoryEventStream loadFromVersion(final long version, final Collection<EventType> dest) {
+		public MemoryEventStream loadFromVersion(final long version, final Collection<Object> dest) {
 			for (final MemoryEvents e : memoryEvents) {
-				if (e.getVersion() > version) {
-					dest.addAll(e.getEvents());
+				if (e.version > version) {
+					dest.addAll(e.events);
 				}
 			}
 			return this;
@@ -189,13 +190,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 			return true;
 		}
 
-		/**
-		 * @return the currentVersion
-		 */
-		public long getCurrentVersion() {
-			return currentVersion;
-		}
-
+ 
 	}
 
 	/**
@@ -204,10 +199,10 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 	 * 
 	 * 
 	 */
-	private class MemoryEvents implements Comparable<MemoryEvents> {
+	private static class MemoryEvents implements Comparable<MemoryEvents> {
 
-		private final long version;
-		private final Collection<EventType> events;
+		public final long version;
+		public final Collection<? extends DomainEvent> events;
 
 		/**
 		 * Build a new instance of Event.
@@ -217,7 +212,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 		 * @param memoryEvents
 		 *            ordered memoryEvents
 		 */
-		public MemoryEvents(final long version, final Collection<EventType> events) {
+		public MemoryEvents(final long version, final Collection<? extends DomainEvent> events) {
 			super();
 			this.version = version;
 			this.events = Preconditions.checkNotNull(events);
@@ -228,20 +223,7 @@ public class MapEventStore<EventType> implements EventStore<EventType> {
 			return (int) (version - o.version);
 		}
 
-		/**
-		 * @return the version
-		 */
-		public long getVersion() {
-			return version;
-		}
-
-		/**
-		 * @return the memoryEvents
-		 */
-		public Collection<EventType> getEvents() {
-			return events;
-		}
-
+		 
 	}
 
 }

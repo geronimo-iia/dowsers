@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.serializer;
 
 import hirondelle.date4j.DateTime;
 

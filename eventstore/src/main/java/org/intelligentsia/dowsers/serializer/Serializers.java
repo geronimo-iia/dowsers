@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,13 +30,8 @@ import com.google.common.base.Preconditions;
  * @see https://github.com/eishay/jvm-serializers
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public final class Serializers {
-
-	/**
-	 * Build a new instance of Serializers.
-	 */
-	private Serializers() {
-	}
+public enum Serializers {
+	;
 
 	/**
 	 * Build a new <code>Serializer</code> using Kryo automatic data binding .
@@ -104,7 +99,7 @@ public final class Serializers {
 		kryo.register(Boolean[].class);
 		kryo.register(Short[].class);
 		kryo.register(Integer[].class);
-		kryo.register(Long[].class); 
+		kryo.register(Long[].class);
 		// collections
 		kryo.register(ArrayList.class);
 		kryo.register(LinkedList.class);

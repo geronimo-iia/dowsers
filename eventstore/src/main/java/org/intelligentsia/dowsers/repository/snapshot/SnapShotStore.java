@@ -12,7 +12,7 @@ import org.intelligentsia.dowsers.eventstore.EmptyResultException;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface SnapShotProvider {
+public interface SnapShotStore {
 
 	/**
 	 * @param identity
@@ -34,7 +34,7 @@ public interface SnapShotProvider {
 	 * @throw EmptyResultException if no snapshot exist for specified identity
 	 *        and/or before specified version
 	 */
-	public SnapShot getSnapShotBefore(String identity, long version) throws EmptyResultException;
+	//public SnapShot getSnapShotBefore(String identity, long version) throws EmptyResultException;
 
 	/**
 	 * Store specified snapshot.
@@ -50,7 +50,7 @@ public interface SnapShotProvider {
 	 * @param identity
 	 * @return number of snapshot for specified identity.
 	 */
-	public long getCount(String identity);
+	//public long getCount(String identity);
 
 	/**
 	 * Remove all Snapshot for specified identifier with version less or equal
@@ -60,4 +60,6 @@ public interface SnapShotProvider {
 	 *            identifier
 	 */
 	public void remove(String identifier, long version);
+	
+	public void removeUpToVersion(String identifier, long version);
 }

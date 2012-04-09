@@ -2,7 +2,7 @@ package org.intelligentsia.dowsers.eventstore;
 
 import org.intelligentsia.cqrs.eventstore.EventSerializer;
 import org.intelligentsia.cqrs.eventstore.EventStore;
-import org.intelligentsia.dowsers.eventstore.jdbc.SpringJdbcTemplateEventStore;
+import org.intelligentsia.dowsers.eventstore.support.jdbc.SpringJdbcTemplateEventStore;
 
 import org.junit.Assert;
 import org.junit.runner.RunWith;

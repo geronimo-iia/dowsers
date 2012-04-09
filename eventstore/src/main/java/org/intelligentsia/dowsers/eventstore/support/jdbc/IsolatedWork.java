@@ -22,7 +22,7 @@
  * Boston, MA  02110-1301  USA
  *
  */
-package org.intelligentsia.dowsers.eventstore.jdbc;
+package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import java.sql.Connection;
 

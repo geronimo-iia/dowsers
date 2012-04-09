@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore.jdbc;
+package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import java.sql.Connection;
 import java.util.Collection;
@@ -16,8 +16,8 @@ import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.eventstore.EmptyResultException;
 import org.intelligentsia.dowsers.eventstore.EventStore;
 import org.intelligentsia.dowsers.eventstore.StreamEverExistsException;
-import org.intelligentsia.dowsers.eventstore.jdbc.SpringJdbcTemplateEventStore.EventStream;
-import org.intelligentsia.dowsers.storage.Serializer;
+import org.intelligentsia.dowsers.eventstore.support.jdbc.SpringJdbcTemplateEventStore.EventStream;
+import org.intelligentsia.dowsers.serializer.Serializer;
 
 import com.google.common.base.Preconditions;
 

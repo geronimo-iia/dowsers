@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.serializer;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore.jdbc;
+package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import hirondelle.date4j.DateTime;
 

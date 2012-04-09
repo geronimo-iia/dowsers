@@ -1,4 +1,4 @@
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.serializer;
 
 import com.google.common.base.Preconditions;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.eventstore.jdbc;
+package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import net.sf.persist.annotations.Table;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.memento;
 
 import java.io.Serializable;
 

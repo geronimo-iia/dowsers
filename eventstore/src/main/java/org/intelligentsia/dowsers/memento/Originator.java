@@ -1,7 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.storage;
+package org.intelligentsia.dowsers.memento;
+
+import org.intelligentsia.dowsers.domain.DomainEntity;
 
 /**
  * Originator: the object that knows how to save itself.
@@ -15,7 +17,9 @@ package org.intelligentsia.dowsers.storage;
  */
 public interface Originator {
 
-	public Memento createMemento();
+	public <T extends DomainEntity> Memento createMemento(T entity);
 
-	public void setMemento(Memento memento);
+	public <T extends DomainEntity> void setMemento(T entity, Memento memento);
+	
+	public <T extends DomainEntity> boolean support(Class<T> entityType);
 }
