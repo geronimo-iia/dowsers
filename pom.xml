@@ -1,3 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	You under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
@@ -11,11 +22,29 @@
 	<packaging>pom</packaging>
 	<name>dowsers</name>
 	<version>0.0.1-SNAPSHOT</version>
-	<inceptionYear>2012</inceptionYear>
 	<description>
 		Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
-		
 	</description>
+	<url>http://intelligents-ia.com/dowsers</url>
+	<developers>
+		<developer>
+			<id>jerome.guibert.intelligents.ia.com</id>
+			<name>Jerome Guibert</name>
+			<organization>Intelligents-ia</organization>
+			<email>jguibert@intelligents-ia.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<inceptionYear>2012</inceptionYear>
+	<organization>
+		<name>Intelligents-ia</name>
+		<url>http://intelligents-ia.com</url>
+	</organization>
 	<dependencyManagement>
 		<dependencies>
 			<!-- ******************************************************************* -->
@@ -99,6 +128,9 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<!-- ******************************************************************* -->
+	<!-- TESTING DEPENDENCIES -->
+	<!-- ******************************************************************* -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -117,8 +149,14 @@
 			<artifactId>spring-test</artifactId>
 		</dependency>
 	</dependencies>
+	<!-- ******************************************************************* -->
+	<!-- BUILD -->
+	<!-- ******************************************************************* -->
 	<build>
 		<pluginManagement>
+			<!-- ******************************************************************* -->
+			<!-- JDK 1.6 -->
+			<!-- ******************************************************************* -->
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -129,8 +167,56 @@
 						<encoding>UTF-8</encoding>
 					</configuration>
 				</plugin>
+				<!-- ******************************************************************* -->
+			<!-- LICENCE CHECK -->
+			<!-- ******************************************************************* -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.rat</groupId> -->
+			<!-- <artifactId>apache-rat-plugin</artifactId> -->
+			<!-- <version>0.8</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <phase>verify</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>check</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<header>${basedir}/header.txt</header>
+					<failIfMissing>true</failIfMissing>
+					<aggregate>true</aggregate>
+					<encoding>UTF-8</encoding>
+					<excludes>
+						<exclude>LICENSE.txt</exclude>
+						<exclude>**/src/test/resources/**</exclude>
+						<exclude>**/src/test/data/**</exclude>
+					</excludes>
+					<strictCheck>true</strictCheck>
+				</configuration>
+				<executions>
+					<execution>
+						<id>check-headers</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId> 
+			</plugin>
+		</plugins>
 	</build>
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>
@@ -153,6 +239,19 @@
 			<url>http://intelligents-ia.com/maven2</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 	<modules>
 		<module>core</module>
 		<module>eventstore</module>

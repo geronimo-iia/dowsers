@@ -1,0 +1,15 @@
+   =========================================================================
+   ==  Example NOTICE file for use with the Apache License, Version 2.0,  ==
+   ==  in this case for the intelligents-ia dowsers project.              ==
+   =========================================================================
+
+
+   Dowsers
+   Copyright 2012 Guibert Jerome
+
+   This software contains code derived from the Hibernate, Relational Persistence 
+   for Idiomatic Java (Lesser General Public License).
+
+
+
+ 
