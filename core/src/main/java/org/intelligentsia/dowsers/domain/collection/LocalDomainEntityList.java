@@ -25,8 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.util.Registry;
 
 import com.google.common.base.Preconditions;
 

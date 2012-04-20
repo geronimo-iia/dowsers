@@ -21,8 +21,8 @@ package org.intelligentsia.dowsers.domain.collection;
 
 import java.util.Collection;
 
+import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.util.Registry;
 
 import com.google.common.base.Preconditions;
 

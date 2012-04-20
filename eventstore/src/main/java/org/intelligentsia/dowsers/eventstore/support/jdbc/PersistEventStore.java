@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import net.sf.persist.Persist;
 
-import org.intelligentsia.dowsers.DowsersException;
+import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.eventstore.EmptyResultException;
 import org.intelligentsia.dowsers.eventstore.EventStore;

@@ -19,7 +19,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.util.Registry;
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
+import org.intelligentsia.dowsers.core.Registry;
 
 /**
  * DomainEntity represent a domain entity.
@@ -81,7 +82,7 @@ public class DomainEntity extends Entity implements Registry<LocalDomainEntity> 
 	/**
 	 * @return current version of this domain entity.
 	 */
-	public final Version getVersion() {
+	public final long getVersion() {
 		//delegate call to aggregate
 		return aggregate.getVersion();
 	}

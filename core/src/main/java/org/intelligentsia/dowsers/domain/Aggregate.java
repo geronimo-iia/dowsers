@@ -19,8 +19,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.event.DomainEventInvoker;
-import org.intelligentsia.dowsers.util.Registry;
 
 /**
  * Aggregate declare methods to manage an aggregate of entities.
@@ -73,5 +73,5 @@ public interface Aggregate extends Registry<LocalDomainEntity> {
 	/**
 	 * @return current version of this aggregate
 	 */
-	public Version getVersion();
+	public long getVersion();
 }

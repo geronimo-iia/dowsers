@@ -5,7 +5,7 @@ package org.intelligentsia.dowsers.repository.snapshot;
 
 import junit.framework.Assert;
 
-import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.repository.snapshot.SnapShot;
 
 import org.junit.Test;

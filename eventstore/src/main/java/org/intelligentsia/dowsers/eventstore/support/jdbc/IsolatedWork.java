@@ -26,7 +26,7 @@ package org.intelligentsia.dowsers.eventstore.support.jdbc;
 
 import java.sql.Connection;
 
-import org.intelligentsia.dowsers.DowsersException;
+import org.intelligentsia.dowsers.core.DowsersException;
 
 /**
  * Represents work that needs to be performed in a manner which isolates it from

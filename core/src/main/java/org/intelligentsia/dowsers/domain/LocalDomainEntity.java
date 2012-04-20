@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.domain;
 
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
+
 /**
  * LocalDomainEntity is a domain entity which can be used only with a domain
  * entity (also named root entity).

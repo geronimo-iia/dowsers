@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.DowsersException;
+import org.intelligentsia.dowsers.core.DowsersException;
 
 /**
  * ConcurrencyException.

@@ -1,6 +1,6 @@
 package org.intelligentsia.dowsers.eventstore;
 
-import org.intelligentsia.dowsers.DowsersException;
+import org.intelligentsia.dowsers.core.DowsersException;
 
 /**
  * StreamEverExistsException.

@@ -3,8 +3,8 @@
  */
 package org.intelligentsia.dowsers.memento;
 
+import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.domain.DomainEntity;
-import org.intelligentsia.dowsers.util.Registry;
 
 /**
  * 

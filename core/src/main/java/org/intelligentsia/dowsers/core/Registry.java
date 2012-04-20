@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.util;
+package org.intelligentsia.dowsers.core;
 
 /**
  * Registry declare methods to register an object.

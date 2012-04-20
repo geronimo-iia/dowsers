@@ -22,7 +22,7 @@ package org.intelligentsia.dowsers.event.processor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.event.processor.EntityEventProcessor;
 
 import org.junit.Assert;

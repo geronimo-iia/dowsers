@@ -22,6 +22,7 @@ package org.intelligentsia.dowsers.domain;
 import static org.junit.Assert.*;
 
 import org.intelligentsia.dowsers.container.GenericDomainEntityFactory;
+import org.intelligentsia.dowsers.core.Version;
 import org.intelligentsia.dowsers.event.GenericDomainAggregateFactory;
 import org.intelligentsia.dowsers.event.processor.CacheEventProcessorProvider;
 
@@ -59,6 +60,6 @@ public class DomainEntityTest {
 		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity.getVersion());
-		assertEquals(Version.forInitialVersion(), domainEntity.getVersion());
+		assertEquals(Version.INITIAL.toLong(), domainEntity.getVersion());
 	}
 }

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.intelligentsia.dowsers.DowsersException;
+import org.intelligentsia.dowsers.core.DowsersException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

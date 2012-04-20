@@ -21,8 +21,8 @@ package org.intelligentsia.dowsers.event;
 
 import java.io.Serializable;
 
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.IdentifierFactoryProvider;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;

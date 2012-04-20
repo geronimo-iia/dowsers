@@ -24,8 +24,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.util.Registry;
 
 /**
  * 

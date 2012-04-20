@@ -20,7 +20,7 @@
 package org.intelligentsia.dowsers.command;
 
 import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
-import org.intelligentsia.dowsers.util.Handler;
+import org.intelligentsia.dowsers.core.Handler;
 
 import com.google.common.base.Preconditions;
 
@@ -52,7 +52,7 @@ public class FakeHelloCommandHandler implements Handler<FakeHelloCommand> {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.util.Handler#handle(java.lang.Object)
+	 * @see org.intelligentsia.dowsers.core.Handler#handle(java.lang.Object)
 	 */
 	@Override
 	public void handle(final FakeHelloCommand command) {

@@ -17,27 +17,21 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.domain;
-
-import org.junit.Assert;
-import org.junit.Test;
+package org.intelligentsia.dowsers.core;
 
 /**
- * IdentifierTest.
+ * Handler define generic way to declare an handler on object.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class IdentifierFactoryProviderTest {
+public interface Handler<T> {
 
-	@Test
-	public void shouldGenerateIdentifier() {
-		Assert.assertNotNull(IdentifierFactoryProvider.generateNewIdentifier());
-	}
+	/**
+	 * Handle instance.
+	 * 
+	 * @param instance
+	 *            instance to handle
+	 */
+	public void handle(T instance);
 
-	@Test
-	public void shouldGenerateNotSameIdentifier() {
-		final String id = IdentifierFactoryProvider.generateNewIdentifier();
-		Assert.assertNotSame(id, IdentifierFactoryProvider.generateNewIdentifier());
-	}
 }

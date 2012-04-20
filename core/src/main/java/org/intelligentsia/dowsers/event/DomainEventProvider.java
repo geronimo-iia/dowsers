@@ -21,8 +21,6 @@ package org.intelligentsia.dowsers.event;
 
 import java.util.Collection;
 
-import org.intelligentsia.dowsers.domain.Version;
-
 /**
  * DomainEventProvider declares methods.
  * 
@@ -51,7 +49,7 @@ public interface DomainEventProvider {
 	 * @return the current version number of this aggregate, or
 	 *         <code>null</code> if no events were ever committed
 	 */
-	public Version getVersion();
+	public long getVersion();
 
 	/**
 	 * Loading historical domain events.It is basically apply events of the
@@ -65,7 +63,7 @@ public interface DomainEventProvider {
 	 * @throws IllegalStateException
 	 *             if error occurs when load history
 	 */
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history, Version version) throws IllegalStateException;
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, long version) throws IllegalStateException;
 
 	/**
 	 * Returns an Iterable<DomainEvent> to the events in the aggregate that have
@@ -87,6 +85,6 @@ public interface DomainEventProvider {
 	 * @param version
 	 *            set specific version associated with this commit.
 	 */
-	public void markChangesCommitted(Version version);
+	public void markChangesCommitted(long version);
 
 }

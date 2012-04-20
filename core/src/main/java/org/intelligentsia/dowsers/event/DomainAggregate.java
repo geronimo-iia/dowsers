@@ -24,11 +24,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.core.Version;
 import org.intelligentsia.dowsers.domain.Aggregate;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.LocalDomainEntity;
-import org.intelligentsia.dowsers.domain.Version;
+import org.intelligentsia.dowsers.domain.LocalDomainEntity; 
 import org.intelligentsia.dowsers.event.processor.EventProcessor;
 import org.intelligentsia.dowsers.event.processor.EventProcessorProvider;
 
@@ -54,7 +54,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	/**
 	 * Aggregate version.
 	 */
-	private Version version = Version.forInitialVersion();
+	private long version = Version.forInitialVersion();
 	/**
 	 * Entities used in this aggregate (included the domain entity root)
 	 */
@@ -94,7 +94,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	 * @see org.intelligentsia.dowsers.event.DomainEventProvider#getVersion()
 	 */
 	@Override
-	public Version getVersion() {
+	public long getVersion() {
 		return version;
 	}
 
@@ -105,7 +105,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	 *            events history
 	 */
 	@Override
-	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final Version version) throws IllegalStateException {
+	public void loadFromHistory(final Iterable<? extends DomainEvent> history, final long version) throws IllegalStateException {
 		if (history != null) {
 			long ordinal = 0l;
 			for (final DomainEvent domainEvent : history) {
@@ -126,7 +126,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 			}
 			eventOrdinal = ordinal;
 		}
-		this.version = version;
+		this.version = Version.forSpecificVersion(version);
 	}
 
 	@Override
@@ -140,9 +140,9 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	@Override
-	public void markChangesCommitted(Version version) {
+	public void markChangesCommitted(long version) {
 		eventOrdinal = 0l;
-		this.version = version;
+		this.version = Version.forSpecificVersion(version);
 		uncommittedChanges.clear();
 	}
 
@@ -163,7 +163,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.util.Registry#register(java.lang.Object)
+	 * @see org.intelligentsia.dowsers.core.Registry#register(java.lang.Object)
 	 */
 	@Override
 	public void register(final LocalDomainEntity object) throws NullPointerException {

@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers;
+package org.intelligentsia.dowsers.core;
 
 /**
  * DowsersException extends RuntimeException. Root exception of dowsers project.

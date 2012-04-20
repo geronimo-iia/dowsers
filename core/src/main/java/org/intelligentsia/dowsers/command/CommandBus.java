@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.command;
 
-import org.intelligentsia.dowsers.util.Handler;
+import org.intelligentsia.dowsers.core.Handler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AsyncEventBus;
