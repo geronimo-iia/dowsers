@@ -20,13 +20,21 @@
 package org.intelligentsia.dowsers.repository.memento;
 
 import org.intelligentsia.dowsers.core.Registry;
-import org.intelligentsia.dowsers.domain.DomainEntity;
 
 /**
+ * OriginatorRegistry declare methods to register Originator instance and find
+ * those who support specific entity type.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface OriginatorRegistry extends Registry<Originator> {
 
-	public <T extends DomainEntity> Originator find(Class<T> entityType);
+	/**
+	 * Find an originator which support specified entity.
+	 * 
+	 * @param entityType
+	 *            entity
+	 * @return originator instance.
+	 */
+	public <T> Originator find(Class<T> entity);
 }

@@ -19,44 +19,48 @@
  */
 package org.intelligentsia.dowsers.repository.memento;
 
+import org.intelligentsia.dowsers.core.Serializer;
+
 /**
- * Originator: the object that knows how to save itself.
- * 
- * The Originator interface is for the snapshot functionality which is an
- * optimization technique for speeding up loading aggregate roots from the Event
- * Store.
+ * SerializeOriginator implement a Originator with memento as byte array using
+ * Serializer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Originator {
+public class SerializeOriginator implements Originator {
+
+	private Serializer<?> serializer;
 
 	/**
-	 * Create a memento instance for specified entity.
-	 * 
-	 * @param entity
-	 *            entity source
-	 * @return a memento instance.
+	 * Build a new instance of SerializeOriginator.
 	 */
-	public <T> Memento createMemento(T entity);
+	public SerializeOriginator(Serializer<?> serializer) {
+		this.serializer = serializer;
+	}
 
 	/**
-	 * Apply memento on specified entity.
-	 * 
-	 * @param entity
-	 *            target entity
-	 * @param memento
-	 *            memento to apply
-	 * @throws IllegalStateException
-	 *             if entity did not support this memento
+	 * @see org.intelligentsia.dowsers.repository.memento.Originator#createMemento(java.lang.Object)
 	 */
-	public <T> void setMemento(T entity, Memento memento) throws IllegalStateException;
+	@Override
+	public <T> Memento createMemento(T entity) {
+		return 	new ByteArrayMemento(serializer.serialize(entity));
+	}
 
 	/**
-	 * @param entity
-	 *            entity
-	 * @return true if specified entity is supported by this instance of
-	 *         Originator
+	 * @see org.intelligentsia.dowsers.repository.memento.Originator#setMemento(java.lang.Object,
+	 *      org.intelligentsia.dowsers.repository.memento.Memento)
 	 */
-	public <T> boolean support(Class<T> entity);
+	@Override
+	public <T> void setMemento(T entity, Memento memento) throws IllegalStateException {
+	}
+
+	/**
+	 * @see org.intelligentsia.dowsers.repository.memento.Originator#support(java.lang.Class)
+	 */
+	@Override
+	public <T> boolean support(Class<T> entity) {
+		return false;
+	}
+
 }

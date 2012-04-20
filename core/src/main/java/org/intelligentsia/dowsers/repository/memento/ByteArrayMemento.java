@@ -19,44 +19,66 @@
  */
 package org.intelligentsia.dowsers.repository.memento;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
+
 /**
- * Originator: the object that knows how to save itself.
- * 
- * The Originator interface is for the snapshot functionality which is an
- * optimization technique for speeding up loading aggregate roots from the Event
- * Store.
+ * ByteArrayMemento.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Originator {
+public class ByteArrayMemento implements Memento, Externalizable, Serializable {
+
+	private byte[] content;
 
 	/**
-	 * Create a memento instance for specified entity.
-	 * 
-	 * @param entity
-	 *            entity source
-	 * @return a memento instance.
+	 * Build a new instance of ByteArrayMemento.
 	 */
-	public <T> Memento createMemento(T entity);
+	public ByteArrayMemento() {
+	}
 
 	/**
-	 * Apply memento on specified entity.
-	 * 
-	 * @param entity
-	 *            target entity
-	 * @param memento
-	 *            memento to apply
-	 * @throws IllegalStateException
-	 *             if entity did not support this memento
+	 * Build a new instance of ByteArrayMemento.
+	 * @param content
 	 */
-	public <T> void setMemento(T entity, Memento memento) throws IllegalStateException;
+	public ByteArrayMemento(byte[] content) {
+		super();
+		this.content = content;
+	}
 
 	/**
-	 * @param entity
-	 *            entity
-	 * @return true if specified entity is supported by this instance of
-	 *         Originator
+	 * @return the content
 	 */
-	public <T> boolean support(Class<T> entity);
+	public byte[] getContent() {
+		return content;
+	}
+
+	/**
+	 * @param content
+	 *            the content to set
+	 */
+	public void setContent(byte[] content) {
+		this.content = content;
+	}
+
+	/**
+	 * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
+	 */
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.write(content);
+	}
+
+	/**
+	 * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
+	 */
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		in.read(content);
+	}
+
 }
