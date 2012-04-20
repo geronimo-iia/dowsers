@@ -1,10 +1,7 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.serializer;
-
-import org.intelligentsia.dowsers.serializer.Serializer;
-import org.intelligentsia.dowsers.serializer.Serializers;
+package org.intelligentsia.dowsers.core;
 
 import com.esotericsoftware.kryo.Kryo;
 

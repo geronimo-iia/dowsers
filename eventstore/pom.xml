@@ -39,19 +39,7 @@
 			<artifactId>core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- Serializer FRAMEWORK -->
-		<!-- ******************************************************************* -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>kryo</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		
 		<!-- ******************************************************************* -->
 		<!-- TIME FRAMEWORK -->
 		<!-- ******************************************************************* -->

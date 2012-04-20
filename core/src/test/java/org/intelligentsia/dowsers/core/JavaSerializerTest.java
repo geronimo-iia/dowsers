@@ -1,25 +1,23 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.serializer;
+package org.intelligentsia.dowsers.core;
 
-import org.intelligentsia.dowsers.serializer.Serializer;
-import org.intelligentsia.dowsers.serializer.Serializers;
 
 /**
- * JsonSerializerTest.
+ * JavaSerializerTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class JsonSerializerTest extends AbstractSerializerTest {
+public class JavaSerializerTest extends AbstractSerializerTest {
 
 	/**
 	 * @see org.intelligentsia.dowsers.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
 	 */
 	@Override
 	protected <T> Serializer<T> createSerializer(final Class<T> className) {
-		return Serializers.newJacksonSerializer(className);
+		return Serializers.newJavaSerializer(className);
 	}
 
 }

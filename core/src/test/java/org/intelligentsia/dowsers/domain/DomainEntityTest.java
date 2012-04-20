@@ -60,6 +60,6 @@ public class DomainEntityTest {
 		GenericDomainEntityFactory defaultDomainEntityFactory = new GenericDomainEntityFactory(aggregateFactory);
 		DummyDomainEntity domainEntity = defaultDomainEntityFactory.create(DummyDomainEntity.class);
 		assertNotNull(domainEntity.getVersion());
-		assertEquals(Version.INITIAL.toLong(), domainEntity.getVersion());
+		assertEquals(Version.forInitialVersion(), domainEntity.getVersion());
 	}
 }

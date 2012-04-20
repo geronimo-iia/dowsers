@@ -1,11 +1,9 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.serializer;
+package org.intelligentsia.dowsers.core;
 
 import junit.framework.Assert;
-
-import org.intelligentsia.dowsers.serializer.Serializer;
 
 import org.junit.Before;
 import org.junit.Test;
