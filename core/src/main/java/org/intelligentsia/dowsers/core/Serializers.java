@@ -216,32 +216,4 @@ public enum Serializers {
 		}
 	}
 
-	/**
-	 * 
-	 * CustomSerializer.
-	 * 
-	 * @param <T>
-	 */
-	public static class CustomSerializer<T extends ObjectCustomSerializer> extends Serializer<T> {
-		private final Factory<T> factory;
-
-		public CustomSerializer(final Class<T> innerType, final Factory<T> factory) {
-			super(innerType);
-			this.factory = factory;
-		}
-
-		@Override
-		public T deserialize(byte[] array) throws Exception {
-			T instance = factory.newInstance();
-			//instance.readFrom(byteBuffer);
-			return instance;
-		}
-
-		@Override
-		public byte[] serialize(T content) throws Exception {
-			//content.writeTo(byteBuffer);
-			return null;
-		}
-
-	}
 }
