@@ -44,14 +44,13 @@ public class DefaultDomainRepository extends AbstractDomainRepository {
 
 	/**
 	 * Build a new instance of DefaultDomainRepository.
+	 * 
 	 * @param domainEntityFactory
 	 * @throws NullPointerException
 	 */
 	public DefaultDomainRepository(DomainEntityFactory domainEntityFactory) throws NullPointerException {
 		super(domainEntityFactory);
 	}
-
-	 
 
 	/**
 	 * @see org.intelligentsia.dowsers.domain.DomainRepository#find(java.lang.Class,

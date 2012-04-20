@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelligentsia.dowsers.container.DomainEntityFactory;
+import org.intelligentsia.dowsers.core.Version;
 import org.intelligentsia.dowsers.domain.AbstractDomainRepository;
 import org.intelligentsia.dowsers.domain.ConcurrencyException;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.DomainEntityNotFoundException;
-import org.intelligentsia.dowsers.domain.Version;
 import org.intelligentsia.dowsers.event.DomainAggregate;
 import org.intelligentsia.dowsers.event.DomainEvent;
 import org.intelligentsia.dowsers.event.DomainEventProvider;
@@ -57,7 +57,7 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 		final DomainEventProvider domainEventProvider = getDomainAggregate(entity);
 		// Retrieve domain event stream
 		List<DomainEvent> events = new ArrayList<DomainEvent>();
-		Version version = Version.forSpecificVersion(domainEventStore.loadFromLatestVersion(identity, events));
+		long version = Version.forSpecificVersion(domainEventStore.loadFromLatestVersion(identity, events));
 		// load from history
 		domainEventProvider.loadFromHistory(events, version);
 		return entity;
@@ -71,9 +71,9 @@ public class EventStoreDomainRepository extends AbstractDomainRepository {
 		// Retrieve DomainEventProvider.
 		final DomainEventProvider domainEventProvider = getDomainAggregate(domainEntity);
 		// expected version on store 
-		long expectedVersion = domainEventProvider.getVersion().toLong();
+		long expectedVersion = domainEventProvider.getVersion();
 		// store
-		Version finalVersion = Version.forSpecificVersion(domainEventStore.store(domainEventProvider.getIdentity(), expectedVersion, domainEventProvider.getUncommittedChanges()));
+		long finalVersion = Version.forSpecificVersion(domainEventStore.store(domainEventProvider.getIdentity(), expectedVersion, domainEventProvider.getUncommittedChanges()));
 		// mark change as committed
 		domainEventProvider.markChangesCommitted(finalVersion);
 	}
