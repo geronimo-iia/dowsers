@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.memento;
+package org.intelligentsia.dowsers.repository.memento;
 
 import java.io.Serializable;
 

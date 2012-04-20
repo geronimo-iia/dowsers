@@ -8,7 +8,7 @@ import hirondelle.date4j.DateTime;
 import java.io.Serializable;
 import java.util.TimeZone;
 
-import org.intelligentsia.dowsers.memento.Memento;
+import org.intelligentsia.dowsers.repository.memento.Memento;
 
 import com.google.common.base.Objects;
 

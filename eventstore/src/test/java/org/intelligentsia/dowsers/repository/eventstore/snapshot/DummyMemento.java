@@ -3,7 +3,7 @@
  */
 package org.intelligentsia.dowsers.repository.eventstore.snapshot;
 
-import org.intelligentsia.dowsers.memento.Memento;
+import org.intelligentsia.dowsers.repository.memento.Memento;
 
 /**
  * DummyMemento.
