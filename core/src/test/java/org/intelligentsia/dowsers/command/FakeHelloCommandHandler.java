@@ -19,37 +19,43 @@
  */
 package org.intelligentsia.dowsers.command;
 
-import org.intelligentsia.dowsers.command.CommandHandler;
 import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
+import org.intelligentsia.dowsers.util.Handler;
+
+import com.google.common.base.Preconditions;
 
 /**
- * FakeHelloCommandHandler.
+ * FakeHelloCommandHandler which implement an handler for FakeHelloCommand and
+ * register himself on a CommandHandlerRegistry instance..
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class FakeHelloCommandHandler extends CommandHandler<FakeHelloCommand> {
+public class FakeHelloCommandHandler implements Handler<FakeHelloCommand> {
 
 	/**
 	 * for test purpose.
 	 */
-	private String lastCalled = "";
+	private String lastCalled = null;
 
 	/**
 	 * Build a new instance of FakeHelloCommandHandler.
 	 * 
 	 * @param commandRegistry
+	 *            command Registry where to register
 	 * @throws NullPointerException
+	 *             if commandRegistry is null
 	 */
 	public FakeHelloCommandHandler(final CommandHandlerRegistry commandRegistry) throws NullPointerException {
-		super(commandRegistry);
+		super();
+		Preconditions.checkNotNull(commandRegistry).register(this);
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.command.CommandHandler#onCommand(org.intelligentsia.dowsers.command.Command)
+	 * @see org.intelligentsia.dowsers.util.Handler#handle(java.lang.Object)
 	 */
 	@Override
-	public void onCommand(final FakeHelloCommand command) {
+	public void handle(final FakeHelloCommand command) {
 		lastCalled = command.getName();
 	}
 

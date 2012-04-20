@@ -19,29 +19,49 @@
  */
 package org.intelligentsia.dowsers.command;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * CommandHistory.
+ * DefaultCommandHistory implements in memory CommandHistory.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface CommandHistory {
+public class DefaultCommandHistory implements CommandHistory {
+
+	private final List<Command> commands;
 
 	/**
-	 * Push a command instance on history
-	 * 
-	 * @param command
+	 * Build a new instance of DefaultCommandHistory.
 	 */
-	public void push(final Command command);
+	public DefaultCommandHistory() {
+		commands = Collections.synchronizedList(new ArrayList<Command>());
+	}
 
 	/**
-	 * @return an unmodifiable an ordered collection of command (older first).
+	 * @see org.intelligentsia.dowsers.command.CommandHistory#push(org.intelligentsia.dowsers.command.Command)
 	 */
-	public Collection<Command> history();
+	@Override
+	public void push(final Command command) {
+		commands.add(command);
+	}
 
 	/**
-	 * Remove all history.
+	 * @see org.intelligentsia.dowsers.command.CommandHistory#history()
 	 */
-	public void clear();
+	@Override
+	public Collection<Command> history() {
+		return Collections.unmodifiableCollection(commands);
+	}
+
+	/**
+	 * @see org.intelligentsia.dowsers.command.CommandHistory#flush()
+	 */
+	@Override
+	public void clear() {
+		commands.clear();
+	}
+
 }

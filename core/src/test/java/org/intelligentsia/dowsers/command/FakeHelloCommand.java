@@ -25,7 +25,7 @@ import org.intelligentsia.dowsers.command.CommandInvoker;
 import com.google.common.base.Preconditions;
 
 /**
- * FakeHelloCommand.
+ * FakeHelloCommand implement a fake Command with automatic execution.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
@@ -47,17 +47,16 @@ public class FakeHelloCommand extends Command {
 	public FakeHelloCommand(final CommandInvoker commandInvoker, final String name) throws NullPointerException {
 		super(commandInvoker);
 		this.name = name;
+		execute();
 	}
 
 	/**
 	 * @see org.intelligentsia.dowsers.command.Command#execute()
 	 */
 	@Override
-	public void execute() throws NullPointerException, IllegalArgumentException {
+	public void validate() throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkNotNull(name, "name cannot be null");
 		Preconditions.checkArgument(!"".equals(name), "name must not be empty");
-		// call super
-		super.execute();
 	}
 
 	/**

@@ -19,9 +19,10 @@
  */
 package org.intelligentsia.dowsers.command;
 
+import java.util.Iterator;
+
 import junit.framework.Assert;
 
-import org.intelligentsia.dowsers.command.CommandBus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,22 +34,18 @@ import org.junit.Test;
  */
 public class CommandBusTest {
 
-	private CommandBus commandBus;
-	private FakeHelloCommandHandler commandHandler;
-
 	@Before
 	public void setup() {
-		commandBus = new CommandBus();
-		commandHandler = new FakeHelloCommandHandler(commandBus);
+
 	}
 
 	@Test
 	public void testCalled() {
+		CommandBus commandBus = CommandBusBuilder.newCommandBus();
+		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
 
 		final FakeHelloCommand command = new FakeHelloCommand(commandBus, "John");
 		Assert.assertEquals("John", command.getName());
-		Assert.assertEquals("", commandHandler.getLastCalled());
-		Assert.assertNotSame("John", commandHandler.getLastCalled());
 		// Execute
 		command.execute();
 		// invariant
@@ -59,12 +56,36 @@ public class CommandBusTest {
 
 	@Test
 	public void testOrdonnedCommandCalled() {
-		new FakeHelloCommand(commandBus, "John").execute();
-		new FakeHelloCommand(commandBus, "Johnny").execute();
-		new FakeHelloCommand(commandBus, "Johnny BeGood").execute();
+		CommandBus commandBus = CommandBusBuilder.newCommandBus();
+		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
 
+		Assert.assertEquals(null, commandHandler.getLastCalled());
+		new FakeHelloCommand(commandBus, "John");
+		Assert.assertEquals("John", commandHandler.getLastCalled());
+		new FakeHelloCommand(commandBus, "Johnny");
+		Assert.assertEquals("Johnny", commandHandler.getLastCalled());
+		new FakeHelloCommand(commandBus, "Johnny BeGood");
 		Assert.assertNotSame("", commandHandler.getLastCalled());
 		Assert.assertEquals("Johnny BeGood", commandHandler.getLastCalled());
+	}
+
+	@Test
+	public void testCommandHistory() {
+		CommandHistory history = new DefaultCommandHistory();
+		CommandBus commandBus = CommandBusBuilder.newCommandBus(history);
+		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
+
+		FakeHelloCommand one = new FakeHelloCommand(commandBus, "A");
+		FakeHelloCommand two = new FakeHelloCommand(commandBus, "B");
+		FakeHelloCommand three = new FakeHelloCommand(commandBus, "C");
+
+		Assert.assertEquals("C", commandHandler.getLastCalled());
+
+		Iterator<Command> commands = history.history().iterator();
+		Assert.assertNotNull(commands);
+		Assert.assertEquals(one.getId(), commands.next().getId());
+		Assert.assertEquals(two.getId(), commands.next().getId());
+		Assert.assertEquals(three.getId(), commands.next().getId());
 	}
 
 }

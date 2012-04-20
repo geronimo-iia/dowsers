@@ -19,11 +19,12 @@
  */
 package org.intelligentsia.dowsers.command;
 
-import java.util.UUID;
+import org.intelligentsia.dowsers.util.Handler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * CommandBus implements a CommandHandlerRegistry and a CommandInvoker based on
@@ -42,13 +43,9 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 	private final EventBus eventBus;
 
 	/**
-	 * Build a new instance of <code>CommandBus</code> which process command
-	 * handler in a synchrony way.
-	 * 
+	 * Command history instance.
 	 */
-	public CommandBus() {
-		this(new EventBus(UUID.randomUUID().toString()));
-	}
+	private final CommandHistory commandHistory;
 
 	/**
 	 * 
@@ -66,7 +63,30 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 	 *             if eventBus is null
 	 */
 	public CommandBus(final EventBus eventBus) throws NullPointerException {
+		this(eventBus, null);
+	}
+
+	/**
+	 * 
+	 * Build a new instance of <code>CommandBus</code>.
+	 * 
+	 * To use in a synchrony way use {@link EventBus} or {@link AsyncEventBus}
+	 * to asynchrony way.
+	 * 
+	 * 
+	 * @see eventBus
+	 * @param eventBus
+	 *            event bus instance (@see {@link AsyncEventBus} or @see
+	 *            {@link EventBus} )
+	 * @param commandHistory
+	 *            command History instance
+	 * @throws NullPointerException
+	 *             if eventBus is null
+	 */
+	public CommandBus(final EventBus eventBus, final CommandHistory commandHistory) throws NullPointerException {
+		super();
 		this.eventBus = Preconditions.checkNotNull(eventBus);
+		this.commandHistory = commandHistory;
 	}
 
 	/**
@@ -78,15 +98,58 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 	}
 
 	/**
-	 * @see org.intelligentsia.dowsers.command.CommandHandlerRegistry#register(java.lang.Object)
+	 * @see org.intelligentsia.dowsers.command.CommandHandlerRegistry#register(org.intelligentsia.dowsers.command.CommandHandler)
 	 */
 	@Override
-	public void register(final Object commandHandler) {
-		eventBus.register(commandHandler);
+	public <T extends Command> void register(final Handler<T> commandHandler) {
+		eventBus.register(new CommandBusHandler<T>(commandHandler));
 	}
 
-	public void unregister(final Object commandHandler) {
-		eventBus.unregister(commandHandler);
-	}
+	/**
+	 * 
+	 * CommandHandlerWithHistory class is used to manage command history
+	 * processing and event bus registration.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 * 
+	 * @param <T>
+	 */
+	private class CommandBusHandler<T extends Command> {
+		/**
+		 * Handler where to delegate command process.
+		 */
+		private final Handler<T> handler;
 
+		/**
+		 * Build a new instance of CommandBusHandler.
+		 * 
+		 * @param handler
+		 *            command Handler instance
+		 */
+		public CommandBusHandler(final Handler<T> handler) {
+			super();
+			this.handler = handler;
+		}
+
+		/**
+		 * Handle specified command. If null, nothing is done.
+		 * 
+		 * @param command
+		 *            command to process.
+		 */
+		@SuppressWarnings("unused")
+		@Subscribe
+		public void handle(final T command) {
+			if (command != null) {
+				// delegate handler
+				handler.handle(command);
+				// if process is a success and we have an command history
+				// instance add command instance
+				if (commandHistory != null) {
+					commandHistory.push(command);
+				}
+			}
+		}
+
+	}
 }

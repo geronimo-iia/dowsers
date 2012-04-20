@@ -57,11 +57,9 @@ import com.google.common.base.Preconditions;
  * 	}
  * 
  * 	&#064;Override
- * 	public void execute() throws NullPointerException, IllegalArgumentException {
+ * 	public void validate() throws NullPointerException, IllegalArgumentException {
  * 		Preconditions.checkNotNull(name, &quot;name cannot be null&quot;);
  * 		Preconditions.checkArgument(!&quot;&quot;.equals(name), &quot;name must not be empty&quot;);
- * 		// call super
- * 		super.execute();
  * 	}
  * 
  * 	public String getName() {
@@ -78,14 +76,15 @@ public abstract class Command {
 	/**
 	 * Command identifier.
 	 */
-	private final UUID id;
+	private final String id;
 	/**
 	 * CommandInvoker instance.
 	 */
 	private final CommandInvoker commandInvoker;
 
 	/**
-	 * Build a new instance of <code>Command</code>
+	 * Build a new instance of <code>Command</code>.<br />
+	 * Command identity is based on UUID generation.
 	 * 
 	 * @param commandInvoker
 	 *            command Invoker instance.
@@ -94,7 +93,7 @@ public abstract class Command {
 	 *             if commandInvoker is null
 	 */
 	public Command(final CommandInvoker commandInvoker) throws NullPointerException {
-		this(UUID.randomUUID(), commandInvoker);
+		this(UUID.randomUUID().toString(), commandInvoker);
 	}
 
 	/**
@@ -104,27 +103,37 @@ public abstract class Command {
 	 *            identifier
 	 * @param commandInvoker
 	 *            command Invoker instance.
+	 * @param execute
+	 *            if true execute this command against command bus
 	 * @throws NullPointerException
 	 *             if id or commandInvoker is null
 	 */
-	protected Command(final UUID id, final CommandInvoker commandInvoker) throws NullPointerException {
+	protected Command(final String id, final CommandInvoker commandInvoker) throws NullPointerException {
 		super();
 		this.id = Preconditions.checkNotNull(id);
 		this.commandInvoker = Preconditions.checkNotNull(commandInvoker);
 	}
 
 	/**
-	 * Execute method. Validation should occurs in this methods before invoking
-	 * herself with command invoker.
+	 * Execute method.
 	 */
-	public void execute() {
+	public final void execute() {
+		validate();
 		commandInvoker.invoke(this);
+	}
+
+	/**
+	 * Check some validation before invoke handler. Validation should occurs in
+	 * this methods before invoking herself with command invoker.
+	 */
+	protected void validate() throws RuntimeException {
+		// do nothing
 	}
 
 	/**
 	 * @return id of command
 	 */
-	public UUID getId() {
+	public final String getId() {
 		return id;
 	}
 

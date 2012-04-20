@@ -17,31 +17,21 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.command;
-
-import java.util.Collection;
+package org.intelligentsia.dowsers.util;
 
 /**
- * CommandHistory.
+ * Handler define generic way to declare an handler on object.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface CommandHistory {
+public interface Handler<T> {
 
 	/**
-	 * Push a command instance on history
+	 * Handle instance.
 	 * 
-	 * @param command
+	 * @param instance
+	 *            instance to handle
 	 */
-	public void push(final Command command);
+	public void handle(T instance);
 
-	/**
-	 * @return an unmodifiable an ordered collection of command (older first).
-	 */
-	public Collection<Command> history();
-
-	/**
-	 * Remove all history.
-	 */
-	public void clear();
 }

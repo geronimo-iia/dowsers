@@ -19,18 +19,40 @@
  */
 package org.intelligentsia.dowsers.command;
 
+import org.intelligentsia.dowsers.util.Handler;
+
 /**
  * CommandHandlerRegistry register command handlers instance.
  * 
- * A command handler subscribe to a particular command like this:
+ * A command handler has only one responsibility: handle one particular command
+ * by executing the appropriate domain behavior. <br />
+ * The command handler should not be doing any domain logic itself. <br />
+ * If there is a need for this than that logic should be moved into a service of
+ * its own. <br />
+ * CommandHandler act as transaction boundaries for change on domain model.<br />
+ * CommandHandler should have a singleton scope.<br />
+ * 
+ * Example of CommandHandler implementation:
  * 
  * <pre>
- * // handler for CreateAddressBookCommand request
- * &#064;Subscribe
- * public void onCreateAddressBookCommand(CreateAddressBookCommand command) {
- * 	// do something
+ * public class FakeHelloCommandHandler implements CommandHandler&lt;FakeHelloCommand&gt; {
+ * 
+ * 	private String lastCalled;
+ * 
+ * 	&#064;Override
+ * 	public void handle(final FakeHelloCommand command) {
+ * 		lastCalled = command.getName();
+ * 	}
+ * 
+ * 	public String getLastCalled() {
+ * 		return lastCalled;
+ * 	}
+ * 
  * }
+ * 
  * </pre>
+ * 
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -44,5 +66,5 @@ public interface CommandHandlerRegistry {
 	 * @throws NullPointerException
 	 *             if commandHandler is null
 	 */
-	public void register(final Object commandHandler) throws NullPointerException;
+	public <T extends Command> void register(final Handler<T> commandHandler) throws NullPointerException;
 }
