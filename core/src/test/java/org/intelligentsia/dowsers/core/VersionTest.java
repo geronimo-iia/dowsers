@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.core;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -34,37 +34,37 @@ public class VersionTest {
 
 	@Test
 	public void shouldStoreVersion() {
-		assertEquals(3, a);
+		Assert.assertEquals(3, a);
 	}
 
 	@Test
 	public void testForLatestVersion() {
 		final long version = Version.forLatestVersion();
-		assertEquals(Version.LATEST.toLong(), version);
-		assertNotSame(Version.INITIAL.toLong(), version);
-		assertTrue(!Version.isForInitialVersion(version));
-		assertTrue(Version.isForLatestVersion(version));
-		assertTrue(!Version.isForSpecificVersion(version));
+		Assert.assertEquals(Version.LATEST.toLong(), version);
+		Assert.assertNotSame(Version.INITIAL.toLong(), version);
+		Assert.assertTrue(!Version.isForInitialVersion(version));
+		Assert.assertTrue(Version.isForLatestVersion(version));
+		Assert.assertTrue(!Version.isForSpecificVersion(version));
 	}
 
 	@Test
 	public void testForInitialVersion() {
 		final long version = Version.forInitialVersion();
-		assertNotSame (Version.LATEST.toLong(), version);
-		assertEquals(Version.INITIAL.toLong(), version);
-		assertTrue(Version.isForInitialVersion(version));
-		assertTrue(!Version.isForLatestVersion(version));
-		assertTrue(Version.isForSpecificVersion(version));
+		Assert.assertNotSame(Version.LATEST.toLong(), version);
+		Assert.assertEquals(Version.INITIAL.toLong(), version);
+		Assert.assertTrue(Version.isForInitialVersion(version));
+		Assert.assertTrue(!Version.isForLatestVersion(version));
+		Assert.assertTrue(Version.isForSpecificVersion(version));
 	}
 
 	@Test
 	public void testForSpecificVersion() {
 		final long version = Version.forSpecificVersion(69);
-		assertNotSame(Version.LATEST.toLong(), version);
-		assertNotSame(Version.INITIAL.toLong(), version);
-		assertTrue(!Version.isForInitialVersion(version));
-		assertTrue(!Version.isForLatestVersion(version));
-		assertTrue(Version.isForSpecificVersion(version));
+		Assert.assertNotSame(Version.LATEST.toLong(), version);
+		Assert.assertNotSame(Version.INITIAL.toLong(), version);
+		Assert.assertTrue(!Version.isForInitialVersion(version));
+		Assert.assertTrue(!Version.isForLatestVersion(version));
+		Assert.assertTrue(Version.isForSpecificVersion(version));
 	}
 
 	@Test
@@ -72,12 +72,12 @@ public class VersionTest {
 		final long version = Version.forInitialVersion();
 		long next = Version.nextVersion(version);
 
-		assertTrue(version < next);
-		assertEquals(version, next - 1);
+		Assert.assertTrue(version < next);
+		Assert.assertEquals(version, next - 1);
 
 		final long latest = Version.forLatestVersion();
 		next = Version.nextVersion(latest);
 
-		assertEquals(latest, next);
+		Assert.assertEquals(latest, next);
 	}
 }

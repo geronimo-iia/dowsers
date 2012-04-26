@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.dowsers.core;
 
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.junit.Assert;
 import org.junit.Test;
 

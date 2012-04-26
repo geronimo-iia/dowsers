@@ -59,7 +59,7 @@ public enum Version {
 	 *             if version < INITIAL_VERSION
 	 */
 	private Version(final long version) throws IllegalArgumentException {
-		this.version = forSpecificVersion(version);
+		this.version = Version.forSpecificVersion(version);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public enum Version {
 	 *         version)
 	 */
 	public static boolean isForSpecificVersion(final long version) {
-		return !isForLatestVersion(version);
+		return !Version.isForLatestVersion(version);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public enum Version {
 	 * @return next version.
 	 */
 	public static long nextVersion(final long version) {
-		if (isForLatestVersion(version)) {
+		if (Version.isForLatestVersion(version)) {
 			return LATEST.toLong();
 		} else {
 			return Version.forSpecificVersion(version + 1);

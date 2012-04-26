@@ -24,35 +24,12 @@ import java.nio.ByteBuffer;
 /**
  * ByteBuffers.
  * 
- * @author jgt
- * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public enum ByteBuffers {
 	;
 
-	public static int readInt(ByteBuffer bb) {
-		int n = bb.get();
-		if (n == -128)
-			return bb.getInt();
-		return n;
-	}
-
-	public static long readLong(ByteBuffer bb) {
-		int n = bb.get();
-		if (n == -128)
-			return bb.getLong();
-		return n;
-	}
-
-	public static void write(ByteBuffer bb, Enum<?> anEnum) {
-		bb.put((byte) anEnum.ordinal());
-	}
-
-	public static int readOrdinal(ByteBuffer bb) {
-		return bb.get() & 0xFF;
-	}
-
-	public static void write(ByteBuffer bb, int num) {
+	public static void write(final ByteBuffer bb, final int num) {
 		if (num < -127 || num > 127) {
 			bb.put((byte) -128);
 			bb.putInt(num);
@@ -61,7 +38,15 @@ public enum ByteBuffers {
 		}
 	}
 
-	public static void write(ByteBuffer bb, long num) {
+	public static int readInt(final ByteBuffer bb) {
+		final int n = bb.get();
+		if (n == -128) {
+			return bb.getInt();
+		}
+		return n;
+	}
+
+	public static void write(final ByteBuffer bb, final long num) {
 		if (num < -127 || num > 127) {
 			bb.put((byte) -128);
 			bb.putLong(num);
@@ -69,4 +54,21 @@ public enum ByteBuffers {
 			bb.put((byte) num);
 		}
 	}
+
+	public static long readLong(final ByteBuffer bb) {
+		final int n = bb.get();
+		if (n == -128) {
+			return bb.getLong();
+		}
+		return n;
+	}
+
+	public static void write(final ByteBuffer bb, final Enum<?> anEnum) {
+		bb.put((byte) anEnum.ordinal());
+	}
+
+	public static int readOrdinal(final ByteBuffer bb) {
+		return bb.get() & 0xFF;
+	}
+
 }

@@ -23,11 +23,11 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * JacksonSerializerWrapper.
+ * JacksonSerializableWrapper.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class JacksonSerializerWrapper implements Serializable {
+public class JacksonSerializableWrapper implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,11 +35,11 @@ public class JacksonSerializerWrapper implements Serializable {
 	private final byte[] s;
 
 	/**
-	 * Build a new instance of JacksonSerializerWrapper.
+	 * Build a new instance of JacksonSerializableWrapper.
 	 * 
 	 * @param target
 	 */
-	public JacksonSerializerWrapper(final Object target) {
+	public JacksonSerializableWrapper(final Object target) {
 		valueType = target.getClass();
 		s = JacksonSerializer.write(target);
 	}
