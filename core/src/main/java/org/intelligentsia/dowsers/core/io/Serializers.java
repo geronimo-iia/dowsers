@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.core.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -145,13 +145,13 @@ public enum Serializers {
 
 		@Override
 		public T deserialize(final byte[] array) throws Exception {
-			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
+			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo);
 			return objectBuffer.readObjectData(array, innerType);
 		}
 
 		@Override
 		public byte[] serialize(final T content) throws Exception {
-			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo, 1024);
+			final ObjectBuffer objectBuffer = new ObjectBuffer(kryo);
 			return objectBuffer.writeObjectData(content);
 		}
 	}

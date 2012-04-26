@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.repository.memento;
+package org.intelligentsia.dowsers.core.memento;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -39,10 +39,12 @@ public class ByteArrayMemento implements Memento, Externalizable, Serializable {
 	 * Build a new instance of ByteArrayMemento.
 	 */
 	public ByteArrayMemento() {
+		super();
 	}
 
 	/**
 	 * Build a new instance of ByteArrayMemento.
+	 * 
 	 * @param content
 	 */
 	public ByteArrayMemento(byte[] content) {

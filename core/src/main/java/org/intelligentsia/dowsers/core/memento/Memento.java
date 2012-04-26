@@ -17,24 +17,17 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.repository.memento;
+package org.intelligentsia.dowsers.core.memento;
 
-import org.intelligentsia.dowsers.core.Registry;
+import java.io.Serializable;
 
 /**
- * OriginatorRegistry declare methods to register Originator instance and find
- * those who support specific entity type.
+ * Memento the lock box that is written and read by the Originator, and
+ * shepherded by the Caretaker. Caretaker - the object that knows why and when
+ * the Originator needs to save and restore itself.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface OriginatorRegistry extends Registry<Originator> {
+public interface Memento extends Serializable {
 
-	/**
-	 * Find an originator which support specified entity.
-	 * 
-	 * @param entityType
-	 *            entity
-	 * @return originator instance.
-	 */
-	public <T> Originator find(Class<T> entity);
 }

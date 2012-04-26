@@ -17,46 +17,24 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.repository.memento;
+package org.intelligentsia.dowsers.core.memento;
+
+import org.intelligentsia.dowsers.core.Registry;
 
 /**
- * Originator: the object that knows how to save itself.
- * 
- * The Originator interface is for the snapshot functionality which is an
- * optimization technique for speeding up loading aggregate roots from the Event
- * Store.
+ * OriginatorRegistry declare methods to register Originator instance and find
+ * those who support specific entity type.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Originator {
+public interface OriginatorRegistry extends Registry<Originator> {
 
 	/**
-	 * Create a memento instance for specified entity.
+	 * Find an originator which support specified entity.
 	 * 
-	 * @param entity
-	 *            entity source
-	 * @return a memento instance.
-	 */
-	public <T> Memento createMemento(T entity);
-
-	/**
-	 * Apply memento on specified entity.
-	 * 
-	 * @param entity
-	 *            target entity
-	 * @param memento
-	 *            memento to apply
-	 * @throws IllegalStateException
-	 *             if entity did not support this memento
-	 */
-	public <T> void setMemento(T entity, Memento memento) throws IllegalStateException;
-
-	/**
-	 * @param entity
+	 * @param entityType
 	 *            entity
-	 * @return true if specified entity is supported by this instance of
-	 *         Originator
+	 * @return originator instance.
 	 */
-	public <T> boolean support(Class<T> entity);
+	public <T> Originator find(Class<T> entity);
 }

@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.core.io;
 
 import com.google.common.base.Preconditions;
 

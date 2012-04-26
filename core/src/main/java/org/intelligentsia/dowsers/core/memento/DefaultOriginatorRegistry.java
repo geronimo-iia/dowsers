@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.repository.memento;
+package org.intelligentsia.dowsers.core.memento;
 
 import java.util.Set;
 import java.util.concurrent.ExecutionException;

@@ -17,17 +17,29 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.repository.memento;
+package org.intelligentsia.dowsers.core.io;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Memento the lock box that is written and read by the Originator, and
- * shepherded by the Caretaker. Caretaker - the object that knows why and when
- * the Originator needs to save and restore itself.
+ * KryoSerializableWrapper. From
+ * https://github.com/eivindw/hazelcast-kryo-example.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Memento extends Serializable {
+public class KryoSerializableWrapper implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private final byte[] s;
+
+	public KryoSerializableWrapper(final Object target) {
+		s = KryoSerializer.write(target);
+	}
+
+	private Object readResolve() throws ObjectStreamException {
+		return KryoSerializer.read(s);
+	}
 
 }

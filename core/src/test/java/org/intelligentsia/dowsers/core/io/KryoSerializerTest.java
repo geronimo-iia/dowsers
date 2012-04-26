@@ -1,7 +1,10 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.core.io;
+
+import org.intelligentsia.dowsers.core.io.Serializer;
+import org.intelligentsia.dowsers.core.io.Serializers;
 
 import com.esotericsoftware.kryo.Kryo;
 
@@ -14,7 +17,7 @@ import com.esotericsoftware.kryo.Kryo;
 public class KryoSerializerTest extends AbstractSerializerTest {
 
 	/**
-	 * @see org.intelligentsia.dowsers.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.core.io.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
 	 */
 	@Override
 	protected <T> Serializer<T> createSerializer(final Class<T> className) {

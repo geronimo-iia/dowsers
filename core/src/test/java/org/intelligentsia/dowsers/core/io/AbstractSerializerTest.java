@@ -1,10 +1,12 @@
 /**
  * 
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.core.io;
 
 import junit.framework.Assert;
 
+import org.intelligentsia.dowsers.core.DummyObject;
+import org.intelligentsia.dowsers.core.io.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 
