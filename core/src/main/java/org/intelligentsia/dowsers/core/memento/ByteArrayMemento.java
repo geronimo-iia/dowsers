@@ -28,6 +28,9 @@ import java.io.Serializable;
 /**
  * ByteArrayMemento.
  * 
+ * In order to exploit idea that an entity can be serialized as a byte array
+ * with Serializer like Kryo, Jackson...
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */

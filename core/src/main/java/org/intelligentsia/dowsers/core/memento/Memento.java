@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.dowsers.core.memento;
 
+import java.io.Externalizable;
 import java.io.Serializable;
 
 /**
@@ -28,6 +29,6 @@ import java.io.Serializable;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Memento extends Serializable {
+public interface Memento extends Serializable, Externalizable {
 
 }
