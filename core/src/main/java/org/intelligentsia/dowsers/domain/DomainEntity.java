@@ -83,7 +83,7 @@ public class DomainEntity extends Entity implements Registry<LocalDomainEntity> 
 	 * @return current version of this domain entity.
 	 */
 	public final long getVersion() {
-		//delegate call to aggregate
+		// delegate call to aggregate
 		return aggregate.getVersion();
 	}
 

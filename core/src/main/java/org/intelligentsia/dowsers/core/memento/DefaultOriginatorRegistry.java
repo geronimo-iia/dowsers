@@ -57,7 +57,7 @@ public class DefaultOriginatorRegistry implements OriginatorRegistry {
 	 * @param originator
 	 *            default Originator instance
 	 */
-	public DefaultOriginatorRegistry(Originator originator) {
+	public DefaultOriginatorRegistry(final Originator originator) {
 		this(CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.HOURS), originator);
 	}
 
@@ -69,14 +69,14 @@ public class DefaultOriginatorRegistry implements OriginatorRegistry {
 	 * @param defaultOriginator
 	 *            default Originator instance
 	 */
-	public DefaultOriginatorRegistry(CacheBuilder<Object, Object> cacheBuilder, Originator originator) {
+	public DefaultOriginatorRegistry(final CacheBuilder<Object, Object> cacheBuilder, final Originator originator) {
 		super();
 		originators = Sets.newHashSet();
-		this.defaultOriginator = Preconditions.checkNotNull(originator);
-		this.cache = cacheBuilder.build(new CacheLoader<Class<?>, Originator>() {
+		defaultOriginator = Preconditions.checkNotNull(originator);
+		cache = cacheBuilder.build(new CacheLoader<Class<?>, Originator>() {
 			@Override
-			public Originator load(Class<?> key) throws Exception {
-				for (Originator originator : originators) {
+			public Originator load(final Class<?> key) throws Exception {
+				for (final Originator originator : originators) {
 					if (originator.support(key)) {
 						return originator;
 					}
@@ -90,7 +90,7 @@ public class DefaultOriginatorRegistry implements OriginatorRegistry {
 	 * @see org.intelligentsia.dowsers.core.Registry#register(java.lang.Object)
 	 */
 	@Override
-	public void register(Originator object) throws NullPointerException {
+	public void register(final Originator object) throws NullPointerException {
 		originators.add(Preconditions.checkNotNull(object));
 	}
 
@@ -98,7 +98,7 @@ public class DefaultOriginatorRegistry implements OriginatorRegistry {
 	public <T> Originator find(final Class<T> entity) {
 		try {
 			return cache.get(entity.getClass());
-		} catch (ExecutionException e) {
+		} catch (final ExecutionException e) {
 			return defaultOriginator;
 		}
 	}

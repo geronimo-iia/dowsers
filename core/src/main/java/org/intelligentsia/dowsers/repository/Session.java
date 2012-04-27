@@ -48,7 +48,7 @@ public class Session extends AbstractDomainRepository {
 	 * @param domainRepository
 	 * @throws NullPointerException
 	 */
-	public Session(DomainEntityFactory domainEntityFactory, DomainRepository domainRepository) throws NullPointerException {
+	public Session(final DomainEntityFactory domainEntityFactory, final DomainRepository domainRepository) throws NullPointerException {
 		super(domainEntityFactory);
 		this.domainRepository = domainRepository;
 	}
@@ -58,7 +58,7 @@ public class Session extends AbstractDomainRepository {
 	 *      java.lang.String)
 	 */
 	@Override
-	public <T extends DomainEntity> T find(Class<T> expectedType, String identity) throws DomainEntityNotFoundException, NullPointerException {
+	public <T extends DomainEntity> T find(final Class<T> expectedType, final String identity) throws DomainEntityNotFoundException, NullPointerException {
 		return domainRepository.find(expectedType, identity);
 	}
 
@@ -66,7 +66,7 @@ public class Session extends AbstractDomainRepository {
 	 * @see org.intelligentsia.dowsers.domain.DomainRepository#store(org.intelligentsia.dowsers.domain.DomainEntity)
 	 */
 	@Override
-	public <T extends DomainEntity> void store(T domainEntity) throws NullPointerException, ConcurrencyException {
+	public <T extends DomainEntity> void store(final T domainEntity) throws NullPointerException, ConcurrencyException {
 		if (((DomainAggregate) getAggregate(domainEntity)).hasUncommittedChanges()) {
 			addToSession(domainEntity);
 		}
@@ -93,7 +93,7 @@ public class Session extends AbstractDomainRepository {
 	 */
 	public void commitChanges() throws NullPointerException, ConcurrencyException {
 		for (final DomainEntity entity : entities.values()) {
-			DomainAggregate aggregate = getAggregate(entity);
+			final DomainAggregate aggregate = getAggregate(entity);
 			if (aggregate.hasUncommittedChanges()) {
 				save(entity);
 			}
@@ -105,7 +105,7 @@ public class Session extends AbstractDomainRepository {
 	/**
 	 * @param entity
 	 */
-	private void save(DomainEntity entity) throws NullPointerException, ConcurrencyException {
+	private void save(final DomainEntity entity) throws NullPointerException, ConcurrencyException {
 		domainRepository.store(entity);
 	}
 

@@ -47,8 +47,7 @@ public class GenericDomainAggregateFactory implements AggregateFactory {
 	 * @throws NullPointerException
 	 *             if eventProcessorProvider is null
 	 */
-	public GenericDomainAggregateFactory(final EventProcessorProvider eventProcessorProvider)
-			throws NullPointerException {
+	public GenericDomainAggregateFactory(final EventProcessorProvider eventProcessorProvider) throws NullPointerException {
 		super();
 		this.eventProcessorProvider = Preconditions.checkNotNull(eventProcessorProvider);
 	}

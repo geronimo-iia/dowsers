@@ -48,7 +48,7 @@ public class DefaultDomainRepository extends AbstractDomainRepository {
 	 * @param domainEntityFactory
 	 * @throws NullPointerException
 	 */
-	public DefaultDomainRepository(DomainEntityFactory domainEntityFactory) throws NullPointerException {
+	public DefaultDomainRepository(final DomainEntityFactory domainEntityFactory) throws NullPointerException {
 		super(domainEntityFactory);
 	}
 
@@ -57,7 +57,7 @@ public class DefaultDomainRepository extends AbstractDomainRepository {
 	 *      java.lang.String)
 	 */
 	@Override
-	public <T extends DomainEntity> T find(Class<T> expectedType, String identity) throws DomainEntityNotFoundException, NullPointerException {
+	public <T extends DomainEntity> T find(final Class<T> expectedType, final String identity) throws DomainEntityNotFoundException, NullPointerException {
 		return sessions.get().find(expectedType, identity);
 	}
 
@@ -65,7 +65,7 @@ public class DefaultDomainRepository extends AbstractDomainRepository {
 	 * @see org.intelligentsia.dowsers.domain.DomainRepository#store(org.intelligentsia.dowsers.domain.DomainEntity)
 	 */
 	@Override
-	public <T extends DomainEntity> void store(T domainEntity) throws NullPointerException, ConcurrencyException {
+	public <T extends DomainEntity> void store(final T domainEntity) throws NullPointerException, ConcurrencyException {
 		sessions.get().store(domainEntity);
 	}
 

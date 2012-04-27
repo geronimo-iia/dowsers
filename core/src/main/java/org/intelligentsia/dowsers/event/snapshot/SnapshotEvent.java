@@ -61,7 +61,7 @@ public class SnapshotEvent extends DomainEvent {
 	 * @param summary
 	 *            domain event summary
 	 */
-	public SnapshotEvent(String entityIdentity, long version, List<DomainEvent> summary) {
+	public SnapshotEvent(final String entityIdentity, final long version, final List<DomainEvent> summary) {
 		super(entityIdentity);
 		this.summary = summary;
 		this.version = version;

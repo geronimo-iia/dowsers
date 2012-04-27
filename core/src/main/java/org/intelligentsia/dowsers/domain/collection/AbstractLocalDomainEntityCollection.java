@@ -42,17 +42,17 @@ public abstract class AbstractLocalDomainEntityCollection<T extends LocalDomainE
 	 * @throws NullPointerException
 	 *             if registerEntity is null
 	 */
-	public AbstractLocalDomainEntityCollection(Registry<LocalDomainEntity> registerEntity) throws NullPointerException {
+	public AbstractLocalDomainEntityCollection(final Registry<LocalDomainEntity> registerEntity) throws NullPointerException {
 		super();
 		this.registerEntity = Preconditions.checkNotNull(registerEntity);
 	}
 
-	protected void register(T entity) {
+	protected void register(final T entity) {
 		registerEntity.register(entity);
 	}
 
-	protected void register(Collection<? extends T> collection) {
-		for (T entity : collection) {
+	protected void register(final Collection<? extends T> collection) {
+		for (final T entity : collection) {
 			registerEntity.register(entity);
 		}
 	}

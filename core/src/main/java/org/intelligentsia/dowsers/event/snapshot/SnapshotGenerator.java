@@ -35,6 +35,6 @@ public interface SnapshotGenerator {
 	 *            target entity
 	 * @return a SnapshotEvent instance.
 	 */
-	public SnapshotEvent generate(Aggregate aggregate );
+	public SnapshotEvent generate(Aggregate aggregate);
 
 }

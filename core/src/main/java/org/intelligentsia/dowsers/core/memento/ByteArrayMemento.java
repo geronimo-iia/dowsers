@@ -50,7 +50,7 @@ public class ByteArrayMemento implements Memento, Externalizable, Serializable {
 	 * 
 	 * @param content
 	 */
-	public ByteArrayMemento(byte[] content) {
+	public ByteArrayMemento(final byte[] content) {
 		super();
 		this.content = content;
 	}
@@ -66,7 +66,7 @@ public class ByteArrayMemento implements Memento, Externalizable, Serializable {
 	 * @param content
 	 *            the content to set
 	 */
-	public void setContent(byte[] content) {
+	public void setContent(final byte[] content) {
 		this.content = content;
 	}
 
@@ -74,7 +74,7 @@ public class ByteArrayMemento implements Memento, Externalizable, Serializable {
 	 * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
 	 */
 	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
+	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.write(content);
 	}
 
@@ -82,7 +82,7 @@ public class ByteArrayMemento implements Memento, Externalizable, Serializable {
 	 * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
 	 */
 	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		in.read(content);
 	}
 

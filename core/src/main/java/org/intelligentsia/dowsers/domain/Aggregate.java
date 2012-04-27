@@ -69,12 +69,12 @@ public interface Aggregate extends Registry<LocalDomainEntity> {
 	 *             if entity is not register in this aggregate
 	 */
 	public DomainEventInvoker getDomainEventInvoker(Entity entity) throws NullPointerException, IllegalStateException;
-	
+
 	/**
 	 * @return current version of this aggregate
 	 */
 	public long getVersion();
-	
+
 	/**
 	 * @return current root entity instance.
 	 */

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.intelligentsia.dowsers.event.DomainEvent;
 
-
 /**
  * FakeEventPublisher implements a dummy EventPublisher: all events are ignored.
  * 

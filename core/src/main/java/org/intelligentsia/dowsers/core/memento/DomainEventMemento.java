@@ -52,9 +52,9 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
 	 */
 	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
+	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeInt(domainEvents.size());
-		for (DomainEvent event : domainEvents) {
+		for (final DomainEvent event : domainEvents) {
 			out.writeObject(event);
 		}
 	}
@@ -63,8 +63,8 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
 	 */
 	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		int size = in.readInt();
+	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
+		final int size = in.readInt();
 		domainEvents = new ArrayList<DomainEvent>(size);
 		for (int i = 0; i < size; i++) {
 			domainEvents.add((DomainEvent) in.readObject());
@@ -83,6 +83,7 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @return
 	 * @see java.util.List#iterator()
 	 */
+	@Override
 	public Iterator<DomainEvent> iterator() {
 		return domainEvents.iterator();
 	}
@@ -92,7 +93,7 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @return
 	 * @see java.util.List#add(java.lang.Object)
 	 */
-	public boolean add(DomainEvent e) {
+	public boolean add(final DomainEvent e) {
 		return domainEvents.add(e);
 	}
 
@@ -101,7 +102,7 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @return
 	 * @see java.util.List#addAll(java.util.Collection)
 	 */
-	public boolean addAll(Collection<? extends DomainEvent> c) {
+	public boolean addAll(final Collection<? extends DomainEvent> c) {
 		return domainEvents.addAll(c);
 	}
 
@@ -118,7 +119,7 @@ public class DomainEventMemento implements Memento, Iterable<DomainEvent> {
 	 * @return
 	 * @see java.util.List#get(int)
 	 */
-	public DomainEvent get(int index) {
+	public DomainEvent get(final int index) {
 		return domainEvents.get(index);
 	}
 }

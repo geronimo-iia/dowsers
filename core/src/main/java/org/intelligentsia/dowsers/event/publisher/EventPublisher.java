@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.intelligentsia.dowsers.event.DomainEvent;
 
-
 /**
  * EventPublisher declares method to publish Domain event to an external bus.
  * 

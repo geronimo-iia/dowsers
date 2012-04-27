@@ -18,6 +18,7 @@
  *
  */
 package org.intelligentsia.dowsers.event;
+
 /**
  * DomainEventInvoker declares methods to apply Domain Event from Entity.
  * 

@@ -148,7 +148,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	@Override
-	public void markChangesCommitted(long version) {
+	public void markChangesCommitted(final long version) {
 		eventOrdinal = 0l;
 		this.version = Version.forSpecificVersion(version);
 		uncommittedChanges.clear();

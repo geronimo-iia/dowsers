@@ -22,8 +22,6 @@ package org.intelligentsia.dowsers.event.snapshot;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.intelligentsia.dowsers.annotation.Property;
 import org.intelligentsia.dowsers.domain.Aggregate;
 import org.intelligentsia.dowsers.event.DomainEvent;
@@ -40,11 +38,11 @@ public class PropertySnapshotEventGenerator implements SnapshotGenerator {
 	 * @see org.intelligentsia.dowsers.event.snapshot.SnapshotGenerator#generate(org.intelligentsia.dowsers.domain.Entity)
 	 */
 	@Override
-	public SnapshotEvent generate(Aggregate aggregate) {
+	public SnapshotEvent generate(final Aggregate aggregate) {
 		// generate sumary
-		List<DomainEvent> summary = generateSummary(aggregate);
+		final List<DomainEvent> summary = generateSummary(aggregate);
 		// build snapshot event
-		SnapshotEvent snapshotEvent = new SnapshotEvent(aggregate.getRoot().getIdentity(), aggregate.getVersion(), summary);
+		final SnapshotEvent snapshotEvent = new SnapshotEvent(aggregate.getRoot().getIdentity(), aggregate.getVersion(), summary);
 		return snapshotEvent;
 	}
 
@@ -52,12 +50,12 @@ public class PropertySnapshotEventGenerator implements SnapshotGenerator {
 	 * @param aggregate
 	 * @return a domain event summary list
 	 */
-	protected List<DomainEvent> generateSummary(Aggregate aggregate) {
+	protected List<DomainEvent> generateSummary(final Aggregate aggregate) {
 		// could be very complicated if we considere local entity and
 		// collection.
-		Class<?> entityClass = aggregate.getRoot().getClass();
-		for (Field field : entityClass.getFields()) {
-			Property property = field.getAnnotation(Property.class);
+		final Class<?> entityClass = aggregate.getRoot().getClass();
+		for (final Field field : entityClass.getFields()) {
+			final Property property = field.getAnnotation(Property.class);
 			if (property != null) {
 
 			}

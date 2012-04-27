@@ -50,10 +50,10 @@ public class PropertyMapMemento implements Memento {
 	 * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
 	 */
 	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
+	public void writeExternal(final ObjectOutput out) throws IOException {
 		if (properties != null) {
 			out.writeInt(properties.size());
-			for (Entry<String, Object> property : properties.entrySet()) {
+			for (final Entry<String, Object> property : properties.entrySet()) {
 				out.writeUTF(property.getKey());
 				out.writeObject(property.getValue());
 			}
@@ -66,8 +66,8 @@ public class PropertyMapMemento implements Memento {
 	 * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
 	 */
 	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		int size = in.readInt();
+	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
+		final int size = in.readInt();
 		if (size > 0) {
 			properties = new HashMap<String, Object>(size);
 			for (int i = 0; i < size; i++) {
@@ -88,7 +88,7 @@ public class PropertyMapMemento implements Memento {
 	 * @param key
 	 * @return
 	 */
-	public Object get(String key) {
+	public Object get(final String key) {
 		return properties.get(key);
 	}
 
@@ -98,7 +98,7 @@ public class PropertyMapMemento implements Memento {
 	 * @return
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
-	public Object put(String key, Object value) {
+	public Object put(final String key, final Object value) {
 		return properties.put(key, value);
 	}
 

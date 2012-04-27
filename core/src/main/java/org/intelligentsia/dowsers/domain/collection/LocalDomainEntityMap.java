@@ -31,8 +31,7 @@ import org.intelligentsia.dowsers.domain.LocalDomainEntity;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends AbstractLocalDomainEntityCollection<T> implements Map<K,T> {
-
+public class LocalDomainEntityMap<K, T extends LocalDomainEntity> extends AbstractLocalDomainEntityCollection<T> implements Map<K, T> {
 
 	private final Map<K, T> entities;
 
@@ -49,6 +48,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#size()
 	 */
+	@Override
 	public int size() {
 		return entities.size();
 	}
@@ -57,6 +57,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#isEmpty()
 	 */
+	@Override
 	public boolean isEmpty() {
 		return entities.isEmpty();
 	}
@@ -66,7 +67,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
-	public boolean containsKey(Object key) {
+	@Override
+	public boolean containsKey(final Object key) {
 		return entities.containsKey(key);
 	}
 
@@ -75,7 +77,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#containsValue(java.lang.Object)
 	 */
-	public boolean containsValue(Object value) {
+	@Override
+	public boolean containsValue(final Object value) {
 		return entities.containsValue(value);
 	}
 
@@ -84,7 +87,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	public T get(Object key) {
+	@Override
+	public T get(final Object key) {
 		return entities.get(key);
 	}
 
@@ -94,7 +98,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
-	public T put(K key, T value) {
+	@Override
+	public T put(final K key, final T value) {
 		register(value);
 		return entities.put(key, value);
 	}
@@ -104,7 +109,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
-	public T remove(Object key) {
+	@Override
+	public T remove(final Object key) {
 		return entities.remove(key);
 	}
 
@@ -112,7 +118,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @param m
 	 * @see java.util.Map#putAll(java.util.Map)
 	 */
-	public void putAll(Map<? extends K, ? extends T> m) {
+	@Override
+	public void putAll(final Map<? extends K, ? extends T> m) {
 		register(m.values());
 		entities.putAll(m);
 	}
@@ -121,6 +128,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * 
 	 * @see java.util.Map#clear()
 	 */
+	@Override
 	public void clear() {
 		entities.clear();
 	}
@@ -129,6 +137,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#keySet()
 	 */
+	@Override
 	public Set<K> keySet() {
 		return entities.keySet();
 	}
@@ -137,6 +146,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#values()
 	 */
+	@Override
 	public Collection<T> values() {
 		return entities.values();
 	}
@@ -145,6 +155,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#entrySet()
 	 */
+	@Override
 	public Set<java.util.Map.Entry<K, T>> entrySet() {
 		return entities.entrySet();
 	}
@@ -154,7 +165,8 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#equals(java.lang.Object)
 	 */
-	public boolean equals(Object o) {
+	@Override
+	public boolean equals(final Object o) {
 		return entities.equals(o);
 	}
 
@@ -162,6 +174,7 @@ public class LocalDomainEntityMap<K, T extends LocalDomainEntity>  extends Abstr
 	 * @return
 	 * @see java.util.Map#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return entities.hashCode();
 	}

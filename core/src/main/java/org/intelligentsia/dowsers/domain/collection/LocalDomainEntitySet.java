@@ -54,6 +54,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#size()
 	 */
+	@Override
 	public int size() {
 		return entities.size();
 	}
@@ -62,6 +63,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#isEmpty()
 	 */
+	@Override
 	public boolean isEmpty() {
 		return entities.isEmpty();
 	}
@@ -71,7 +73,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#contains(java.lang.Object)
 	 */
-	public boolean contains(Object o) {
+	@Override
+	public boolean contains(final Object o) {
 		return entities.contains(o);
 	}
 
@@ -79,6 +82,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#iterator()
 	 */
+	@Override
 	public Iterator<T> iterator() {
 		return entities.iterator();
 	}
@@ -87,6 +91,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#toArray()
 	 */
+	@Override
 	public Object[] toArray() {
 		return entities.toArray();
 	}
@@ -96,7 +101,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#toArray(T[])
 	 */
-	public <Y> Y[] toArray(Y[] a) {
+	@Override
+	public <Y> Y[] toArray(final Y[] a) {
 		return entities.toArray(a);
 	}
 
@@ -105,7 +111,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#add(java.lang.Object)
 	 */
-	public boolean add(T e) {
+	@Override
+	public boolean add(final T e) {
 		register(e);
 		return entities.add(e);
 	}
@@ -115,7 +122,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#remove(java.lang.Object)
 	 */
-	public boolean remove(Object o) {
+	@Override
+	public boolean remove(final Object o) {
 		return entities.remove(o);
 	}
 
@@ -124,7 +132,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#containsAll(java.util.Collection)
 	 */
-	public boolean containsAll(Collection<?> c) {
+	@Override
+	public boolean containsAll(final Collection<?> c) {
 		return entities.containsAll(c);
 	}
 
@@ -133,7 +142,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#addAll(java.util.Collection)
 	 */
-	public boolean addAll(Collection<? extends T> c) {
+	@Override
+	public boolean addAll(final Collection<? extends T> c) {
 		register(c);
 		return entities.addAll(c);
 	}
@@ -143,7 +153,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#retainAll(java.util.Collection)
 	 */
-	public boolean retainAll(Collection<?> c) {
+	@Override
+	public boolean retainAll(final Collection<?> c) {
 		return entities.retainAll(c);
 	}
 
@@ -152,7 +163,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#removeAll(java.util.Collection)
 	 */
-	public boolean removeAll(Collection<?> c) {
+	@Override
+	public boolean removeAll(final Collection<?> c) {
 		return entities.removeAll(c);
 	}
 
@@ -160,6 +172,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * 
 	 * @see java.util.Set#clear()
 	 */
+	@Override
 	public void clear() {
 		entities.clear();
 	}
@@ -169,7 +182,8 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#equals(java.lang.Object)
 	 */
-	public boolean equals(Object o) {
+	@Override
+	public boolean equals(final Object o) {
 		return entities.equals(o);
 	}
 
@@ -177,6 +191,7 @@ public class LocalDomainEntitySet<T extends LocalDomainEntity> extends AbstractL
 	 * @return
 	 * @see java.util.Set#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return entities.hashCode();
 	}

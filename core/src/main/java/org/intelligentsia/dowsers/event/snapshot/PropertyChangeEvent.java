@@ -42,7 +42,7 @@ public class PropertyChangeEvent extends DomainEvent {
 	 * @param value
 	 * @throws NullPointerException
 	 */
-	public PropertyChangeEvent(Entity entity, String name, Object value) throws NullPointerException {
+	public PropertyChangeEvent(final Entity entity, final String name, final Object value) throws NullPointerException {
 		super(entity);
 		this.name = name;
 		this.value = value;

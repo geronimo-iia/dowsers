@@ -18,19 +18,19 @@
  *
  */
 package org.intelligentsia.dowsers.repository;
- 
 
 import org.intelligentsia.dowsers.core.Registry;
 import org.intelligentsia.dowsers.domain.DomainRepository;
 
 /**
- * DomainRepositoryRegistry implement a registry. 
- *
+ * DomainRepositoryRegistry implement a registry.
+ * 
  */
-public interface DomainRepositoryRegistry extends Registry<DomainRepository>{
+public interface DomainRepositoryRegistry extends Registry<DomainRepository> {
 
 	/**
-	 * @param className class Name.
+	 * @param className
+	 *            class Name.
 	 * @return a DomainRepository instance for specified class Name.
 	 */
 	public DomainRepository getDomainRepository(Class<?> className);
