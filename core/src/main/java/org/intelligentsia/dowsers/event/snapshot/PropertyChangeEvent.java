@@ -17,12 +17,49 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.event.definition;
+package org.intelligentsia.dowsers.event.snapshot;
+
+import org.intelligentsia.dowsers.domain.Entity;
+import org.intelligentsia.dowsers.event.DomainEvent;
 
 /**
- *
+ * PropertyChangeEvent class event.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface PropertyChangeEvent {
+public class PropertyChangeEvent extends DomainEvent {
+
+	private static final long serialVersionUID = -4750111435218989970L;
+
+	private final String name;
+	private final Object value;
+
+	/**
+	 * Build a new instance of PropertyChangeEvent.
+	 * 
+	 * @param entity
+	 * @param name
+	 * @param value
+	 * @throws NullPointerException
+	 */
+	public PropertyChangeEvent(Entity entity, String name, Object value) throws NullPointerException {
+		super(entity);
+		this.name = name;
+		this.value = value;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @return the value
+	 */
+	public Object getValue() {
+		return value;
+	}
 
 }

@@ -74,4 +74,9 @@ public interface Aggregate extends Registry<LocalDomainEntity> {
 	 * @return current version of this aggregate
 	 */
 	public long getVersion();
+	
+	/**
+	 * @return current root entity instance.
+	 */
+	public DomainEntity getRoot();
 }

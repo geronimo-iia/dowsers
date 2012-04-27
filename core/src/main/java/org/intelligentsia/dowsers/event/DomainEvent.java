@@ -70,7 +70,8 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 */
 	private final String entityIdentity;
 	/**
-	 * Command identity instance.
+	 * Command identity instance (usefull to keep the root cause of this event
+	 * instance).
 	 */
 	private String commandIdentity;
 
@@ -84,6 +85,17 @@ public abstract class DomainEvent implements Comparable<DomainEvent>, Serializab
 	 */
 	public DomainEvent(final Entity entity) throws NullPointerException {
 		this(IdentifierFactoryProvider.generateNewIdentifier(), Preconditions.checkNotNull(entity).getIdentity());
+	}
+
+	/**
+	 * 
+	 * Build a new instance of DomainEvent.
+	 * 
+	 * @param entity
+	 *            entity which event carries on
+	 */
+	protected DomainEvent(final String entityIdentity) {
+		this(IdentifierFactoryProvider.generateNewIdentifier(), entityIdentity);
 	}
 
 	/**

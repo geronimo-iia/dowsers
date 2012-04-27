@@ -17,51 +17,24 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.event.definition;
+package org.intelligentsia.dowsers.event.snapshot;
 
-import java.util.List;
-
-import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.event.DomainEvent;
+import org.intelligentsia.dowsers.domain.Aggregate;
 
 /**
- * SnapshotDomainEntityEvent.
- * 
- * Idea behind his to store a summary of all domain event that construct actual
- * entity.
- * 
- * 
+ * SnapshotGenerator declare methode to generate snapshot event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class SnapshotDomainEntityEvent extends DomainEvent {
+public interface SnapshotGenerator {
 
 	/**
-	 * serialVersionUID:long
-	 */
-	private static final long serialVersionUID = -1653888378364399891L;
-
-	/**
-	 * Minimal summary of what happens on related entity.
-	 */
-	private final List<DomainEvent> summary;
-
-	/**
-	 * Build a new instance of SnapshotDomainEntityEvent.
+	 * Generate a snapshot of specified entity
 	 * 
 	 * @param entity
-	 * @throws NullPointerException
+	 *            target entity
+	 * @return a SnapshotEvent instance.
 	 */
-	public SnapshotDomainEntityEvent(Entity entity, List<DomainEvent> summary) throws NullPointerException {
-		super(entity);
-		this.summary = summary;
-	}
-
-	/**
-	 * @return the summary
-	 */
-	public List<DomainEvent> getSummary() {
-		return summary;
-	}
+	public SnapshotEvent generate(Aggregate aggregate );
 
 }

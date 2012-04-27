@@ -25,7 +25,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.intelligentsia.dowsers.event.snapshot.PropertyChangeEvent;
+
 /**
+ * Property annotation tag.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -33,5 +36,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Property {
-
+	/**
+	 * Event class name.
+	 * 
+	 * @return event class name so set this property
+	 */
+	Class<?> value() default PropertyChangeEvent.class;
 }

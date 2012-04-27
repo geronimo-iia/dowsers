@@ -28,7 +28,7 @@ import org.intelligentsia.dowsers.core.Version;
 import org.intelligentsia.dowsers.domain.Aggregate;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.domain.Entity;
-import org.intelligentsia.dowsers.domain.LocalDomainEntity; 
+import org.intelligentsia.dowsers.domain.LocalDomainEntity;
 import org.intelligentsia.dowsers.event.processor.EventProcessor;
 import org.intelligentsia.dowsers.event.processor.EventProcessorProvider;
 
@@ -99,6 +99,14 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	}
 
 	/**
+	 * @see org.intelligentsia.dowsers.domain.Aggregate#getRoot()
+	 */
+	@Override
+	public DomainEntity getRoot() {
+		return root;
+	}
+
+	/**
 	 * It is basically apply events of the given aggregate.
 	 * 
 	 * @param history
@@ -157,7 +165,7 @@ public class DomainAggregate implements Aggregate, DomainEventProvider {
 	 * @return <code>true</code> if this aggregate was marked as deleted,
 	 *         otherwise <code>false</code>.
 	 */
-	//TODO implements this
+	// TODO implements this
 	boolean isDeleted() {
 		return true;
 	}
