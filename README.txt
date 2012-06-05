@@ -19,7 +19,12 @@
  
 Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
 
-
+This project is my personal study on this pattern. For now, goals are :
+* stabilizing core API
+* add connector on event store like Java Chronicle, File system, simple database
+Next step, could be:
+* offer a modeling tool to quickly generate entity stub (in a quick and dirty model)
+* ...
 
 
 
