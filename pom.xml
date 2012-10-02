@@ -40,6 +40,10 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
+	<scm>
+		<connection>scm:git:https://github.com/geronimo-iia/dowsers.git</connection>
+		<url>https://github.com/geronimo-iia/dowsers.git</url>
+	</scm>
 	<inceptionYear>2012</inceptionYear>
 	<organization>
 		<name>Intelligents-ia</name>
@@ -167,57 +171,104 @@
 						<encoding>UTF-8</encoding>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>true</addMavenDescriptor>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.2.2</version>
+				</plugin>
 				<!-- ******************************************************************* -->
-			<!-- LICENCE CHECK -->
-			<!-- ******************************************************************* -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.rat</groupId> -->
-			<!-- <artifactId>apache-rat-plugin</artifactId> -->
-			<!-- <version>0.8</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <phase>verify</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>check</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
-				<configuration>
-					<header>${basedir}/header.txt</header>
-					<failIfMissing>true</failIfMissing>
-					<aggregate>true</aggregate>
-					<encoding>UTF-8</encoding>
-					<excludes>
-						<exclude>LICENSE.txt</exclude>
-						<exclude>**/src/test/resources/**</exclude>
-						<exclude>**/src/test/data/**</exclude>
-					</excludes>
-					<strictCheck>true</strictCheck>
-				</configuration>
-				<executions>
-					<execution>
-						<id>check-headers</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+				<!-- LICENCE CHECK -->
+				<!-- ******************************************************************* -->
+				<plugin>
+					<groupId>com.mycila.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.9.0</version>
+					<configuration>
+						<header>${header.path}</header>
+						<failIfMissing>true</failIfMissing>
+						<aggregate>true</aggregate>
+						<encoding>UTF-8</encoding>
+						<excludes>
+							<exclude>LICENSE.txt</exclude>
+							<exclude>README.*</exclude>
+							<exclude>docs/**</exclude>
+							<exclude>**/NOTES</exclude>
+							<exclude>**/src/doc/**</exclude>
+							<exclude>**/src/test/resources/**</exclude>
+							<exclude>**/src/repository/**</exclude>
+							<exclude>**/src/test/data/**</exclude>
+							<exclude>**/.gitattributes</exclude>
+							<exclude>**/.gitignore</exclude>
+							<exclude>repository/**</exclude>
+							<exclude>**/*.ucd</exclude>
+							<exclude>**/.euml2</exclude>
+							<exclude>**/.umlproject</exclude>
+						</excludes>
+						<strictCheck>true</strictCheck>
+					</configuration>
+					<executions>
+						<execution>
+							<id>check-headers</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId> 
+				<artifactId>maven-license-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>2.2</version>
+			</extension>
+		</extensions>
 	</build>
+	<!-- ******************************************************************* -->
+	<!-- DISTRIBUTION -->
+	<!-- ******************************************************************* -->
+	<distributionManagement>
+		<repository>
+			<id>intelligents-ia-releases</id>
+			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>intelligents-ia-snapshot</id>
+			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<!-- ******************************************************************* -->
+	<!-- PROPERTIES -->
+	<!-- ******************************************************************* -->
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<guava.version>11.0.2</guava.version>
@@ -227,16 +278,40 @@
 		<joda-time.version>1.6</joda-time.version><!-- 2.1 -->
 		<org.codehaus.jackson.version>1.9.2</org.codehaus.jackson.version>
 		<kryo.version>1.04</kryo.version>
+		<!-- Header path -->
+		<header.path>${basedir}/header.txt</header.path>
+		<!-- source encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	<!-- ******************************************************************* -->
+	<!-- REPOSITORY MANAGMENT -->
+	<!-- ******************************************************************* -->
 	<repositories>
 		<repository>
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
 		</repository>
 		<repository>
-			<id>intelligents-ia</id>
-			<name>Intelligents-ia Repository</name>
-			<url>http://intelligents-ia.com/maven2</url>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -251,11 +326,39 @@
 				<enabled>true</enabled>
 			</releases>
 		</pluginRepository>
+		<pluginRepository>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
+	<!-- ******************************************************************* -->
+	<!-- MODULES -->
+	<!-- ******************************************************************* -->
 	<modules>
-		<module>core</module>
-		<module>eventstore</module>
-		<module>test</module>
-		<module>sample</module>
+		<module>dowsers-core</module>
+		<module>dowsers-domain</module>
+		<module>dowsers-command</module>
+		<module>dowsers-event</module>
+		<!-- <module>dowsers-eventstore</module> -->
+		<module>dowsers-test</module>
+		<!-- <module>dowsers-sample</module> -->
 	</modules>
 </project>
