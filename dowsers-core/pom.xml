@@ -20,6 +20,9 @@
 	<artifactId>dowsers-core</artifactId>
 	<packaging>jar</packaging>
 	<name>dowsers-core</name>
+	<description>
+		This project aggregate common concepts of all other artifacts.
+	</description>
 	<dependencies>
 		<!-- ******************************************************************* -->
 		<!-- GUAVA FRAMEWORK -->
