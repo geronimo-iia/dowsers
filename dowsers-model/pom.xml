@@ -29,6 +29,13 @@
 			<artifactId>dowsers-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- KEYSTONE API -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.intelligents-ia.keystone</groupId>
+			<artifactId>keystone-api</artifactId>
+		</dependency>
 	</dependencies>
 	<properties>
 		<header.path>${basedir}/../header.txt</header.path>
