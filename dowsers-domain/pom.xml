@@ -20,6 +20,16 @@
 	<artifactId>dowsers-domain</artifactId>
 	<packaging>jar</packaging>
 	<name>dowsers-domain</name>
+	<dependencies>
+		<!-- ******************************************************************* -->
+		<!-- DOWSERS -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dowsers-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 	<properties>
 		<header.path>${basedir}/../header.txt</header.path>
 	</properties>

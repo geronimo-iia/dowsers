@@ -20,15 +20,26 @@
 	<artifactId>dowsers-test</artifactId>
 	<name>dowsers-test</name>
 	<dependencies>
+		<!-- ******************************************************************* -->
+		<!-- DOWSERS -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dowsers-event</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dowsers-command</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- JAVASSIST -->
+		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.intelligents-ia.dowsers</groupId>
-			<artifactId>dowsers-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<properties>

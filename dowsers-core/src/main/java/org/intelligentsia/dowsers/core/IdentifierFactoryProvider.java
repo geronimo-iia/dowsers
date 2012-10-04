@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
 import java.util.UUID;
 
 /**
- * This provider declare a method in order to generate new identifer using an
+ * This provider declare a method in order to generate new identifier using an
  * IdentifierFactory implementation.
  * 
  * <pre>IdentifierFactoryProvider.generateNewIdentifier();
@@ -77,7 +77,7 @@ public final class IdentifierFactoryProvider {
 	}
 
 	/**
-	 * Try to locate a IdentifierFactory implementation using specifie
+	 * Try to locate a IdentifierFactory implementation using specific
 	 * classloader.
 	 * 
 	 * @param classLoader

@@ -20,6 +20,16 @@
 	<artifactId>dowsers-event</artifactId>
 	<packaging>jar</packaging>
 	<name>dowsers-event</name>
+	<dependencies>
+		<!-- ******************************************************************* -->
+		<!-- DOWSERS -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dowsers-domain</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 	<properties>
 		<header.path>${basedir}/../header.txt</header.path>
 	</properties>

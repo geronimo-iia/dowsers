@@ -22,11 +22,12 @@
 	<name>dowsers-command</name>
 	<dependencies>
 		<!-- ******************************************************************* -->
-		<!-- GUAVA FRAMEWORK -->
+		<!-- DOWSERS -->
 		<!-- ******************************************************************* -->
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>dowsers-core</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<properties>

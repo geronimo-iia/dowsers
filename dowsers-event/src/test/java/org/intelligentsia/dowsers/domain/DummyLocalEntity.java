@@ -17,16 +17,38 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.domain;
 
 /**
- * {@link Factory} declare methods to instantiate an object of type T.
+ * DummyLocalEntity.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface Factory<T> {
+public class DummyLocalEntity extends LocalDomainEntity {
+
+	private boolean onRegisterCalled = Boolean.FALSE;
+
 	/**
-	 * @return a new instance of type T.
+	 * Build a new instance of DummyLocalEntity.
 	 */
-	public T newInstance();
+	public DummyLocalEntity() {
+		super();
+	}
+
+	/**
+	 * @see org.intelligentsia.dowsers.domain.LocalDomainEntity#onRegister(org.intelligentsia.dowsers.domain.DomainEntity)
+	 */
+	@Override
+	protected void onRegister(DomainEntity domainEntity) {
+		super.onRegister(domainEntity);
+		onRegisterCalled = Boolean.TRUE;
+	}
+
+	/**
+	 * @return the onRegisterCalled
+	 */
+	public boolean isOnRegisterCalled() {
+		return onRegisterCalled;
+	}
 }

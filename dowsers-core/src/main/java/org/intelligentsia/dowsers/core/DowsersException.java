@@ -34,11 +34,22 @@ public class DowsersException extends RuntimeException {
 	 */
 	private final String identity;
 
+	/**
+	 * Build a new instance of DowsersException.java.
+	 * 
+	 * @param identity
+	 */
 	public DowsersException(final String identity) {
 		super();
 		this.identity = identity;
 	}
 
+	/**
+	 * Build a new instance of DowsersException.java.
+	 * 
+	 * @param identity
+	 * @param message
+	 */
 	public DowsersException(final String identity, final String message) {
 		super(message);
 		this.identity = identity;
@@ -72,6 +83,11 @@ public class DowsersException extends RuntimeException {
 	 */
 	public String getIdentity() {
 		return identity;
+	}
+
+	@Override
+	public String toString() {
+		return "DowsersException [identity=" + identity + ", message=" + getMessage() + "]";
 	}
 
 }

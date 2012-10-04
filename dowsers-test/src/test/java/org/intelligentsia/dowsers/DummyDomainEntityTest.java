@@ -37,7 +37,6 @@ import org.intelligentsia.dowsers.domain.AggregateFactory;
 import org.intelligentsia.dowsers.domain.DomainEntity;
 import org.intelligentsia.dowsers.event.GenericDomainAggregateFactory;
 import org.intelligentsia.dowsers.event.processor.CacheEventProcessorProvider;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -78,6 +77,7 @@ public class DummyDomainEntityTest {
 		};
 		
 		//c.newInstance();
+		@SuppressWarnings("unused")
 		DomainEntity domainEntity  = (DomainEntity) proxyFactory.create(new Class<?>[] { AggregateFactory.class }, new Object[] { aggregateFactory }, handler); 
 		
 		//TestDomainEntity entity  = (TestDomainEntity) proxyFactory.create(new Class<?>[] { AggregateFactory.class }, new Object[] { aggregateFactory }, handler);

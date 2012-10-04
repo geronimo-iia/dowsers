@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.memento;
+package org.intelligentsia.dowsers.event;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.intelligentsia.dowsers.core.memento.Memento;
 import org.intelligentsia.dowsers.event.DomainEvent;
 
 import com.google.common.collect.Lists;

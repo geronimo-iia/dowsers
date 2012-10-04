@@ -17,16 +17,25 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core;
+package org.intelligentsia.dowsers.domain;
+
+
 
 /**
- * {@link Factory} declare methods to instantiate an object of type T.
+ * DummyDomainEntity.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface Factory<T> {
+public class DummyDomainEntity extends DomainEntity {
+
 	/**
-	 * @return a new instance of type T.
+	 * Build a new instance of DummyDomainEntity.
+	 * 
+	 * @param aggregateFactory
 	 */
-	public T newInstance();
+	public DummyDomainEntity(AggregateFactory aggregateFactory) {
+		super(aggregateFactory);
+	}
+
 }
