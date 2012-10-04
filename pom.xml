@@ -354,6 +354,8 @@
 	<!-- ******************************************************************* -->
 	<modules>
 		<module>dowsers-core</module>
+		<module>dowsers-model</module>
+		<!-- <module>dowsers-meta-repository</module> -->
 		<module>dowsers-domain</module>
 		<module>dowsers-command</module>
 		<module>dowsers-event</module>
