@@ -32,6 +32,7 @@ import com.google.common.collect.Maps;
 /**
  * {@link MetaEntityDefinition} is a version of an {@link MetaEntity}.
  * 
+ * TODO extends BaseEntity and thinks about a MetaEntity as an Entity.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
