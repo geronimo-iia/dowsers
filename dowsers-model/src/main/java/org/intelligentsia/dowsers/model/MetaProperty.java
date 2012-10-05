@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -44,6 +45,19 @@ public class MetaProperty {
 	 * default value.
 	 */
 	private final Object value;
+
+	/**
+	 * Build a new instance of MetaProperty.java.
+	 * 
+	 * @param metaProperty
+	 * @throws NullPointerException
+	 *             if metaProperty is null
+	 */
+	public MetaProperty(MetaProperty metaProperty) throws NullPointerException {
+		this.name = Preconditions.checkNotNull(metaProperty).name;
+		this.valueClass = metaProperty.valueClass;
+		this.value = metaProperty.value;
+	}
 
 	/**
 	 * Build a new instance of MetaProperty.java.
@@ -104,10 +118,12 @@ public class MetaProperty {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return Objects.hashCode(name);
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(getClass()).add("name", name).add("valueClass", valueClass).add("value", value).toString();
 	}
 
 	@Override
@@ -127,8 +143,4 @@ public class MetaProperty {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "MetaProperty [name=" + name + ", valueClass=" + valueClass + ", value=" + value + "]";
-	}
 }

@@ -20,14 +20,15 @@
 package org.intelligentsia.dowsers.model;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * {@link MetaEntityDefinition} is a version of an {@link MetaEntity}.
@@ -85,7 +86,11 @@ public class MetaEntityDefinition implements MetaEntity {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.version = Preconditions.checkNotNull(version);
-		this.metaProperties = fill(Preconditions.checkNotNull(metaProperties));
+		ImmutableMap.Builder<String, MetaProperty> builder = new ImmutableMap.Builder<String, MetaProperty>();
+		for (MetaProperty metaProperty : Preconditions.checkNotNull(metaProperties)) {
+			builder.put(metaProperty.getName(), metaProperty);
+		}
+		this.metaProperties = builder.build();
 	}
 
 	@Override
@@ -111,57 +116,27 @@ public class MetaEntityDefinition implements MetaEntity {
 	@Override
 	public MetaProperty getMetaProperty(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		MetaProperty metaProperty = metaProperties.get(name);
-		Preconditions.checkState(metaProperty != null);
-		return metaProperty;
+		return metaProperties.get(name);
 	}
 
 	@Override
-	public Iterator<MetaProperty> getMetaProperties() {
-		final Iterator<MetaProperty> iterator = metaProperties.values().iterator();
-		return new Iterator<MetaProperty>() {
-
-			@Override
-			public void remove() {
-				throw new IllegalStateException("Forbidden operation");
-			}
-
-			@Override
-			public MetaProperty next() {
-				return iterator.next();
-			}
-
-			@Override
-			public boolean hasNext() {
-				return iterator.hasNext();
-			}
-		};
-
+	public ReadOnlyIterator<MetaProperty> getMetaProperties() {
+		return ReadOnlyIterator.newReadOnlyIterator(metaProperties.values().iterator());
 	}
 
-	/**
-	 * Transform a {@link Collection} of {@link MetaProperty} into a {@link Map}
-	 * of {name, {@link MetaProperty} >
-	 * 
-	 * @param metaProperties
-	 * @return a {@link Map} instance.
-	 */
-	private Map<String, MetaProperty> fill(Collection<MetaProperty> metaProperties) {
-		Map<String, MetaProperty> result = Maps.newHashMap();
-		for (MetaProperty metaEntity : metaProperties) {
-			result.put(metaEntity.getName(), metaEntity);
-		}
-		return result;
+	@Override
+	public ReadOnlyIterator<String> getMetaPropertyNames() {
+		return ReadOnlyIterator.newReadOnlyIterator(metaProperties.keySet().iterator());
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((metaProperties == null) ? 0 : metaProperties.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		return result;
+		return Objects.hashCode(name, version, metaProperties);
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(getClass()).add("name", name).add("version", version).add("metaProperties", metaProperties).toString();
 	}
 
 	@Override
@@ -189,11 +164,6 @@ public class MetaEntityDefinition implements MetaEntity {
 		} else if (!version.equals(other.version))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "MetaEntityDefinition [name=" + name + ", version=" + version + ", metaProperties=" + metaProperties + "]";
 	}
 
 }

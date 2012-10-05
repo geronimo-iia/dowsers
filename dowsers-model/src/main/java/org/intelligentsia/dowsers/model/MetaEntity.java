@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.model;
 
-import java.util.Iterator;
+import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 
 /**
  * A {@link MetaEntity} define:
@@ -57,7 +57,7 @@ public interface MetaEntity {
 	 * 
 	 * @return non-<code>null</code>, empty or non-empty string
 	 */
-	public abstract String getName();
+	String getName();
 
 	/**
 	 * @param name
@@ -68,25 +68,29 @@ public interface MetaEntity {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public abstract boolean contains(String name) throws NullPointerException, IllegalArgumentException;
+	boolean contains(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * 
 	 * @param name
 	 *            property name
-	 * @return a {@link MetaProperty} instance with specified name.
+	 * @return a {@link MetaProperty} instance with specified name or null if
+	 *         none is found.
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
-	 * @throws IllegalStateException
-	 *             if no {@link MetaProperty} was found
 	 */
-	public abstract MetaProperty getMetaProperty(String name) throws NullPointerException, IllegalArgumentException, IllegalStateException;
+	MetaProperty getMetaProperty(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * @return an read only {@link Iterator} on {@link MetaProperty}.
+	 * @return a {@link ReadOnlyIterator} on property name.
 	 */
-	public abstract Iterator<MetaProperty> getMetaProperties();
+	ReadOnlyIterator<String> getMetaPropertyNames();
+	
+	/**
+	 * @return an read only {@link ReadOnlyIterator} on {@link MetaProperty}.
+	 */
+	ReadOnlyIterator<MetaProperty> getMetaProperties();
 
 }

@@ -22,7 +22,7 @@ package org.intelligentsia.dowsers.model;
 import javax.swing.text.html.parser.Entity;
 
 /**
- * {@link MetaEntityAware} declare methods to access at
+ * {@link MetaEntityContextAware} declare methods to access at
  * {@link MetaEntityDefinition}.
  * 
  * Extend this interface on your entity to get access on {@link MetaEntity}
@@ -30,7 +30,7 @@ import javax.swing.text.html.parser.Entity;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface MetaEntityAware {
+public interface MetaEntityContextAware {
 
 	/**
 	 * @return {@link MetaEntityDefinition} instance.
