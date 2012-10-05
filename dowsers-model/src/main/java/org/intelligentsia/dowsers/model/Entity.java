@@ -49,6 +49,6 @@ public interface Entity {
 	 * @throws NullPointerException
 	 *             if name is null
 	 */
-	<Value> Property<Value> getProperty(String name) throws NullPointerException;
+	Property getProperty(String name) throws NullPointerException;
 
 }

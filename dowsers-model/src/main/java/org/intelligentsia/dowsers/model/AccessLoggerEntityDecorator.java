@@ -33,7 +33,7 @@ import com.google.common.base.Preconditions;
  */
 public class AccessLoggerEntityDecorator extends EntityDecorator {
 
-	private PrintStream printStream;
+	private final PrintStream printStream;
 
 	/**
 	 * Build a new instance of AccessLoggerEntityDecorator.java.
@@ -42,20 +42,20 @@ public class AccessLoggerEntityDecorator extends EntityDecorator {
 	 * @param printStream
 	 * @throws NullPointerException
 	 */
-	public AccessLoggerEntityDecorator(Entity entity, PrintStream printStream) throws NullPointerException {
+	public AccessLoggerEntityDecorator(final Entity entity, final PrintStream printStream) throws NullPointerException {
 		super(entity);
 		this.printStream = Preconditions.checkNotNull(printStream);
 	}
 
 	@Override
 	public String getIdentity() {
-		printStream.println(StringUtils.format("getIdentity of entity '%s': '%s'", entity.getClass(), entity.getIdentity()));
+		printStream.println(StringUtils.format("getIdentity of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.getIdentity()));
 		return super.getIdentity();
 	}
 
 	@Override
-	public <Value> Property<Value> getProperty(String name) throws NullPointerException, IllegalArgumentException {
-		printStream.println(StringUtils.format("getProperty '%s' of entity '%s#%s'", name, entity.getClass(), entity.getIdentity()));
+	public Property getProperty(final String name) throws NullPointerException, IllegalArgumentException {
+		printStream.println(StringUtils.format("getProperty '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.getIdentity()));
 		return super.getProperty(name);
 	}
 

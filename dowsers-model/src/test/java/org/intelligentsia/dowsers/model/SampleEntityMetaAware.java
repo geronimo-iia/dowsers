@@ -17,37 +17,15 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity.meta;
+package org.intelligentsia.dowsers.model;
+
 
 /**
- * {@link PropertyDescriptor} describe value object properties.
- * 
- * @param <Value>
- *            the value class generic parameter
+ * SampleEntityMetaAware.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface PropertyDescriptor {
-	/**
-	 * Returns the property name.
-	 * 
-	 * @return non-<code>null</code> textual property identifier
-	 */
-	String getName();
+public interface SampleEntityMetaAware extends CustomizableSampleEntity, MetaEntityContextAware {
 
-	/**
-	 * Returns the <code>{@link Class}</code> object representing the
-	 * <code>Value</code> generic parameter.
-	 * 
-	 * @return non-<code>null</code> <code>{@link Class}</code> instance
-	 */
-	Class<?> getValueClass();
-
-	/**
-	 * Returns the property default value.
-	 * 
-	 * @return <code>null</code> or non-<code>null</code> <code>Value</code>
-	 *         instance
-	 */
-	<Value> Value getDefaultValue();
 }

@@ -53,7 +53,7 @@ public class MetaProperty {
 	 * @throws NullPointerException
 	 *             if metaProperty is null
 	 */
-	public MetaProperty(MetaProperty metaProperty) throws NullPointerException {
+	public MetaProperty(final MetaProperty metaProperty) throws NullPointerException {
 		this.name = Preconditions.checkNotNull(metaProperty).name;
 		this.valueClass = metaProperty.valueClass;
 		this.value = metaProperty.value;
@@ -75,7 +75,7 @@ public class MetaProperty {
 	 * @throws IllegalStateException
 	 *             if value is not assignable to specified value class
 	 */
-	public MetaProperty(String name, Class<?> valueClass, Object value) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaProperty(final String name, final Class<?> valueClass, final Object value) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
@@ -127,19 +127,24 @@ public class MetaProperty {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		MetaProperty other = (MetaProperty) obj;
+		}
+		final MetaProperty other = (MetaProperty) obj;
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 

@@ -87,7 +87,7 @@ public interface MetaEntity {
 	 * @return a {@link ReadOnlyIterator} on property name.
 	 */
 	ReadOnlyIterator<String> getMetaPropertyNames();
-	
+
 	/**
 	 * @return an read only {@link ReadOnlyIterator} on {@link MetaProperty}.
 	 */

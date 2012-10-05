@@ -59,7 +59,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @param metaEntityDefinition
 	 *            base definition.
 	 */
-	public MetaEntityDefinitionBuilder(MetaEntityDefinition metaEntityDefinition) {
+	public MetaEntityDefinitionBuilder(final MetaEntityDefinition metaEntityDefinition) {
 		this(metaEntityDefinition.getName(), metaEntityDefinition.getVersion(), Sets.newHashSet(metaEntityDefinition.getMetaProperties()));
 	}
 
@@ -72,7 +72,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public MetaEntityDefinitionBuilder(String name, Version version, Set<MetaProperty> metaProperties) throws NullPointerException {
+	public MetaEntityDefinitionBuilder(final String name, final Version version, final Set<MetaProperty> metaProperties) throws NullPointerException {
 		super();
 		this.name = Preconditions.checkNotNull(name);
 		this.version = Preconditions.checkNotNull(version);
@@ -97,7 +97,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	MetaEntityDefinitionBuilder(String name, Version version, MetaEntityContextBuilder metaEntityContextBuilder) throws NullPointerException {
+	MetaEntityDefinitionBuilder(final String name, final Version version, final MetaEntityContextBuilder metaEntityContextBuilder) throws NullPointerException {
 		this.name = Preconditions.checkNotNull(name);
 		this.version = Preconditions.checkNotNull(version);
 		this.metaEntityContextBuilder = metaEntityContextBuilder;
@@ -114,11 +114,11 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 */
 	@Override
 	public MetaEntityDefinition build() throws NullPointerException, IllegalArgumentException {
-		MetaEntityDefinition definition = new MetaEntityDefinition(name, version, metaProperties);
-		if (metaEntityContextBuilder!=null) {
+		final MetaEntityDefinition definition = new MetaEntityDefinition(name, version, metaProperties);
+		if (metaEntityContextBuilder != null) {
 			metaEntityContextBuilder.add(definition);
 		}
-		return  definition;
+		return definition;
 	}
 
 	/**
@@ -129,13 +129,13 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityDefinitionBuilder setName(String name) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityDefinitionBuilder setName(final String name) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder setVersion(Version version) throws NullPointerException {
+	public MetaEntityDefinitionBuilder setVersion(final Version version) throws NullPointerException {
 		this.version = Preconditions.checkNotNull(version);
 		return this;
 	}
@@ -144,17 +144,17 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 		return metaProperties;
 	}
 
-	public MetaEntityDefinitionBuilder setMetaProperties(Set<MetaProperty> metaProperties) throws NullPointerException {
+	public MetaEntityDefinitionBuilder setMetaProperties(final Set<MetaProperty> metaProperties) throws NullPointerException {
 		this.metaProperties = Preconditions.checkNotNull(metaProperties);
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder add(MetaProperty metaProperty) throws NullPointerException {
+	public MetaEntityDefinitionBuilder add(final MetaProperty metaProperty) throws NullPointerException {
 		this.metaProperties.add(metaProperty);
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder add(MetaProperty... metaProperties) throws NullPointerException {
+	public MetaEntityDefinitionBuilder add(final MetaProperty... metaProperties) throws NullPointerException {
 		this.metaProperties.addAll(Arrays.asList(Preconditions.checkNotNull(metaProperties)));
 		return this;
 	}

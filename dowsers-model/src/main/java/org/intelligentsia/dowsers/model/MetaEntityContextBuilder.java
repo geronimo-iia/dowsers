@@ -36,10 +36,10 @@ import com.google.common.base.Preconditions;
  */
 public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 
-	private String name;
-	private Version rootVersion;
+	private final String name;
+	private final Version rootVersion;
 	private Collection<MetaProperty> metaProperties;
-	private Collection<MetaEntityDefinition> extendedMetaEntityDefinitions;
+	private final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions;
 
 	/**
 	 * 
@@ -52,7 +52,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextBuilder(String name, Version rootVersion) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityContextBuilder(final String name, final Version rootVersion) throws NullPointerException, IllegalArgumentException {
 		this(name, rootVersion, null, null);
 
 	}
@@ -69,7 +69,8 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextBuilder(String name, Version rootVersion, Collection<MetaProperty> metaProperties, Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityContextBuilder(final String name, final Version rootVersion, final Collection<MetaProperty> metaProperties, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+			IllegalArgumentException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
@@ -90,17 +91,17 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @throws NullPointerException
 	 *             if metaProperties is null
 	 */
-	public MetaEntityContextBuilder setMetaProperties(Collection<MetaProperty> metaProperties) throws NullPointerException {
+	public MetaEntityContextBuilder setMetaProperties(final Collection<MetaProperty> metaProperties) throws NullPointerException {
 		this.metaProperties = Preconditions.checkNotNull(metaProperties);
 		return this;
 	}
 
-	public MetaEntityContextBuilder add(MetaProperty metaProperty) throws NullPointerException {
+	public MetaEntityContextBuilder add(final MetaProperty metaProperty) throws NullPointerException {
 		this.metaProperties.add(metaProperty);
 		return this;
 	}
 
-	public MetaEntityContextBuilder add(MetaProperty... metaProperties) throws NullPointerException {
+	public MetaEntityContextBuilder add(final MetaProperty... metaProperties) throws NullPointerException {
 		this.metaProperties.addAll(Arrays.asList(Preconditions.checkNotNull(metaProperties)));
 		return this;
 	}
@@ -110,7 +111,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @param extendedMetaEntityDefinitions
 	 * @return this {@link MetaEntityContextBuilder} instance
 	 */
-	public MetaEntityContextBuilder setExtendedMetaEntityDefinitions(Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) {
+	public MetaEntityContextBuilder setExtendedMetaEntityDefinitions(final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) {
 		return this;
 	}
 
@@ -120,7 +121,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @param version
 	 * @return {@link MetaEntityDefinitionBuilder} instance.
 	 */
-	public MetaEntityDefinitionBuilder add(Version version) {
+	public MetaEntityDefinitionBuilder add(final Version version) {
 		return new MetaEntityDefinitionBuilder(name, version, this);
 	}
 
@@ -132,7 +133,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * @throws NullPointerException
 	 *             if definition is null
 	 */
-	public MetaEntityContextBuilder add(MetaEntityDefinition definition) throws NullPointerException {
+	public MetaEntityContextBuilder add(final MetaEntityDefinition definition) throws NullPointerException {
 		Preconditions.checkState(name.equals(Preconditions.checkNotNull(definition).getName()));
 		extendedMetaEntityDefinitions.add(definition);
 		return this;

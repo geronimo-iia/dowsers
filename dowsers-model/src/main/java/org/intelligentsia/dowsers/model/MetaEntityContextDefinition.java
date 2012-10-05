@@ -35,7 +35,6 @@ import com.google.common.collect.ImmutableSet;
  * {@link MetaEntityContextDefinition} implements {@link MetaEntityContext}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class MetaEntityContextDefinition implements MetaEntityContext {
 
@@ -54,6 +53,9 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	 */
 	private final Map<Version, MetaEntityDefinition> metaEntityDefinitions;
 
+	/**
+	 * Set of extended property names.
+	 */
 	private Set<String> extendedPropertyNames;
 
 	/**
@@ -73,14 +75,15 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextDefinition(String name, Version rootVersion, Collection<MetaProperty> metaProperties, Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityContextDefinition(final String name, final Version rootVersion, final Collection<MetaProperty> metaProperties, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+			IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(rootVersion, new MetaEntityDefinition(name, rootVersion, Preconditions.checkNotNull(metaProperties)));
+		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(rootVersion, new MetaEntityDefinition(name, rootVersion, Preconditions.checkNotNull(metaProperties)));
 		if (extendedMetaEntityDefinitions != null) {
-			ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
-			for (MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
+			final ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
+			for (final MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
 				builder.put(metaEntityDefinition.getVersion(), metaEntityDefinition);
 				extendedPropertyNamesBuilder.addAll(metaEntityDefinition.getMetaPropertyNames());
 			}
@@ -97,8 +100,8 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public boolean contains(String name) throws NullPointerException, IllegalArgumentException {
-		Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
+	public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
+		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		boolean result = false;
 		while (iterator.hasNext() && !(result = iterator.next().contains(name))) {
 		}
@@ -106,8 +109,8 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public MetaProperty getMetaProperty(String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-		Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
+	public MetaProperty getMetaProperty(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		MetaProperty result = null;
 		while (iterator.hasNext() && ((result = iterator.next().getMetaProperty(name)) == null)) {
 		}
@@ -149,7 +152,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public MetaEntity getMetaEntity(Version version) throws NullPointerException, IllegalStateException {
+	public MetaEntity getMetaEntity(final Version version) throws NullPointerException, IllegalStateException {
 		return metaEntityDefinitions.get(version);
 	}
 

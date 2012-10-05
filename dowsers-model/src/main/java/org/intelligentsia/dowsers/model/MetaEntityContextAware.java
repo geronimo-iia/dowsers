@@ -23,17 +23,17 @@ import javax.swing.text.html.parser.Entity;
 
 /**
  * {@link MetaEntityContextAware} declare methods to access at
- * {@link MetaEntityDefinition}.
+ * {@link MetaEntityContext}.
  * 
- * Extend this interface on your entity to get access on {@link MetaEntity}
- * associated to your {@link Entity}.
+ * Extend this interface on your entity to get access on
+ * {@link MetaEntityContext} associated to your {@link Entity}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface MetaEntityContextAware {
 
 	/**
-	 * @return {@link MetaEntityDefinition} instance.
+	 * @return {@link MetaEntityContext} instance.
 	 */
-	MetaEntity getMetaEntity();
+	MetaEntityContext getMetaEntityContext();
 }

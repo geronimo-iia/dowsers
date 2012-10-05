@@ -17,44 +17,13 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity.meta;
-
-import java.util.Iterator;
-import java.util.Map;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
+package org.intelligentsia.dowsers.model;
 
 /**
- * DummyMetaRepository.
+ * CustomizableSampleEntity extends {@link SampleEntity} and {@link Entity}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DummyMetaRepository implements MetaRepository {
-
-	private final Map<String, EntityDescriptor> entityDescriptors = Maps.newHashMap();
-
-	public DummyMetaRepository() {
-		super();
-	}
-
-	@Override
-	public void register(EntityDescriptor entityDescriptor) throws NullPointerException {
-		entityDescriptors.put(Preconditions.checkNotNull(entityDescriptor).getName(), entityDescriptor);
-	}
-
-	@Override
-	public EntityDescriptor getEntityDescriptor(String name) throws NullPointerException {
-		return entityDescriptors.get(Preconditions.checkNotNull(name));
-	}
-
-	@Override
-	public Iterator<EntityDescriptor> iterator() {
-		return entityDescriptors.values().iterator();
-	}
-
-	public Map<String, EntityDescriptor> getEntityDescriptors() {
-		return entityDescriptors;
-	}
+public interface CustomizableSampleEntity extends SampleEntity, Entity {
 
 }

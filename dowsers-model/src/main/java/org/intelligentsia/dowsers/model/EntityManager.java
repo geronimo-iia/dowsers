@@ -17,35 +17,17 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.model;
 
-public class ConsoleChangeDecorateur extends EntityDecorator {
+/**
+ * EntityManager declare methods to manage an entity.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
+public interface EntityManager {
 
-	public ConsoleChangeDecorateur(Entity entity) {
-		super(entity);
-	}
+	<T> T newInstance(Class<T> interfaceName, ClassLoader classLoader) throws NullPointerException;
 
-	@Override
-	public String getIdentity() {
-		System.err.println("Call getIdentity");
-		return super.getIdentity();
-	}
-
-	@Override
-	public <T> T getProperty(String name) throws NullPointerException, IllegalArgumentException {
-		System.err.println("Call getProperty " + name);
-		return super.getProperty(name);
-	}
-
-	@Override
-	public <T> void setProperty(String name, T value) throws NullPointerException, IllegalArgumentException, ClassCastException, IllegalStateException {
-		System.err.println("Call setProperty " + name + ", " + value);
-		super.setProperty(name, value);
-	}
-
-	@Override
-	public String toString() {
-		return "ConsoleChangeDecorateur [toString()=" + super.toString() + "]";
-	}
+	<T> T newInstance(Class<T> interfaceName, ClassLoader classLoader, String identity) throws NullPointerException;
 
 }

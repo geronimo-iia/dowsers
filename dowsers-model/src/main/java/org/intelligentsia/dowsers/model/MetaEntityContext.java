@@ -22,7 +22,6 @@ package org.intelligentsia.dowsers.model;
 import java.util.Set;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
-import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 /**

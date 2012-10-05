@@ -39,7 +39,7 @@ public class EntityFactory implements Factory<Entity> {
 		return new AccessLoggerEntityDecorator(new BaseEntity(), System.out);
 	}
 
-	public Entity newInstance(String identity) {
+	public Entity newInstance(final String identity) {
 		return new AccessLoggerEntityDecorator(new BaseEntity(identity), System.out);
 	}
 }

@@ -17,27 +17,16 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.model;
 
-public class EntityTest {
+/**
+ * MetaEntityContextRepository define methods to access on
+ * {@link MetaEntityContext} data.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
+ */
+public interface MetaEntityContextRepository {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		SampleEntity sampleEntity = EntityFactory.newInstance(SampleEntity.class, Thread.currentThread().getContextClassLoader(), null);
-
-		sampleEntity.setName("Hello John");
-		System.out.println(sampleEntity.getName());
-
-		sampleEntity.setDescription("a blablablabalbablbalablabb");
-
-		System.out.println(sampleEntity.toString());
-
-		System.out.println(sampleEntity.getDescription());
-		
-		System.out.println(sampleEntity.getProperty("test"));
-	}
-
+	MetaEntityContext find(Class<?> className);
 }

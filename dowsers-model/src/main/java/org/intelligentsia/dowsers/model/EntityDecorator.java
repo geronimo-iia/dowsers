@@ -37,7 +37,7 @@ public class EntityDecorator implements Entity {
 	 * @throws NullPointerException
 	 *             if entity is null
 	 */
-	public EntityDecorator(Entity entity) throws NullPointerException {
+	public EntityDecorator(final Entity entity) throws NullPointerException {
 		super();
 		this.entity = Preconditions.checkNotNull(entity);
 	}
@@ -48,7 +48,7 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public <Value> Property<Value> getProperty(String name) throws NullPointerException, IllegalArgumentException {
+	public Property getProperty(final String name) throws NullPointerException, IllegalArgumentException {
 		return entity.getProperty(name);
 	}
 

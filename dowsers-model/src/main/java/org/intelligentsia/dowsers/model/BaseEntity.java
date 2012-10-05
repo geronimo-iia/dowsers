@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
@@ -32,7 +33,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BaseEntity implements Entity {
+public class BaseEntity implements Entity, MetaEntityContextAware {
 	/**
 	 * Entity identity.
 	 */
@@ -40,7 +41,12 @@ public class BaseEntity implements Entity {
 	/**
 	 * Map of properties.
 	 */
-	private Map<String, Property<?>> properties = Maps.newHashMap();
+	private final Map<String, Property> properties = Maps.newHashMap();
+
+	/**
+	 * {@link MetaEntityContext} associated.
+	 */
+	private final MetaEntityContext metaEntityContext;
 
 	/**
 	 * Build a new instance of BaseEntity.java.
@@ -60,8 +66,34 @@ public class BaseEntity implements Entity {
 	 *             if identifier is null
 	 */
 	public BaseEntity(final String identity) throws NullPointerException {
+		this(identity, null);
+	}
+
+	/**
+	 * Build a new instance of Entity. All change in this entity will be bounded
+	 * by an aggregate.
+	 * 
+	 * @param identity
+	 *            entity's identity.
+	 * @param metaEntityContext
+	 *            {@link MetaEntityContext} associated with this instance.
+	 * 
+	 * @throws NullPointerException
+	 *             if identifier is null
+	 */
+	public BaseEntity(final String identity, final MetaEntityContext metaEntityContext) {
 		super();
 		this.identity = Preconditions.checkNotNull(identity);
+		this.metaEntityContext = metaEntityContext;
+		if (metaEntityContext != null) {
+			// TODO change this way by using map copy of a cache based
+			// definition in Entity manager unit
+			final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
+			while (iterator.hasNext()) {
+				final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
+				properties.put(metaProperty.getName(), new Property());
+			}
+		}
 	}
 
 	@Override
@@ -107,10 +139,13 @@ public class BaseEntity implements Entity {
 		return Objects.toStringHelper(this).add("identity", identity).toString();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> Property<T> getProperty(String name) throws NullPointerException {
-		return (Property<T>) properties.get(name);
+	public Property getProperty(final String name) throws NullPointerException {
+		return properties.get(name);
 	}
 
+	@Override
+	public MetaEntityContext getMetaEntityContext() {
+		return metaEntityContext;
+	}
 }

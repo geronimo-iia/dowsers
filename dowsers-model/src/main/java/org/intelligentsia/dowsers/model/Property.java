@@ -41,15 +41,27 @@ package org.intelligentsia.dowsers.model;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Property<Value> {
+public class Property {
+
+	private Object value;
+
+	public Property() {
+		super();
+	}
 
 	/**
 	 * @return object value instance.
 	 */
-	Value getValue();
+	@SuppressWarnings("unchecked")
+	<Value> Value getValue() {
+		return (Value) value;
+	}
 
 	/**
-	 * @param value value to set
+	 * @param value
+	 *            value to set
 	 */
-	void setValue(Value value);
+	<Value> void setValue(final Value value) {
+		this.value = value;
+	}
 }

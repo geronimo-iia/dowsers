@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
-import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Objects;
@@ -60,7 +59,7 @@ public class MetaEntityDefinition implements MetaEntity {
 	 * @throws NullPointerException
 	 *             if definition is null
 	 */
-	public MetaEntityDefinition(MetaEntityDefinition definition) throws NullPointerException {
+	public MetaEntityDefinition(final MetaEntityDefinition definition) throws NullPointerException {
 		super();
 		name = Preconditions.checkNotNull(definition).name;
 		version = definition.version;
@@ -81,13 +80,13 @@ public class MetaEntityDefinition implements MetaEntity {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityDefinition(String name, Version version, Collection<MetaProperty> metaProperties) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityDefinition(final String name, final Version version, final Collection<MetaProperty> metaProperties) throws NullPointerException, IllegalArgumentException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.version = Preconditions.checkNotNull(version);
-		ImmutableMap.Builder<String, MetaProperty> builder = new ImmutableMap.Builder<String, MetaProperty>();
-		for (MetaProperty metaProperty : Preconditions.checkNotNull(metaProperties)) {
+		final ImmutableMap.Builder<String, MetaProperty> builder = new ImmutableMap.Builder<String, MetaProperty>();
+		for (final MetaProperty metaProperty : Preconditions.checkNotNull(metaProperties)) {
 			builder.put(metaProperty.getName(), metaProperty);
 		}
 		this.metaProperties = builder.build();
@@ -140,29 +139,38 @@ public class MetaEntityDefinition implements MetaEntity {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		MetaEntityDefinition other = (MetaEntityDefinition) obj;
+		}
+		final MetaEntityDefinition other = (MetaEntityDefinition) obj;
 		if (metaProperties == null) {
-			if (other.metaProperties != null)
+			if (other.metaProperties != null) {
 				return false;
-		} else if (!metaProperties.equals(other.metaProperties))
+			}
+		} else if (!metaProperties.equals(other.metaProperties)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		if (version == null) {
-			if (other.version != null)
+			if (other.version != null) {
 				return false;
-		} else if (!version.equals(other.version))
+			}
+		} else if (!version.equals(other.version)) {
 			return false;
+		}
 		return true;
 	}
 

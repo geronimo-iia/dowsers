@@ -17,38 +17,20 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
-
-import com.google.common.base.Preconditions;
+package org.intelligentsia.dowsers.model;
 
 /**
- * EntityDecorator. 
- *
+ * SampleEntity.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityDecorator implements Entity {
+public interface SampleEntity {
 
-	private final Entity entity;
+	String getName();
 
-	public EntityDecorator(Entity entity) {
-		super();
-		this.entity = Preconditions.checkNotNull(entity);
-	}
+	void setName(String name);
 
-	public String getIdentity() {
-		return entity.getIdentity();
-	}
+	String getDescription();
 
-//	public <T> T getProperty(String name, Class<T> className) throws NullPointerException, IllegalArgumentException, ClassCastException {
-//		return entity.getProperty(name, className);
-//	}
-
-	public <T> T getProperty(String name) throws NullPointerException, IllegalArgumentException {
-		return entity.getProperty(name);
-	}
-
-	public <T> void setProperty(String name, T value) throws NullPointerException, IllegalArgumentException, ClassCastException, IllegalStateException {
-		entity.setProperty(name, value);
-	}
-
+	void setDescription(String description);
 }
