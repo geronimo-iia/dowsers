@@ -45,7 +45,7 @@ public class LocaleJsonSerializer extends SerializerBase<Locale> {
 	}
 
 	@Override
-	public void serialize(Locale locale, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+	public void serialize(final Locale locale, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 		jgen.writeString(locale.toString());
 	}
 

@@ -40,7 +40,7 @@ public class LocaleKeyDeserializer extends StdKeyDeserializer {
 	}
 
 	@Override
-	protected Object _parse(String key, DeserializationContext ctxt) throws Exception {
+	protected Object _parse(final String key, final DeserializationContext ctxt) throws Exception {
 		return LocaleJsonDeserializer.parse(key);
 	}
 }

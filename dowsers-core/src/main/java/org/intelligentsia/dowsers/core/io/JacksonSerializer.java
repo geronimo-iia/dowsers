@@ -45,7 +45,7 @@ public class JacksonSerializer {
 		JacksonSerializer.mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		JacksonSerializer.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, false);
 		// Add custom de/serializer
-		SimpleModule testModule = new SimpleModule("DowsersJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
+		final SimpleModule testModule = new SimpleModule("DowsersJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
 		testModule.addKeyDeserializer(Locale.class, new LocaleKeyDeserializer());
 		testModule.addSerializer(new LocaleJsonSerializer());
 		testModule.addDeserializer(Locale.class, new LocaleJsonDeserializer());

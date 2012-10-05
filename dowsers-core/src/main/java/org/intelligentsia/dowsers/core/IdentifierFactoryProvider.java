@@ -87,7 +87,7 @@ public final class IdentifierFactoryProvider {
 		final ServiceLoader<IdentifierFactory> loader = ServiceLoader.load(IdentifierFactory.class, classLoader);
 		final Iterator<IdentifierFactory> iterator = loader.iterator();
 		IdentifierFactory identifierFactory = null;
-		while (identifierFactory == null && iterator.hasNext()) {
+		while ((identifierFactory == null) && iterator.hasNext()) {
 			try {
 				identifierFactory = iterator.next();
 			} catch (final Throwable e) {

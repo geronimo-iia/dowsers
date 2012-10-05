@@ -46,8 +46,8 @@ public class LocaleJsonDeserializer extends StdDeserializer<Locale> {
 	}
 
 	@Override
-	public Locale deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		String locale = jp.readValueAs(String.class);
+	public Locale deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		final String locale = jp.readValueAs(String.class);
 		return parse(locale);
 	}
 
@@ -57,15 +57,15 @@ public class LocaleJsonDeserializer extends StdDeserializer<Locale> {
 	 * @param locale
 	 * @return {@link Locale} instance.
 	 */
-	static Locale parse(String locale) {
+	static Locale parse(final String locale) {
 		final String[] localeSplitted = locale.split(LocaleJsonDeserializer.SEPARATOR);
 		if ((localeSplitted.length == 0) || (localeSplitted.length > 3)) { // malFormed
 			return Locale.ENGLISH; // default Language
 		}
 		// load locale component
 		final String language = localeSplitted[0];
-		String country = localeSplitted.length >= 2 ? localeSplitted[1] : "";
-		String variant = localeSplitted.length == 3 ? localeSplitted[2] : "";
+		final String country = localeSplitted.length >= 2 ? localeSplitted[1] : "";
+		final String variant = localeSplitted.length == 3 ? localeSplitted[2] : "";
 		// default Language
 		if (language.equals("")) {
 			return Locale.ENGLISH;

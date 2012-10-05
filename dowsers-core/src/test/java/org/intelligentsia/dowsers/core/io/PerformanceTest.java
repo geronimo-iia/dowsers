@@ -56,7 +56,7 @@ public class PerformanceTest {
 	@Test
 	public void runMany() throws Exception {
 		int count = 0;
-		int round = 5;
+		final int round = 5;
 		double std = 0d, kryo = 0d, jackson = 0d;
 
 		while (++count <= round) {
@@ -72,52 +72,52 @@ public class PerformanceTest {
 	}
 
 	public double standardSerialization() throws Exception {
-		long before = System.nanoTime();
+		final long before = System.nanoTime();
 		for (int i = 0; i < COUNT; i++) {
-			DummyObject dummyObject = objects[i];
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			final DummyObject dummyObject = objects[i];
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(dummyObject);
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(bais);
+			final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			final ObjectInputStream ois = new ObjectInputStream(bais);
 			@SuppressWarnings("unused")
-			DummyObject deserObj = (DummyObject) ois.readObject();
+			final DummyObject deserObj = (DummyObject) ois.readObject();
 		}
-		long after = System.nanoTime();
+		final long after = System.nanoTime();
 		logger.trace("standard time {} ", (after - before) / 1e6);
 		return (after - before) / 1e6;
 	}
 
 	public double KryoSerializableWrapper() throws Exception {
-		long before = System.nanoTime();
+		final long before = System.nanoTime();
 		for (int i = 0; i < COUNT; i++) {
-			DummyObject dummyObject = objects[i];
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			final DummyObject dummyObject = objects[i];
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(new KryoSerializableWrapper(dummyObject));
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(bais);
+			final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			final ObjectInputStream ois = new ObjectInputStream(bais);
 			@SuppressWarnings("unused")
-			DummyObject deserObj = (DummyObject) ois.readObject();
+			final DummyObject deserObj = (DummyObject) ois.readObject();
 		}
-		long after = System.nanoTime();
+		final long after = System.nanoTime();
 		logger.trace("kryo time {} ", (after - before) / 1e6);
 		return ((after - before) / 1e6);
 	}
 
 	public double jacksonSerializableWrapper() throws Exception {
-		long before = System.nanoTime();
+		final long before = System.nanoTime();
 		for (int i = 0; i < COUNT; i++) {
-			DummyObject dummyObject = objects[i];
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			final DummyObject dummyObject = objects[i];
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(new JacksonSerializableWrapper(dummyObject));
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(bais);
+			final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			final ObjectInputStream ois = new ObjectInputStream(bais);
 			@SuppressWarnings("unused")
-			DummyObject deserObj = (DummyObject) ois.readObject();
+			final DummyObject deserObj = (DummyObject) ois.readObject();
 		}
-		long after = System.nanoTime();
+		final long after = System.nanoTime();
 		logger.trace("jackson time {} ", (after - before) / 1e6);
 		return (after - before) / 1e6;
 	}

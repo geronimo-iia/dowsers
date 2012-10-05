@@ -30,7 +30,7 @@ public enum ByteBuffers {
 	;
 
 	public static void write(final ByteBuffer bb, final int num) {
-		if (num < -127 || num > 127) {
+		if ((num < -127) || (num > 127)) {
 			bb.put((byte) -128);
 			bb.putInt(num);
 		} else {
@@ -47,7 +47,7 @@ public enum ByteBuffers {
 	}
 
 	public static void write(final ByteBuffer bb, final long num) {
-		if (num < -127 || num > 127) {
+		if ((num < -127) || (num > 127)) {
 			bb.put((byte) -128);
 			bb.putLong(num);
 		} else {

@@ -41,8 +41,8 @@ import com.google.common.collect.Lists;
  */
 public class SerializationTest {
 
-	private Logger logger = LoggerFactory.getLogger(SerializationTest.class);
-	
+	private final Logger logger = LoggerFactory.getLogger(SerializationTest.class);
+
 	private final DummyObject dummyObject = new DummyObject("coucou", Lists.newArrayList("A", "B", "C", "D", "E"));
 
 	@Before
@@ -52,53 +52,53 @@ public class SerializationTest {
 
 	@Test
 	public void standardJavaSerialization() throws Exception {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+		final ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(dummyObject);
 		logger.trace("Standard Java size: " + baos.size());
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		ObjectInputStream ois = new ObjectInputStream(bais);
-		DummyObject deserObj = (DummyObject) ois.readObject();
+		final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		final ObjectInputStream ois = new ObjectInputStream(bais);
+		final DummyObject deserObj = (DummyObject) ois.readObject();
 		assertEquals(dummyObject, deserObj);
 	}
 
 	@Test
 	public void standardJavaSerializationWithKryoSerializableWrapper() throws Exception {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+		final ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(new KryoSerializableWrapper(dummyObject));
 		logger.trace("Standard Java with Kryo wrapper size: " + baos.size());
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		ObjectInputStream ois = new ObjectInputStream(bais);
-		DummyObject deserObj = (DummyObject) ois.readObject();
+		final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		final ObjectInputStream ois = new ObjectInputStream(bais);
+		final DummyObject deserObj = (DummyObject) ois.readObject();
 		assertEquals(dummyObject, deserObj);
 	}
 
 	@Test
 	public void standardJavaSerializationWithJacksonSerializableWrapper() throws Exception {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream(500);
+		final ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(new JacksonSerializableWrapper(dummyObject));
 		logger.trace("Standard Java with Jackson wrapper size: " + baos.size());
-		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-		ObjectInputStream ois = new ObjectInputStream(bais);
-		DummyObject deserObj = (DummyObject) ois.readObject();
+		final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		final ObjectInputStream ois = new ObjectInputStream(bais);
+		final DummyObject deserObj = (DummyObject) ois.readObject();
 		assertEquals(dummyObject, deserObj);
 	}
 
 	@Test
 	public void kryoSerialization() throws Exception {
-		byte[] bytes = KryoSerializer.write(dummyObject);
+		final byte[] bytes = KryoSerializer.write(dummyObject);
 		logger.trace("Kryo size: " + bytes.length);
-		DummyObject deserObj = (DummyObject) KryoSerializer.read(bytes);
+		final DummyObject deserObj = (DummyObject) KryoSerializer.read(bytes);
 		assertEquals(dummyObject, deserObj);
 	}
 
 	@Test
 	public void JacksonSerialization() throws Exception {
-		byte[] bytes = JacksonSerializer.write(dummyObject);
+		final byte[] bytes = JacksonSerializer.write(dummyObject);
 		logger.trace("Jackson size: " + bytes.length);
-		DummyObject deserObj = (DummyObject) JacksonSerializer.read(bytes, DummyObject.class);
+		final DummyObject deserObj = (DummyObject) JacksonSerializer.read(bytes, DummyObject.class);
 		assertEquals(dummyObject, deserObj);
 	}
 }

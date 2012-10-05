@@ -103,8 +103,8 @@ public class DummyObject implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (listName == null ? 0 : listName.hashCode());
-		result = prime * result + (name == null ? 0 : name.hashCode());
+		result = (prime * result) + (listName == null ? 0 : listName.hashCode());
+		result = (prime * result) + (name == null ? 0 : name.hashCode());
 		return result;
 	}
 
