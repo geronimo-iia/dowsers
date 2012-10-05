@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.dowsers.model;
 
-
 /**
  * EntityTest.
  * 

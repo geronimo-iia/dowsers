@@ -36,6 +36,14 @@
 			<groupId>org.intelligents-ia.keystone</groupId>
 			<artifactId>keystone-api</artifactId>
 		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- Serializer FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<properties>
 		<header.path>${basedir}/../header.txt</header.path>

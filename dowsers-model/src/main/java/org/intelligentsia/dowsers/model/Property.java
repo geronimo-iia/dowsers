@@ -53,7 +53,7 @@ public class Property {
 	 * @return object value instance.
 	 */
 	@SuppressWarnings("unchecked")
-	<Value> Value getValue() {
+	public <Value> Value getValue() {
 		return (Value) value;
 	}
 
@@ -61,7 +61,7 @@ public class Property {
 	 * @param value
 	 *            value to set
 	 */
-	<Value> void setValue(final Value value) {
+	public <Value> void setValue(final Value value) {
 		this.value = value;
 	}
 }
