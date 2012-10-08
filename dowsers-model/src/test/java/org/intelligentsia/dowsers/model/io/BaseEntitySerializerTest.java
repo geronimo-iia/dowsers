@@ -32,6 +32,8 @@ import org.intelligentsia.dowsers.model.BaseEntity;
 import org.intelligentsia.dowsers.model.EntityManagerUnit;
 import org.intelligentsia.dowsers.model.MockMetaEntityContextRepository;
 import org.intelligentsia.dowsers.model.SampleEntity;
+import org.intelligentsia.dowsers.model.factory.BaseEntityFactorySupport;
+import org.intelligentsia.dowsers.model.factory.EntityFactoryProxySupport;
 import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
 import org.junit.Test;
 
@@ -39,20 +41,17 @@ public class BaseEntitySerializerTest {
 
 	// TODO must do this with an entity manager...
 	public void testSerialization() throws JsonGenerationException, JsonMappingException, IOException {
-		final EntityManagerUnit entityManagerUnit = new EntityManagerUnit(new MockMetaEntityContextRepository());
-		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class, Thread.currentThread().getContextClassLoader());
+		final EntityManagerUnit entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new BaseEntityFactorySupport(new MockMetaEntityContextRepository())));
+		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-
 		final ObjectMapper mapper = JacksonSerializer.getMapper();
 		final SimpleModule testModule = new SimpleModule("BaseEntityJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
 		testModule.addSerializer(new BaseEntityJsonSerializer());
 		mapper.registerModule(testModule);
-
 		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, sampleEntity);
 		System.err.println(writer.toString());
-
 	}
 
 	@Test
@@ -60,8 +59,8 @@ public class BaseEntitySerializerTest {
 		final MetaEntityContextRepository repository = new MockMetaEntityContextRepository();
 
 		final BaseEntity sampleEntity = new BaseEntity("1", repository.find(SampleEntity.class));
-		sampleEntity.getProperty("name").setValue("a name");
-		sampleEntity.getProperty("description").setValue("a description");
+		sampleEntity.setProperty("name", "a name");
+		sampleEntity.setProperty("description", "a description");
 		final ObjectMapper mapper = JacksonSerializer.getMapper();
 		final SimpleModule testModule = new SimpleModule("BaseEntityJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
 		testModule.addSerializer(new BaseEntityJsonSerializer());

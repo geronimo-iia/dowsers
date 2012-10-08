@@ -40,6 +40,7 @@ public class EntityManagerUnit implements EntityManager {
 	/**
 	 * {@link EntityNameResolver} instance.
 	 */
+	@SuppressWarnings("unused")
 	private EntityNameResolver entityNameResolver;
 
 	/**

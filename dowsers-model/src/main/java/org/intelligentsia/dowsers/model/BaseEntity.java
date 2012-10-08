@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.dowsers.model;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -82,6 +81,7 @@ public class BaseEntity implements Entity {
 		final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
 		while (iterator.hasNext()) {
 			final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
+			//TODO clone default value or find another way
 			properties.put(metaProperty.getName(), metaProperty.getDefaultValue());
 		}
 	}
