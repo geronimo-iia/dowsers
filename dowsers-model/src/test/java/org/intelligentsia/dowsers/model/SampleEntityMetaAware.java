@@ -19,12 +19,14 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
+
 /**
  * SampleEntityMetaAware.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface SampleEntityMetaAware extends CustomizableSampleEntity, MetaEntityContextAware {
+public interface SampleEntityMetaAware extends CustomizableSampleEntity, MetaEntityContextAccessor {
 
 }

@@ -24,6 +24,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
 
 import com.google.common.base.Preconditions;
 
@@ -55,7 +58,7 @@ public class EntityManagerUnit implements EntityManager {
 	/**
 	 * EntityInvocationHandler.
 	 */
-	private class EntityInvocationHandler implements InvocationHandler, MetaEntityContextAware {
+	private class EntityInvocationHandler implements InvocationHandler, MetaEntityContextAccessor {
 
 		private final Entity entity;
 		private final MetaEntityContext metaEntityContext;
@@ -68,7 +71,7 @@ public class EntityManagerUnit implements EntityManager {
 			metaEntityContext = metaEntityContextRepository.find(interfaceName);
 			entity = new AccessLoggerEntityDecorator(new BaseEntity(identity, metaEntityContext), System.out);
 			isEntity = Entity.class.isAssignableFrom(interfaceName);
-			isMetaEntityContextAware = MetaEntityContextAware.class.isAssignableFrom(interfaceName);
+			isMetaEntityContextAware = MetaEntityContextAccessor.class.isAssignableFrom(interfaceName);
 		}
 
 		@Override

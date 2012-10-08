@@ -21,6 +21,10 @@ package org.intelligentsia.dowsers.model;
 
 import java.util.Map;
 
+import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextBuilder;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
+import org.intelligentsia.dowsers.model.meta.MetaProperty;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.Maps;

@@ -23,6 +23,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
+import org.intelligentsia.dowsers.model.meta.MetaProperty;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -33,7 +36,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BaseEntity implements Entity, MetaEntityContextAware {
+public class BaseEntity implements Entity, MetaEntityContextAccessor {
 	/**
 	 * Entity identity.
 	 */

@@ -30,9 +30,9 @@ import org.codehaus.jackson.util.VersionUtil;
 import org.intelligentsia.dowsers.core.io.JacksonSerializer;
 import org.intelligentsia.dowsers.model.BaseEntity;
 import org.intelligentsia.dowsers.model.EntityManagerUnit;
-import org.intelligentsia.dowsers.model.MetaEntityContextRepository;
 import org.intelligentsia.dowsers.model.MockMetaEntityContextRepository;
 import org.intelligentsia.dowsers.model.SampleEntity;
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
 import org.junit.Test;
 
 public class BaseEntitySerializerTest {

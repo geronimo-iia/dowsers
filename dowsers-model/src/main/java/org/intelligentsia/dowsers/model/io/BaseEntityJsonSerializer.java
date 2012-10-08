@@ -27,7 +27,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
 import org.intelligentsia.dowsers.model.BaseEntity;
-import org.intelligentsia.dowsers.model.MetaProperty;
+import org.intelligentsia.dowsers.model.meta.MetaProperty;
 
 public class BaseEntityJsonSerializer extends SerializerBase<BaseEntity> {
 
