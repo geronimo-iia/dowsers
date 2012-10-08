@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
+
 import com.google.common.base.Preconditions;
 
 /**
@@ -48,8 +50,18 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public Property getProperty(final String name) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityContext getMetaEntityContext() {
+		return entity.getMetaEntityContext();
+	}
+
+	@Override
+	public <Value> Value getProperty(String name) throws NullPointerException {
 		return entity.getProperty(name);
+	}
+
+	@Override
+	public <Value> void setProperty(String name, Value value) throws NullPointerException {
+		entity.setProperty(name, value);
 	}
 
 }

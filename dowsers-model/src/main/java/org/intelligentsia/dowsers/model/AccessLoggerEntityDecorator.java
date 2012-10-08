@@ -21,6 +21,7 @@ package org.intelligentsia.dowsers.model;
 
 import java.io.PrintStream;
 
+import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
 import org.intelligentsia.utilities.StringUtils;
 
 import com.google.common.base.Preconditions;
@@ -54,9 +55,21 @@ public class AccessLoggerEntityDecorator extends EntityDecorator {
 	}
 
 	@Override
-	public Property getProperty(final String name) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityContext getMetaEntityContext() {
+		printStream.println(StringUtils.format("getMetaEntityContext of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.getIdentity()));
+		return super.getMetaEntityContext();
+	}
+
+	@Override
+	public <Value> Value getProperty(String name) throws NullPointerException {
 		printStream.println(StringUtils.format("getProperty '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.getIdentity()));
 		return super.getProperty(name);
+	}
+
+	@Override
+	public <Value> void setProperty(String name, Value value) throws NullPointerException {
+		printStream.println(StringUtils.format("setProperty '%s' of entity '%s#%s': %s", name, entity.getClass().getSimpleName(), entity.getIdentity(), value));
+		super.setProperty(name, value);
 	}
 
 }

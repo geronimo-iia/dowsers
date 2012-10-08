@@ -19,13 +19,10 @@
  */
 package org.intelligentsia.dowsers.model;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
-import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
-import org.intelligentsia.dowsers.model.meta.MetaProperty;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -36,7 +33,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BaseEntity implements Entity, MetaEntityContextAccessor {
+public class BaseEntity implements Entity {
 	/**
 	 * Entity identity.
 	 */
@@ -44,7 +41,7 @@ public class BaseEntity implements Entity, MetaEntityContextAccessor {
 	/**
 	 * Map of properties.
 	 */
-	private final Map<String, Property> properties = Maps.newHashMap();
+	private final Map<String, Object> properties = Maps.newHashMap();
 
 	/**
 	 * {@link MetaEntityContext} associated.
@@ -53,23 +50,14 @@ public class BaseEntity implements Entity, MetaEntityContextAccessor {
 
 	/**
 	 * Build a new instance of BaseEntity.java.
-	 */
-	public BaseEntity() {
-		this(IdentifierFactoryProvider.generateNewIdentifier());
-	}
-
-	/**
-	 * Build a new instance of Entity. All change in this entity will be bounded
-	 * by an aggregate.
 	 * 
-	 * @param identity
-	 *            entity's identity.
-	 * 
+	 * @param metaEntityContext
+	 *            {@link MetaEntityContext} associated with this instance.
 	 * @throws NullPointerException
-	 *             if identifier is null
+	 *             if metaEntityContext is null
 	 */
-	public BaseEntity(final String identity) throws NullPointerException {
-		this(identity, null);
+	public BaseEntity(final MetaEntityContext metaEntityContext) throws NullPointerException {
+		this(IdentifierFactoryProvider.generateNewIdentifier(), metaEntityContext);
 	}
 
 	/**
@@ -80,24 +68,45 @@ public class BaseEntity implements Entity, MetaEntityContextAccessor {
 	 *            entity's identity.
 	 * @param metaEntityContext
 	 *            {@link MetaEntityContext} associated with this instance.
-	 * 
 	 * @throws NullPointerException
-	 *             if identifier is null
+	 *             if identifier or metaEntityContext is null
 	 */
-	public BaseEntity(final String identity, final MetaEntityContext metaEntityContext) {
+	public BaseEntity(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException {
 		super();
 		this.identity = Preconditions.checkNotNull(identity);
-		this.metaEntityContext = metaEntityContext;
-		if (metaEntityContext != null) {
-			// TODO change this way by using map copy of a cache based
-			// definition in Entity manager unit
-			final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
-			while (iterator.hasNext()) {
-				final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
-				properties.put(metaProperty.getName(), new Property());
-			}
-		}
+		this.metaEntityContext = Preconditions.checkNotNull(metaEntityContext);
 	}
+
+	// /**
+	// * Build a new instance of Entity. All change in this entity will be
+	// bounded
+	// * by an aggregate.
+	// *
+	// * @param identity
+	// * entity's identity.
+	// * @param metaEntityContext
+	// * {@link MetaEntityContext} associated with this instance.
+	// *
+	// * @throws NullPointerException
+	// * if identifier is null
+	// */
+	// public BaseEntity(final String identity, final MetaEntityContext
+	// metaEntityContext) {
+	// super();
+	// this.identity = Preconditions.checkNotNull(identity);
+	// this.metaEntityContext = metaEntityContext;
+	// if (metaEntityContext != null) {
+	// // TODO change this way by using map copy of a cache based
+	// // definition in Entity manager unit
+	// final Iterator<String> iterator =
+	// metaEntityContext.getMetaPropertyNames();
+	// while (iterator.hasNext()) {
+	// final MetaProperty metaProperty =
+	// metaEntityContext.getMetaProperty(iterator.next());
+	// properties.put(metaProperty.getName(), new Property());
+	// }
+	// }
+	// }
 
 	@Override
 	public final String getIdentity() {
@@ -142,13 +151,25 @@ public class BaseEntity implements Entity, MetaEntityContextAccessor {
 		return Objects.toStringHelper(this).add("identity", identity).toString();
 	}
 
-	@Override
-	public Property getProperty(final String name) throws NullPointerException {
-		return properties.get(name);
-	}
+	// @Override
+	// public Property getProperty(final String name) throws
+	// NullPointerException {
+	// return properties.get(name);
+	// }
 
 	@Override
 	public MetaEntityContext getMetaEntityContext() {
 		return metaEntityContext;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <Value> Value getProperty(String name) throws NullPointerException {
+		return (Value) properties.get(Preconditions.checkNotNull(name));
+	}
+
+	@Override
+	public <Value> void setProperty(String name, Value value) throws NullPointerException {
+		properties.put(Preconditions.checkNotNull(name), value);
 	}
 }

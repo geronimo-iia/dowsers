@@ -19,14 +19,9 @@
  */
 package org.intelligentsia.dowsers.model;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
-import org.intelligentsia.dowsers.model.meta.MetaEntityContext;
-import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
-import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
+import org.intelligentsia.dowsers.model.factory.EntityFactory;
+import org.intelligentsia.dowsers.model.resolver.EntityNameResolver;
 
 import com.google.common.base.Preconditions;
 
@@ -37,87 +32,35 @@ import com.google.common.base.Preconditions;
  */
 public class EntityManagerUnit implements EntityManager {
 
-	private final MetaEntityContextRepository metaEntityContextRepository;
-
-	public EntityManagerUnit(final MetaEntityContextRepository metaEntityContextRepository) throws NullPointerException {
-		super();
-		this.metaEntityContextRepository = Preconditions.checkNotNull(metaEntityContextRepository);
-	}
-
-	@Override
-	public <T> T newInstance(final Class<T> interfaceName, final ClassLoader classLoader) throws NullPointerException {
-		return newInstance(interfaceName, classLoader, IdentifierFactoryProvider.generateNewIdentifier());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T newInstance(final Class<T> interfaceName, final ClassLoader classLoader, final String identity) throws NullPointerException {
-		return (T) Proxy.newProxyInstance(classLoader, new Class[] { interfaceName }, new EntityInvocationHandler(interfaceName, identity));
-	}
+	/**
+	 * {@link EntityFactory} instance.
+	 */
+	private final EntityFactory entityFactory;
 
 	/**
-	 * EntityInvocationHandler.
+	 * {@link EntityNameResolver} instance.
 	 */
-	private class EntityInvocationHandler implements InvocationHandler, MetaEntityContextAccessor {
+	private EntityNameResolver entityNameResolver;
 
-		private final Entity entity;
-		private final MetaEntityContext metaEntityContext;
-		private final boolean isEntity;
-
-		private final boolean isMetaEntityContextAware;
-
-		public EntityInvocationHandler(final Class<?> interfaceName, final String identity) {
-			super();
-			metaEntityContext = metaEntityContextRepository.find(interfaceName);
-			entity = new AccessLoggerEntityDecorator(new BaseEntity(identity, metaEntityContext), System.out);
-			isEntity = Entity.class.isAssignableFrom(interfaceName);
-			isMetaEntityContextAware = MetaEntityContextAccessor.class.isAssignableFrom(interfaceName);
-		}
-
-		@Override
-		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-
-			final String methodName = method.getName();
-			// MetaEntityContext stuff
-			if (isMetaEntityContextAware && "getMetaEntityContext".equals(methodName)) {
-				return getMetaEntityContext();
-			}
-			// Entity stuff
-			if (isEntity) {
-				if ("getIdentity".equals(methodName)) {
-					return entity.getIdentity();
-				}
-				if ("getProperty".equals(methodName)) {
-					return entity.getProperty((String) args[0]);
-				}
-			}
-			// Dynamic Stuff
-			if (methodName.startsWith("get")) {
-				return entity.getProperty(toFieldName(methodName)).getValue();
-			} else if (methodName.startsWith("set")) {
-				entity.getProperty(toFieldName(methodName)).setValue(args[0]);
-				return null;
-			}
-			// object method base
-			if (methodName.equals("hashCode")) {
-				return entity.hashCode();
-			} else if (methodName.equals("equals")) {
-				return entity.equals(args[0]);
-			} else if (methodName.equals("toString")) {
-				return entity.toString();
-			}
-			// default on proxy
-			return method.invoke(proxy, args);
-		}
-
-		@Override
-		public MetaEntityContext getMetaEntityContext() {
-			return metaEntityContext;
-		}
-
-		public String toFieldName(final String methodName) {
-			final String name = methodName.substring(3);
-			return name.substring(0, 1).toLowerCase() + name.substring(1);
-		}
+	/**
+	 * Build a new instance of EntityManagerUnit.java.
+	 * 
+	 * @param entityFactory
+	 * @throws NullPointerException
+	 */
+	public EntityManagerUnit(EntityFactory entityFactory) throws NullPointerException {
+		super();
+		this.entityFactory = Preconditions.checkNotNull(entityFactory);
 	}
+
+	@Override
+	public <T> T newInstance(Class<T> interfaceName) throws NullPointerException {
+		return newInstance(interfaceName, IdentifierFactoryProvider.generateNewIdentifier());
+	}
+
+	@Override
+	public <T> T newInstance(Class<T> interfaceName, String identity) throws NullPointerException {
+		return entityFactory.newInstance(interfaceName, identity);
+	}
+
 }

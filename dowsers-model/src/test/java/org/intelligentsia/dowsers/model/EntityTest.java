@@ -19,12 +19,16 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import org.intelligentsia.dowsers.model.factory.BaseEntityFactorySupport;
+import org.intelligentsia.dowsers.model.factory.EntityFactoryProxySupport;
+
 /**
  * EntityTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityTest {
+	
 	private final EntityManagerUnit entityManagerUnit;
 
 	/**
@@ -40,7 +44,7 @@ public class EntityTest {
 
 	public EntityTest() {
 		super();
-		entityManagerUnit = new EntityManagerUnit(new MockMetaEntityContextRepository());
+		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new BaseEntityFactorySupport(new MockMetaEntityContextRepository())));
 	}
 
 	public void testSampleEntity() {
@@ -48,7 +52,7 @@ public class EntityTest {
 		System.out.println("# test SampleEntity");
 		System.out.println("#----------------------");
 
-		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class, Thread.currentThread().getContextClassLoader());
+		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 
@@ -61,14 +65,14 @@ public class EntityTest {
 		System.out.println("#----------------------------------------------------------------------------");
 		System.out.println("# test CustomizableSampleEntity");
 		System.out.println("#----------------------");
-		final CustomizableSampleEntity sampleEntity = entityManagerUnit.newInstance(CustomizableSampleEntity.class, Thread.currentThread().getContextClassLoader());
+		final CustomizableSampleEntity sampleEntity = entityManagerUnit.newInstance(CustomizableSampleEntity.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.getProperty("order").setValue(1L);
+		sampleEntity.setProperty("order", 1L);
 
 		System.out.println(sampleEntity.getName());
 		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.getProperty("order").getValue());
+		System.out.println(sampleEntity.getProperty("order"));
 
 		System.out.println("#----------------------------------------------------------------------------");
 	}
@@ -78,14 +82,14 @@ public class EntityTest {
 		System.out.println("#----------------------------------------------------------------------------");
 		System.out.println("# test SampleEntityMetaAware");
 		System.out.println("#----------------------");
-		final SampleEntityMetaAware sampleEntity = entityManagerUnit.newInstance(SampleEntityMetaAware.class, Thread.currentThread().getContextClassLoader());
+		final SampleEntityMetaAware sampleEntity = entityManagerUnit.newInstance(SampleEntityMetaAware.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.getProperty("order").setValue(1L);
+		sampleEntity.setProperty("order", 1L);
 
 		System.out.println(sampleEntity.getName());
 		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.getProperty("order").getValue());
+		System.out.println(sampleEntity.getProperty("order"));
 
 		System.out.println("Access on MetaEntityContext: " + sampleEntity.getMetaEntityContext().getName());
 

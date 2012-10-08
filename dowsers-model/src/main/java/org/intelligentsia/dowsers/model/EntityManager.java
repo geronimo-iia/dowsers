@@ -26,8 +26,30 @@ package org.intelligentsia.dowsers.model;
  */
 public interface EntityManager {
 
-	<T> T newInstance(Class<T> interfaceName, ClassLoader classLoader) throws NullPointerException;
+	/**
+	 * Create a new instance of specified interface name.
+	 * 
+	 * @param interfaceName
+	 *            interface name
+	 * @return an instance of specified interface name.
+	 * @throws NullPointerException
+	 *             if interfaceName or classLoader is null
+	 */
+	<T> T newInstance(Class<T> interfaceName) throws NullPointerException;
 
-	<T> T newInstance(Class<T> interfaceName, ClassLoader classLoader, String identity) throws NullPointerException;
+	/**
+	 * Create a new instance of specified interface name.
+	 * 
+	 * @param interfaceName
+	 *            interface name
+	 * @param identity
+	 *            identity of this instance
+	 * @return an instance of specified interface name.
+	 * @throws NullPointerException
+	 *             if interfaceName, classLoader or identity is null
+	 */
+	<T> T newInstance(Class<T> interfaceName, String identity) throws NullPointerException;
+	
+	
 
 }

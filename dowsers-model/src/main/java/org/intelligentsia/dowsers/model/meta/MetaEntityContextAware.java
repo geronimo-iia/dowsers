@@ -17,29 +17,20 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.model;
+package org.intelligentsia.dowsers.model.meta;
 
-import org.intelligentsia.dowsers.core.Factory;
+import org.intelligentsia.dowsers.model.Entity;
 
 /**
- * EntityFactory extends {@link Factory}.
+ * {@link MetaEntityContextAware} declare methods to access at
+ * {@link MetaEntityContext}.
  * 
- * Here we can activate features (with decorator).
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityFactory implements Factory<Entity> {
+public interface MetaEntityContextAware {
 
-	public EntityFactory() {
-		super();
-	}
-
-	@Override
-	public Entity newInstance() {
-		return new AccessLoggerEntityDecorator(new BaseEntity(), System.out);
-	}
-
-	public Entity newInstance(final String identity) {
-		return new AccessLoggerEntityDecorator(new BaseEntity(identity), System.out);
-	}
+	/**
+	 * @param metaEntityContext
+	 *            set {@link MetaEntityContext} associated to {@link Entity}.
+	 */
+	void setMetaEntityContext(MetaEntityContext metaEntityContext);
 }
