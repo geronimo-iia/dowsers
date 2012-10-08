@@ -37,6 +37,11 @@ import org.intelligentsia.dowsers.model.factory.EntityFactoryProxySupport;
 import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
 import org.junit.Test;
 
+/**
+ * BaseEntitySerializerTest. 
+ *
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public class BaseEntitySerializerTest {
 
 	// TODO must do this with an entity manager...

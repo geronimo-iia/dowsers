@@ -49,7 +49,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	/**
 	 * Set of meta properties.
 	 */
-	private Set<MetaProperty> metaProperties;
+	private Set<MetaProperty> metaProperties = Sets.newLinkedHashSet();
 
 	/**
 	 * {@link MetaEntityContextBuilder} instance.
