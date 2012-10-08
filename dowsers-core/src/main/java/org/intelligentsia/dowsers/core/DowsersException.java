@@ -79,6 +79,15 @@ public class DowsersException extends RuntimeException {
 	}
 
 	/**
+	 * Build a new instance of DowsersException.java.
+	 * @param cause
+	 */
+	public DowsersException(Throwable cause) {
+		super(cause);
+		this.identity = null;
+	}
+
+	/**
 	 * @return the identity
 	 */
 	public String getIdentity() {

@@ -48,6 +48,16 @@ public class BaseEntityFactorySupport extends AbstractEntityFactorySupport {
 	@Override
 	public <T extends Entity> T newInstance(final Class<?> className, final String identity) throws NullPointerException, MetaEntityContextNotFoundException {
 		final MetaEntityContext metaEntityContext = getMetaEntityContextRepository().find(className);
-		return (T) new BaseEntity(identity, metaEntityContext);
+		return (T) instanciateBaseEntity(identity, metaEntityContext);
+	}
+
+	/**
+	 * Instanciate a new {@link BaseEntity}.
+	 * 
+	 * @param identity
+	 * @param metaEntityContext
+	 */
+	protected BaseEntity instanciateBaseEntity(final String identity, final MetaEntityContext metaEntityContext) {
+		return new BaseEntity(identity, metaEntityContext);
 	}
 }
