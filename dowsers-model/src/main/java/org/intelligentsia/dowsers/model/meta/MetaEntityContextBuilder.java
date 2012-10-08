@@ -21,7 +21,7 @@ package org.intelligentsia.dowsers.model.meta;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import org.intelligentsia.dowsers.core.Builder;
 import org.intelligentsia.keystone.api.artifacts.Version;
@@ -75,8 +75,8 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		this.metaProperties = (metaProperties != null ? metaProperties : new HashSet<MetaProperty>());
-		this.extendedMetaEntityDefinitions = extendedMetaEntityDefinitions != null ? extendedMetaEntityDefinitions : new HashSet<MetaEntityDefinition>();
+		this.metaProperties = (metaProperties != null ? metaProperties : new LinkedHashSet<MetaProperty>());
+		this.extendedMetaEntityDefinitions = extendedMetaEntityDefinitions != null ? extendedMetaEntityDefinitions : new LinkedHashSet<MetaEntityDefinition>();
 	}
 
 	@Override

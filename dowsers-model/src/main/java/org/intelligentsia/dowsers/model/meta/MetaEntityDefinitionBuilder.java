@@ -63,7 +63,12 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 *            base definition.
 	 */
 	public MetaEntityDefinitionBuilder(final MetaEntityDefinition metaEntityDefinition) {
-		this(metaEntityDefinition.getName(), metaEntityDefinition.getVersion(), Sets.newHashSet(metaEntityDefinition.getMetaProperties()));
+		this(metaEntityDefinition.getName(), metaEntityDefinition.getVersion(), Sets.newLinkedHashSet(new Iterable<MetaProperty>() {
+			@Override
+			public Iterator<MetaProperty> iterator() {
+				return metaEntityDefinition.getMetaProperties();
+			}
+		}));
 	}
 
 	/**
