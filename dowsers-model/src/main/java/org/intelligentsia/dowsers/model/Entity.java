@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.model;
 
+import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
+
 /**
  * Entity.
  * <p>
@@ -27,28 +29,54 @@ package org.intelligentsia.dowsers.model;
  * <ul>
  * <li>An unique identity. Her identity does not change when any of its
  * attributes change</li>
- * <li>A set of Properties (@see {@link Property})</li>
+ * <li>A set of Properties</li>
  * </ul>
  * Examples: Customer, Order, ...
  * 
+ * <p>
+ * What is a value object (a Property) ?
+ * </p>
+ * <ul>
+ * <li>“A Value Object cannot live on its own without an Entity.”</li>
+ * <li>Eric Evans:<br />
+ * “An object that represents a descriptive aspect of the domain with no
+ * conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated
+ * to represent elements of the design that we care about only for what they
+ * are, not who or which they are.” [Evans 2003]</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Entity {
+public interface Entity extends MetaEntityContextAccessor {
 	/**
 	 * @return {@link Entity}'s identity
 	 */
 	String getIdentity();
 
 	/**
-	 * Return typed property for specified name.
+	 * Return typed value of specified property name.
 	 * 
 	 * @param name
 	 *            property name
-	 * @return a instance of {@link Property} or null if none is found.
+	 * @return object value instance of specified name or null if none is found.
 	 * @throws NullPointerException
 	 *             if name is null
+	 * @param <Value>
+	 *            Object value class
 	 */
-	Property getProperty(String name) throws NullPointerException;
+	public <Value> Value getProperty(String name) throws NullPointerException;
+
+	/**
+	 * 
+	 * @param name
+	 *            property name
+	 * @param value
+	 *            value to set
+	 * @throws NullPointerException
+	 *             if name is null
+	 * @param <Value>
+	 *            Object value class
+	 */
+	public <Value> void setProperty(String name, final Value value) throws NullPointerException;
 
 }
