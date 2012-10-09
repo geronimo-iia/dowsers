@@ -1,0 +1,130 @@
+
+
+h1. Terminology
+
+from JSR 351
+
+**Active Entity**
+An Entity identified by the access control context of the thread(s) on which some activity (such as with the Attribute Service) is performed.
+
+**Attribute**
+A named value that exports a standard meta-data interface though which a uniform taxonomy of characteristics pertaining to the value is available. 
+The taxonomy is an evolving collection of common, and useful characteristics with governed, and thus reliable, semantics.
+
+**Attribute Governance Policy**
+A system of rules to regulate and control the exchange of Attributes between Entities.
+
+**Attribute Meta-data**
+A uniform taxonomy of characteristics that may be associated with an Attribute value and where such characteristics are deemed necessary or appropriate to effect or enable the use of the value. Such information may establish the source and authenticity of its value, its validity period, or more generally define constraints or tags that effect the use of the value.
+
+**Attribute Provider**
+An integration agent that serves an Attribute Service as an Attribute Repository connector. The Provider performs both outbound and inbound interface and protocol transformations.
+
+**Attribute Reference**
+A representation of an Attribute that does not convey the value of the associated Attribute, that may be used to request the associated Attribute from the Attribute Service, and that may be communicated between Entities without exposing the Attribute value or otherwise compromising its associated Governance 
+Policy.
+
+**Attribute Repository**
+A service or data store that contains Attribute values and that may contain associated meta-data.
+
+**Attribute Service**
+A local (presumably singleton) interface through which an Active Entity may request operations on Attributes. The implementation of the interface/agent encapsulates the interactions with the Attribute Repositories, serves to enforce an Attribute Governance Policy, and is the source of standard, meta-data qualified Attribute representations.
+
+**Attribute Value**
+A quantitative or existential representation of the property or characteristic conveyed by the Attribute. A value may be empty (as distinct from the Attribute being undefined), a scalar, an Object, or a collection of Objects.
+
+**Entity**
+An object that may be identified or described by a collection of Attributes.
+
+**Entity Reference**
+A collection of Attributes that identify or describe an Entity to the Attribute Service.
+
+**Identity Attribute**
+An Attribute that is subject to an Identity Governance Policy.
+
+**Identity Governance Policy**
+An Attribute Governance Policy that is based on laws, norms, or contracts relating to privacy.
+
+**Identity Oracle**
+An authoritative service that holds Identity Attributes, that supports queries on those Attributes, and that enforces and assumes liability for the Identity Governance Policy that applies to those Attributes.
+
+**Policy Decision Agent**
+An object or service, local to one or more Policy Enforcement Points, that exports the interfaces used by the Enforcement Points to request access decisions from a Policy Engine.
+
+**Policy Enforcement Point**
+A system location that interacts with a Policy Decision Agent to determine whether an operation is to be permitted and that controls whether the operation is performed based on the decision obtained from the decision agent.
+
+**Policy Engine**
+A system that returns access decisions in response to decision requests by applying rules that establish a decision for an access defined in terms of received or obtained representations of Entity, resource, and action.
+
+**Target Entity**
+An object effected by (or that is the subject of an activity), as typically distinct from an Entity that performs the activity.
+
+ 
+
+h1. Identifier
+
+Wikipedia's entry on the philosophical meaning of identity starts:
+
+In philosophy, identity is whatever makes an entity definable and recognizable, in terms of possessing a set of qualities or characteristics that distinguish it from entities of a different type. Or, in layman's terms, identity is whatever makes stuff the same or different.
+
+
+An EntityManager is identified by 
+* group identifier
+* artifact identifier
+* version
+g:a:v define an artifact identifier where entity definition goes.  
+
+A MetaEntityContext is identified by
+* EntityManager identifier
+* Entity class name
+example: g:a:v#class
+
+A Entity is identified by
+* MetaEntityContext identifier
+* universal identifier
+example: g:a:v#class#uuid
+
+A property is identified by
+* Entity identifier
+* property name
+example: g:a:v#class#uuid#name
+
+
+
+h1. Entity
+
+
+An entity is defined by:
+* An unique identity. Her identity does not change when any of its attributes change
+* A set of attributes
+
+Examples: Customer, Order, ...
+ 
+Attributes are characteristics of entities
+
+h2. What is a value object (an attribute) ? 
+
+“A Value Object cannot live on its own without an Entity.”
+ 
+Eric Evans:
+“An object that represents a descriptive aspect of the domain with no conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated to represent elements of the design that we care about only for what they are, not who or which they are.” 
+[Evans 2003]
+
+
+
+
+
+h1. JSR 351
+
+named, multi-valued, and meta-data qualified
+public interface IdentityAttribute {
+Collection getAttributeNames();
+Collection getAttributeValues();
+Collection<String> getPropertyNames();
+Collection getPropertyValues(String propertyName);
+}
+
+
+
+
