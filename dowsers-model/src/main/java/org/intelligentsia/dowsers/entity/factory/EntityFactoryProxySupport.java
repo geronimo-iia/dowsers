@@ -32,9 +32,9 @@ import com.google.common.base.Preconditions;
  * EntityFactoryProxySupport implements {@link EntityFactory} with proxy
  * pattern.
  * 
- * {@link InvocationHandler} used is {@link EntityDynamicProxyHandler} and default
- * {@link Entity} implementation is delagate to another {@link EntityFactory}
- * instance.
+ * {@link InvocationHandler} used is {@link EntityDynamicProxyHandler} and
+ * default {@link Entity} implementation is delagate to another
+ * {@link EntityFactory} instance.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

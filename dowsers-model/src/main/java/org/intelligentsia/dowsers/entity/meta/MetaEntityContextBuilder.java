@@ -38,7 +38,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 
 	private final String name;
 	private final Version rootVersion;
-	private Collection<MetaProperty> metaProperties;
+	private Collection<MetaAttribute> metaAttributes;
 	private final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions;
 
 	/**
@@ -63,46 +63,46 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * 
 	 * @param name
 	 * @param rootVersion
-	 * @param metaProperties
+	 * @param metaAttributes
 	 * @param extendedMetaEntityDefinitions
 	 *            * @throws NullPointerException if name or rootVersionis null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextBuilder(final String name, final Version rootVersion, final Collection<MetaProperty> metaProperties, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+	public MetaEntityContextBuilder(final String name, final Version rootVersion, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
 			IllegalArgumentException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		this.metaProperties = (metaProperties != null ? metaProperties : new LinkedHashSet<MetaProperty>());
+		this.metaAttributes = (metaAttributes != null ? metaAttributes : new LinkedHashSet<MetaAttribute>());
 		this.extendedMetaEntityDefinitions = extendedMetaEntityDefinitions != null ? extendedMetaEntityDefinitions : new LinkedHashSet<MetaEntityDefinition>();
 	}
 
 	@Override
 	public MetaEntityContext build() {
-		return new MetaEntityContextDefinition(name, rootVersion, metaProperties, extendedMetaEntityDefinitions);
+		return new MetaEntityContextDefinition(name, rootVersion, metaAttributes, extendedMetaEntityDefinitions);
 	}
 
 	/**
 	 * 
-	 * @param metaProperties
+	 * @param metaAttributes
 	 * @return this {@link MetaEntityContextBuilder} instance
 	 * @throws NullPointerException
-	 *             if metaProperties is null
+	 *             if metaAttributes is null
 	 */
-	public MetaEntityContextBuilder setMetaProperties(final Collection<MetaProperty> metaProperties) throws NullPointerException {
-		this.metaProperties = Preconditions.checkNotNull(metaProperties);
+	public MetaEntityContextBuilder setMetaAttributes(final Collection<MetaAttribute> metaAttributes) throws NullPointerException {
+		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 		return this;
 	}
 
-	public MetaEntityContextBuilder add(final MetaProperty metaProperty) throws NullPointerException {
-		this.metaProperties.add(metaProperty);
+	public MetaEntityContextBuilder add(final MetaAttribute metaAttribute) throws NullPointerException {
+		this.metaAttributes.add(metaAttribute);
 		return this;
 	}
 
-	public MetaEntityContextBuilder add(final MetaProperty... metaProperties) throws NullPointerException {
-		this.metaProperties.addAll(Arrays.asList(Preconditions.checkNotNull(metaProperties)));
+	public MetaEntityContextBuilder add(final MetaAttribute... metaAttributes) throws NullPointerException {
+		this.metaAttributes.addAll(Arrays.asList(Preconditions.checkNotNull(metaAttributes)));
 		return this;
 	}
 

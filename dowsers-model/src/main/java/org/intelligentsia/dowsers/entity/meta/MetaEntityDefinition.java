@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.EntityBeanSupport;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Objects;
@@ -38,7 +37,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityDefinition extends EntityBeanSupport implements MetaEntity {
+public class MetaEntityDefinition implements MetaEntity {
 
 	/**
 	 * Meta entity name.
@@ -62,7 +61,7 @@ public class MetaEntityDefinition extends EntityBeanSupport implements MetaEntit
 	 *             if definition is null
 	 */
 	public MetaEntityDefinition(final MetaEntityDefinition definition) throws NullPointerException {
-		super(definition.getIdentity());
+		super();
 		name = Preconditions.checkNotNull(definition).name;
 		version = definition.version;
 		metaAttributes = definition.metaAttributes;
@@ -174,6 +173,26 @@ public class MetaEntityDefinition extends EntityBeanSupport implements MetaEntit
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String getIdentity() {
+		return null;
+	}
+
+	@Override
+	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
+		return null;
+	}
+
+	@Override
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
+		return null;
+	}
+
+	@Override
+	public MetaEntityContext getMetaEntityContext() {
+		return null;
 	}
 
 }

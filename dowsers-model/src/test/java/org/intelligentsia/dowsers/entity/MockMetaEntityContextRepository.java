@@ -21,10 +21,10 @@ package org.intelligentsia.dowsers.entity;
 
 import java.util.Map;
 
+import org.intelligentsia.dowsers.entity.meta.MetaAttributeDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextBuilder;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
-import org.intelligentsia.dowsers.entity.meta.MetaProperty;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.Maps;
@@ -41,16 +41,16 @@ public class MockMetaEntityContextRepository implements MetaEntityContextReposit
 	public MockMetaEntityContextRepository() {
 		super();
 		metaEntityContexts = Maps.newHashMap();
-		metaEntityContexts.put(SampleEntity.class.getName(), new MetaEntityContextBuilder(SampleEntity.class.getName(), new Version(1)).add(new MetaProperty("name", String.class, null)).add(new MetaProperty("description", String.class, null))
-				.build());
+		metaEntityContexts.put(SampleEntity.class.getName(),
+				new MetaEntityContextBuilder(SampleEntity.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null)).build());
 		metaEntityContexts.put(
 				CustomizableSampleEntity.class.getName(),
-				new MetaEntityContextBuilder(CustomizableSampleEntity.class.getName(), new Version(1)).add(new MetaProperty("name", String.class, null)).add(new MetaProperty("description", String.class, null))
-						.add(new MetaProperty("order", Long.class, null)).build());
+				new MetaEntityContextBuilder(CustomizableSampleEntity.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null))
+						.add(new MetaAttributeDefinition("order", Long.class, null)).build());
 		metaEntityContexts.put(
 				SampleEntityMetaAware.class.getName(),
-				new MetaEntityContextBuilder(SampleEntityMetaAware.class.getName(), new Version(1)).add(new MetaProperty("name", String.class, null)).add(new MetaProperty("description", String.class, null))
-						.add(new MetaProperty("order", Long.class, null)).build());
+				new MetaEntityContextBuilder(SampleEntityMetaAware.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null))
+						.add(new MetaAttributeDefinition("order", Long.class, null)).build());
 	}
 
 	@Override

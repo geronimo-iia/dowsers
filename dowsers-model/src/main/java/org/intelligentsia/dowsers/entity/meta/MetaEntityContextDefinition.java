@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
+import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Preconditions;
@@ -54,9 +55,9 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	private final Map<Version, MetaEntityDefinition> metaEntityDefinitions;
 
 	/**
-	 * Set of extended property names.
+	 * Set of extended attributes names.
 	 */
-	private Set<String> extendedPropertyNames;
+	private Set<String> extendedAttributesNames;
 
 	/**
 	 * 
@@ -66,8 +67,8 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	 *            entity name
 	 * @param rootVersion
 	 *            root version if {@link MetaEntity} definition
-	 * @param metaProperties
-	 *            collection of {@link MetaProperty} define by root version
+	 * @param metaAttributes
+	 *            collection of {@link MetaAttribute} define by root version
 	 * @param extendedMetaEntityDefinitions
 	 *            extended {@link MetaEntityDefinition}'s
 	 * @throws NullPointerException
@@ -75,21 +76,21 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextDefinition(final String name, final Version rootVersion, final Collection<MetaProperty> metaProperties, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+	public MetaEntityContextDefinition(final String name, final Version rootVersion, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
 			IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(rootVersion, new MetaEntityDefinition(name, rootVersion, Preconditions.checkNotNull(metaProperties)));
+		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(rootVersion, new MetaEntityDefinition(name, rootVersion, Preconditions.checkNotNull(metaAttributes)));
 		if (extendedMetaEntityDefinitions != null) {
 			final ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
 			for (final MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
 				builder.put(metaEntityDefinition.getVersion(), metaEntityDefinition);
-				extendedPropertyNamesBuilder.addAll(metaEntityDefinition.getMetaPropertyNames());
+				extendedPropertyNamesBuilder.addAll(metaEntityDefinition.getMetaAttributeNames());
 			}
-			extendedPropertyNames = extendedPropertyNamesBuilder.build();
+			extendedAttributesNames = extendedPropertyNamesBuilder.build();
 		} else {
-			extendedPropertyNames = ImmutableSet.of();
+			extendedAttributesNames = ImmutableSet.of();
 		}
 		metaEntityDefinitions = builder.build();
 	}
@@ -109,33 +110,33 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public MetaProperty getMetaProperty(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute getMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
-		MetaProperty result = null;
-		while (iterator.hasNext() && ((result = iterator.next().getMetaProperty(name)) == null)) {
+		MetaAttribute result = null;
+		while (iterator.hasNext() && ((result = iterator.next().getMetaAttribute(name)) == null)) {
 		}
 		return result;
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaProperty> getMetaProperties() {
+	public ReadOnlyIterator<MetaAttribute> getMetaAttributes() {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
-		return new ReadOnlyIterator<MetaProperty>() {
+		return new ReadOnlyIterator<MetaAttribute>() {
 
-			ReadOnlyIterator<MetaProperty> current = iterator.next().getMetaProperties();
+			ReadOnlyIterator<MetaAttribute> current = iterator.next().getMetaAttributes();
 
 			@Override
 			public boolean hasNext() {
 				boolean result = current.hasNext();
 				if (!result && iterator.hasNext()) {
-					current = iterator.next().getMetaProperties();
+					current = iterator.next().getMetaAttributes();
 					result = current.hasNext();
 				}
 				return result;
 			}
 
 			@Override
-			public MetaProperty next() {
+			public MetaAttribute next() {
 				return current.next();
 			}
 		};
@@ -157,17 +158,17 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public ReadOnlyIterator<String> getMetaPropertyNames() {
+	public ReadOnlyIterator<String> getMetaAttributeNames() {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		return new ReadOnlyIterator<String>() {
 
-			ReadOnlyIterator<String> current = iterator.next().getMetaPropertyNames();
+			ReadOnlyIterator<String> current = iterator.next().getMetaAttributeNames();
 
 			@Override
 			public boolean hasNext() {
 				boolean result = current.hasNext();
 				if (!result && iterator.hasNext()) {
-					current = iterator.next().getMetaPropertyNames();
+					current = iterator.next().getMetaAttributeNames();
 					result = current.hasNext();
 				}
 				return result;
@@ -182,7 +183,27 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 
 	@Override
 	public Set<String> getAllExtendedPropertyNames() {
-		return extendedPropertyNames;
+		return extendedAttributesNames;
+	}
+
+	@Override
+	public String getIdentity() {
+		return null;
+	}
+
+	@Override
+	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
+		return null;
+	}
+
+	@Override
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
+		return null;
+	}
+
+	@Override
+	public MetaEntityContext getMetaEntityContext() {
+		return null;
 	}
 
 }

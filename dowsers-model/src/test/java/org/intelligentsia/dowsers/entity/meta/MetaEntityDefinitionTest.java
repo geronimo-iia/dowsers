@@ -44,7 +44,7 @@ public class MetaEntityDefinitionTest {
 		} catch (final NullPointerException exception) {
 			// ok
 		}
-		final MetaEntityDefinition base = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaProperty>());
+		final MetaEntityDefinition base = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaAttribute>());
 		final MetaEntityDefinition definition = new MetaEntityDefinition(base);
 		assertNotNull(definition);
 		assertEquals(definition.getName(), base.getName());
@@ -55,19 +55,19 @@ public class MetaEntityDefinitionTest {
 	@Test
 	public void testMetaEntityDefinitionFromProperties() {
 		try {
-			new MetaEntityDefinition(null, new Version(1), new ArrayList<MetaProperty>());
+			new MetaEntityDefinition(null, new Version(1), new ArrayList<MetaAttribute>());
 			fail("NullPointerException attended");
 		} catch (final NullPointerException exception) {
 			// ok
 		}
 		try {
-			new MetaEntityDefinition("", new Version(1), new ArrayList<MetaProperty>());
+			new MetaEntityDefinition("", new Version(1), new ArrayList<MetaAttribute>());
 			fail("IllegalArgumentException attended");
 		} catch (final IllegalArgumentException exception) {
 			// ok
 		}
 		try {
-			new MetaEntityDefinition("name", null, new ArrayList<MetaProperty>());
+			new MetaEntityDefinition("name", null, new ArrayList<MetaAttribute>());
 			fail("NullPointerException attended");
 		} catch (final NullPointerException exception) {
 			// ok
@@ -78,7 +78,7 @@ public class MetaEntityDefinitionTest {
 		} catch (final NullPointerException exception) {
 			// ok
 		}
-		final MetaEntityDefinition definition = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaProperty>());
+		final MetaEntityDefinition definition = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaAttribute>());
 		assertNotNull(definition);
 
 		assertEquals("name", definition.getName());
@@ -102,16 +102,16 @@ public class MetaEntityDefinitionTest {
 
 		new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).build();
 
-		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).add(new MetaProperty("desc", String.class, "")).build();
+		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).add(new MetaAttributeDefinition("desc", String.class, "")).build();
 		assertEquals("test", definition.getName());
 		assertEquals(new Version(1), definition.getVersion());
-		assertTrue(definition.getMetaProperties().hasNext());
-		final MetaProperty metaProperty = definition.getMetaProperty("desc");
-		assertNotNull(metaProperty);
+		assertTrue(definition.getMetaAttributes().hasNext());
+		final MetaAttribute metaAttribute = definition.getMetaAttribute("desc");
+		assertNotNull(metaAttribute);
 
-		assertEquals("desc", metaProperty.getName());
-		assertEquals(String.class, metaProperty.getValueClass());
-		assertEquals("", metaProperty.getDefaultValue());
+		assertEquals("desc", metaAttribute.getName());
+		assertEquals(String.class, metaAttribute.getValueClass());
+		assertEquals("", metaAttribute.getDefaultValue());
 	}
 
 }

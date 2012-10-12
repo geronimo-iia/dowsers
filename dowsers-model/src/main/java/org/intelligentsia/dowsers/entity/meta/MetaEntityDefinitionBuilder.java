@@ -35,7 +35,7 @@ import com.google.common.collect.Sets;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition>, Iterable<MetaProperty> {
+public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition>, Iterable<MetaAttribute> {
 
 	/**
 	 * Meta entity name.
@@ -49,7 +49,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	/**
 	 * Set of meta properties.
 	 */
-	private Set<MetaProperty> metaProperties = Sets.newLinkedHashSet();
+	private Set<MetaAttribute> metaAttributes = Sets.newLinkedHashSet();
 
 	/**
 	 * {@link MetaEntityContextBuilder} instance.
@@ -63,10 +63,10 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 *            base definition.
 	 */
 	public MetaEntityDefinitionBuilder(final MetaEntityDefinition metaEntityDefinition) {
-		this(metaEntityDefinition.getName(), metaEntityDefinition.getVersion(), Sets.newLinkedHashSet(new Iterable<MetaProperty>() {
+		this(metaEntityDefinition.getName(), metaEntityDefinition.getVersion(), Sets.newLinkedHashSet(new Iterable<MetaAttribute>() {
 			@Override
-			public Iterator<MetaProperty> iterator() {
-				return metaEntityDefinition.getMetaProperties();
+			public Iterator<MetaAttribute> iterator() {
+				return metaEntityDefinition.getMetaAttributes();
 			}
 		}));
 	}
@@ -76,15 +76,15 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * 
 	 * @param name
 	 * @param version
-	 * @param metaProperties
+	 * @param metaAttributes
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public MetaEntityDefinitionBuilder(final String name, final Version version, final Set<MetaProperty> metaProperties) throws NullPointerException {
+	public MetaEntityDefinitionBuilder(final String name, final Version version, final Set<MetaAttribute> metaProperties) throws NullPointerException {
 		super();
 		this.name = Preconditions.checkNotNull(name);
 		this.version = Preconditions.checkNotNull(version);
-		this.metaProperties = Preconditions.checkNotNull(metaProperties);
+		this.metaAttributes = Preconditions.checkNotNull(metaProperties);
 		metaEntityContextBuilder = null;
 	}
 
@@ -116,13 +116,13 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @see org.intelligentsia.dowsers.core.Builder#build()
 	 * 
 	 * @throws NullPointerException
-	 *             if name, version, metaProperties is null
+	 *             if name, version, metaAttributes is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
 	@Override
 	public MetaEntityDefinition build() throws NullPointerException, IllegalArgumentException {
-		final MetaEntityDefinition definition = new MetaEntityDefinition(name, version, metaProperties);
+		final MetaEntityDefinition definition = new MetaEntityDefinition(name, version, metaAttributes);
 		if (metaEntityContextBuilder != null) {
 			metaEntityContextBuilder.add(definition);
 		}
@@ -148,28 +148,28 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 		return this;
 	}
 
-	public Set<MetaProperty> getMetaProperties() {
-		return metaProperties;
+	public Set<MetaAttribute> getMetaAttributes() {
+		return metaAttributes;
 	}
 
-	public MetaEntityDefinitionBuilder setMetaProperties(final Set<MetaProperty> metaProperties) throws NullPointerException {
-		this.metaProperties = Preconditions.checkNotNull(metaProperties);
+	public MetaEntityDefinitionBuilder setMetaAttributes(final Set<MetaAttribute> metaAttributes) throws NullPointerException {
+		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder add(final MetaProperty metaProperty) throws NullPointerException {
-		this.metaProperties.add(metaProperty);
+	public MetaEntityDefinitionBuilder add(final MetaAttribute metaAttribute) throws NullPointerException {
+		this.metaAttributes.add(metaAttribute);
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder add(final MetaProperty... metaProperties) throws NullPointerException {
-		this.metaProperties.addAll(Arrays.asList(Preconditions.checkNotNull(metaProperties)));
+	public MetaEntityDefinitionBuilder add(final MetaAttribute... metaAttributes) throws NullPointerException {
+		this.metaAttributes.addAll(Arrays.asList(Preconditions.checkNotNull(metaAttributes)));
 		return this;
 	}
 
 	@Override
-	public Iterator<MetaProperty> iterator() {
-		return metaProperties.iterator();
+	public Iterator<MetaAttribute> iterator() {
+		return metaAttributes.iterator();
 	}
 
 }
