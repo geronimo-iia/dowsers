@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.EntityProxyHandler;
+import org.intelligentsia.dowsers.entity.EntityDynamicProxyHandler;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextNotFoundException;
 
 import com.google.common.base.Preconditions;
@@ -32,7 +32,7 @@ import com.google.common.base.Preconditions;
  * EntityFactoryProxySupport implements {@link EntityFactory} with proxy
  * pattern.
  * 
- * {@link InvocationHandler} used is {@link EntityProxyHandler} and default
+ * {@link InvocationHandler} used is {@link EntityDynamicProxyHandler} and default
  * {@link Entity} implementation is delagate to another {@link EntityFactory}
  * instance.
  * 
@@ -63,7 +63,7 @@ public class EntityFactoryProxySupport implements EntityFactory {
 	@Override
 	public <T extends Entity> T newInstance(final Class<?> className, final String identity) throws NullPointerException, MetaEntityContextNotFoundException {
 		final Entity entity = entityFactory.newInstance(className, identity);
-		return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, Entity.class }, new EntityProxyHandler(className, entity));
+		return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, Entity.class }, new EntityDynamicProxyHandler(className, entity));
 	}
 
 }

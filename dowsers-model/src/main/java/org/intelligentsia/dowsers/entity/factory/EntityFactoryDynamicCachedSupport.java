@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit;
 import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
-import org.intelligentsia.dowsers.entity.meta.MetaProperty;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -37,11 +37,11 @@ public class EntityFactoryDynamicCachedSupport extends EntityFactoryDynamicSuppo
 			@Override
 			public Map<String, Object> load(final MetaEntityContext metaEntityContext) throws Exception {
 				final Map<String, Object> properties = Maps.newHashMap();
-				final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
+				final Iterator<String> iterator = metaEntityContext.getMetaAttributeNames();
 				while (iterator.hasNext()) {
-					final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
+					final MetaAttribute metaAttribute = metaEntityContext.getMetaAttribute(iterator.next());
 					// TODO clone it
-					properties.put(metaProperty.getName(), metaProperty.getDefaultValue());
+					properties.put(metaAttribute.getName(), metaAttribute.getDefaultValue());
 				}
 				return properties;
 			}

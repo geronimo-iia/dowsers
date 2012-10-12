@@ -1,5 +1,5 @@
 /**
- *        Licensed to the Apache Software Foundation (ASF) under one
+MetaAttribute *        Licensed to the Apache Software Foundation (ASF) under one
  *        or more contributor license agreements.  See the NOTICE file
  *        distributed with this work for additional information
  *        regarding copyright ownership.  The ASF licenses this file
@@ -20,12 +20,13 @@
 package org.intelligentsia.dowsers.entity.meta;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
+import org.intelligentsia.dowsers.entity.Entity;
 
 /**
  * A {@link MetaEntity} define:
  * <ul>
- * <li>an entity name</li>
- * <li>entity properties metadata @see {@link MetaProperty}.</li>
+ * <li>an entity class name</li>
+ * <li>entity meta attributes @see {@link MetaAttribute}.</li>
  * </ul>
  * 
  * <code>
@@ -50,7 +51,7 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface MetaEntity {
+public interface MetaEntity extends Entity {
 
 	/**
 	 * Returns a textual name of the entity.
@@ -73,24 +74,24 @@ public interface MetaEntity {
 	/**
 	 * 
 	 * @param name
-	 *            property name
-	 * @return a {@link MetaProperty} instance with specified name or null if
+	 *            attribute name
+	 * @return a {@link MetaAttribute} instance with specified name or null if
 	 *         none is found.
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	MetaProperty getMetaProperty(String name) throws NullPointerException, IllegalArgumentException;
+	MetaAttribute getMetaAttribute(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * @return a {@link ReadOnlyIterator} on property name.
+	 * @return a {@link ReadOnlyIterator} on attribute name.
 	 */
-	ReadOnlyIterator<String> getMetaPropertyNames();
+	ReadOnlyIterator<String> getMetaAttributeNames();
 
 	/**
-	 * @return an read only {@link ReadOnlyIterator} on {@link MetaProperty}.
+	 * @return an read only {@link ReadOnlyIterator} on {@link MetaAttribute}.
 	 */
-	ReadOnlyIterator<MetaProperty> getMetaProperties();
+	ReadOnlyIterator<MetaAttribute> getMetaAttributes();
 
 }

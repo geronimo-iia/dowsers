@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
+import org.intelligentsia.dowsers.entity.EntityBeanSupport;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Objects;
@@ -37,7 +38,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityDefinition implements MetaEntity {
+public class MetaEntityDefinition extends EntityBeanSupport implements MetaEntity {
 
 	/**
 	 * Meta entity name.
@@ -51,7 +52,7 @@ public class MetaEntityDefinition implements MetaEntity {
 	/**
 	 * Map of meta properties defined by {@link MetaEntityDefinition#version}.
 	 */
-	private final Map<String, MetaProperty> metaProperties;
+	private final Map<String, MetaAttribute> metaAttributes;
 
 	/**
 	 * Build a new instance of MetaEntityDefinition.java.
@@ -61,10 +62,10 @@ public class MetaEntityDefinition implements MetaEntity {
 	 *             if definition is null
 	 */
 	public MetaEntityDefinition(final MetaEntityDefinition definition) throws NullPointerException {
-		super();
+		super(definition.getIdentity());
 		name = Preconditions.checkNotNull(definition).name;
 		version = definition.version;
-		metaProperties = definition.metaProperties;
+		metaAttributes = definition.metaAttributes;
 	}
 
 	/**
@@ -74,23 +75,23 @@ public class MetaEntityDefinition implements MetaEntity {
 	 *            entity name
 	 * @param version
 	 *            entity meta definition version
-	 * @param metaProperties
-	 *            collection of {@link MetaProperty} define by version
+	 * @param metaAttributes
+	 *            collection of {@link MetaAttribute} define by version
 	 * @throws NullPointerException
 	 *             if name, version, metaProperties is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityDefinition(final String name, final Version version, final Collection<MetaProperty> metaProperties) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityDefinition(final String name, final Version version, final Collection<MetaAttribute> metaAttributes) throws NullPointerException, IllegalArgumentException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.version = Preconditions.checkNotNull(version);
-		final ImmutableMap.Builder<String, MetaProperty> builder = new ImmutableMap.Builder<String, MetaProperty>();
-		for (final MetaProperty metaProperty : Preconditions.checkNotNull(metaProperties)) {
-			builder.put(metaProperty.getName(), metaProperty);
+		final ImmutableMap.Builder<String, MetaAttribute> builder = new ImmutableMap.Builder<String, MetaAttribute>();
+		for (final MetaAttribute metaAttribute : Preconditions.checkNotNull(metaAttributes)) {
+			builder.put(metaAttribute.getName(), metaAttribute);
 		}
-		this.metaProperties = builder.build();
+		this.metaAttributes = builder.build();
 	}
 
 	@Override
@@ -110,33 +111,33 @@ public class MetaEntityDefinition implements MetaEntity {
 	@Override
 	public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		return metaProperties.containsKey(name);
+		return metaAttributes.containsKey(name);
 	}
 
 	@Override
-	public MetaProperty getMetaProperty(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute getMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		return metaProperties.get(name);
+		return metaAttributes.get(name);
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaProperty> getMetaProperties() {
-		return ReadOnlyIterator.newReadOnlyIterator(metaProperties.values().iterator());
+	public ReadOnlyIterator<MetaAttribute> getMetaAttributes() {
+		return ReadOnlyIterator.newReadOnlyIterator(metaAttributes.values().iterator());
 	}
 
 	@Override
-	public ReadOnlyIterator<String> getMetaPropertyNames() {
-		return ReadOnlyIterator.newReadOnlyIterator(metaProperties.keySet().iterator());
+	public ReadOnlyIterator<String> getMetaAttributeNames() {
+		return ReadOnlyIterator.newReadOnlyIterator(metaAttributes.keySet().iterator());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(name, version, metaProperties);
+		return Objects.hashCode(name, version, metaAttributes);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(getClass()).add("name", name).add("version", version).add("metaProperties", metaProperties).toString();
+		return Objects.toStringHelper(getClass()).add("name", name).add("version", version).add("metaAttributes", metaAttributes).toString();
 	}
 
 	@Override
@@ -151,11 +152,11 @@ public class MetaEntityDefinition implements MetaEntity {
 			return false;
 		}
 		final MetaEntityDefinition other = (MetaEntityDefinition) obj;
-		if (metaProperties == null) {
-			if (other.metaProperties != null) {
+		if (metaAttributes == null) {
+			if (other.metaAttributes != null) {
 				return false;
 			}
-		} else if (!metaProperties.equals(other.metaProperties)) {
+		} else if (!metaAttributes.equals(other.metaAttributes)) {
 			return false;
 		}
 		if (name == null) {

@@ -22,13 +22,13 @@ package org.intelligentsia.dowsers.entity.resolver;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
-import org.intelligentsia.dowsers.entity.EntityProxyHandler;
+import org.intelligentsia.dowsers.entity.EntityDynamicProxyHandler;
 
 import com.google.common.base.Objects;
 
 /**
  * ProxyEntityNameResolver implements {@link EntityNameResolver} and try to
- * resolve name with information from {@link EntityProxyHandler}.
+ * resolve name with information from {@link EntityDynamicProxyHandler}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
@@ -45,8 +45,8 @@ public class ProxyEntityNameResolver extends EntityNameResolverSupport {
 	public String resolveEntityName(final Object entity) {
 		if (Proxy.isProxyClass(entity.getClass())) {
 			final InvocationHandler handler = Proxy.getInvocationHandler(entity);
-			if (EntityProxyHandler.class.isAssignableFrom(handler.getClass())) {
-				final EntityProxyHandler myHandler = (EntityProxyHandler) handler;
+			if (EntityDynamicProxyHandler.class.isAssignableFrom(handler.getClass())) {
+				final EntityDynamicProxyHandler myHandler = (EntityDynamicProxyHandler) handler;
 				return myHandler.getEntity().getMetaEntityContext().getName();
 			}
 		}

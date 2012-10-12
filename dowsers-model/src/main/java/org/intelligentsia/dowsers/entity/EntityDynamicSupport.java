@@ -3,8 +3,8 @@ package org.intelligentsia.dowsers.entity;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import org.intelligentsia.dowsers.entity.meta.MetaProperty;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -32,11 +32,11 @@ public class EntityDynamicSupport extends EntitySupport {
 	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException {
 		super(identity, metaEntityContext);
 		attributes = Maps.newHashMap();
-		final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
+		final Iterator<String> iterator = metaEntityContext.getMetaAttributeNames();
 		while (iterator.hasNext()) {
-			final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
+			final MetaAttribute attribute = metaEntityContext.getMetaAttribute(iterator.next());
 			// TODO clone default value
-			attributes.put(metaProperty.getName(), metaProperty.getDefaultValue());
+			attributes.put(attribute.getName(), attribute.getDefaultValue());
 		}
 	}
 

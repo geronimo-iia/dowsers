@@ -27,7 +27,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.meta.MetaProperty;
+import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 
 public class EntityJsonSerializer extends SerializerBase<Entity> {
 
@@ -39,10 +39,10 @@ public class EntityJsonSerializer extends SerializerBase<Entity> {
 	public void serialize(final Entity value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 		jgen.writeStartObject();
 		jgen.writeStringField("identifier", value.getIdentity());
-		final Iterator<String> iterator = value.getMetaEntityContext().getMetaPropertyNames();
+		final Iterator<String> iterator = value.getMetaEntityContext().getMetaAttributeNames();
 		while (iterator.hasNext()) {
-			final MetaProperty metaProperty = value.getMetaEntityContext().getMetaProperty(iterator.next());
-			jgen.writeObjectField(metaProperty.getName(), value.attribute(metaProperty.getName()));
+			final MetaAttribute metaAttribute = value.getMetaEntityContext().getMetaAttribute(iterator.next());
+			jgen.writeObjectField(metaAttribute.getName(), value.attribute(metaAttribute.getName()));
 		}
 		jgen.writeEndObject();
 	}
