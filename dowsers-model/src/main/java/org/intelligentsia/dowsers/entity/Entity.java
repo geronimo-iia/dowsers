@@ -61,10 +61,12 @@ public interface Entity extends MetaEntityContextAccessor {
 	 * @return object value instance of specified name or null if none is found.
 	 * @throws NullPointerException
 	 *             if name is null
+	 * @throws IllegalArgumentException
+	 *             if argument is invalid
 	 * @param <Value>
 	 *            Object value class
 	 */
-	public <Value> Value attribute(String name) throws NullPointerException;
+	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Set typed value of specified attribute name.
@@ -75,10 +77,12 @@ public interface Entity extends MetaEntityContextAccessor {
 	 *            A value to set for the attribute.
 	 * @throws NullPointerException
 	 *             if name is null
+	 * @throws IllegalArgumentException
+	 *             if argument is invalid
 	 * @param <Value>
 	 *            Object value class
 	 * @return this {@link Entity} instance.
 	 */
-	public <Value> Entity attribute(String name, final Value value) throws NullPointerException;
+	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
 
 }

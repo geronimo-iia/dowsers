@@ -55,12 +55,12 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public <Value> Value attribute(final String name) throws NullPointerException {
+	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
 		return entity.attribute(name);
 	}
 
 	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
 		entity.attribute(name, value);
 		return this;
 	}

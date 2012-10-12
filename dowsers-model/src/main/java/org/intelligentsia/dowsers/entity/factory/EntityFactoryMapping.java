@@ -92,13 +92,13 @@ public class EntityFactoryMapping implements EntityFactory, Iterable<EntityFacto
 	 *            class Name
 	 * @param entityFactory
 	 *            {@link EntityFactory} instance.
-	 * @return the previous value associated with className, or null if there
-	 *         was no mapping for className.
+	 * @return this {@link EntityFactoryMapping} instance.
 	 * @throws NullPointerException
 	 *             if className or entityFactory is null
 	 */
-	public EntityFactory add(final Class<?> className, final EntityFactory entityFactory) throws NullPointerException {
-		return entityFactories.put(Preconditions.checkNotNull(className).getSimpleName(), Preconditions.checkNotNull(entityFactory));
+	public EntityFactoryMapping add(final Class<?> className, final EntityFactory entityFactory) throws NullPointerException {
+		entityFactories.put(Preconditions.checkNotNull(className).getSimpleName(), Preconditions.checkNotNull(entityFactory));
+		return this;
 	}
 
 	@Override

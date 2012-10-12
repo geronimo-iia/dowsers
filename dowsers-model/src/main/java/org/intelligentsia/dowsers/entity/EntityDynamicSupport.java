@@ -11,7 +11,7 @@ import com.google.common.collect.Maps;
 
 /**
  * EntityDynamicSupport extends {@link EntitySupport} and implements an
- * {@link Entity} with a dynamic set of Attribut.
+ * {@link Entity} with a dynamic set of Attribute.
  * 
  * * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
