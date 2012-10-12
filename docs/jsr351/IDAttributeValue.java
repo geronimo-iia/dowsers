@@ -26,7 +26,7 @@ import java.util.Collection;
  */
 public interface IDAttributeValue<T extends Serializable> {
 
-        /**
+    /**
      * get the single-value of the attribute
      *
      * @return the singular value of the attribute if the attribute is not

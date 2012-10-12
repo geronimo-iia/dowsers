@@ -64,19 +64,19 @@ public class EntityProxyHandler implements InvocationHandler, Entity {
 			if ("getIdentity".equals(methodName)) {
 				return entity.getIdentity();
 			}
-			if ("getProperty".equals(methodName)) {
-				return entity.getProperty((String) args[0]);
+		}
+		// attributes catch
+		if (methodName.equals("attribute")) {
+			if (args.length == 1) {
+				return entity.attribute((String) args[0]);
 			}
-			if ("setProperty".equals(methodName)) {
-				entity.setProperty((String) args[0], args[1]);
-				return null;
-			}
+			return entity.attribute((String) args[0], args[1]);
 		}
 		// Dynamic Stuff
 		if (methodName.startsWith("get")) {
-			return entity.getProperty(toFieldName(methodName));
+			return entity.attribute(toFieldName(methodName));
 		} else if (methodName.startsWith("set")) {
-			entity.setProperty(toFieldName(methodName), args[0]);
+			entity.attribute(toFieldName(methodName), args[0]);
 			return null;
 		}
 		// object method base
@@ -116,13 +116,14 @@ public class EntityProxyHandler implements InvocationHandler, Entity {
 	}
 
 	@Override
-	public <Value> Value getProperty(String name) throws NullPointerException {
-		return entity.getProperty(name);
+	public <Value> Value attribute(String name) throws NullPointerException {
+		return entity.attribute(name);
 	}
 
 	@Override
-	public <Value> void setProperty(String name, Value value) throws NullPointerException {
-		entity.setProperty(name, value);
+	public <Value> Entity attribute(String name, Value value) throws NullPointerException {
+		entity.attribute(name, value);
+		return this;
 	}
 
 	protected static String toFieldName(final String methodName) {

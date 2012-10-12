@@ -55,13 +55,14 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public <Value> Value getProperty(String name) throws NullPointerException {
-		return entity.getProperty(name);
+	public <Value> Value attribute(String name) throws NullPointerException {
+		return entity.attribute(name);
 	}
 
 	@Override
-	public <Value> void setProperty(String name, Value value) throws NullPointerException {
-		entity.setProperty(name, value);
+	public <Value> Entity attribute(String name, Value value) throws NullPointerException {
+		entity.attribute(name, value);
+		return this;
 	}
 
 }

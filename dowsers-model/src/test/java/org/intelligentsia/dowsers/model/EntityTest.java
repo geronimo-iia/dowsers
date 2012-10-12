@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.model;
 
-import org.intelligentsia.dowsers.model.factory.BaseEntityFactorySupport;
+import org.intelligentsia.dowsers.model.factory.EntityFactoryDynamicCachedSupport;
 import org.intelligentsia.dowsers.model.factory.EntityFactoryProxySupport;
 
 /**
@@ -44,7 +44,7 @@ public class EntityTest {
 
 	public EntityTest() {
 		super();
-		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new BaseEntityFactorySupport(new MockMetaEntityContextRepository())));
+		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicCachedSupport(new MockMetaEntityContextRepository())));
 	}
 
 	public void testSampleEntity() {
@@ -68,11 +68,11 @@ public class EntityTest {
 		final CustomizableSampleEntity sampleEntity = entityManagerUnit.newInstance(CustomizableSampleEntity.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.setProperty("order", 1L);
+		sampleEntity.attribute("order", 1L);
 
 		System.out.println(sampleEntity.getName());
 		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.getProperty("order"));
+		System.out.println(sampleEntity.attribute("order"));
 
 		System.out.println("#----------------------------------------------------------------------------");
 	}
@@ -85,11 +85,11 @@ public class EntityTest {
 		final SampleEntityMetaAware sampleEntity = entityManagerUnit.newInstance(SampleEntityMetaAware.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.setProperty("order", 1L);
+		sampleEntity.attribute("order", 1L);
 
 		System.out.println(sampleEntity.getName());
 		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.getProperty("order"));
+		System.out.println(sampleEntity.attribute("order"));
 
 		System.out.println("Access on MetaEntityContext: " + sampleEntity.getMetaEntityContext().getName());
 

@@ -23,18 +23,18 @@ import org.intelligentsia.dowsers.model.meta.MetaEntityContextAccessor;
 
 /**
  * Entity.
- * <p>
+ * 
  * An entity is defined by:
- * </p>
  * <ul>
  * <li>An unique identity. Her identity does not change when any of its
  * attributes change</li>
- * <li>A set of Properties</li>
+ * <li>A set of attributes. Attributes are characteristics of entities</li>
  * </ul>
+ * 
  * Examples: Customer, Order, ...
  * 
  * <p>
- * What is a value object (a Property) ?
+ * What is a value object (an Attribute) ?
  * </p>
  * <ul>
  * <li>“A Value Object cannot live on its own without an Entity.”</li>
@@ -54,29 +54,31 @@ public interface Entity extends MetaEntityContextAccessor {
 	String getIdentity();
 
 	/**
-	 * Return typed value of specified property name.
+	 * Return typed value of specified attribute name.
 	 * 
 	 * @param name
-	 *            property name
+	 *            The name of the attribute to get.
 	 * @return object value instance of specified name or null if none is found.
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @param <Value>
 	 *            Object value class
 	 */
-	public <Value> Value getProperty(String name) throws NullPointerException;
+	public <Value> Value attribute(String name) throws NullPointerException;
 
 	/**
+	 * Set typed value of specified attribute name.
 	 * 
 	 * @param name
-	 *            property name
+	 *            The name of the attribute to set.
 	 * @param value
-	 *            value to set
+	 *            A value to set for the attribute.
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @param <Value>
 	 *            Object value class
+	 * @return this {@link Entity} instance.
 	 */
-	public <Value> void setProperty(String name, final Value value) throws NullPointerException;
+	public <Value> Entity attribute(String name, final Value value) throws NullPointerException;
 
 }

@@ -22,10 +22,10 @@ package org.intelligentsia.dowsers.model;
 import com.google.common.base.Preconditions;
 
 /**
- * {@link Property} act as value object.
+ * {@link Attribute} act as value object.
  * 
  * <p>
- * What is a value object (a Property) ?
+ * What is a value object (an Attribute) ?
  * </p>
  * <ul>
  * <li>“A Value Object cannot live on its own without an Entity.”</li>

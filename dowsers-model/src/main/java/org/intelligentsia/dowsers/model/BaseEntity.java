@@ -81,7 +81,7 @@ public class BaseEntity implements Entity {
 		final Iterator<String> iterator = metaEntityContext.getMetaPropertyNames();
 		while (iterator.hasNext()) {
 			final MetaProperty metaProperty = metaEntityContext.getMetaProperty(iterator.next());
-			//TODO clone default value or find another way
+			// TODO clone default value or find another way
 			properties.put(metaProperty.getName(), metaProperty.getDefaultValue());
 		}
 	}
@@ -148,12 +148,6 @@ public class BaseEntity implements Entity {
 		return Objects.toStringHelper(this).add("identity", identity).toString();
 	}
 
-	// @Override
-	// public Property getProperty(final String name) throws
-	// NullPointerException {
-	// return properties.get(name);
-	// }
-
 	@Override
 	public MetaEntityContext getMetaEntityContext() {
 		return metaEntityContext;
@@ -161,12 +155,13 @@ public class BaseEntity implements Entity {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <Value> Value getProperty(String name) throws NullPointerException {
+	public <Value> Value attribute(String name) throws NullPointerException {
 		return (Value) properties.get(Preconditions.checkNotNull(name));
 	}
 
 	@Override
-	public <Value> void setProperty(String name, Value value) throws NullPointerException {
+	public <Value> Entity attribute(String name, Value value) throws NullPointerException {
 		properties.put(Preconditions.checkNotNull(name), value);
+		return this;
 	}
 }

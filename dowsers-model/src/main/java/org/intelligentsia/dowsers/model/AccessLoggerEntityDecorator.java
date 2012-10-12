@@ -61,15 +61,16 @@ public class AccessLoggerEntityDecorator extends EntityDecorator {
 	}
 
 	@Override
-	public <Value> Value getProperty(String name) throws NullPointerException {
-		printStream.println(StringUtils.format("getProperty '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.getIdentity()));
-		return super.getProperty(name);
+	public <Value> Value attribute(String name) throws NullPointerException {
+		printStream.println(StringUtils.format("get '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.getIdentity()));
+		return super.attribute(name);
 	}
 
 	@Override
-	public <Value> void setProperty(String name, Value value) throws NullPointerException {
-		printStream.println(StringUtils.format("setProperty '%s' of entity '%s#%s': %s", name, entity.getClass().getSimpleName(), entity.getIdentity(), value));
-		super.setProperty(name, value);
+	public <Value> Entity attribute(String name, Value value) throws NullPointerException {
+		printStream.println(StringUtils.format("set'%s' of entity '%s#%s': %s", name, entity.getClass().getSimpleName(), entity.getIdentity(), value));
+		super.attribute(name, value);
+		return this;
 	}
 
 }

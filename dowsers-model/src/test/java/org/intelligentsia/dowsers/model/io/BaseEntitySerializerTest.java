@@ -32,7 +32,7 @@ import org.intelligentsia.dowsers.model.BaseEntity;
 import org.intelligentsia.dowsers.model.EntityManagerUnit;
 import org.intelligentsia.dowsers.model.MockMetaEntityContextRepository;
 import org.intelligentsia.dowsers.model.SampleEntity;
-import org.intelligentsia.dowsers.model.factory.BaseEntityFactorySupport;
+import org.intelligentsia.dowsers.model.factory.EntityFactoryDynamicCachedSupport;
 import org.intelligentsia.dowsers.model.factory.EntityFactoryProxySupport;
 import org.intelligentsia.dowsers.model.meta.MetaEntityContextRepository;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class BaseEntitySerializerTest {
 
 	// TODO must do this with an entity manager...
 	public void testSerialization() throws JsonGenerationException, JsonMappingException, IOException {
-		final EntityManagerUnit entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new BaseEntityFactorySupport(new MockMetaEntityContextRepository())));
+		final EntityManagerUnit entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicCachedSupport(new MockMetaEntityContextRepository())));
 		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
@@ -64,8 +64,8 @@ public class BaseEntitySerializerTest {
 		final MetaEntityContextRepository repository = new MockMetaEntityContextRepository();
 
 		final BaseEntity sampleEntity = new BaseEntity("1", repository.find(SampleEntity.class));
-		sampleEntity.setProperty("name", "a name");
-		sampleEntity.setProperty("description", "a description");
+		sampleEntity.attribute("name", "a name");
+		sampleEntity.attribute("description", "a description");
 		final ObjectMapper mapper = JacksonSerializer.getMapper();
 		final SimpleModule testModule = new SimpleModule("BaseEntityJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
 		testModule.addSerializer(new BaseEntityJsonSerializer());

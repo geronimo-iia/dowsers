@@ -33,7 +33,13 @@ public class ClassNameEntityNameResolver extends EntityNameResolverSupport {
 
 	@Override
 	public String resolveEntityName(Object entity) {
-		return entity.getClass().getName();
+		if (entity != null) {
+			return entity.getClass().getName();
+		}
+		if (hasNext()) {
+			return next().resolveEntityName(entity);
+		}
+		return null;
 	}
 
 	@Override

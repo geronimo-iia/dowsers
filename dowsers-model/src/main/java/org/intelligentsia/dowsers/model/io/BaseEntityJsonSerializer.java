@@ -42,7 +42,7 @@ public class BaseEntityJsonSerializer extends SerializerBase<BaseEntity> {
 		final Iterator<String> iterator = value.getMetaEntityContext().getMetaPropertyNames();
 		while (iterator.hasNext()) {
 			final MetaProperty metaProperty = value.getMetaEntityContext().getMetaProperty(iterator.next());
-			jgen.writeObjectField(metaProperty.getName(), value.getProperty(metaProperty.getName()));
+			jgen.writeObjectField(metaProperty.getName(), value.attribute(metaProperty.getName()));
 		}
 		jgen.writeEndObject();
 	}
