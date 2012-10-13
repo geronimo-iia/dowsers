@@ -28,8 +28,24 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityBeanSupport extends EntitySupport {
+	/**
+	 * serialVersionUID:long.
+	 */
+	private static final long serialVersionUID = -6808544926562089303L;
 
-	public EntityBeanSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException {
+	/**
+	 * Build a new instance of <code>EntityBeanSupport</code>
+	 * 
+	 * @param identity
+	 *            entity's identity.
+	 * @param metaEntityContext
+	 *            {@link MetaEntityContext} associated with this instance.
+	 * @throws NullPointerException
+	 *             if identifier or metaEntityContext is null
+	 * @throws IllegalArgumentException
+	 *             if identifier is empty
+	 */
+	public EntityBeanSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		super(identity, metaEntityContext);
 	}
 

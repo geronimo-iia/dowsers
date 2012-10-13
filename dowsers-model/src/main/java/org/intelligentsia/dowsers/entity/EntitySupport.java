@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.entity;
 
+import java.io.Serializable;
+
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 import com.google.common.base.Objects;
@@ -30,7 +32,11 @@ import com.google.common.base.Preconditions;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public abstract class EntitySupport implements Entity, Comparable<Entity> {
+public abstract class EntitySupport implements Entity, Comparable<Entity>, Serializable {
+	/**
+	 * serialVersionUID:long.
+	 */
+	private static final long serialVersionUID = -7963256429759134901L;
 	/**
 	 * Entity identity.
 	 */
@@ -49,10 +55,13 @@ public abstract class EntitySupport implements Entity, Comparable<Entity> {
 	 *            {@link MetaEntityContext} associated with this instance.
 	 * @throws NullPointerException
 	 *             if identifier or metaEntityContext is null
+	 * @throws IllegalArgumentException
+	 *             if identifier is empty
 	 */
-	public EntitySupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException {
+	public EntitySupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		super();
-		this.identity = Preconditions.checkNotNull(identity);
+		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		this.identity = identity;
 		this.metaEntityContext = Preconditions.checkNotNull(metaEntityContext);
 	}
 

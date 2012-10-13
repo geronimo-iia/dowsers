@@ -27,16 +27,17 @@ import org.intelligentsia.utilities.StringUtils;
  * MetaEntityValidator validate {@link Entity} against {@link MetaEntityContext}
  * .
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class MetaEntityValidator extends EntityDecorator {
 
 	/**
-	 * Build a new instance of MetaEntityValidator.java.
+	 * Build a new instance of <code>MetaEntityValidator</code>.
 	 * 
 	 * @param entity
+	 *            decorated entity
 	 * @throws NullPointerException
+	 *             if entity is null
 	 */
 	public MetaEntityValidator(final Entity entity) throws NullPointerException {
 		super(entity);

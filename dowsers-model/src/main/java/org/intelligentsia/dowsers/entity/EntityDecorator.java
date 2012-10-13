@@ -26,16 +26,22 @@ import com.google.common.base.Preconditions;
 /**
  * EntityDecorator implements Decorator pattern for {@link Entity}.
  * 
+ * @see http://en.wikipedia.org/wiki/Decorator_pattern.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityDecorator implements Entity {
 
+	/**
+	 * Decorated {@link Entity} instance.
+	 */
 	protected final Entity entity;
 
 	/**
-	 * Build a new instance of EntityDecorator.java.
+	 * Build a new instance of {@link EntityDecorator}.
 	 * 
 	 * @param entity
+	 *            decorated entity
 	 * @throws NullPointerException
 	 *             if entity is null
 	 */
@@ -59,6 +65,11 @@ public class EntityDecorator implements Entity {
 		return entity.attribute(name);
 	}
 
+	/**
+	 * @return {@link EntityDecorator} instance.
+	 * @see org.intelligentsia.dowsers.entity.Entity#attribute(java.lang.String,
+	 *      java.lang.Object)
+	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
 		entity.attribute(name, value);

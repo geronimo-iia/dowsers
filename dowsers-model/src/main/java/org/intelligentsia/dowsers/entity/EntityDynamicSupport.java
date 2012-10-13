@@ -19,10 +19,8 @@
  */
 package org.intelligentsia.dowsers.entity;
 
-import java.util.Iterator;
 import java.util.Map;
 
-import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 import com.google.common.base.Preconditions;
@@ -37,41 +35,47 @@ import com.google.common.collect.Maps;
 public class EntityDynamicSupport extends EntitySupport {
 
 	/**
+	 * serialVersionUID:long.
+	 */
+	private static final long serialVersionUID = -4553930262812842405L;
+	/**
 	 * Map of attributes.
 	 */
 	private final Map<String, Object> attributes;
 
 	/**
-	 * Build a new instance of EntityDynamicSupport.java.
+	 * Build a new instance of {@link EntityDynamicSupport} with an empty
+	 * attribute's collection.
 	 * 
 	 * @param identity
+	 *            entity's identity.
 	 * @param metaEntityContext
+	 *            {@link MetaEntityContext} associated with this instance.
 	 * @throws NullPointerException
+	 *             if one of parameter is null
+	 * @throws IllegalArgumentException
+	 *             if identifier is empty
 	 */
-	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException {
+	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		super(identity, metaEntityContext);
 		attributes = Maps.newHashMap();
-		final Iterator<String> iterator = metaEntityContext.getMetaAttributeNames();
-		while (iterator.hasNext()) {
-			final MetaAttribute attribute = metaEntityContext.getMetaAttribute(iterator.next());
-			// TODO clone default value
-			attributes.put(attribute.getName(), attribute.getDefaultValue());
-		}
 	}
 
 	/**
-	 * Build a new instance of BaseEntity.java.
+	 * Build a new instance of {@link EntityDynamicSupport}.
 	 * 
 	 * @param identity
 	 *            entity's identity.
 	 * @param metaEntityContext
 	 *            {@link MetaEntityContext} associated with this instance.
 	 * @param attributes
-	 *            Map of attributes
+	 *            Map of attributes. Map is not copied.
 	 * @throws NullPointerException
 	 *             if one of parameter is null
+	 * @throws IllegalArgumentException
+	 *             if identifier is empty
 	 */
-	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext, final Map<String, Object> attributes) throws NullPointerException {
+	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext, final Map<String, Object> attributes) throws NullPointerException, IllegalArgumentException {
 		super(identity, metaEntityContext);
 		this.attributes = Preconditions.checkNotNull(attributes);
 	}

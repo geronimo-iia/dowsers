@@ -28,7 +28,7 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
 /**
  * EntityDynamicProxyHandler implements {@link InvocationHandler}.
  * 
- *  TODO add doc on methods mapping
+ * TODO add doc on methods mapping
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -93,10 +93,10 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		}
 		// Dynamic attributes call
 		if (entity.metaEntityContext().contains(methodName)) {
-			if (method.getParameterTypes().length == 0 ) {
+			if (method.getParameterTypes().length == 0) {
 				return entity.attribute(methodName);
-			}	
-			if (method.getParameterTypes().length == 1 ) {
+			}
+			if (method.getParameterTypes().length == 1) {
 				entity.attribute(methodName, args[0]);
 				return proxy;
 			}

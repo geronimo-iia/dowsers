@@ -20,34 +20,39 @@
 package org.intelligentsia.dowsers.entity;
 
 /**
- * EntityManager declare methods to manage an entity.
+ * EntityManager declare methods to manage an {@link Entity}.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public interface EntityManager {
 
 	/**
-	 * Create a new instance of specified interface name.
+	 * Create a new instance of specified class name. Identity of this new
+	 * instance will be generated.
 	 * 
-	 * @param interfaceName
-	 *            interface name
+	 * @param className
+	 *            entity class name
 	 * @return an instance of specified interface name.
 	 * @throws NullPointerException
-	 *             if interfaceName or classLoader is null
+	 *             if className or classLoader is null
+	 * @throws IllegalArgumentException
+	 *             if className is empty
 	 */
-	<T> T newInstance(Class<T> interfaceName) throws NullPointerException;
+	<T> T newInstance(Class<T> className) throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * Create a new instance of specified interface name.
+	 * Create a new instance of specified class name.
 	 * 
-	 * @param interfaceName
-	 *            interface name
+	 * @param className
+	 *            entity class name
 	 * @param identity
 	 *            identity of this instance
 	 * @return an instance of specified interface name.
 	 * @throws NullPointerException
-	 *             if interfaceName, classLoader or identity is null
+	 *             if className, classLoader or identity is null
+	 * @throws IllegalArgumentException
+	 *             if className or identity is empty
 	 */
-	<T> T newInstance(Class<T> interfaceName, String identity) throws NullPointerException;
+	<T> T newInstance(Class<T> className, String identity) throws NullPointerException, IllegalArgumentException;
 
 }
