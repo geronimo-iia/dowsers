@@ -22,15 +22,17 @@ package org.intelligentsia.dowsers.entity.meta;
 import org.intelligentsia.dowsers.entity.Entity;
 
 /**
- * {@link MetaEntityContextAware} declare methods to access at
- * {@link MetaEntityContext}.
+ * {@link MetaEntityContextAware} declare methods to access at {@link MetaEntityContext}.
  * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public interface MetaEntityContextAware {
 
 	/**
+	 * Set {@link MetaEntityContext}.
+	 * 
 	 * @param metaEntityContext
 	 *            set {@link MetaEntityContext} associated to {@link Entity}.
 	 */
-	void setMetaEntityContext(MetaEntityContext metaEntityContext);
+	void metaEntityContext(MetaEntityContext metaEntityContext);
 }

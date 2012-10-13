@@ -91,7 +91,7 @@ public class EntityTest {
 		System.out.println(sampleEntity.getDescription());
 		System.out.println(sampleEntity.attribute("order"));
 
-		System.out.println("Access on MetaEntityContext: " + sampleEntity.getMetaEntityContext().getName());
+		System.out.println("Access on MetaEntityContext: " + sampleEntity.metaEntityContext().getName());
 
 		System.out.println("#----------------------------------------------------------------------------");
 	}

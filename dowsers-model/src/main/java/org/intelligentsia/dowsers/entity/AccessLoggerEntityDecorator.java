@@ -55,9 +55,9 @@ public class AccessLoggerEntityDecorator extends EntityDecorator {
 	}
 
 	@Override
-	public MetaEntityContext getMetaEntityContext() {
+	public MetaEntityContext metaEntityContext() {
 		printStream.println(StringUtils.format("getMetaEntityContext of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.identity()));
-		return super.getMetaEntityContext();
+		return super.metaEntityContext();
 	}
 
 	@Override

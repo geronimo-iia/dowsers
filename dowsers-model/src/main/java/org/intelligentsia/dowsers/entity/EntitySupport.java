@@ -105,7 +105,7 @@ public abstract class EntitySupport implements Entity, Comparable<Entity> {
 	}
 
 	@Override
-	public final MetaEntityContext getMetaEntityContext() {
+	public final MetaEntityContext metaEntityContext() {
 		return metaEntityContext;
 	}
 }

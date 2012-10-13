@@ -49,8 +49,8 @@ public class MetaEntityValidator extends EntityDecorator {
 	 */
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
-		if (!getMetaEntityContext().contains(name)) {
-			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, getMetaEntityContext().getName()));
+		if (!metaEntityContext().contains(name)) {
+			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, metaEntityContext().getName()));
 		}
 		return super.attribute(name);
 	}
@@ -64,12 +64,12 @@ public class MetaEntityValidator extends EntityDecorator {
 	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		final MetaAttribute metaAttribute = getMetaEntityContext().getMetaAttribute(name);
+		final MetaAttribute metaAttribute = metaEntityContext().getMetaAttribute(name);
 		if (metaAttribute == null) {
-			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, getMetaEntityContext().getName()));
+			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, metaEntityContext().getName()));
 		}
 		if ((value != null) && !metaAttribute.getValueClass().isAssignableFrom(value.getClass())) {
-			throw new IllegalArgumentException(StringUtils.format("Invalid value of attribute %s for entity %s. Expected %s.", name, getMetaEntityContext().getName(), metaAttribute.getValueClass().getName()));
+			throw new IllegalArgumentException(StringUtils.format("Invalid value of attribute %s for entity %s. Expected %s.", name, metaEntityContext().getName(), metaAttribute.getValueClass().getName()));
 		}
 		return super.attribute(name, value);
 	}

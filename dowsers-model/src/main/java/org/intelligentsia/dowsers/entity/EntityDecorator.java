@@ -50,8 +50,8 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public MetaEntityContext getMetaEntityContext() {
-		return entity.getMetaEntityContext();
+	public MetaEntityContext metaEntityContext() {
+		return entity.metaEntityContext();
 	}
 
 	@Override

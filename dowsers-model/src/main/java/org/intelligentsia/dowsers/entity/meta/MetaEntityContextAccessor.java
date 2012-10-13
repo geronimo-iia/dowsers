@@ -35,5 +35,5 @@ public interface MetaEntityContextAccessor {
 	/**
 	 * @return {@link MetaEntityContext} instance.
 	 */
-	MetaEntityContext getMetaEntityContext();
+	MetaEntityContext metaEntityContext();
 }

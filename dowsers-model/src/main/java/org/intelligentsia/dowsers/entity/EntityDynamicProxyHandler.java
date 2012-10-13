@@ -59,7 +59,7 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		final String methodName = method.getName();
 		// MetaEntityContext stuff
 		if (isMetaEntityContextAccessorAware && "getMetaEntityContext".equals(methodName)) {
-			return entity.getMetaEntityContext();
+			return entity.metaEntityContext();
 		}
 		// Entity stuff
 		if (isEntity) {
@@ -92,7 +92,7 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 			return interfaceName + "#" + entity.identity();
 		}
 		// Dynamic attributes call
-		if (entity.getMetaEntityContext().contains(methodName)) {
+		if (entity.metaEntityContext().contains(methodName)) {
 			if (method.getParameterTypes().length == 0 ) {
 				return entity.attribute(methodName);
 			}	
@@ -120,8 +120,8 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 	}
 
 	@Override
-	public MetaEntityContext getMetaEntityContext() {
-		return entity.getMetaEntityContext();
+	public MetaEntityContext metaEntityContext() {
+		return entity.metaEntityContext();
 	}
 
 	@Override

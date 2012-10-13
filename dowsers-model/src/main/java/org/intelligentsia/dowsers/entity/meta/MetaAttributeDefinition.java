@@ -98,7 +98,7 @@ public class MetaAttributeDefinition implements MetaAttribute {
 	}
 
 	@Override
-	public MetaEntityContext getMetaEntityContext() {
+	public MetaEntityContext metaEntityContext() {
 		return null;
 	}
 

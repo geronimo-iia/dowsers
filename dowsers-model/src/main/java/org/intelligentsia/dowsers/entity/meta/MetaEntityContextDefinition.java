@@ -202,7 +202,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public MetaEntityContext getMetaEntityContext() {
+	public MetaEntityContext metaEntityContext() {
 		return null;
 	}
 
