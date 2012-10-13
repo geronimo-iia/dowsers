@@ -28,6 +28,8 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
 /**
  * EntityDynamicProxyHandler implements {@link InvocationHandler}.
  * 
+ *  TODO add doc on methods mapping
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
@@ -61,8 +63,8 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		}
 		// Entity stuff
 		if (isEntity) {
-			if ("getIdentity".equals(methodName)) {
-				return entity.getIdentity();
+			if ("identity".equals(methodName)) {
+				return entity.identity();
 			}
 		}
 		// attributes catch
@@ -70,14 +72,16 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 			if (args.length == 1) {
 				return entity.attribute((String) args[0]);
 			}
-			return entity.attribute((String) args[0], args[1]);
+			entity.attribute((String) args[0], args[1]);
+			return proxy;
 		}
-		// Dynamic Stuff
+		// Dynamic Stuff based on Getter/Setter pattern
 		if (methodName.startsWith("get")) {
 			return entity.attribute(toFieldName(methodName));
 		} else if (methodName.startsWith("set")) {
 			entity.attribute(toFieldName(methodName), args[0]);
-			return null;
+			// setter should return void
+			return proxy;
 		}
 		// object method base
 		if (methodName.equals("hashCode")) {
@@ -85,7 +89,17 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		} else if (methodName.equals("equals")) {
 			return entity.equals(args[0]);
 		} else if (methodName.equals("toString")) {
-			return interfaceName + "#" + entity.getIdentity();
+			return interfaceName + "#" + entity.identity();
+		}
+		// Dynamic attributes call
+		if (entity.getMetaEntityContext().contains(methodName)) {
+			if (method.getParameterTypes().length == 0 ) {
+				return entity.attribute(methodName);
+			}	
+			if (method.getParameterTypes().length == 1 ) {
+				entity.attribute(methodName, args[0]);
+				return proxy;
+			}
 		}
 		// Oops WTF ?
 		return null;
@@ -111,8 +125,8 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 	}
 
 	@Override
-	public String getIdentity() {
-		return entity.getIdentity();
+	public String identity() {
+		return entity.identity();
 	}
 
 	@Override

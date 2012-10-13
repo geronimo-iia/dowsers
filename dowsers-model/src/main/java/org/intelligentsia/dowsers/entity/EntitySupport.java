@@ -57,7 +57,7 @@ public abstract class EntitySupport implements Entity, Comparable<Entity> {
 	}
 
 	@Override
-	public final String getIdentity() {
+	public final String identity() {
 		return identity;
 	}
 
@@ -88,7 +88,7 @@ public abstract class EntitySupport implements Entity, Comparable<Entity> {
 			return false;
 		}
 		final Entity other = (Entity) obj;
-		return Objects.equal(other.getIdentity(), identity);
+		return Objects.equal(other.identity(), identity);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public abstract class EntitySupport implements Entity, Comparable<Entity> {
 
 	@Override
 	public int compareTo(final Entity o) {
-		return identity.compareTo(o.getIdentity());
+		return identity.compareTo(o.identity());
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class EntityJsonSerializer extends SerializerBase<Entity> {
 	@Override
 	public void serialize(final Entity value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 		jgen.writeStartObject();
-		jgen.writeStringField("identifier", value.getIdentity());
+		jgen.writeStringField("identifier", value.identity());
 		final Iterator<String> iterator = value.getMetaEntityContext().getMetaAttributeNames();
 		while (iterator.hasNext()) {
 			final MetaAttribute metaAttribute = value.getMetaEntityContext().getMetaAttribute(iterator.next());

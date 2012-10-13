@@ -49,26 +49,26 @@ public class AccessLoggerEntityDecorator extends EntityDecorator {
 	}
 
 	@Override
-	public String getIdentity() {
-		printStream.println(StringUtils.format("getIdentity of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.getIdentity()));
-		return super.getIdentity();
+	public String identity() {
+		printStream.println(StringUtils.format("getIdentity of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.identity()));
+		return super.identity();
 	}
 
 	@Override
 	public MetaEntityContext getMetaEntityContext() {
-		printStream.println(StringUtils.format("getMetaEntityContext of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.getIdentity()));
+		printStream.println(StringUtils.format("getMetaEntityContext of entity '%s': '%s'", entity.getClass().getSimpleName(), entity.identity()));
 		return super.getMetaEntityContext();
 	}
 
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException {
-		printStream.println(StringUtils.format("get '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.getIdentity()));
+		printStream.println(StringUtils.format("get '%s' of entity '%s#%s'", name, entity.getClass().getSimpleName(), entity.identity()));
 		return super.attribute(name);
 	}
 
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
-		printStream.println(StringUtils.format("set'%s' of entity '%s#%s': %s", name, entity.getClass().getSimpleName(), entity.getIdentity(), value));
+		printStream.println(StringUtils.format("set'%s' of entity '%s#%s': %s", name, entity.getClass().getSimpleName(), entity.identity(), value));
 		super.attribute(name, value);
 		return this;
 	}

@@ -176,7 +176,7 @@ public class MetaEntityDefinition implements MetaEntity {
 	}
 
 	@Override
-	public String getIdentity() {
+	public String identity() {
 		return null;
 	}
 

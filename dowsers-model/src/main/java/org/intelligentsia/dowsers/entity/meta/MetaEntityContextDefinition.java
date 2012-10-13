@@ -187,7 +187,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext {
 	}
 
 	@Override
-	public String getIdentity() {
+	public String identity() {
 		return null;
 	}
 

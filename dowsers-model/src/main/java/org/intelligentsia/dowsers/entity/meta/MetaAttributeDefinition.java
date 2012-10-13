@@ -83,7 +83,7 @@ public class MetaAttributeDefinition implements MetaAttribute {
 	}
 
 	@Override
-	public String getIdentity() {
+	public String identity() {
 		return null;
 	}
 

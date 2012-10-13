@@ -45,8 +45,8 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public String getIdentity() {
-		return entity.getIdentity();
+	public String identity() {
+		return entity.identity();
 	}
 
 	@Override

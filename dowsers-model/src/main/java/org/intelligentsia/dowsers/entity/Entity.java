@@ -51,7 +51,7 @@ public interface Entity extends MetaEntityContextAccessor {
 	/**
 	 * @return {@link Entity}'s identity
 	 */
-	String getIdentity();
+	String identity();
 
 	/**
 	 * Return typed value of specified attribute name.
