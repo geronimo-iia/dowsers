@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityContextDefinition implements MetaEntityContext {
+public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 
 	/**
 	 * Meta entity name.

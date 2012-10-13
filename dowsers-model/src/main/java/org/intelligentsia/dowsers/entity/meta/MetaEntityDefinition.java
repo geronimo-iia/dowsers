@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityDefinition implements MetaEntity {
+public class MetaEntityDefinition implements MetaEntity, Entity {
 
 	/**
 	 * Meta entity name.

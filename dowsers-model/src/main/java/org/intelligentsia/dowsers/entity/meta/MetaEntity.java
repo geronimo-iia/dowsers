@@ -39,7 +39,6 @@ MetaAttribute *        Licensed to the Apache Software Foundation (ASF) under on
 package org.intelligentsia.dowsers.entity.meta;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
-import org.intelligentsia.dowsers.entity.Entity;
 
 /**
  * A {@link MetaEntity} define:
@@ -70,7 +69,7 @@ import org.intelligentsia.dowsers.entity.Entity;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface MetaEntity extends Entity {
+public interface MetaEntity {
 
 	/**
 	 * Returns a textual name of the entity.
