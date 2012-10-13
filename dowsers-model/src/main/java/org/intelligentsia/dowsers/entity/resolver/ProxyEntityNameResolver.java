@@ -47,7 +47,7 @@ public class ProxyEntityNameResolver extends EntityNameResolverSupport {
 			final InvocationHandler handler = Proxy.getInvocationHandler(entity);
 			if (EntityDynamicProxyHandler.class.isAssignableFrom(handler.getClass())) {
 				final EntityDynamicProxyHandler myHandler = (EntityDynamicProxyHandler) handler;
-				return myHandler.getEntity().metaEntityContext().getName();
+				return myHandler.getEntity().metaEntityContext().name();
 			}
 		}
 		if (hasNext()) {

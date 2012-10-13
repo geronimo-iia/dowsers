@@ -56,11 +56,11 @@ public class EntityFactoryDynamicCachedSupport extends EntityFactoryDynamicSuppo
 			@Override
 			public Map<String, Object> load(final MetaEntityContext metaEntityContext) throws Exception {
 				final Map<String, Object> properties = Maps.newHashMap();
-				final Iterator<String> iterator = metaEntityContext.getMetaAttributeNames();
+				final Iterator<String> iterator = metaEntityContext.metaAttributeNames();
 				while (iterator.hasNext()) {
-					final MetaAttribute metaAttribute = metaEntityContext.getMetaAttribute(iterator.next());
+					final MetaAttribute metaAttribute = metaEntityContext.metaAttributes(iterator.next());
 					// TODO clone it
-					properties.put(metaAttribute.getName(), metaAttribute.getDefaultValue());
+					properties.put(metaAttribute.name(), metaAttribute.defaultValue());
 				}
 				return properties;
 			}

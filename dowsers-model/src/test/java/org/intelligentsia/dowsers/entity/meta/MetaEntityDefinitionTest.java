@@ -47,8 +47,8 @@ public class MetaEntityDefinitionTest {
 		final MetaEntityDefinition base = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaAttribute>());
 		final MetaEntityDefinition definition = new MetaEntityDefinition(base);
 		assertNotNull(definition);
-		assertEquals(definition.getName(), base.getName());
-		assertEquals(definition.getVersion(), base.getVersion());
+		assertEquals(definition.name(), base.name());
+		assertEquals(definition.version(), base.version());
 
 	}
 
@@ -81,8 +81,8 @@ public class MetaEntityDefinitionTest {
 		final MetaEntityDefinition definition = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaAttribute>());
 		assertNotNull(definition);
 
-		assertEquals("name", definition.getName());
-		assertEquals(new Version(1), definition.getVersion());
+		assertEquals("name", definition.name());
+		assertEquals(new Version(1), definition.version());
 	}
 
 	@Test
@@ -103,15 +103,15 @@ public class MetaEntityDefinitionTest {
 		new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).build();
 
 		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).add(new MetaAttributeDefinition("desc", String.class, "")).build();
-		assertEquals("test", definition.getName());
-		assertEquals(new Version(1), definition.getVersion());
-		assertTrue(definition.getMetaAttributes().hasNext());
-		final MetaAttribute metaAttribute = definition.getMetaAttribute("desc");
+		assertEquals("test", definition.name());
+		assertEquals(new Version(1), definition.version());
+		assertTrue(definition.metaAttributes().hasNext());
+		final MetaAttribute metaAttribute = definition.metaAttributes("desc");
 		assertNotNull(metaAttribute);
 
-		assertEquals("desc", metaAttribute.getName());
-		assertEquals(String.class, metaAttribute.getValueClass());
-		assertEquals("", metaAttribute.getDefaultValue());
+		assertEquals("desc", metaAttribute.name());
+		assertEquals(String.class, metaAttribute.valueClass());
+		assertEquals("", metaAttribute.defaultValue());
 	}
 
 }

@@ -29,20 +29,14 @@ import org.intelligentsia.keystone.api.artifacts.Version;
  * {@link MetaEntityContext} define methods to gain access on {@link MetaEntity}
  * of an {@link Entity}.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public interface MetaEntityContext extends MetaEntity {
 
 	/**
-	 * @return a not null {@link Version} which define root {@link MetaEntity}.
-	 */
-	Version getRootVersion();
-
-	/**
 	 * @return an ordered {@link ReadOnlyIterator} on {@link Version} which
 	 *         compose this {@link MetaEntityContext}. First item will always be
-	 *         the root {@link MetaEntity} definition.
+	 *         the root {@link MetaEntity} definition of this {@link MetaEntityContext}.
 	 */
 	ReadOnlyIterator<Version> getVersions();
 

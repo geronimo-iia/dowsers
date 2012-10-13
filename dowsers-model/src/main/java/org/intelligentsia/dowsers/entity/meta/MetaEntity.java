@@ -18,7 +18,7 @@
  *
  */
 /**
-MetaAttribute *        Licensed to the Apache Software Foundation (ASF) under one
+ MetaAttribute *        Licensed to the Apache Software Foundation (ASF) under one
  *        or more contributor license agreements.  See the NOTICE file
  *        distributed with this work for additional information
  *        regarding copyright ownership.  The ASF licenses this file
@@ -39,12 +39,15 @@ MetaAttribute *        Licensed to the Apache Software Foundation (ASF) under on
 package org.intelligentsia.dowsers.entity.meta;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
+import org.intelligentsia.dowsers.entity.Entity;
+import org.intelligentsia.keystone.api.artifacts.Version;
 
 /**
  * A {@link MetaEntity} define:
  * <ul>
- * <li>an entity class name</li>
- * <li>entity meta attributes @see {@link MetaAttribute}.</li>
+ * <li>name: an entity class name</li>
+ * <li>metaAttributes: entity meta attributes @see {@link MetaAttribute}.</li>
+ * <li>version: meta entity version</li>
  * </ul>
  * 
  * <code>
@@ -72,11 +75,41 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 public interface MetaEntity {
 
 	/**
-	 * Returns a textual name of the entity.
+	 * Returns a textual class name of the entity.
 	 * 
 	 * @return non-<code>null</code>, empty or non-empty string
 	 */
-	String getName();
+	String name();
+
+	/**
+	 * @return an read only {@link ReadOnlyIterator} on {@link MetaAttribute}
+	 *         collection.
+	 */
+	ReadOnlyIterator<MetaAttribute> metaAttributes();
+
+	/**
+	 * Define {@link MetaEntity} version of associated {@link Entity}.
+	 * 
+	 * @return {@link Version} instance.
+	 */
+	Version version();
+
+	/**
+	 * @param name
+	 *            attribute name
+	 * @return a {@link MetaAttribute} instance with specified name or null if
+	 *         none is found.
+	 * @throws NullPointerException
+	 *             if name is null
+	 * @throws IllegalArgumentException
+	 *             if name is empty
+	 */
+	MetaAttribute metaAttributes(String name) throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * @return a {@link ReadOnlyIterator} on attribute name.
+	 */
+	ReadOnlyIterator<String> metaAttributeNames();
 
 	/**
 	 * @param name
@@ -88,28 +121,5 @@ public interface MetaEntity {
 	 *             if name is empty
 	 */
 	boolean contains(String name) throws NullPointerException, IllegalArgumentException;
-
-	/**
-	 * 
-	 * @param name
-	 *            attribute name
-	 * @return a {@link MetaAttribute} instance with specified name or null if
-	 *         none is found.
-	 * @throws NullPointerException
-	 *             if name is null
-	 * @throws IllegalArgumentException
-	 *             if name is empty
-	 */
-	MetaAttribute getMetaAttribute(String name) throws NullPointerException, IllegalArgumentException;
-
-	/**
-	 * @return a {@link ReadOnlyIterator} on attribute name.
-	 */
-	ReadOnlyIterator<String> getMetaAttributeNames();
-
-	/**
-	 * @return an read only {@link ReadOnlyIterator} on {@link MetaAttribute}.
-	 */
-	ReadOnlyIterator<MetaAttribute> getMetaAttributes();
 
 }

@@ -26,7 +26,13 @@ import org.intelligentsia.dowsers.entity.Entity;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class MetaAttributeDefinition implements MetaAttribute {
+/**
+ * <code>MetaAttributeDefinition</code> implements {@link MetaAttribute}.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
+ */
+public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	/**
 	 * attribute name.
 	 */
@@ -43,20 +49,19 @@ public class MetaAttributeDefinition implements MetaAttribute {
 	private final Object defaultValue;
 
 	/**
-	 * Build a new instance of MetaAttributeDefinition.java.
+	 * Build a new instance of <code>MetaAttributeDefinition</code>.
 	 * 
 	 * @param metaAttribute
+	 *            meta attribute instance to copy
 	 * @throws NullPointerException
 	 *             if metaAttribute is null
 	 */
 	public MetaAttributeDefinition(final MetaAttribute metaAttribute) throws NullPointerException {
-		this.name = Preconditions.checkNotNull(metaAttribute).getName();
-		this.valueClass = metaAttribute.getValueClass();
-		this.defaultValue = metaAttribute.getDefaultValue();
+		this(Preconditions.checkNotNull(metaAttribute).name(), metaAttribute.valueClass(), metaAttribute.defaultValue());
 	}
 
 	/**
-	 * Build a new instance of MetaAttributeDefinition.java.
+	 * Build a new instance of <code>MetaAttributeDefinition</code>.
 	 * 
 	 * @param name
 	 *            attribute name
@@ -103,18 +108,18 @@ public class MetaAttributeDefinition implements MetaAttribute {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
 	@Override
-	public Class<?> getValueClass() {
+	public Class<?> valueClass() {
 		return valueClass;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <Value extends Serializable> Value getDefaultValue() {
+	public <Value extends Serializable> Value defaultValue() {
 		return (Value) defaultValue;
 	}
 
@@ -141,10 +146,10 @@ public class MetaAttributeDefinition implements MetaAttribute {
 		}
 		final MetaAttribute other = (MetaAttribute) obj;
 		if (name == null) {
-			if (other.getName() != null) {
+			if (other.name() != null) {
 				return false;
 			}
-		} else if (!name.equals(other.getName())) {
+		} else if (!name.equals(other.name())) {
 			return false;
 		}
 		return true;

@@ -88,22 +88,18 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 		this.version = Preconditions.checkNotNull(version);
 		final ImmutableMap.Builder<String, MetaAttribute> builder = new ImmutableMap.Builder<String, MetaAttribute>();
 		for (final MetaAttribute metaAttribute : Preconditions.checkNotNull(metaAttributes)) {
-			builder.put(metaAttribute.getName(), metaAttribute);
+			builder.put(metaAttribute.name(), metaAttribute);
 		}
 		this.metaAttributes = builder.build();
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
-	/**
-	 * Define {@link MetaEntityDefinition} version of {@link Entity}.
-	 * 
-	 * @return {@link Version} instance.
-	 */
-	public Version getVersion() {
+	@Override
+	public Version version() {
 		return version;
 	}
 
@@ -114,18 +110,18 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	}
 
 	@Override
-	public MetaAttribute getMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute metaAttributes(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		return metaAttributes.get(name);
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaAttribute> getMetaAttributes() {
+	public ReadOnlyIterator<MetaAttribute> metaAttributes() {
 		return ReadOnlyIterator.newReadOnlyIterator(metaAttributes.values().iterator());
 	}
 
 	@Override
-	public ReadOnlyIterator<String> getMetaAttributeNames() {
+	public ReadOnlyIterator<String> metaAttributeNames() {
 		return ReadOnlyIterator.newReadOnlyIterator(metaAttributes.keySet().iterator());
 	}
 
@@ -187,7 +183,7 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		return null;
+		return this;
 	}
 
 	@Override

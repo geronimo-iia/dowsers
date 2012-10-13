@@ -134,7 +134,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 *             if definition is null
 	 */
 	public MetaEntityContextBuilder add(final MetaEntityDefinition definition) throws NullPointerException {
-		Preconditions.checkState(name.equals(Preconditions.checkNotNull(definition).getName()));
+		Preconditions.checkState(name.equals(Preconditions.checkNotNull(definition).name()));
 		extendedMetaEntityDefinitions.add(definition);
 		return this;
 	}

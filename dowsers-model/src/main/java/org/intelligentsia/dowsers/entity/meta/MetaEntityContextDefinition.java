@@ -85,8 +85,8 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 		if (extendedMetaEntityDefinitions != null) {
 			final ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
 			for (final MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
-				builder.put(metaEntityDefinition.getVersion(), metaEntityDefinition);
-				extendedPropertyNamesBuilder.addAll(metaEntityDefinition.getMetaAttributeNames());
+				builder.put(metaEntityDefinition.version(), metaEntityDefinition);
+				extendedPropertyNamesBuilder.addAll(metaEntityDefinition.metaAttributeNames());
 			}
 			extendedAttributesNames = extendedPropertyNamesBuilder.build();
 		} else {
@@ -96,7 +96,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
@@ -110,26 +110,26 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public MetaAttribute getMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute metaAttributes(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		MetaAttribute result = null;
-		while (iterator.hasNext() && ((result = iterator.next().getMetaAttribute(name)) == null)) {
+		while (iterator.hasNext() && ((result = iterator.next().metaAttributes(name)) == null)) {
 		}
 		return result;
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaAttribute> getMetaAttributes() {
+	public ReadOnlyIterator<MetaAttribute> metaAttributes() {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		return new ReadOnlyIterator<MetaAttribute>() {
 
-			ReadOnlyIterator<MetaAttribute> current = iterator.next().getMetaAttributes();
+			ReadOnlyIterator<MetaAttribute> current = iterator.next().metaAttributes();
 
 			@Override
 			public boolean hasNext() {
 				boolean result = current.hasNext();
 				if (!result && iterator.hasNext()) {
-					current = iterator.next().getMetaAttributes();
+					current = iterator.next().metaAttributes();
 					result = current.hasNext();
 				}
 				return result;
@@ -143,7 +143,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public Version getRootVersion() {
+	public Version version() {
 		return rootVersion;
 	}
 
@@ -158,17 +158,17 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public ReadOnlyIterator<String> getMetaAttributeNames() {
+	public ReadOnlyIterator<String> metaAttributeNames() {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		return new ReadOnlyIterator<String>() {
 
-			ReadOnlyIterator<String> current = iterator.next().getMetaAttributeNames();
+			ReadOnlyIterator<String> current = iterator.next().metaAttributeNames();
 
 			@Override
 			public boolean hasNext() {
 				boolean result = current.hasNext();
 				if (!result && iterator.hasNext()) {
-					current = iterator.next().getMetaAttributeNames();
+					current = iterator.next().metaAttributeNames();
 					result = current.hasNext();
 				}
 				return result;

@@ -21,24 +21,28 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
-import org.intelligentsia.dowsers.entity.Entity;
-
 /**
- * 
  * MetaAttribute: Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk
  * agh burzum-ishi krimpatul.
+ * 
+ * {@link MetaAttribute} is composed of:
+ * <ul>
+ * <li>name: attribute's name</li>
+ * <li>valueClass: attribute's class name</li>
+ * <li>defaultValue: attribute's default value</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface MetaAttribute extends Entity {
+public interface MetaAttribute {
 
 	/**
 	 * Returns the attribute name.
 	 * 
 	 * @return non-<code>null</code> textual attribute name
 	 */
-	public String getName();
+	public String name();
 
 	/**
 	 * Returns the <code>{@link Class}</code> object representing the
@@ -46,7 +50,7 @@ public interface MetaAttribute extends Entity {
 	 * 
 	 * @return non-<code>null</code> <code>{@link Class}</code> instance
 	 */
-	public Class<?> getValueClass();
+	public Class<?> valueClass();
 
 	/**
 	 * Returns the attribute default value.
@@ -54,6 +58,6 @@ public interface MetaAttribute extends Entity {
 	 * @return <code>null</code> or non-<code>null</code> <code>Value</code>
 	 *         instance
 	 */
-	public <Value extends Serializable> Value getDefaultValue();
+	public <Value extends Serializable> Value defaultValue();
 
 }
