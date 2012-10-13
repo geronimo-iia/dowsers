@@ -54,17 +54,15 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	private final Map<String, MetaAttribute> metaAttributes;
 
 	/**
-	 * Build a new instance of MetaEntityDefinition.java.
+	 * Build a new instance of {@link MetaEntityDefinition}.
 	 * 
 	 * @param definition
+	 *            {@link MetaEntityDefinition} to copy
 	 * @throws NullPointerException
 	 *             if definition is null
 	 */
 	public MetaEntityDefinition(final MetaEntityDefinition definition) throws NullPointerException {
-		super();
-		name = Preconditions.checkNotNull(definition).name;
-		version = definition.version;
-		metaAttributes = definition.metaAttributes;
+		this(Preconditions.checkNotNull(definition).name, definition.version, definition.metaAttributes.values());
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 		this.version = Preconditions.checkNotNull(version);
 		final ImmutableMap.Builder<String, MetaAttribute> builder = new ImmutableMap.Builder<String, MetaAttribute>();
 		for (final MetaAttribute metaAttribute : Preconditions.checkNotNull(metaAttributes)) {
-			builder.put(metaAttribute.name(), metaAttribute);
+			builder.put(metaAttribute.name(), new MetaAttributeDefinition(metaAttribute));
 		}
 		this.metaAttributes = builder.build();
 	}
@@ -132,7 +130,7 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(getClass()).add("name", name).add("version", version).add("metaAttributes", metaAttributes).toString();
+		return Objects.toStringHelper(getClass()).add("name", name).add("version", version).add("metaAttributes", metaAttributes.values()).toString();
 	}
 
 	@Override

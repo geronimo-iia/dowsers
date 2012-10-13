@@ -29,6 +29,10 @@ import org.intelligentsia.keystone.api.artifacts.Version;
  * {@link MetaEntityContext} define methods to gain access on {@link MetaEntity}
  * of an {@link Entity}.
  * 
+ * A {@link MetaEntityContext} is a {@link MetaEntity} composite of
+ * {@link MetaEntity}. Each component is an extends of meta data given by super
+ * {@link MetaEntity} instance.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public interface MetaEntityContext extends MetaEntity {
@@ -36,9 +40,10 @@ public interface MetaEntityContext extends MetaEntity {
 	/**
 	 * @return an ordered {@link ReadOnlyIterator} on {@link Version} which
 	 *         compose this {@link MetaEntityContext}. First item will always be
-	 *         the root {@link MetaEntity} definition of this {@link MetaEntityContext}.
+	 *         the root {@link MetaEntity} definition of this
+	 *         {@link MetaEntityContext}.
 	 */
-	ReadOnlyIterator<Version> getVersions();
+	ReadOnlyIterator<Version> versions();
 
 	/**
 	 * @param version
@@ -47,11 +52,11 @@ public interface MetaEntityContext extends MetaEntity {
 	 * @throws NullPointerException
 	 *             if version is null
 	 */
-	MetaEntity getMetaEntity(Version version) throws NullPointerException;
+	MetaEntity metaEntity(Version version) throws NullPointerException;
 
 	/**
 	 * @return a immutable {@link Set} of property names define by all extended
 	 *         {@link MetaEntity} version.
 	 */
-	Set<String> getAllExtendedPropertyNames();
+	Set<String> allExtendedPropertyNames();
 }

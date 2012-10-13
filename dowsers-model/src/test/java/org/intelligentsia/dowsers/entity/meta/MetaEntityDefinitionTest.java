@@ -94,15 +94,15 @@ public class MetaEntityDefinitionTest {
 			// ok
 		}
 		try {
-			new MetaEntityDefinitionBuilder().setName("test").build();
+			new MetaEntityDefinitionBuilder().name("test").build();
 			fail("NullPointerException attended");
 		} catch (final NullPointerException exception) {
 			// ok
 		}
 
-		new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).build();
+		new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).build();
 
-		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().setName("test").setVersion(new Version(1)).add(new MetaAttributeDefinition("desc", String.class, "")).build();
+		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).add(new MetaAttributeDefinition("desc", String.class, "")).build();
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertTrue(definition.metaAttributes().hasNext());

@@ -148,12 +148,12 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public ReadOnlyIterator<Version> getVersions() {
+	public ReadOnlyIterator<Version> versions() {
 		return ReadOnlyIterator.newReadOnlyIterator(metaEntityDefinitions.keySet().iterator());
 	}
 
 	@Override
-	public MetaEntity getMetaEntity(final Version version) throws NullPointerException, IllegalStateException {
+	public MetaEntity metaEntity(final Version version) throws NullPointerException, IllegalStateException {
 		return metaEntityDefinitions.get(version);
 	}
 
@@ -182,7 +182,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public Set<String> getAllExtendedPropertyNames() {
+	public Set<String> allExtendedPropertyNames() {
 		return extendedAttributesNames;
 	}
 

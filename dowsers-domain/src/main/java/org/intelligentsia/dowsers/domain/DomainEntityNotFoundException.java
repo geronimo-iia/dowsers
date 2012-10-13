@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.core.DowsersException;
+import org.intelligentsia.dowsers.core.EntityDowsersException;
 
 /**
  * DomainEntityNotFoundException.
@@ -27,7 +27,7 @@ import org.intelligentsia.dowsers.core.DowsersException;
  * @author jgt
  * 
  */
-public class DomainEntityNotFoundException extends DowsersException {
+public class DomainEntityNotFoundException extends EntityDowsersException {
 
 	/**
 	 * serialVersionUID:long

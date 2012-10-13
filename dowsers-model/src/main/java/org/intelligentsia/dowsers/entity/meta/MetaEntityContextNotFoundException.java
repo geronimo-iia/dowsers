@@ -27,8 +27,7 @@ import org.intelligentsia.dowsers.core.DowsersException;
 /**
  * MetaEntityContextNotFoundException.
  * 
- * @author JGT
- * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class MetaEntityContextNotFoundException extends DowsersException {
 
@@ -38,43 +37,38 @@ public class MetaEntityContextNotFoundException extends DowsersException {
 	private static final long serialVersionUID = -1511366330372733890L;
 
 	/**
-	 * Build a new instance of MetaEntityContextNotFoundException.java.
-	 * 
-	 * @param identity
+	 * Build a new instance of <code>MetaEntityContextNotFoundException</code>.
 	 */
-	public MetaEntityContextNotFoundException(final String identity) {
-		super(identity);
+	public MetaEntityContextNotFoundException() {
+		super();
 	}
 
 	/**
-	 * Build a new instance of MetaEntityContextNotFoundException.java.
+	 * Build a new instance of <code>MetaEntityContextNotFoundException</code>.
 	 * 
-	 * @param identity
-	 * @param message
-	 */
-	public MetaEntityContextNotFoundException(final String identity, final String message) {
-		super(identity, message);
-	}
-
-	/**
-	 * Build a new instance of MetaEntityContextNotFoundException.java.
-	 * 
-	 * @param identity
-	 * @param cause
-	 */
-	public MetaEntityContextNotFoundException(final String identity, final Throwable cause) {
-		super(identity, cause);
-	}
-
-	/**
-	 * Build a new instance of MetaEntityContextNotFoundException.java.
-	 * 
-	 * @param identity
 	 * @param message
 	 * @param cause
 	 */
-	public MetaEntityContextNotFoundException(final String identity, final String message, final Throwable cause) {
-		super(identity, message, cause);
+	public MetaEntityContextNotFoundException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	/**
+	 * Build a new instance of <code>MetaEntityContextNotFoundException</code>.
+	 * 
+	 * @param message
+	 */
+	public MetaEntityContextNotFoundException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Build a new instance of <code>MetaEntityContextNotFoundException</code>.
+	 * 
+	 * @param cause
+	 */
+	public MetaEntityContextNotFoundException(Throwable cause) {
+		super(cause);
 	}
 
 }

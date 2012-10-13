@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.intelligentsia.dowsers.core.DowsersException;
+import org.intelligentsia.dowsers.core.EntityDowsersException;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
@@ -76,7 +76,7 @@ public class EntityFactoryDynamicCachedSupport extends EntityFactoryDynamicSuppo
 		try {
 			return Maps.newHashMap(definitions.get(metaEntityContext));
 		} catch (final ExecutionException e) {
-			throw new DowsersException(e);
+			throw new EntityDowsersException(e);
 		}
 	}
 

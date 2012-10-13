@@ -20,6 +20,7 @@
 package org.intelligentsia.dowsers.entity.meta;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * Build a new instance of MetaEntityDefinitionBuilder.java.
 	 * 
 	 * @param metaEntityDefinition
-	 *            base definition.
+	 *            base definition to copy.
 	 */
 	public MetaEntityDefinitionBuilder(final MetaEntityDefinition metaEntityDefinition) {
 		this(metaEntityDefinition.name(), metaEntityDefinition.version(), Sets.newLinkedHashSet(new Iterable<MetaAttribute>() {
@@ -75,8 +76,11 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * Build a new instance of MetaEntityDefinitionBuilder.java.
 	 * 
 	 * @param name
+	 *            entity class name
 	 * @param version
+	 *            entity version
 	 * @param metaAttributes
+	 *            a {@link Collection} of {@link MetaAttribute}.
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
@@ -100,8 +104,11 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * Build a new instance of MetaEntityDefinitionBuilder.java.
 	 * 
 	 * @param name
+	 *            entity class name
 	 * @param version
+	 *            entity version
 	 * @param metaEntityContextBuilder
+	 *            {@link MetaEntityContextBuilder} instance.
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
@@ -130,38 +137,64 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	}
 
 	/**
+	 * Set name.
 	 * 
 	 * @param name
+	 * @return this {@link MetaEntityDefinitionBuilder} instance.
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityDefinitionBuilder setName(final String name) throws NullPointerException, IllegalArgumentException {
+	public MetaEntityDefinitionBuilder name(final String name) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder setVersion(final Version version) throws NullPointerException {
+	/**
+	 * Set version.
+	 * 
+	 * @param version
+	 * @return this {@link MetaEntityDefinitionBuilder} instance.
+	 * @throws NullPointerException
+	 *             if version is null
+	 */
+	public MetaEntityDefinitionBuilder version(final Version version) throws NullPointerException {
 		this.version = Preconditions.checkNotNull(version);
 		return this;
 	}
 
-	public Set<MetaAttribute> getMetaAttributes() {
+	/**
+	 * @return {@link Set} of {@link MetaAttribute}.
+	 */
+	public Set<MetaAttribute> metaAttributes() {
 		return metaAttributes;
 	}
 
-	public MetaEntityDefinitionBuilder setMetaAttributes(final Set<MetaAttribute> metaAttributes) throws NullPointerException {
+	/**
+	 * Add a set of {@link MetaAttribute}.
+	 * 
+	 * @param metaAttributes
+	 *            {@link Set} of {@link MetaAttribute} to add.
+	 * @return this {@link MetaEntityDefinitionBuilder} instance.
+	 * @throws NullPointerException
+	 *             if metaAttributes is null
+	 */
+	public MetaEntityDefinitionBuilder metaAttributes(final Set<MetaAttribute> metaAttributes) throws NullPointerException {
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 		return this;
 	}
 
-	public MetaEntityDefinitionBuilder add(final MetaAttribute metaAttribute) throws NullPointerException {
-		this.metaAttributes.add(metaAttribute);
-		return this;
-	}
-
+	/**
+	 * Add a set of {@link MetaAttribute}.
+	 * 
+	 * @param metaAttributes
+	 *            {@link Set} of {@link MetaAttribute} to add.
+	 * @return this {@link MetaEntityDefinitionBuilder} instance.
+	 * @throws NullPointerException
+	 *             if metaAttributes is null
+	 */
 	public MetaEntityDefinitionBuilder add(final MetaAttribute... metaAttributes) throws NullPointerException {
 		this.metaAttributes.addAll(Arrays.asList(Preconditions.checkNotNull(metaAttributes)));
 		return this;

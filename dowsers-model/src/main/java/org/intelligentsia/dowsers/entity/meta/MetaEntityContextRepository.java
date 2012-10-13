@@ -24,7 +24,6 @@ package org.intelligentsia.dowsers.entity.meta;
  * {@link MetaEntityContext} data.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public interface MetaEntityContextRepository {
 

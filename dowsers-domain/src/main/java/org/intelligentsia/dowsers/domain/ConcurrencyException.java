@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.dowsers.domain;
 
-import org.intelligentsia.dowsers.core.DowsersException;
+import org.intelligentsia.dowsers.core.EntityDowsersException;
 
 /**
  * ConcurrencyException.
@@ -27,7 +27,7 @@ import org.intelligentsia.dowsers.core.DowsersException;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class ConcurrencyException extends DowsersException {
+public class ConcurrencyException extends EntityDowsersException {
 
 	private static final long serialVersionUID = 1L;
 
