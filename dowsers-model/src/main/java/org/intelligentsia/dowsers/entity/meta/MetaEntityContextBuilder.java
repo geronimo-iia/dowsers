@@ -35,10 +35,9 @@ import com.google.common.base.Preconditions;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
-
-	private final String name;
-	private final Version rootVersion;
-	private Collection<MetaAttribute> metaAttributes;
+	
+	private final MetaEntityDefinitionBuilder metaEntityDefinitionBuilder;
+	
 	private final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions;
 
 	/**
@@ -46,14 +45,14 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * Build a new instance of MetaEntityContextBuilder.java.
 	 * 
 	 * @param name
-	 * @param rootVersion
+	 * @param version
 	 * @throws NullPointerException
 	 *             if name or rootVersionis null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextBuilder(final String name, final Version rootVersion) throws NullPointerException, IllegalArgumentException {
-		this(name, rootVersion, null, null);
+	public MetaEntityContextBuilder(final String name, final Version version) throws NullPointerException, IllegalArgumentException {
+		this(name, version, null, null);
 
 	}
 
@@ -62,25 +61,23 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	 * Build a new instance of MetaEntityContextBuilder.java.
 	 * 
 	 * @param name
-	 * @param rootVersion
+	 * @param version
 	 * @param metaAttributes
 	 * @param extendedMetaEntityDefinitions
-	 *            * @throws NullPointerException if name or rootVersionis null
+	 *            * @throws NullPointerException if name or version is null
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextBuilder(final String name, final Version rootVersion, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+	public MetaEntityContextBuilder(final String name, final Version version, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
 			IllegalArgumentException {
 		super();
-		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		this.name = name;
-		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		this.metaAttributes = (metaAttributes != null ? metaAttributes : new LinkedHashSet<MetaAttribute>());
+		metaEntityDefinitionBuilder = new MetaEntityDefinitionBuilder(name, version, metaAttributes);
 		this.extendedMetaEntityDefinitions = extendedMetaEntityDefinitions != null ? extendedMetaEntityDefinitions : new LinkedHashSet<MetaEntityDefinition>();
 	}
 
 	@Override
 	public MetaEntityContext build() {
+		metaEntityDefinitionBuilder.build()
 		return new MetaEntityContextDefinition(name, rootVersion, metaAttributes, extendedMetaEntityDefinitions);
 	}
 

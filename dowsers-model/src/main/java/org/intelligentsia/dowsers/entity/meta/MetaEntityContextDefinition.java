@@ -47,7 +47,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	/**
 	 * Meta root entity version.
 	 */
-	private final Version rootVersion;
+	private final Version version;
 
 	/**
 	 * Map of MetaEntityDefinition.
@@ -65,8 +65,8 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	 * 
 	 * @param name
 	 *            entity name
-	 * @param rootVersion
-	 *            root version if {@link MetaEntity} definition
+	 * @param version
+	 *            version of {@link MetaEntity} definition
 	 * @param metaAttributes
 	 *            collection of {@link MetaAttribute} define by root version
 	 * @param extendedMetaEntityDefinitions
@@ -76,12 +76,12 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntityContextDefinition(final String name, final Version rootVersion, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
+	public MetaEntityContextDefinition(final String name, final Version version, final Collection<MetaAttribute> metaAttributes, final Collection<MetaEntityDefinition> extendedMetaEntityDefinitions) throws NullPointerException,
 			IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
-		this.rootVersion = Preconditions.checkNotNull(rootVersion);
-		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(rootVersion, new MetaEntityDefinition(name, rootVersion, Preconditions.checkNotNull(metaAttributes)));
+		this.version = Preconditions.checkNotNull(version);
+		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(version, new MetaEntityDefinition(name, version, Preconditions.checkNotNull(metaAttributes)));
 		if (extendedMetaEntityDefinitions != null) {
 			final ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
 			for (final MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
@@ -144,7 +144,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 
 	@Override
 	public Version version() {
-		return rootVersion;
+		return version;
 	}
 
 	@Override

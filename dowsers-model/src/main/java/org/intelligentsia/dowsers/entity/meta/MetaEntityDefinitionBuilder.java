@@ -50,7 +50,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	/**
 	 * Set of meta properties.
 	 */
-	private Set<MetaAttribute> metaAttributes = Sets.newLinkedHashSet();
+	private Collection<MetaAttribute> metaAttributes = Sets.newLinkedHashSet();
 
 	/**
 	 * {@link MetaEntityContextBuilder} instance.
@@ -84,11 +84,11 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public MetaEntityDefinitionBuilder(final String name, final Version version, final Set<MetaAttribute> metaProperties) throws NullPointerException {
+	public MetaEntityDefinitionBuilder(final String name, final Version version, final Collection<MetaAttribute> metaAttributes) throws NullPointerException {
 		super();
 		this.name = Preconditions.checkNotNull(name);
 		this.version = Preconditions.checkNotNull(version);
-		this.metaAttributes = Preconditions.checkNotNull(metaProperties);
+		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 		metaEntityContextBuilder = null;
 	}
 
@@ -166,9 +166,9 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	}
 
 	/**
-	 * @return {@link Set} of {@link MetaAttribute}.
+	 * @return {@link Collection} of {@link MetaAttribute}.
 	 */
-	public Set<MetaAttribute> metaAttributes() {
+	public Collection<MetaAttribute> metaAttributes() {
 		return metaAttributes;
 	}
 
