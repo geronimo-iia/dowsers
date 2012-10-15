@@ -41,16 +41,17 @@ public class MockMetaEntityContextRepository implements MetaEntityContextReposit
 	public MockMetaEntityContextRepository() {
 		super();
 		metaEntityContexts = Maps.newHashMap();
-		metaEntityContexts.put(SampleEntity.class.getName(),
-				new MetaEntityContextBuilder(SampleEntity.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null)).build());
+		metaEntityContexts
+				.put(SampleEntity.class.getName(),
+						new MetaEntityContextBuilder(SampleEntity.class.getName(), new Version(1)).metaAttributes(new MetaAttributeDefinition("name", String.class, null)).metaAttributes(new MetaAttributeDefinition("description", String.class, null))
+								.build());
 		metaEntityContexts.put(
 				CustomizableSampleEntity.class.getName(),
-				new MetaEntityContextBuilder(CustomizableSampleEntity.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null))
-						.add(new MetaAttributeDefinition("order", Long.class, null)).build());
-		metaEntityContexts.put(
-				SampleEntityMetaAware.class.getName(),
-				new MetaEntityContextBuilder(SampleEntityMetaAware.class.getName(), new Version(1)).add(new MetaAttributeDefinition("name", String.class, null)).add(new MetaAttributeDefinition("description", String.class, null))
-						.add(new MetaAttributeDefinition("order", Long.class, null)).build());
+				new MetaEntityContextBuilder(CustomizableSampleEntity.class.getName(), new Version(1)).metaAttributes(new MetaAttributeDefinition("name", String.class, null))
+						.metaAttributes(new MetaAttributeDefinition("description", String.class, null)).metaAttributes(new MetaAttributeDefinition("order", Long.class, null)).build());
+		metaEntityContexts.put(SampleEntityMetaAware.class.getName(),
+				new MetaEntityContextBuilder(SampleEntityMetaAware.class.getName(), new Version(1)).metaAttributes(new MetaAttributeDefinition("name", String.class, null))
+						.metaAttributes(new MetaAttributeDefinition("description", String.class, null)).metaAttributes(new MetaAttributeDefinition("order", Long.class, null)).build());
 	}
 
 	@Override

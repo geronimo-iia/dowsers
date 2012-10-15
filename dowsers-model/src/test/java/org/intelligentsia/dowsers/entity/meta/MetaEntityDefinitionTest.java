@@ -102,10 +102,10 @@ public class MetaEntityDefinitionTest {
 
 		new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).build();
 
-		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).add(new MetaAttributeDefinition("desc", String.class, "")).build();
+		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).metaAttributes(new MetaAttributeDefinition("desc", String.class, "")).build();
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
-		assertTrue(definition.metaAttributes().hasNext());
+		assertTrue(!definition.metaAttributes().isEmpty());
 		final MetaAttribute metaAttribute = definition.metaAttributes("desc");
 		assertNotNull(metaAttribute);
 
