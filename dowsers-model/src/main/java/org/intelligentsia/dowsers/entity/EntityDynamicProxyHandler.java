@@ -22,6 +22,7 @@ package org.intelligentsia.dowsers.entity;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
 
@@ -77,9 +78,9 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		}
 		// Dynamic Stuff based on Getter/Setter pattern
 		if (methodName.startsWith("get")) {
-			return entity.attribute(toFieldName(methodName));
+			return entity.attribute(Reflection.toFieldName(methodName));
 		} else if (methodName.startsWith("set")) {
-			entity.attribute(toFieldName(methodName), args[0]);
+			entity.attribute(Reflection.toFieldName(methodName), args[0]);
 			// setter should return void
 			return proxy;
 		}
@@ -140,8 +141,4 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		return this;
 	}
 
-	protected static String toFieldName(final String methodName) {
-		final String name = methodName.substring(3);
-		return name.substring(0, 1).toLowerCase() + name.substring(1);
-	}
 }

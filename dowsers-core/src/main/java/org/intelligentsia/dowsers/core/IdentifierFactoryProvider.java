@@ -27,9 +27,9 @@ import java.util.UUID;
  * This provider declare a method in order to generate new identifier using an
  * IdentifierFactory implementation.
  * 
- * <pre>IdentifierFactoryProvider.generateNewIdentifier();
- * 
  * <pre>
+ * IdentifierFactoryProvider.generateNewIdentifier();
+ * </pre>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

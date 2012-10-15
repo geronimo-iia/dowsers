@@ -87,6 +87,46 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 	}
 
 	/**
+	 * Add a new instance of <code>MetaAttributeDefinition</code>.
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @param valueClass
+	 *            value class
+	 * @param defaultValue
+	 *            default value
+	 * @return this {@link MetaEntityContextBuilder} instance.
+	 * @throws NullPointerException
+	 *             if name or valueClass is null
+	 * @throws IllegalArgumentException
+	 *             if name is empty
+	 * @throws IllegalStateException
+	 *             if value is not assignable to specified value class
+	 */
+	public MetaEntityContextBuilder metaAttribute(final String name, final Class<?> valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		this.metaEntityDefinitionBuilder.metaAttribute(name, valueClass, defaultValue);
+		return this;
+	}
+
+	/**
+	 * Add a new instance of <code>MetaAttributeDefinition</code>.
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @param valueClass
+	 *            value class
+	 * @return this {@link MetaEntityContextBuilder} instance.
+	 * @throws NullPointerException
+	 *             if name or valueClass is null
+	 * @throws IllegalArgumentException
+	 *             if name is empty
+	 */
+	public MetaEntityContextBuilder metaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
+		this.metaEntityDefinitionBuilder.metaAttribute(name, valueClass);
+		return this;
+	}
+
+	/**
 	 * @param metaAttributes
 	 *            a {@link Collection} of {@link MetaAttribute} to set
 	 * @return this {@link MetaEntityContextBuilder} instance

@@ -84,7 +84,7 @@ public class EntityDowsersException extends DowsersException {
 	 * 
 	 * @param cause
 	 */
-	public EntityDowsersException(Throwable cause) {
+	public EntityDowsersException(final Throwable cause) {
 		super(cause);
 		this.identity = null;
 	}

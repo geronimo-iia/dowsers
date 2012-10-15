@@ -44,7 +44,7 @@ public class DowsersException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public DowsersException(String message, Throwable cause) {
+	public DowsersException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -53,7 +53,7 @@ public class DowsersException extends RuntimeException {
 	 * 
 	 * @param message
 	 */
-	public DowsersException(String message) {
+	public DowsersException(final String message) {
 		super(message);
 	}
 
@@ -62,7 +62,7 @@ public class DowsersException extends RuntimeException {
 	 * 
 	 * @param cause
 	 */
-	public DowsersException(Throwable cause) {
+	public DowsersException(final Throwable cause) {
 		super(cause);
 	}
 

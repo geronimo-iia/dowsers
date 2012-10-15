@@ -19,11 +19,20 @@
  */
 package org.intelligentsia.dowsers.entity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
- * EntityBeanSupport extends {@link EntitySupport}. This is teh base class for
+ * EntityBeanSupport extends {@link EntitySupport}. This is the base class for
  * all POJO {@link Entity}.
+ * 
+ * First implementation of reflexive way. May we have a better deal with
+ * Attribute Handler way...
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -49,16 +58,102 @@ public class EntityBeanSupport extends EntitySupport {
 		super(identity, metaEntityContext);
 	}
 
+	/**
+	 * @throws IllegalStateException
+	 *             if an error occur when invoking method or field.
+	 * @see org.intelligentsia.dowsers.entity.Entity#attribute(java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public <Value> Value attribute(final String name) throws NullPointerException {
-		// TODO implements this
+	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		Method method = findGetter(name);
+		if (method != null) {
+			try {
+				return (Value) method.invoke(this);
+			} catch (Throwable e) {
+				throw new IllegalStateException(e);
+			}
+		}
+		Field field = Reflection.findField(getClass(), name);
+		if (field != null) {
+			try {
+				return (Value) field.get(this);
+			} catch (Throwable e) {
+				throw new IllegalStateException(e);
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
-		// TODO implements this
+		Method method = findSetter(name, value.getClass());
+		if (method != null) {
+			try {
+				method.invoke(this, value);
+			} catch (Throwable e) {
+				throw new IllegalStateException(e);
+			}
+		}
+		Field field = Reflection.findField(getClass(), name);
+		if (field != null) {
+			try {
+				field.set(this, value);
+			} catch (Throwable e) {
+				throw new IllegalStateException(e);
+			}
+		}
 		return this;
+	}
+
+	/**
+	 * Try to find a setter method associated with the specified name. Try to
+	 * find {name}(<T>) or 'set'{Capitalize({name})}(<T>)
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @param class1
+	 *            attribut type
+	 * @return a {@link Method} instance or null if none is found
+	 */
+	@VisibleForTesting
+	Method findSetter(String name, Class<? extends Object> argClazz) {
+		String methodName = Reflection.capitalize("set", name);
+		Method[] methods = getClass().getDeclaredMethods();
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && method.getParameterTypes().length == 1 && argClazz.isAssignableFrom(method.getParameterTypes()[0]) && Void.TYPE == method.getReturnType()) {
+				if (!method.isAccessible()) {
+					method.setAccessible(true);
+				}
+				return method;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Try to find a getter method associated with the specified name. Try to
+	 * find {name}():<T> or 'get'{Capitalize({name})}():<T>
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @return a {@link Method} instance or null if none is found
+	 */
+	@VisibleForTesting
+	Method findGetter(String name) {
+		String methodName = Reflection.capitalize("get", name);
+		Method[] methods = getClass().getDeclaredMethods();
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && method.getParameterTypes().length == 0) {
+				if (!method.isAccessible()) {
+					method.setAccessible(true);
+				}
+				return method;
+			}
+		}
+		return null;
 	}
 
 }

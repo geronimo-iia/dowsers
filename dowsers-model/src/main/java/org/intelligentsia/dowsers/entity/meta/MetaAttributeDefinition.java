@@ -104,7 +104,7 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 
 	@Override
 	public MetaEntityContext metaEntityContext() {
-		return null;
+		return MetaModel.getMetaAttributModel();
 	}
 
 	@Override
