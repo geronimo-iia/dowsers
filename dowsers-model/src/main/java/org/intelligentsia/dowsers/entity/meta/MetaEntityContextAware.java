@@ -22,7 +22,8 @@ package org.intelligentsia.dowsers.entity.meta;
 import org.intelligentsia.dowsers.entity.Entity;
 
 /**
- * {@link MetaEntityContextAware} declare methods to access at {@link MetaEntityContext}.
+ * {@link MetaEntityContextAware} declare methods to access at
+ * {@link MetaEntityContext}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */

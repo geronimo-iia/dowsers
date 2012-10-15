@@ -42,6 +42,8 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
+import com.google.common.collect.ImmutableCollection;
+
 /**
  * A {@link MetaEntity} define:
  * <ul>
@@ -72,7 +74,7 @@ import org.intelligentsia.keystone.api.artifacts.Version;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface MetaEntity {
+public interface MetaEntity extends Iterable<MetaAttribute> {
 
 	/**
 	 * Returns a textual class name of the entity.
@@ -82,10 +84,9 @@ public interface MetaEntity {
 	String name();
 
 	/**
-	 * @return an read only {@link ReadOnlyIterator} on {@link MetaAttribute}
-	 *         collection.
+	 * @return an {@link ImmutableCollection} on {@link MetaAttribute}.
 	 */
-	ReadOnlyIterator<MetaAttribute> metaAttributes();
+	ImmutableCollection<MetaAttribute> metaAttributes();
 
 	/**
 	 * Define {@link MetaEntity} version of associated {@link Entity}.

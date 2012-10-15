@@ -20,6 +20,7 @@
 package org.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
@@ -28,7 +29,9 @@ import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * {@link MetaEntityDefinition} is a version of an {@link MetaEntity}.
@@ -114,7 +117,16 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaAttribute> metaAttributes() {
+	public ImmutableCollection<MetaAttribute> metaAttributes() {
+		return ImmutableSet.copyOf(metaAttributes.values());
+	}
+
+	/**
+	 * @return a {@link ReadOnlyIterator} on {@link MetaAttribute}.
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<MetaAttribute> iterator() {
 		return ReadOnlyIterator.newReadOnlyIterator(metaAttributes.values().iterator());
 	}
 

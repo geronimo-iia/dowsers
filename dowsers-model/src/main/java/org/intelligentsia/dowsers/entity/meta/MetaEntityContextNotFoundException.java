@@ -49,7 +49,7 @@ public class MetaEntityContextNotFoundException extends DowsersException {
 	 * @param message
 	 * @param cause
 	 */
-	public MetaEntityContextNotFoundException(String message, Throwable cause) {
+	public MetaEntityContextNotFoundException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -58,7 +58,7 @@ public class MetaEntityContextNotFoundException extends DowsersException {
 	 * 
 	 * @param message
 	 */
-	public MetaEntityContextNotFoundException(String message) {
+	public MetaEntityContextNotFoundException(final String message) {
 		super(message);
 	}
 
@@ -67,7 +67,7 @@ public class MetaEntityContextNotFoundException extends DowsersException {
 	 * 
 	 * @param cause
 	 */
-	public MetaEntityContextNotFoundException(Throwable cause) {
+	public MetaEntityContextNotFoundException(final Throwable cause) {
 		super(cause);
 	}
 

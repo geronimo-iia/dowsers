@@ -22,7 +22,6 @@ package org.intelligentsia.dowsers.entity.meta;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.intelligentsia.dowsers.core.Builder;
 import org.intelligentsia.keystone.api.artifacts.Version;
@@ -64,12 +63,7 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 *            base definition to copy.
 	 */
 	public MetaEntityDefinitionBuilder(final MetaEntityDefinition metaEntityDefinition) {
-		this(metaEntityDefinition.name(), metaEntityDefinition.version(), Sets.newLinkedHashSet(new Iterable<MetaAttribute>() {
-			@Override
-			public Iterator<MetaAttribute> iterator() {
-				return metaEntityDefinition.metaAttributes();
-			}
-		}));
+		this(metaEntityDefinition.name(), metaEntityDefinition.version(), metaEntityDefinition.metaAttributes());
 	}
 
 	/**
@@ -131,9 +125,16 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	public MetaEntityDefinition build() throws NullPointerException, IllegalArgumentException {
 		final MetaEntityDefinition definition = new MetaEntityDefinition(name, version, metaAttributes);
 		if (metaEntityContextBuilder != null) {
-			metaEntityContextBuilder.add(definition);
+			metaEntityContextBuilder.metaEntityDefinitions(definition);
 		}
 		return definition;
+	}
+
+	/**
+	 * @return name.
+	 */
+	public String name() {
+		return name;
 	}
 
 	/**
@@ -150,6 +151,13 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		return this;
+	}
+
+	/**
+	 * @return {@link Version}
+	 */
+	public Version version() {
+		return version;
 	}
 
 	/**
@@ -176,12 +184,12 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * Add a set of {@link MetaAttribute}.
 	 * 
 	 * @param metaAttributes
-	 *            {@link Set} of {@link MetaAttribute} to add.
+	 *            {@link Collection} of {@link MetaAttribute} to add.
 	 * @return this {@link MetaEntityDefinitionBuilder} instance.
 	 * @throws NullPointerException
 	 *             if metaAttributes is null
 	 */
-	public MetaEntityDefinitionBuilder metaAttributes(final Set<MetaAttribute> metaAttributes) throws NullPointerException {
+	public MetaEntityDefinitionBuilder metaAttributes(final Collection<MetaAttribute> metaAttributes) throws NullPointerException {
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 		return this;
 	}
@@ -190,12 +198,12 @@ public class MetaEntityDefinitionBuilder implements Builder<MetaEntityDefinition
 	 * Add a set of {@link MetaAttribute}.
 	 * 
 	 * @param metaAttributes
-	 *            {@link Set} of {@link MetaAttribute} to add.
+	 *            {@link Collection} of {@link MetaAttribute} to add.
 	 * @return this {@link MetaEntityDefinitionBuilder} instance.
 	 * @throws NullPointerException
 	 *             if metaAttributes is null
 	 */
-	public MetaEntityDefinitionBuilder add(final MetaAttribute... metaAttributes) throws NullPointerException {
+	public MetaEntityDefinitionBuilder metaAttributes(final MetaAttribute... metaAttributes) throws NullPointerException {
 		this.metaAttributes.addAll(Arrays.asList(Preconditions.checkNotNull(metaAttributes)));
 		return this;
 	}

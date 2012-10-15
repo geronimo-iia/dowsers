@@ -29,6 +29,7 @@ import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -83,6 +84,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 		this.version = Preconditions.checkNotNull(version);
 		final ImmutableMap.Builder<Version, MetaEntityDefinition> builder = new ImmutableMap.Builder<Version, MetaEntityDefinition>().put(version, new MetaEntityDefinition(name, version, Preconditions.checkNotNull(metaAttributes)));
 		if (extendedMetaEntityDefinitions != null) {
+			// tranform collection into a map and build extendedAttributesNames.
 			final ImmutableSet.Builder<String> extendedPropertyNamesBuilder = new ImmutableSet.Builder<String>();
 			for (final MetaEntityDefinition metaEntityDefinition : extendedMetaEntityDefinitions) {
 				builder.put(metaEntityDefinition.version(), metaEntityDefinition);
@@ -119,17 +121,31 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public ReadOnlyIterator<MetaAttribute> metaAttributes() {
+	public ImmutableCollection<MetaAttribute> metaAttributes() {
+		final ImmutableSet.Builder<MetaAttribute> builder = ImmutableSet.builder();
+		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
+		while (iterator.hasNext()) {
+			builder.addAll(iterator.next());
+		}
+		return builder.build();
+	}
+
+	/**
+	 * @return a {@link ReadOnlyIterator} on {@link MetaAttribute}.
+	 * @see java.lang.Iterable#iterator()
+	 */
+	@Override
+	public Iterator<MetaAttribute> iterator() {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		return new ReadOnlyIterator<MetaAttribute>() {
-
-			ReadOnlyIterator<MetaAttribute> current = iterator.next().metaAttributes();
+			// current iterator on meta entity definition
+			Iterator<MetaAttribute> current = iterator.next().iterator();
 
 			@Override
 			public boolean hasNext() {
 				boolean result = current.hasNext();
 				if (!result && iterator.hasNext()) {
-					current = iterator.next().metaAttributes();
+					current = iterator.next().iterator();
 					result = current.hasNext();
 				}
 				return result;
@@ -153,7 +169,7 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public MetaEntity metaEntity(final Version version) throws NullPointerException, IllegalStateException {
+	public MetaEntity metaEntity(final Version version) throws NullPointerException {
 		return metaEntityDefinitions.get(version);
 	}
 
