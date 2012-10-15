@@ -18,18 +18,17 @@
 
 ====
 
-   =========================================================================
-   ==  Example NOTICE file for use with the Apache License, Version 2.0,  ==
-   ==  in this case for the intelligents-ia dowsers project.              ==
-   =========================================================================
-
-
-   Dowsers
-   Copyright 2012 Guibert Jerome
-
-   This software contains code derived from the Hibernate, Relational Persistence 
-   for Idiomatic Java (Lesser General Public License).
 
 
 
-  From http://www.artima.com/weblogs/viewpost.jsp?thread=208860: generic type discovery
+Class type serialization
+Reflection cache
+Reflection clone
+Behaviors dynamic
+Test unit on all element
+Entity mapper
+Identity of entity, attribut, meta entity, meta attribut
+
+ 
+
+

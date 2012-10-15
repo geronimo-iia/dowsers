@@ -19,7 +19,9 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
-import java.util.Collection;
+import java.lang.reflect.Type;
+
+import com.google.common.collect.ImmutableCollection;
 
 import org.intelligentsia.keystone.api.artifacts.Version;
 
@@ -53,7 +55,7 @@ public enum MetaModel {
 				// name
 				.metaAttribute("name", String.class)
 				// value TODO find class type
-				.metaAttribute("valueClass", Object.class)
+				.metaAttribute("valueClass", Type.class)
 				// default value
 				.metaAttribute("defaultValue", Object.class).build();
 
@@ -65,7 +67,7 @@ public enum MetaModel {
 				// version
 				.metaAttribute("version", Version.class, MetaModel.VERSION)
 				// attributes TODO find class type
-				.metaAttribute("metaAttributes", Collection.class).build();
+				.metaAttribute("metaAttributes", ImmutableCollection.class).build();
 	}
 
 	/**
