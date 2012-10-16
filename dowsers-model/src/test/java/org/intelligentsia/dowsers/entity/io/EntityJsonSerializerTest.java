@@ -34,6 +34,7 @@ import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.MockMetaEntityContextRepository;
 import org.intelligentsia.dowsers.entity.SampleEntity;
+import org.intelligentsia.dowsers.entity.io.serializer.EntityJsonModule;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 import org.junit.Test;
 

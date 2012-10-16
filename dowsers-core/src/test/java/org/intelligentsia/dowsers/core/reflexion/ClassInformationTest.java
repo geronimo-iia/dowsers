@@ -30,7 +30,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.intelligentsia.dowsers.core.io.JacksonSerializer;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.junit.Test;
 
@@ -145,4 +151,21 @@ public class ClassInformationTest {
 		}
 	}
 
+	@Test
+	public void testJsonSerialization() throws JsonGenerationException, JsonMappingException, IOException {
+		final ObjectMapper mapper = JacksonSerializer.getMapper();
+		final StringWriter writer = new StringWriter();
+
+		final ClassInformation information = new ClassInformation(new StringList());
+		mapper.writeValue(writer, information);
+		final String result = writer.toString();
+		assertNotNull(result);
+		assertEquals("{\"classInformation\":\"org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>\"}", result);
+
+		final ClassInformation classInformation = mapper.readValue(new StringReader(result), ClassInformation.class);
+		assertTrue(!classInformation.getGenericClass().isEmpty());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>", classInformation.toString());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList", classInformation.getType().getName());
+		assertEquals("java.lang.String", classInformation.getGenericClass().get(0).getName());
+	}
 }

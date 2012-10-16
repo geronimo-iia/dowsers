@@ -19,32 +19,40 @@
  */
 package org.intelligentsia.dowsers.core.io.serializers;
 
-import java.util.Locale;
+import java.io.IOException;
 
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.deser.std.StdDeserializer;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
 /**
- * DowsersJacksonModule.
+ * 
+ * ClassInformationDeserializer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class DowsersJacksonModule extends SimpleModule {
+public class ClassInformationDeserializer extends StdDeserializer<ClassInformation> {
 
-	/**
-	 * Build a new instance of DowsersJacksonModule.java.
-	 */
-	public DowsersJacksonModule() {
-		super("dowsers-jackson-core", VersionUtil.versionFor(DowsersJacksonModule.class));
-
-		addKeyDeserializer(Locale.class, new LocaleKeyDeserializer());
-
-		addSerializer(new LocaleJsonSerializer());
-		addDeserializer(Locale.class, new LocaleJsonDeserializer());
-
-		addSerializer(new ClassInformationSerializer());
-		addDeserializer(ClassInformation.class, new ClassInformationDeserializer());
+	public ClassInformationDeserializer() {
+		super(ClassInformation.class);
 	}
+
+	@Override
+	public ClassInformation deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		String description = null;
+
+		if (jp.hasCurrentToken()) {
+			if (jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
+				jp.nextValue();
+				description = jp.getText();
+				jp.nextToken();
+			}
+		}
+
+		return description != null ? ClassInformation.parse(description) : null;
+	}
+
 }

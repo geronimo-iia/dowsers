@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity.io;
+package org.intelligentsia.dowsers.entity.io.serializer;
 
 import java.io.IOException;
 import java.util.Map;

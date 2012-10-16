@@ -17,12 +17,15 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity.io;
+package org.intelligentsia.dowsers.entity.io.serializer;
 
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.util.VersionUtil;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.meta.MetaAttributeDefinition;
+import org.intelligentsia.dowsers.entity.meta.MetaEntityContextDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
+import org.intelligentsia.dowsers.entity.meta.MetaEntityDefinition;
 
 /**
  * EntityJsonModule.
@@ -40,8 +43,19 @@ public class EntityJsonModule extends SimpleModule {
 	 */
 	public EntityJsonModule(final MetaEntityContextRepository metaEntityContextRepository) {
 		super("entity-json-module", VersionUtil.versionFor(EntityJsonModule.class));
+
 		addDeserializer(EntityDynamicSupport.class, new EntityDynamicJsonDeSerializer(metaEntityContextRepository));
 		addSerializer(EntityDynamicSupport.class, new EntityDynamicJsonSerializer());
+
+		addDeserializer(MetaAttributeDefinition.class, new MetaAttributeDefinitionDeSerializer());
+		addSerializer(MetaAttributeDefinition.class, new MetaAttributeDefinitionSerializer());
+
+		addDeserializer(MetaEntityDefinition.class, new MetaEntityDefinitionDeserializer());
+		addSerializer(MetaEntityDefinition.class, new MetaEntityDefinitionSerializer());
+
+		addDeserializer(MetaEntityContextDefinition.class, new MetaEntityContextDefinitionDeSerializer());
+		addSerializer(MetaEntityContextDefinition.class, new MetaEntityContextDefinitionSerializer());
+
 	}
 
 }

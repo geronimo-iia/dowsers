@@ -17,46 +17,35 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity.io;
+package org.intelligentsia.dowsers.core.io.serializers;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
-import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
-import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
 /**
- * EntityDynamicJsonSerializer.
+ * ClassInformationSerializer.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityDynamicJsonSerializer extends SerializerBase<EntityDynamicSupport> {
+public class ClassInformationSerializer extends SerializerBase<ClassInformation> {
 
-	/**
-	 * Build a new instance of EntityDynamicJsonSerializer.java.
-	 */
-	public EntityDynamicJsonSerializer() {
-		super(EntityDynamicSupport.class);
+	public ClassInformationSerializer() {
+		super(ClassInformation.class);
 	}
 
 	@Override
-	public void serialize(final EntityDynamicSupport value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+	public void serialize(final ClassInformation value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 		jgen.writeStartObject();
-		jgen.writeStringField("identity", value.identity());
-		jgen.writeStringField("meta-entity-context-name", value.metaEntityContext().name());
-		jgen.writeFieldName("attributes");
-		jgen.writeStartObject();
-		final Iterator<MetaAttribute> iterator = value.metaEntityContext().iterator();
-		while (iterator.hasNext()) {
-			final MetaAttribute metaAttribute = iterator.next();
-			jgen.writeObjectField(metaAttribute.name(), value.attribute(metaAttribute.name()));
+		if (value != null) {
+			jgen.writeStringField("classInformation", value.getDescription());
 		}
 		jgen.writeEndObject();
-		jgen.writeEndObject();
+
 	}
 
 }

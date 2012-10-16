@@ -143,7 +143,7 @@ public class ReflectionTest {
 
 	@Test
 	public void testObjectAnalyze() {
-		List<Class<?>> list = Reflection.findGenericClass(Object.class);
+		final List<Class<?>> list = Reflection.findGenericClass(Object.class);
 		assertNotNull(list);
 		assertTrue(list.isEmpty());
 	}
