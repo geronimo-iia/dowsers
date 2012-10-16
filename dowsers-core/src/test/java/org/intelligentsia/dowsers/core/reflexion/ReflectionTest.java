@@ -87,7 +87,7 @@ public class ReflectionTest {
 	}
 
 	@Test
-	public void testfindGenericClass() {
+	public void testfindGenericClassInstance() {
 		// dummy
 		assertEquals("java.lang.String", String.class.getName());
 		List<String> dummy = Lists.newArrayList();
@@ -110,6 +110,33 @@ public class ReflectionTest {
 		assertEquals(Long.class, list.get(1));
 
 		list = Reflection.findGenericClass(new String());
+		assertNotNull(list);
+		assertTrue(list.isEmpty());
+
+	}
+
+	@Test
+	public void testfindGenericClass() {
+		// dummy
+		assertEquals("java.lang.String", String.class.getName());
+		List<String> dummy = Lists.newArrayList();
+		// we love runtime type
+		assertEquals("java.util.ArrayList", dummy.getClass().getName());
+
+		List<Class<?>> list = Reflection.findGenericClass(StringList.class);
+		assertNotNull(list);
+		assertTrue(!list.isEmpty());
+		assertTrue(list.size() == 1);
+		assertEquals(String.class, list.get(0));
+
+		list = Reflection.findGenericClass(StringListFinal.class);
+		assertNotNull(list);
+		assertTrue(!list.isEmpty());
+		assertTrue(list.size() == 2);
+		assertEquals(Integer.class, list.get(0));
+		assertEquals(Long.class, list.get(1));
+
+		list = Reflection.findGenericClass(String.class);
 		assertNotNull(list);
 		assertTrue(list.isEmpty());
 

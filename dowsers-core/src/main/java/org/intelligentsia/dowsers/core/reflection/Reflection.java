@@ -89,14 +89,13 @@ public enum Reflection {
 	/**
 	 * Get all generic class of specified instance.
 	 * 
-	 * @param instance
+	 * @param clazz
+	 *            class to analyse
 	 * @return a {@link List} of generic {@link Class}>
 	 */
-	public static List<Class<?>> findGenericClass(Object instance) {
+	public static List<Class<?>> findGenericClass(Class<?> clazz) {
+		Type type = clazz.getGenericSuperclass();
 		Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
-
-		Type type = instance.getClass().getGenericSuperclass();
-
 		if (type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) type;
 			Class<?> rawType = (Class<?>) parameterizedType.getRawType();
@@ -106,7 +105,6 @@ public enum Reflection {
 				resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
 			}
 		}
-
 		// finally, for each actual type argument provided to baseClass,
 		// determine (if possible)
 		// the raw class for that type argument.
@@ -125,6 +123,17 @@ public enum Reflection {
 			typeArgumentsAsClasses.add(getClass(baseType));
 		}
 		return typeArgumentsAsClasses;
+	}
+
+	/**
+	 * Get all generic class of specified instance.
+	 * 
+	 * @param instance
+	 *            object instance to analyse
+	 * @return a {@link List} of generic {@link Class}>
+	 */
+	public static List<Class<?>> findGenericClass(Object instance) {
+		return findGenericClass(instance.getClass());
 	}
 
 	/**
