@@ -21,7 +21,8 @@ package org.intelligentsia.dowsers.entity;
 
 import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import org.intelligentsia.utilities.StringUtils;
+import org.intelligentsia.keystone.api.StringUtils;
+
 
 /**
  * MetaEntityValidator validate {@link Entity} against {@link MetaEntityContext}
@@ -70,7 +71,7 @@ public class MetaEntityValidator extends EntityDecorator {
 			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, metaEntityContext().name()));
 		}
 		if ((value != null) && !metaAttribute.valueClass().isAssignableFrom(value.getClass())) {
-			throw new IllegalArgumentException(StringUtils.format("Invalid value of attribute %s for entity %s. Expected %s.", name, metaEntityContext().name(), metaAttribute.valueClass().getName()));
+			throw new IllegalArgumentException(StringUtils.format("Invalid value of attribute %s for entity %s. Expected %s.", name, metaEntityContext().name(), metaAttribute.valueClass()));
 		}
 		return super.attribute(name, value);
 	}

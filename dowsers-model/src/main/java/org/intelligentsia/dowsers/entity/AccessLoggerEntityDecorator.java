@@ -22,7 +22,7 @@ package org.intelligentsia.dowsers.entity;
 import java.io.PrintStream;
 
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import org.intelligentsia.utilities.StringUtils;
+import org.intelligentsia.keystone.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 

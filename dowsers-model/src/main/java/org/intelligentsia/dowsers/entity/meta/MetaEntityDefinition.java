@@ -57,6 +57,11 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	private final Map<String, MetaAttribute> metaAttributes;
 
 	/**
+	 * Identity.
+	 */
+	private final transient String identity;
+
+	/**
 	 * Build a new instance of {@link MetaEntityDefinition}.
 	 * 
 	 * @param definition
@@ -87,11 +92,14 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
 		this.version = Preconditions.checkNotNull(version);
+		// copy meta attributes
 		final ImmutableMap.Builder<String, MetaAttribute> builder = new ImmutableMap.Builder<String, MetaAttribute>();
 		for (final MetaAttribute metaAttribute : Preconditions.checkNotNull(metaAttributes)) {
 			builder.put(metaAttribute.name(), new MetaAttributeDefinition(metaAttribute));
 		}
 		this.metaAttributes = builder.build();
+		// generate identity
+		identity = new StringBuilder(name).append(':').append(version.toString()).toString();
 	}
 
 	@Override
@@ -183,17 +191,31 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 
 	@Override
 	public String identity() {
-		return null;
+		return identity;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkState(!"".equals(Preconditions.checkNotNull(name)));
+		if ("name".equals(name)) {
+			return (Value) name();
+		} else if ("version".equals(name)) {
+			return (Value) version();
+		} else if ("metaAttributes".equals(name)) {
+			return (Value) metaAttributes();
+		}
 		return null;
 	}
 
+	/**
+	 * Always throw IllegalStateException:a {@link MetaEntity} is Immutable.
+	 * 
+	 * @throw IllegalStateException
+	 */
 	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		return this;
+	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
+		throw new IllegalStateException("Meta Entity Immutable");
 	}
 
 	@Override

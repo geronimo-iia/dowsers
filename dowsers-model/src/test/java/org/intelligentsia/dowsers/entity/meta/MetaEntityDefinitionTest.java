@@ -49,7 +49,7 @@ public class MetaEntityDefinitionTest {
 		assertNotNull(definition);
 		assertEquals(definition.name(), base.name());
 		assertEquals(definition.version(), base.version());
-
+		assertEquals(definition.metaAttributes(), base.metaAttributes());
 	}
 
 	@Test
@@ -80,9 +80,9 @@ public class MetaEntityDefinitionTest {
 		}
 		final MetaEntityDefinition definition = new MetaEntityDefinition("name", new Version(1), new ArrayList<MetaAttribute>());
 		assertNotNull(definition);
-
 		assertEquals("name", definition.name());
 		assertEquals(new Version(1), definition.version());
+		assertTrue(definition.metaAttributes().isEmpty());
 	}
 
 	@Test
@@ -102,15 +102,21 @@ public class MetaEntityDefinitionTest {
 
 		new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).build();
 
-		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().name("test").version(new Version(1)).metaAttributes(new MetaAttributeDefinition("desc", String.class, "")).build();
+		final MetaEntityDefinition definition = new MetaEntityDefinitionBuilder().
+		// name
+				name("test").
+				// version
+				version(new Version(1)).
+				// attributes
+				metaAttributes(new MetaAttributeDefinition("desc", String.class, "")).build();
+
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertTrue(!definition.metaAttributes().isEmpty());
 		final MetaAttribute metaAttribute = definition.metaAttributes("desc");
 		assertNotNull(metaAttribute);
-
 		assertEquals("desc", metaAttribute.name());
-		assertEquals(String.class, metaAttribute.valueClass());
+		assertEquals(String.class, metaAttribute.valueClass().getType());
 		assertEquals("", metaAttribute.defaultValue());
 	}
 

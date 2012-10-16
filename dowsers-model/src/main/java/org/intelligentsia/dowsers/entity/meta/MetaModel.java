@@ -19,14 +19,13 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
-import java.lang.reflect.Type;
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.ImmutableCollection;
 
-import org.intelligentsia.keystone.api.artifacts.Version;
-
 /**
- * MetaModel define Meta model for of meta data..
+ * MetaModel define Meta model for of meta data.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
@@ -34,32 +33,32 @@ public enum MetaModel {
 	;
 
 	/**
-	 * Meta model version
+	 * Meta model version.
 	 */
 	private static final Version VERSION = new Version(1, 0, 0);
 
 	/**
 	 * Attribute meta model.
 	 */
-	private static final MetaEntityContext attribute;
+	private static final MetaEntityContext metaAttribute;
 
 	/**
 	 * Entity meta model.
 	 */
-	private static final MetaEntityContext entity;
+	private static final MetaEntityContext metaEntity;
 
 	static {
-		attribute = new MetaEntityContextBuilder(MetaAttribute.class.getName(), MetaModel.VERSION)
+		metaAttribute = new MetaEntityContextBuilder(MetaAttribute.class.getName(), MetaModel.VERSION)
 		// identity
 				.metaAttribute("identity", String.class)
 				// name
 				.metaAttribute("name", String.class)
 				// value TODO find class type
-				.metaAttribute("valueClass", Type.class)
+				.metaAttribute("valueClass", ClassInformation.class)
 				// default value
 				.metaAttribute("defaultValue", Object.class).build();
 
-		entity = new MetaEntityContextBuilder(MetaEntity.class.getName(), MetaModel.VERSION)
+		metaEntity = new MetaEntityContextBuilder(MetaEntity.class.getName(), MetaModel.VERSION)
 		// identity
 				.metaAttribute("identity", String.class)
 				// name
@@ -74,13 +73,13 @@ public enum MetaModel {
 	 * @return {@link MetaEntityContext} instance of {@link MetaAttribute}.
 	 */
 	public static MetaEntityContext getMetaAttributModel() {
-		return attribute;
+		return metaAttribute;
 	}
 
 	/**
 	 * @return {@link MetaEntityContext} instance of {@link MetaEntity}
 	 */
 	public static MetaEntityContext getMetaEntityModel() {
-		return entity;
+		return metaEntity;
 	}
 }

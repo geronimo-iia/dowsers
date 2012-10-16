@@ -21,6 +21,7 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.entity.Entity;
 
 import com.google.common.base.Objects;
@@ -41,7 +42,7 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	/**
 	 * attribute value class.
 	 */
-	private final Class<?> valueClass;
+	private final ClassInformation valueClass;
 
 	/**
 	 * attribute default value.
@@ -61,6 +62,27 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	}
 
 	/**
+	 * Build a new instance of MetaAttributeDefinition.java.
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @param valueClass
+	 *            value class
+	 * @param defaultValue
+	 *            default value
+	 * @throws NullPointerException
+	 *             if name or valueClass is null
+	 * @throws IllegalArgumentException
+	 *             if name is empty
+	 * @throws IllegalStateException
+	 *             if value is not assignable to specified value class
+	 * 
+	 */
+	public MetaAttributeDefinition(final String name, final Class<?> valueClass, final Object defaultValue) {
+		this(name, new ClassInformation(valueClass), defaultValue);
+	}
+
+	/**
 	 * Build a new instance of <code>MetaAttributeDefinition</code>.
 	 * 
 	 * @param name
@@ -76,7 +98,7 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	 * @throws IllegalStateException
 	 *             if value is not assignable to specified value class
 	 */
-	public MetaAttributeDefinition(final String name, final Class<?> valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttributeDefinition(final String name, final ClassInformation valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
@@ -113,7 +135,7 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	}
 
 	@Override
-	public Class<?> valueClass() {
+	public ClassInformation valueClass() {
 		return valueClass;
 	}
 

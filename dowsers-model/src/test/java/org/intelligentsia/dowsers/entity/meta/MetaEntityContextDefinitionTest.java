@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
+import org.junit.Test;
+
 /**
  * MetaEntityContextDefinitionTest.
  * 
@@ -26,6 +28,7 @@ package org.intelligentsia.dowsers.entity.meta;
  */
 public class MetaEntityContextDefinitionTest {
 
+	@Test
 	public void checkConstructorConstraint() {
 
 		// MetaEntityContextDefinition contextDefinition = new

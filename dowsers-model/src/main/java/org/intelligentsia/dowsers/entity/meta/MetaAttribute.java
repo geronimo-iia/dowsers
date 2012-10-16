@@ -21,6 +21,8 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
 /**
  * MetaAttribute: Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk
  * agh burzum-ishi krimpatul.
@@ -45,12 +47,13 @@ public interface MetaAttribute {
 	public String name();
 
 	/**
-	 * Returns the <code>{@link Class}</code> object representing the
+	 * Returns the <code>{@link ClassInformation}</code> object representing the
 	 * <code>Value</code> of attribute.
 	 * 
-	 * @return non-<code>null</code> <code>{@link Class}</code> instance
+	 * @return non-<code>null</code> <code>{@link ClassInformation}</code>
+	 *         instance
 	 */
-	public Class<?> valueClass();
+	public ClassInformation valueClass();
 
 	/**
 	 * Returns the attribute default value.
