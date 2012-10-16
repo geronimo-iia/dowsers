@@ -212,9 +212,14 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 		return null;
 	}
 
+	/**
+	 * Always throw IllegalStateException:a {@link MetaEntityContext} is Immutable.
+	 * 
+	 * @throw IllegalStateException
+	 */
 	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		return null;
+	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
+		throw new IllegalStateException("MetaEntityContext is Immutable");
 	}
 
 	@Override

@@ -21,6 +21,7 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.entity.Entity;
 
@@ -34,6 +35,10 @@ import com.google.common.base.Preconditions;
  * 
  */
 public class MetaAttributeDefinition implements MetaAttribute, Entity {
+	/**
+	 * Identity.
+	 */
+	private final String identity;
 	/**
 	 * attribute name.
 	 */
@@ -58,7 +63,7 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	 *             if metaAttribute is null
 	 */
 	public MetaAttributeDefinition(final MetaAttribute metaAttribute) throws NullPointerException {
-		this(Preconditions.checkNotNull(metaAttribute).name(), metaAttribute.valueClass(), metaAttribute.defaultValue());
+		this(Preconditions.checkNotNull(metaAttribute).name(), metaAttribute.valueClass(), metaAttribute.defaultValue(), metaAttribute.identity());
 	}
 
 	/**
@@ -99,19 +104,45 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 	 *             if value is not assignable to specified value class
 	 */
 	public MetaAttributeDefinition(final String name, final ClassInformation valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		this(name, valueClass, defaultValue, new StringBuilder(name).append(':').append(IdentifierFactoryProvider.generateNewIdentifier()).toString());
+	}
+
+	/**
+	 * Build a new instance of <code>MetaAttributeDefinition</code>.
+	 * 
+	 * @param name
+	 *            attribute name
+	 * @param valueClass
+	 *            value class
+	 * @param defaultValue
+	 *            default value
+	 * @param identity
+	 *            MetaAttribute's identity
+	 * @throws NullPointerException
+	 *             if name or identity or valueClass is null
+	 * @throws IllegalArgumentException
+	 *             if name or identity is empty
+	 * @throws IllegalStateException
+	 *             if value is not assignable to specified value class
+	 */
+	public MetaAttributeDefinition(final String name, final ClassInformation valueClass, final Object defaultValue, final String identity) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
+		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 		this.name = name;
 		this.valueClass = Preconditions.checkNotNull(valueClass);
 		this.defaultValue = defaultValue;
 		if (defaultValue != null) {
 			Preconditions.checkState(valueClass.isAssignableFrom(defaultValue.getClass()));
 		}
+		// generate identity
+		this.identity = identity;
 	}
 
 	@Override
 	public String identity() {
-		return null;
+		return identity;
 	}
 
 	@Override
@@ -119,9 +150,14 @@ public class MetaAttributeDefinition implements MetaAttribute, Entity {
 		return null;
 	}
 
+	/**
+	 * Always throw IllegalStateException:a {@link MetaAttribute} is Immutable.
+	 * 
+	 * @throw IllegalStateException
+	 */
 	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		return null;
+	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
+		throw new IllegalStateException("MetaAttribute is Immutable");
 	}
 
 	@Override

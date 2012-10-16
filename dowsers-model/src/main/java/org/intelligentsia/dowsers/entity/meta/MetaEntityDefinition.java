@@ -215,7 +215,7 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
-		throw new IllegalStateException("Meta Entity Immutable");
+		throw new IllegalStateException("MetaEntity is Immutable");
 	}
 
 	@Override

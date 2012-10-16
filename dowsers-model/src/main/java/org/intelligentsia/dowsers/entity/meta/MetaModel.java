@@ -53,7 +53,7 @@ public enum MetaModel {
 				.metaAttribute("identity", String.class)
 				// name
 				.metaAttribute("name", String.class)
-				// value TODO find class type
+				// value
 				.metaAttribute("valueClass", ClassInformation.class)
 				// default value
 				.metaAttribute("defaultValue", Object.class).build();
