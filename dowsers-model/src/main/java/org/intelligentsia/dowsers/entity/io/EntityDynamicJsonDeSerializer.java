@@ -28,9 +28,9 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.deser.std.StdDeserializer;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
-import org.intelligentsia.dowsers.entity.meta.MetaEntityContextBuilder;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 /**
@@ -40,22 +40,35 @@ import com.google.common.collect.Maps;
  */
 public class EntityDynamicJsonDeSerializer extends StdDeserializer<EntityDynamicSupport> {
 
+	private final MetaEntityContextRepository metaEntityContextRepository;
+
 	/**
 	 * Build a new instance of EntityJsonDeSerializer.java.
+	 * 
+	 * @param metaEntityContextRepository
+	 *            {@link MetaEntityContextRepository} instance
+	 * @throws NullPointerException
+	 *             if metaEntityContextRepository is null
 	 */
-	public EntityDynamicJsonDeSerializer() {
+	public EntityDynamicJsonDeSerializer(final MetaEntityContextRepository metaEntityContextRepository) throws NullPointerException {
 		super(EntityDynamicSupport.class);
+		this.metaEntityContextRepository = Preconditions.checkNotNull(metaEntityContextRepository);
 	}
 
 	@Override
 	public EntityDynamicSupport deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 		String identity = null;
+		String metaEntityContextName = null;
 		final Map<String, Object> attributes = Maps.newLinkedHashMap();
 
 		if (jp.hasCurrentToken()) {
 			if (jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
+				// identity
 				jp.nextValue();
 				identity = jp.getText();
+				// meta-entity-context-name
+				jp.nextValue();
+				metaEntityContextName = jp.getText();
 				jp.nextToken();
 				if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
 					// attributes
@@ -75,8 +88,7 @@ public class EntityDynamicJsonDeSerializer extends StdDeserializer<EntityDynamic
 				jp.nextToken();
 			}
 		}
-		// todo change this
-		return new EntityDynamicSupport(identity, new MetaEntityContextBuilder(EntityDynamicSupport.class.getName(), new Version(1)).build(), attributes);
+		return new EntityDynamicSupport(identity, metaEntityContextRepository.find(metaEntityContextName), attributes);
 	}
 
 }

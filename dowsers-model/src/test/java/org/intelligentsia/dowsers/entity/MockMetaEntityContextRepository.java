@@ -24,7 +24,7 @@ import java.util.Map;
 import org.intelligentsia.dowsers.entity.meta.MetaAttributeDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextBuilder;
-import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
+import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepositorySupport;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.Maps;
@@ -34,7 +34,7 @@ import com.google.common.collect.Maps;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MockMetaEntityContextRepository implements MetaEntityContextRepository {
+public class MockMetaEntityContextRepository extends MetaEntityContextRepositorySupport {
 
 	Map<String, MetaEntityContext> metaEntityContexts;
 

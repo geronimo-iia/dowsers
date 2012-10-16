@@ -26,29 +26,28 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
-import org.intelligentsia.dowsers.entity.EntitySupport;
+import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 
 /**
- * EntityJsonSerializer.
+ * EntityDynamicJsonSerializer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityJsonSerializer extends SerializerBase<EntitySupport> {
+public class EntityDynamicJsonSerializer extends SerializerBase<EntityDynamicSupport> {
 
 	/**
-	 * Build a new instance of EntityJsonSerializer.java.
+	 * Build a new instance of EntityDynamicJsonSerializer.java.
 	 */
-	public EntityJsonSerializer() {
-		super(EntitySupport.class);
+	public EntityDynamicJsonSerializer() {
+		super(EntityDynamicSupport.class);
 	}
 
 	@Override
-	public void serialize(final EntitySupport value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+	public void serialize(final EntityDynamicSupport value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 		jgen.writeStartObject();
-		// jgen.writeStringField("class-name",
-		// value.metaEntityContext().name());
 		jgen.writeStringField("identity", value.identity());
+		jgen.writeStringField("meta-entity-context-name", value.metaEntityContext().name());
 		jgen.writeFieldName("attributes");
 		jgen.writeStartObject();
 		final Iterator<MetaAttribute> iterator = value.metaEntityContext().iterator();

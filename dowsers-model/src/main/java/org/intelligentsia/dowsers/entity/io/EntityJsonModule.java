@@ -22,23 +22,26 @@ package org.intelligentsia.dowsers.entity.io;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.util.VersionUtil;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
-import org.intelligentsia.dowsers.entity.EntitySupport;
+import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 
 /**
  * EntityJsonModule.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class EntityJsonModule extends SimpleModule {
 
 	/**
 	 * Build a new instance of EntityJsonModule.java.
+	 * 
+	 * @param metaEntityContextRepository
+	 *            {@link MetaEntityContextRepository} instance
 	 */
-	public EntityJsonModule() {
+	public EntityJsonModule(final MetaEntityContextRepository metaEntityContextRepository) {
 		super("entity-json-module", VersionUtil.versionFor(EntityJsonModule.class));
-		addDeserializer(EntityDynamicSupport.class, new EntityDynamicJsonDeSerializer());
-		addSerializer(EntitySupport.class, new EntityJsonSerializer());
+		addDeserializer(EntityDynamicSupport.class, new EntityDynamicJsonDeSerializer(metaEntityContextRepository));
+		addSerializer(EntityDynamicSupport.class, new EntityDynamicJsonSerializer());
 	}
 
 }

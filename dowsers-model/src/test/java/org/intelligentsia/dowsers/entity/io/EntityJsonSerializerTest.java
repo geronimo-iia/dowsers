@@ -53,18 +53,19 @@ public class EntityJsonSerializerTest {
 		sampleEntity.attribute("description", "a description");
 
 		final ObjectMapper mapper = JacksonSerializer.getMapper();
-		mapper.registerModule(new EntityJsonModule());
+		mapper.registerModule(new EntityJsonModule(repository));
 
 		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, sampleEntity);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"identity\":\"1\",\"attributes\":{\"name\":\"a name\",\"description\":\"a description\"}}", result);
+		assertEquals("{\"identity\":\"1\",\"meta-entity-context-name\":\"org.intelligentsia.dowsers.entity.SampleEntity\",\"attributes\":{\"name\":\"a name\",\"description\":\"a description\"}}", result);
 
 		final EntityDynamicSupport dynamicSupport = mapper.readValue(new StringReader(result), EntityDynamicSupport.class);
 		assertNotNull(dynamicSupport);
 		assertEquals("a name", dynamicSupport.attribute("name"));
 		assertEquals("a description", dynamicSupport.attribute("description"));
+		assertEquals(SampleEntity.class.getName(), dynamicSupport.metaEntityContext().name());
 	}
 
 }

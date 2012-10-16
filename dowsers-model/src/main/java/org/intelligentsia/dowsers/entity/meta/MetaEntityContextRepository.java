@@ -28,7 +28,10 @@ package org.intelligentsia.dowsers.entity.meta;
 public interface MetaEntityContextRepository {
 
 	/**
+	 * Find last version of {@link MetaEntityContext} of specified class name.
+	 * 
 	 * @param className
+	 *            class Name of entity
 	 * @return {@link MetaEntityContext} associated with specified class name.
 	 * @throws NullPointerException
 	 *             if className is null
@@ -37,4 +40,20 @@ public interface MetaEntityContextRepository {
 	 *             name.
 	 */
 	MetaEntityContext find(Class<?> className) throws NullPointerException, MetaEntityContextNotFoundException;
+
+	/**
+	 * Find last version of {@link MetaEntityContext} of specified class name.
+	 * 
+	 * @param className
+	 *            class Name of entity
+	 * @return {@link MetaEntityContext} associated with specified class name.
+	 * @throws NullPointerException
+	 *             if className is null
+	 * @throws MetaEntityContextNotFoundException
+	 *             if no {@link MetaEntityContext} was found for specified class
+	 *             name.
+	 * @throws IllegalStateException
+	 *             if specified class name cannot be found.
+	 */
+	MetaEntityContext find(String className) throws NullPointerException, MetaEntityContextNotFoundException, IllegalStateException;
 }
