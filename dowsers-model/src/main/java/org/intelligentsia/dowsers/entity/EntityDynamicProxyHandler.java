@@ -59,7 +59,7 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final String methodName = method.getName();
 		// MetaEntityContext stuff
-		if (isMetaEntityContextAccessorAware && "getMetaEntityContext".equals(methodName)) {
+		if (isMetaEntityContextAccessorAware && "metaEntityContext".equals(methodName)) {
 			return entity.metaEntityContext();
 		}
 		// Entity stuff

@@ -21,6 +21,9 @@ package org.intelligentsia.dowsers.entity;
 
 import org.intelligentsia.dowsers.entity.factory.EntityFactoryDynamicCachedSupport;
 import org.intelligentsia.dowsers.entity.factory.EntityFactoryProxySupport;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * EntityTest.
@@ -29,70 +32,52 @@ import org.intelligentsia.dowsers.entity.factory.EntityFactoryProxySupport;
  */
 public class EntityTest {
 
-	private final EntityManagerUnit entityManagerUnit;
+	private EntityManagerUnit entityManagerUnit;
 
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-
-		final EntityTest entityTest = new EntityTest();
-		entityTest.testSampleEntity();
-		entityTest.testCustomizableSampleEntity();
-		entityTest.testSampleEntityMetaAware();
-	}
-
-	public EntityTest() {
-		super();
+	@Before
+	public void init() {
 		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicCachedSupport(new MockMetaEntityContextRepository())));
 	}
 
+	@Test
 	public void testSampleEntity() {
-		System.out.println("#----------------------------------------------------------------------------");
-		System.out.println("# test SampleEntity");
-		System.out.println("#----------------------");
 
 		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class);
+		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 
-		System.out.println(sampleEntity.getName());
-		System.out.println(sampleEntity.getDescription());
-		System.out.println("#----------------------------------------------------------------------------");
+		assertEquals("Hello John", sampleEntity.getName());
+		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
 	}
 
+	@Test
 	public void testCustomizableSampleEntity() {
-		System.out.println("#----------------------------------------------------------------------------");
-		System.out.println("# test CustomizableSampleEntity");
-		System.out.println("#----------------------");
+
 		final CustomizableSampleEntity sampleEntity = entityManagerUnit.newInstance(CustomizableSampleEntity.class);
+		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 		sampleEntity.attribute("order", 1L);
 
-		System.out.println(sampleEntity.getName());
-		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.attribute("order"));
+		assertEquals("Hello John", sampleEntity.getName());
+		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
+		assertEquals(1L, sampleEntity.attribute("order"));
 
-		System.out.println("#----------------------------------------------------------------------------");
 	}
 
+	@Test
 	public void testSampleEntityMetaAware() {
-		//
-		System.out.println("#----------------------------------------------------------------------------");
-		System.out.println("# test SampleEntityMetaAware");
-		System.out.println("#----------------------");
+
 		final SampleEntityMetaAware sampleEntity = entityManagerUnit.newInstance(SampleEntityMetaAware.class);
+		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 		sampleEntity.attribute("order", 1L);
-
-		System.out.println(sampleEntity.getName());
-		System.out.println(sampleEntity.getDescription());
-		System.out.println(sampleEntity.attribute("order"));
-
-		System.out.println("Access on MetaEntityContext: " + sampleEntity.metaEntityContext().name());
-
-		System.out.println("#----------------------------------------------------------------------------");
+		assertEquals("Hello John", sampleEntity.getName());
+		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
+		assertEquals(1L, sampleEntity.attribute("order"));
+		assertNotNull(sampleEntity.metaEntityContext());
+		assertEquals(SampleEntityMetaAware.class.getName(), sampleEntity.metaEntityContext().name());
 	}
 }

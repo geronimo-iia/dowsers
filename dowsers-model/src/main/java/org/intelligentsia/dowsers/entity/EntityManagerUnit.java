@@ -54,14 +54,16 @@ public class EntityManagerUnit implements EntityManager {
 		this.entityFactory = Preconditions.checkNotNull(entityFactory);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T newInstance(final Class<T> interfaceName) throws NullPointerException {
-		return newInstance(interfaceName, IdentifierFactoryProvider.generateNewIdentifier());
+	public <T> T newInstance(final Class<?> interfaceName) throws NullPointerException {
+		return (T)  newInstance(interfaceName, IdentifierFactoryProvider.generateNewIdentifier());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T newInstance(final Class<T> interfaceName, final String identity) throws NullPointerException {
-		return entityFactory.newInstance(interfaceName, identity);
+	public <T> T newInstance(final Class<?> interfaceName, final String identity) throws NullPointerException {
+		return (T) entityFactory.newInstance(interfaceName, identity);
 	}
 
 }

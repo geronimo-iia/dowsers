@@ -38,7 +38,7 @@ public interface EntityManager {
 	 * @throws IllegalArgumentException
 	 *             if className is empty
 	 */
-	<T> T newInstance(Class<T> className) throws NullPointerException, IllegalArgumentException;
+	<T> T newInstance(Class<?> className) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Create a new instance of specified class name.
@@ -53,6 +53,6 @@ public interface EntityManager {
 	 * @throws IllegalArgumentException
 	 *             if className or identity is empty
 	 */
-	<T> T newInstance(Class<T> className, String identity) throws NullPointerException, IllegalArgumentException;
+	<T> T newInstance(Class<?> className, String identity) throws NullPointerException, IllegalArgumentException;
 
 }
