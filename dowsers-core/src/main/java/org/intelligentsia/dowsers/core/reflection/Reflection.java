@@ -95,6 +95,9 @@ public enum Reflection {
 	 */
 	public static List<Class<?>> findGenericClass(final Class<?> clazz) {
 		final Type type = clazz.getGenericSuperclass();
+		if (type == null) {
+			return new ArrayList<Class<?>>(0);
+		}
 		final Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
 		if (type instanceof ParameterizedType) {
 			final ParameterizedType parameterizedType = (ParameterizedType) type;

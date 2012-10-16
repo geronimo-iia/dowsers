@@ -139,6 +139,12 @@ public class ReflectionTest {
 		list = Reflection.findGenericClass(String.class);
 		assertNotNull(list);
 		assertTrue(list.isEmpty());
+	}
 
+	@Test
+	public void testObjectAnalyze() {
+		List<Class<?>> list = Reflection.findGenericClass(Object.class);
+		assertNotNull(list);
+		assertTrue(list.isEmpty());
 	}
 }
