@@ -130,6 +130,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 		this.metaEntityDefinitionBuilder.metaAttribute(name, valueClass, defaultValue);
 		return this;
 	}
+
 	/**
 	 * Add a new instance of <code>MetaAttributeDefinition</code>.
 	 * 
@@ -148,7 +149,6 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 		return this;
 	}
 
-
 	/**
 	 * Add a new instance of <code>MetaAttributeDefinition</code>.
 	 * 
@@ -166,6 +166,7 @@ public class MetaEntityContextBuilder implements Builder<MetaEntityContext> {
 		this.metaEntityDefinitionBuilder.metaAttribute(name, valueClass);
 		return this;
 	}
+
 	/**
 	 * @param metaAttributes
 	 *            a {@link Collection} of {@link MetaAttribute} to set

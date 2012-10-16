@@ -57,7 +57,7 @@ public class EntityManagerUnit implements EntityManager {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T newInstance(final Class<?> interfaceName) throws NullPointerException {
-		return (T)  newInstance(interfaceName, IdentifierFactoryProvider.generateNewIdentifier());
+		return (T) newInstance(interfaceName, IdentifierFactoryProvider.generateNewIdentifier());
 	}
 
 	@SuppressWarnings("unchecked")

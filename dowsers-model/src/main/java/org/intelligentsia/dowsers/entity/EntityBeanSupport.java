@@ -66,19 +66,19 @@ public class EntityBeanSupport extends EntitySupport {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-		Method method = findGetter(name);
+		final Method method = findGetter(name);
 		if (method != null) {
 			try {
 				return (Value) method.invoke(this);
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				throw new IllegalStateException(e);
 			}
 		}
-		Field field = Reflection.findField(getClass(), name);
+		final Field field = Reflection.findField(getClass(), name);
 		if (field != null) {
 			try {
 				return (Value) field.get(this);
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				throw new IllegalStateException(e);
 			}
 		}
@@ -87,19 +87,19 @@ public class EntityBeanSupport extends EntitySupport {
 
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
-		Method method = findSetter(name, value.getClass());
+		final Method method = findSetter(name, value.getClass());
 		if (method != null) {
 			try {
 				method.invoke(this, value);
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				throw new IllegalStateException(e);
 			}
 		}
-		Field field = Reflection.findField(getClass(), name);
+		final Field field = Reflection.findField(getClass(), name);
 		if (field != null) {
 			try {
 				field.set(this, value);
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				throw new IllegalStateException(e);
 			}
 		}
@@ -117,12 +117,12 @@ public class EntityBeanSupport extends EntitySupport {
 	 * @return a {@link Method} instance or null if none is found
 	 */
 	@VisibleForTesting
-	Method findSetter(String name, Class<? extends Object> argClazz) {
-		String methodName = Reflection.capitalize("set", name);
-		Method[] methods = getClass().getDeclaredMethods();
+	Method findSetter(final String name, final Class<? extends Object> argClazz) {
+		final String methodName = Reflection.capitalize("set", name);
+		final Method[] methods = getClass().getDeclaredMethods();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
-			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && method.getParameterTypes().length == 1 && argClazz.isAssignableFrom(method.getParameterTypes()[0]) && Void.TYPE == method.getReturnType()) {
+			final Method method = methods[i];
+			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && (method.getParameterTypes().length == 1) && argClazz.isAssignableFrom(method.getParameterTypes()[0]) && (Void.TYPE == method.getReturnType())) {
 				if (!method.isAccessible()) {
 					method.setAccessible(true);
 				}
@@ -141,12 +141,12 @@ public class EntityBeanSupport extends EntitySupport {
 	 * @return a {@link Method} instance or null if none is found
 	 */
 	@VisibleForTesting
-	Method findGetter(String name) {
-		String methodName = Reflection.capitalize("get", name);
-		Method[] methods = getClass().getDeclaredMethods();
+	Method findGetter(final String name) {
+		final String methodName = Reflection.capitalize("get", name);
+		final Method[] methods = getClass().getDeclaredMethods();
 		for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
-			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && method.getParameterTypes().length == 0) {
+			final Method method = methods[i];
+			if ((methodName.equals(method.getName()) || name.equals(method.getName())) && (method.getParameterTypes().length == 0)) {
 				if (!method.isAccessible()) {
 					method.setAccessible(true);
 				}

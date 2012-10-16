@@ -23,7 +23,6 @@ import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.keystone.api.StringUtils;
 
-
 /**
  * MetaEntityValidator validate {@link Entity} against {@link MetaEntityContext}
  * .

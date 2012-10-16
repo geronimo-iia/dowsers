@@ -19,9 +19,11 @@
  */
 package org.intelligentsia.dowsers.entity;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.intelligentsia.dowsers.entity.factory.EntityFactoryDynamicCachedSupport;
 import org.intelligentsia.dowsers.entity.factory.EntityFactoryProxySupport;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 

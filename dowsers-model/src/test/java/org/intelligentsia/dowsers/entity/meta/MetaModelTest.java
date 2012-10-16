@@ -35,7 +35,7 @@ public class MetaModelTest {
 
 	@Test
 	public void testMetaMetaAttribute() {
-		MetaEntityContext context = MetaModel.getMetaAttributModel();
+		final MetaEntityContext context = MetaModel.getMetaAttributModel();
 		assertNotNull(context);
 		assertEquals(context.name(), MetaAttribute.class.getName());
 		assertTrue(context.contains("identity"));
@@ -43,10 +43,10 @@ public class MetaModelTest {
 		assertTrue(context.contains("valueClass"));
 		assertTrue(context.contains("defaultValue"));
 	}
-	
+
 	@Test
 	public void testMetaMetaEntity() {
-		MetaEntityContext context = MetaModel.getMetaEntityModel();
+		final MetaEntityContext context = MetaModel.getMetaEntityModel();
 		assertNotNull(context);
 		assertEquals(context.name(), MetaEntity.class.getName());
 		assertTrue(context.contains("identity"));
