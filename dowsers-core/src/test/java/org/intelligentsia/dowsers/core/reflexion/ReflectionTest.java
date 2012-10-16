@@ -43,12 +43,12 @@ public class ReflectionTest {
 		try {
 			Reflection.capitalize(null, "");
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 		}
 		try {
 			Reflection.capitalize(null, null);
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 		}
 		assertEquals("A", Reflection.capitalize("", "a"));
 		assertEquals("aA", Reflection.capitalize("a", "a"));
@@ -60,27 +60,27 @@ public class ReflectionTest {
 		try {
 			Reflection.toFieldName(null);
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 		}
 		try {
 			Reflection.toFieldName("");
 			fail();
-		} catch (StringIndexOutOfBoundsException exception) {
+		} catch (final StringIndexOutOfBoundsException exception) {
 		}
 		try {
 			Reflection.toFieldName("a");
 			fail();
-		} catch (StringIndexOutOfBoundsException exception) {
+		} catch (final StringIndexOutOfBoundsException exception) {
 		}
 		try {
 			Reflection.toFieldName("ab");
 			fail();
-		} catch (StringIndexOutOfBoundsException exception) {
+		} catch (final StringIndexOutOfBoundsException exception) {
 		}
 		try {
 			Reflection.toFieldName("abc");
 			fail();
-		} catch (StringIndexOutOfBoundsException exception) {
+		} catch (final StringIndexOutOfBoundsException exception) {
 		}
 		assertEquals("a", Reflection.toFieldName("getA"));
 		assertEquals("abcdE", Reflection.toFieldName("getAbcdE"));
@@ -90,18 +90,18 @@ public class ReflectionTest {
 	public void testfindGenericClassInstance() {
 		// dummy
 		assertEquals("java.lang.String", String.class.getName());
-		List<String> dummy = Lists.newArrayList();
+		final List<String> dummy = Lists.newArrayList();
 		// we love runtime type
 		assertEquals("java.util.ArrayList", dummy.getClass().getName());
 
-		StringList stringList = new StringList();
+		final StringList stringList = new StringList();
 		List<Class<?>> list = Reflection.findGenericClass(stringList);
 		assertNotNull(list);
 		assertTrue(!list.isEmpty());
 		assertTrue(list.size() == 1);
 		assertEquals(String.class, list.get(0));
 
-		StringListFinal stringListFinal = new StringListFinal();
+		final StringListFinal stringListFinal = new StringListFinal();
 		list = Reflection.findGenericClass(stringListFinal);
 		assertNotNull(list);
 		assertTrue(!list.isEmpty());
@@ -119,7 +119,7 @@ public class ReflectionTest {
 	public void testfindGenericClass() {
 		// dummy
 		assertEquals("java.lang.String", String.class.getName());
-		List<String> dummy = Lists.newArrayList();
+		final List<String> dummy = Lists.newArrayList();
 		// we love runtime type
 		assertEquals("java.util.ArrayList", dummy.getClass().getName());
 

@@ -93,14 +93,14 @@ public enum Reflection {
 	 *            class to analyse
 	 * @return a {@link List} of generic {@link Class}>
 	 */
-	public static List<Class<?>> findGenericClass(Class<?> clazz) {
-		Type type = clazz.getGenericSuperclass();
-		Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
+	public static List<Class<?>> findGenericClass(final Class<?> clazz) {
+		final Type type = clazz.getGenericSuperclass();
+		final Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
 		if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) type;
-			Class<?> rawType = (Class<?>) parameterizedType.getRawType();
-			Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-			TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
+			final ParameterizedType parameterizedType = (ParameterizedType) type;
+			final Class<?> rawType = (Class<?>) parameterizedType.getRawType();
+			final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+			final TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
 			for (int i = 0; i < actualTypeArguments.length; i++) {
 				resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
 			}
@@ -114,7 +114,7 @@ public enum Reflection {
 		} else {
 			actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
 		}
-		List<Class<?>> typeArgumentsAsClasses = new ArrayList<Class<?>>();
+		final List<Class<?>> typeArgumentsAsClasses = new ArrayList<Class<?>>();
 		// resolve types by chasing down type variables.
 		for (Type baseType : actualTypeArguments) {
 			while (resolvedTypes.containsKey(baseType)) {
@@ -132,7 +132,7 @@ public enum Reflection {
 	 *            object instance to analyse
 	 * @return a {@link List} of generic {@link Class}>
 	 */
-	public static List<Class<?>> findGenericClass(Object instance) {
+	public static List<Class<?>> findGenericClass(final Object instance) {
 		return findGenericClass(instance.getClass());
 	}
 
@@ -144,14 +144,14 @@ public enum Reflection {
 	 *            the type
 	 * @return the underlying class
 	 */
-	private static Class<?> getClass(Type type) {
+	private static Class<?> getClass(final Type type) {
 		if (type instanceof Class) {
 			return (Class<?>) type;
 		} else if (type instanceof ParameterizedType) {
 			return getClass(((ParameterizedType) type).getRawType());
 		} else if (type instanceof GenericArrayType) {
-			Type componentType = ((GenericArrayType) type).getGenericComponentType();
-			Class<?> componentClass = getClass(componentType);
+			final Type componentType = ((GenericArrayType) type).getGenericComponentType();
+			final Class<?> componentClass = getClass(componentType);
 			if (componentClass != null) {
 				return Array.newInstance(componentClass, 0).getClass();
 			} else {

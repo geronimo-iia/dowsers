@@ -45,7 +45,7 @@ public class ClassInformationTest {
 
 	@Test
 	public void testAnalyze() {
-		ClassInformation information = new ClassInformation(new String());
+		final ClassInformation information = new ClassInformation(new String());
 		assertNotNull(information);
 		assertEquals(String.class, information.getType());
 		assertTrue(information.getGenericClass().size() == 0);
@@ -53,7 +53,7 @@ public class ClassInformationTest {
 
 	@Test
 	public void testAnalyze1() {
-		ClassInformation information = new ClassInformation(new StringList());
+		final ClassInformation information = new ClassInformation(new StringList());
 		assertNotNull(information);
 		assertEquals(StringList.class, information.getType());
 		assertTrue(information.getGenericClass().size() == 1);
@@ -62,7 +62,7 @@ public class ClassInformationTest {
 
 	@Test
 	public void testAnalyze2() {
-		ClassInformation information = new ClassInformation(new StringListFinal());
+		final ClassInformation information = new ClassInformation(new StringListFinal());
 		assertNotNull(information);
 		assertEquals(StringListFinal.class, information.getType());
 		assertTrue(information.getGenericClass().size() == 2);
@@ -82,13 +82,13 @@ public class ClassInformationTest {
 		try {
 			ClassInformation.parse(null);
 			fail();
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// ok
 		}
 		try {
 			ClassInformation.parse("");
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// ok
 		}
 	}
@@ -119,9 +119,9 @@ public class ClassInformationTest {
 
 	@Test
 	public void testSerialization() throws IOException, ClassNotFoundException {
-		ClassInformation information = new ClassInformation(new StringList());
+		final ClassInformation information = new ClassInformation(new StringList());
 
-		File file = File.createTempFile("classInformation", "");
+		final File file = File.createTempFile("classInformation", "");
 		// serialize
 		ObjectOutputStream oos = null;
 		try {
@@ -134,7 +134,7 @@ public class ClassInformationTest {
 		ObjectInputStream ois = null;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(file));
-			ClassInformation classInformation = (ClassInformation) ois.readObject();
+			final ClassInformation classInformation = (ClassInformation) ois.readObject();
 			assertNotNull(classInformation);
 			assertTrue(!classInformation.getGenericClass().isEmpty());
 			assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>", classInformation.toString());

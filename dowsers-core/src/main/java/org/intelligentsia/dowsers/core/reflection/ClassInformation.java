@@ -45,7 +45,7 @@ public class ClassInformation implements Serializable {
 
 	private transient List<Class<?>> genericClass;
 
-	private String description;
+	private final String description;
 
 	/**
 	 * Build a new instance of ClassInformation.java.
@@ -55,7 +55,7 @@ public class ClassInformation implements Serializable {
 	 * @throws NullPointerException
 	 *             if instance is null
 	 */
-	public ClassInformation(Object instance) throws NullPointerException {
+	public ClassInformation(final Object instance) throws NullPointerException {
 		this(Preconditions.checkNotNull(instance).getClass());
 	}
 
@@ -67,7 +67,7 @@ public class ClassInformation implements Serializable {
 	 * @throws NullPointerException
 	 *             if type is null
 	 */
-	public ClassInformation(Class<?> type) throws NullPointerException {
+	public ClassInformation(final Class<?> type) throws NullPointerException {
 		this(Preconditions.checkNotNull(type), Reflection.findGenericClass(type));
 	}
 
@@ -81,16 +81,16 @@ public class ClassInformation implements Serializable {
 	 * @throws NullPointerException
 	 *             if type or genericClass is null
 	 */
-	public ClassInformation(Class<?> type, List<Class<?>> genericClass) throws NullPointerException {
+	public ClassInformation(final Class<?> type, final List<Class<?>> genericClass) throws NullPointerException {
 		super();
 		this.type = Preconditions.checkNotNull(type);
 		this.genericClass = Preconditions.checkNotNull(genericClass);
 		// build a common description
-		StringBuilder builder = new StringBuilder(type.getName());
+		final StringBuilder builder = new StringBuilder(type.getName());
 		if (!genericClass.isEmpty()) {
 			builder.append("<");
 			boolean notFirst = false;
-			for (Class<?> generic : genericClass) {
+			for (final Class<?> generic : genericClass) {
 				if (notFirst) {
 					builder.append(",");
 				}
@@ -118,7 +118,7 @@ public class ClassInformation implements Serializable {
 	 * @param other
 	 * @return
 	 */
-	public boolean isAssignableFrom(Class<?> other) {
+	public boolean isAssignableFrom(final Class<?> other) {
 		return type.isAssignableFrom(other);
 	}
 
@@ -147,16 +147,17 @@ public class ClassInformation implements Serializable {
 	 * @throws IllegalStateException
 	 *             if {@link Class} cannot be loaded
 	 */
-	public static ClassInformation parse(String description) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-		StringTokenizer tokenizer = new StringTokenizer(Preconditions.checkNotNull(description), "<");
-		if (!tokenizer.hasMoreTokens())
+	public static ClassInformation parse(final String description) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		final StringTokenizer tokenizer = new StringTokenizer(Preconditions.checkNotNull(description), "<");
+		if (!tokenizer.hasMoreTokens()) {
 			throw new IllegalArgumentException("invalid format");
-		String className = tokenizer.nextToken();
+		}
+		final String className = tokenizer.nextToken();
 
 		try {
-			Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+			final Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
 			return new ClassInformation(clazz);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -187,7 +188,7 @@ public class ClassInformation implements Serializable {
 	 * @param out
 	 * @throws IOException
 	 */
-	private void writeObject(ObjectOutputStream out) throws IOException {
+	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
 	}
 
@@ -198,10 +199,10 @@ public class ClassInformation implements Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		// after read description, initialize class
-		ClassInformation classInformation = parse(description);
+		final ClassInformation classInformation = parse(description);
 		this.type = classInformation.type;
 		this.genericClass = classInformation.genericClass;
 	}
