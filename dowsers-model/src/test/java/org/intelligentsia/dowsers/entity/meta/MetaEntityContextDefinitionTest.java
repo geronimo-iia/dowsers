@@ -19,6 +19,11 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
+import static org.junit.Assert.fail;
+
+import java.util.LinkedList;
+
+import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
 /**
@@ -30,10 +35,31 @@ public class MetaEntityContextDefinitionTest {
 
 	@Test
 	public void checkConstructorConstraint() {
-
-		// MetaEntityContextDefinition contextDefinition = new
-		// MetaEntityContextDefinition(name, rootVersion, metaProperties,
-		// extendedMetaEntityDefinitions);
+		try {
+			new MetaEntityContextDefinition(null, null, null, null);
+			fail("NullPointerException attended");
+		} catch (final NullPointerException exception) {
+			// ok
+		}
+		try {
+			new MetaEntityContextDefinition("", null, null, null);
+			fail("IllegalArgumentException attended");
+		} catch (final IllegalArgumentException exception) {
+			// ok
+		}
+		try {
+			new MetaEntityContextDefinition("aaa", null, null, null);
+			fail("NullPointerException attended");
+		} catch (final NullPointerException exception) {
+			// ok
+		}
+		try {
+			new MetaEntityContextDefinition("aaa", new Version(1), null, null);
+			fail("NullPointerException attended");
+		} catch (final NullPointerException exception) {
+			// ok
+		}
+		new MetaEntityContextDefinition("aaa", new Version(1), new LinkedList<MetaAttribute>(), null);
 	}
 
 }
