@@ -43,14 +43,14 @@ public class EntityAttributeChangeListener extends EntityDecorator {
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public EntityAttributeChangeListener(Entity entity, AttributeChangeListener attributeChangeListener) throws NullPointerException {
+	public EntityAttributeChangeListener(final Entity entity, final AttributeChangeListener attributeChangeListener) throws NullPointerException {
 		super(entity);
 		this.attributeChangeListener = Preconditions.checkNotNull(attributeChangeListener);
 	}
 
 	@Override
-	public <Value> Entity attribute(String name, Value value) throws NullPointerException, IllegalArgumentException {
-		attributeChangeListener.notify(entity.getClass(), entity.identity(), name, value);
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
+		attributeChangeListener.notify(entity, name, value);
 		return super.attribute(name, value);
 	}
 }

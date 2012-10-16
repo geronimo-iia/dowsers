@@ -29,14 +29,12 @@ import org.intelligentsia.dowsers.entity.Entity;
 public interface AttributeChangeListener {
 
 	/**
-	 * @param clazz
-	 *            entity class name
-	 * @param identity
-	 *            entity identity
+	 * @param entity
+	 *            entity instance
 	 * @param name
 	 *            attribute name
 	 * @param value
 	 *            new value
 	 */
-	<Value> void notify(Class<? extends Entity> clazz, String identity, String name, Value value);
+	<Value> void notify(Entity entity, String name, Value value);
 }

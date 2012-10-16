@@ -31,13 +31,11 @@ public interface AttributeAccessListener {
 	/**
 	 * Called when specified attribute name is accessed {@link Entity}
 	 * 
-	 * @param clazz
-	 *            entity class name
-	 * @param identity
-	 *            entity identity
+	 * @param entity
+	 *            entity instance
 	 * @param name
-	 *            attribut name
+	 *            attribute name
 	 */
-	void notify(Class<? extends Entity> clazz, String identity, String name);
+	void notify(Entity entity, String name);
 
 }
