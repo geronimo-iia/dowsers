@@ -19,22 +19,21 @@
  */
 package org.intelligentsia.dowsers.entity.io;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
 import org.intelligentsia.dowsers.core.io.JacksonSerializer;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
-import org.intelligentsia.dowsers.entity.EntityManagerUnit;
 import org.intelligentsia.dowsers.entity.MockMetaEntityContextRepository;
 import org.intelligentsia.dowsers.entity.SampleEntity;
-import org.intelligentsia.dowsers.entity.factory.EntityFactoryDynamicCachedSupport;
-import org.intelligentsia.dowsers.entity.factory.EntityFactoryProxySupport;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 import org.junit.Test;
 
@@ -45,37 +44,27 @@ import org.junit.Test;
  */
 public class EntityJsonSerializerTest {
 
-	// TODO must do this with an entity manager...
-	public void testSerialization() throws JsonGenerationException, JsonMappingException, IOException {
-		final EntityManagerUnit entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicCachedSupport(new MockMetaEntityContextRepository())));
-		final SampleEntity sampleEntity = entityManagerUnit.newInstance(SampleEntity.class);
-		sampleEntity.setName("Hello John");
-		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		final ObjectMapper mapper = JacksonSerializer.getMapper();
-		final SimpleModule testModule = new SimpleModule("BaseEntityJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
-		testModule.addSerializer(new EntityJsonSerializer());
-		mapper.registerModule(testModule);
-		final StringWriter writer = new StringWriter();
-		mapper.writeValue(writer, sampleEntity);
-		System.err.println(writer.toString());
-	}
-
 	@Test
-	public void testSerializationBase() throws JsonGenerationException, JsonMappingException, IOException {
+	public void testEntitySerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final MetaEntityContextRepository repository = new MockMetaEntityContextRepository();
 
 		final Entity sampleEntity = new EntityDynamicSupport("1", repository.find(SampleEntity.class));
 		sampleEntity.attribute("name", "a name");
 		sampleEntity.attribute("description", "a description");
+
 		final ObjectMapper mapper = JacksonSerializer.getMapper();
-		final SimpleModule testModule = new SimpleModule("BaseEntityJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
-		testModule.addSerializer(new EntityJsonSerializer());
-		mapper.registerModule(testModule);
+		mapper.registerModule(new EntityJsonModule());
 
 		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, sampleEntity);
-		System.err.println(writer.toString());
+		final String result = writer.toString();
+		assertNotNull(result);
+		assertEquals("{\"identity\":\"1\",\"attributes\":{\"name\":\"a name\",\"description\":\"a description\"}}", result);
 
+		final EntityDynamicSupport dynamicSupport = mapper.readValue(new StringReader(result), EntityDynamicSupport.class);
+		assertNotNull(dynamicSupport);
+		assertEquals("a name", dynamicSupport.attribute("name"));
+		assertEquals("a description", dynamicSupport.attribute("description"));
 	}
 
 }
