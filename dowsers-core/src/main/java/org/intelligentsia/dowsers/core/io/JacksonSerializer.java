@@ -19,16 +19,10 @@
  */
 package org.intelligentsia.dowsers.core.io;
 
-import java.util.Locale;
-
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
-import org.intelligentsia.dowsers.core.io.serializers.LocaleJsonDeserializer;
-import org.intelligentsia.dowsers.core.io.serializers.LocaleJsonSerializer;
-import org.intelligentsia.dowsers.core.io.serializers.LocaleKeyDeserializer;
+import org.intelligentsia.dowsers.core.io.serializers.DowsersJacksonModule;
 
 import com.google.common.base.Throwables;
 
@@ -44,12 +38,7 @@ public class JacksonSerializer {
 	static {
 		JacksonSerializer.mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		JacksonSerializer.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, false);
-		// Add custom de/serializer
-		final SimpleModule testModule = new SimpleModule("DowsersJacksonSerializer", VersionUtil.versionFor(mapper.getClass()));
-		testModule.addKeyDeserializer(Locale.class, new LocaleKeyDeserializer());
-		testModule.addSerializer(new LocaleJsonSerializer());
-		testModule.addDeserializer(Locale.class, new LocaleJsonDeserializer());
-		mapper.registerModule(testModule);
+		mapper.registerModule(new DowsersJacksonModule());
 	}
 
 	/**
