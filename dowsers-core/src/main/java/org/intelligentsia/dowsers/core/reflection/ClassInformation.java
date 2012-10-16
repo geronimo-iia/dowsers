@@ -19,8 +19,12 @@
  */
 package org.intelligentsia.dowsers.core.reflection;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -37,28 +41,43 @@ public class ClassInformation implements Serializable {
 	 */
 	private static final long serialVersionUID = -5302164830551846190L;
 
-	private final Class<?> type;
+	private transient Class<?> type;
 
-	private final List<Class<?>> genericClass;
+	private transient List<Class<?>> genericClass;
+
+	private String description;
 
 	/**
 	 * Build a new instance of ClassInformation.java.
 	 * 
 	 * @param instance
+	 *            instance object
 	 * @throws NullPointerException
 	 *             if instance is null
 	 */
 	public ClassInformation(Object instance) throws NullPointerException {
-		super();
-		type = Preconditions.checkNotNull(instance.getClass());
-		this.genericClass = Reflection.findGenericClass(instance);
+		this(Preconditions.checkNotNull(instance).getClass());
 	}
 
 	/**
 	 * Build a new instance of ClassInformation.java.
 	 * 
 	 * @param type
+	 *            type base
+	 * @throws NullPointerException
+	 *             if type is null
+	 */
+	public ClassInformation(Class<?> type) throws NullPointerException {
+		this(Preconditions.checkNotNull(type), Reflection.findGenericClass(type));
+	}
+
+	/**
+	 * Build a new instance of ClassInformation.java.
+	 * 
+	 * @param type
+	 *            type base
 	 * @param genericClass
+	 *            generic classes
 	 * @throws NullPointerException
 	 *             if type or genericClass is null
 	 */
@@ -66,6 +85,21 @@ public class ClassInformation implements Serializable {
 		super();
 		this.type = Preconditions.checkNotNull(type);
 		this.genericClass = Preconditions.checkNotNull(genericClass);
+		// build a common description
+		StringBuilder builder = new StringBuilder(type.getName());
+		if (!genericClass.isEmpty()) {
+			builder.append("<");
+			boolean notFirst = false;
+			for (Class<?> generic : genericClass) {
+				if (notFirst) {
+					builder.append(",");
+				}
+				builder.append(generic.getName());
+				notFirst = true;
+			}
+			builder.append(">");
+		}
+		description = builder.toString();
 	}
 
 	public Class<?> getType() {
@@ -88,29 +122,45 @@ public class ClassInformation implements Serializable {
 		return type.isAssignableFrom(other);
 	}
 
+	/**
+	 * @return a textual description of class.
+	 */
+	public String getDescription() {
+		return description;
+	}
+
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder(type.getName());
-		if (!genericClass.isEmpty()) {
-			builder.append("<");
-			boolean notFirst = false;
-			for (Class<?> generic : genericClass) {
-				if (notFirst) {
-					builder.append(",");
-				}
-				builder.append(generic.getName());
-				notFirst = true;
-			}
-			builder.append(">");
-		}
-		return builder.toString();
+		return description;
 	}
 
 	/**
-	 * Entities compare by identity, not by attributes.
+	 * Parse a description and return a {@link ClassInformation} instance.
 	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @param description
+	 * @return a {@link ClassInformation}.
+	 * @throws NullPointerException
+	 *             if description is null
+	 * @throws IllegalArgumentException
+	 *             if description is empty or not a {@link ClassInformation}
+	 *             representation
+	 * @throws IllegalStateException
+	 *             if {@link Class} cannot be loaded
 	 */
+	public static ClassInformation parse(String description) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		StringTokenizer tokenizer = new StringTokenizer(Preconditions.checkNotNull(description), "<");
+		if (!tokenizer.hasMoreTokens())
+			throw new IllegalArgumentException("invalid format");
+		String className = tokenizer.nextToken();
+
+		try {
+			Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+			return new ClassInformation(clazz);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	@Override
 	public final boolean equals(final Object obj) {
 		if (this == obj) {
@@ -123,17 +173,36 @@ public class ClassInformation implements Serializable {
 			return false;
 		}
 		final ClassInformation other = (ClassInformation) obj;
-		if (!Objects.equal(other.type.getName(), type.getName())) {
-			return false;
-		}
-		if (other.genericClass.size() != genericClass.size()) {
-			return false;
-		}
-		for (int i = 0; i < genericClass.size(); i++) {
-			if (other.genericClass.get(i).getName().equals(genericClass.get(i).getName())) {
-				return false;
-			}
-		}
-		return true;
+		return Objects.equal(other.description, description);
+	}
+
+	@Override
+	public int hashCode() {
+		return description.hashCode();
+	}
+
+	/**
+	 * Specify how serialization is done.
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	}
+
+	/**
+	 * Specify how deserialization is done.
+	 * 
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		// after read description, initialize class
+		ClassInformation classInformation = parse(description);
+		this.type = classInformation.type;
+		this.genericClass = classInformation.genericClass;
 	}
 }

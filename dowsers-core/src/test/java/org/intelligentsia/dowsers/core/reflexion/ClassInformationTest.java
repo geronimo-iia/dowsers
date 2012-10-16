@@ -19,9 +19,22 @@
  */
 package org.intelligentsia.dowsers.core.reflexion;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.junit.Test;
-import static junit.framework.Assert.*;
+
+import com.google.common.io.Closeables;
 
 /**
  * ClassInformationTest.
@@ -63,4 +76,73 @@ public class ClassInformationTest {
 		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>", new ClassInformation(new StringList()).toString());
 		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringListFinal<java.lang.Integer,java.lang.Long>", new ClassInformation(new StringListFinal()).toString());
 	}
+
+	@Test
+	public void testParseSignature() {
+		try {
+			ClassInformation.parse(null);
+			fail();
+		} catch (NullPointerException e) {
+			// ok
+		}
+		try {
+			ClassInformation.parse("");
+			fail();
+		} catch (IllegalArgumentException e) {
+			// ok
+		}
+	}
+
+	@Test
+	public void testParseAnalyze() {
+		ClassInformation classInformation = ClassInformation.parse("java.lang.String");
+		assertNotNull(classInformation);
+		assertEquals("java.lang.String", classInformation.toString());
+		assertTrue(classInformation.getGenericClass().isEmpty());
+
+		classInformation = ClassInformation.parse("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>");
+		assertNotNull(classInformation);
+		assertTrue(!classInformation.getGenericClass().isEmpty());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>", classInformation.toString());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList", classInformation.getType().getName());
+		assertEquals("java.lang.String", classInformation.getGenericClass().get(0).getName());
+
+		classInformation = ClassInformation.parse("org.intelligentsia.dowsers.core.reflexion.StringListFinal<java.lang.Integer,java.lang.Long>");
+		assertNotNull(classInformation);
+		assertTrue(!classInformation.getGenericClass().isEmpty());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringListFinal<java.lang.Integer,java.lang.Long>", classInformation.toString());
+		assertEquals("org.intelligentsia.dowsers.core.reflexion.StringListFinal", classInformation.getType().getName());
+		assertEquals("java.lang.Integer", classInformation.getGenericClass().get(0).getName());
+		assertEquals("java.lang.Long", classInformation.getGenericClass().get(1).getName());
+
+	}
+
+	@Test
+	public void testSerialization() throws IOException, ClassNotFoundException {
+		ClassInformation information = new ClassInformation(new StringList());
+
+		File file = File.createTempFile("classInformation", "");
+		// serialize
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(file));
+			oos.writeObject(information);
+		} finally {
+			Closeables.closeQuietly(oos);
+		}
+		// deserialize
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(file));
+			ClassInformation classInformation = (ClassInformation) ois.readObject();
+			assertNotNull(classInformation);
+			assertTrue(!classInformation.getGenericClass().isEmpty());
+			assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList<java.lang.String>", classInformation.toString());
+			assertEquals("org.intelligentsia.dowsers.core.reflexion.StringList", classInformation.getType().getName());
+			assertEquals("java.lang.String", classInformation.getGenericClass().get(0).getName());
+		} finally {
+			Closeables.closeQuietly(ois);
+		}
+	}
+
 }
