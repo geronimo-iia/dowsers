@@ -34,7 +34,7 @@ import com.google.common.base.Preconditions;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class MetaAttributeDefinition implements MetaAttribute, Entity {
+public class MetaAttributeDefinition implements MetaAttribute {
 	/**
 	 * Identity.
 	 */

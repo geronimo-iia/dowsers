@@ -40,7 +40,7 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntityDefinition implements MetaEntity, Entity {
+public class MetaEntityDefinition implements MetaEntity {
 
 	/**
 	 * Meta entity name.
@@ -119,7 +119,7 @@ public class MetaEntityDefinition implements MetaEntity, Entity {
 	}
 
 	@Override
-	public MetaAttribute metaAttributes(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute findMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		return metaAttributes.get(name);
 	}

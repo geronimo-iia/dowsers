@@ -113,7 +113,7 @@ public class MetaEntityDefinitionTest {
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertTrue(!definition.metaAttributes().isEmpty());
-		final MetaAttribute metaAttribute = definition.metaAttributes("desc");
+		final MetaAttribute metaAttribute = definition.findMetaAttribute("desc");
 		assertNotNull(metaAttribute);
 		assertEquals("desc", metaAttribute.name());
 		assertEquals(String.class, metaAttribute.valueClass().getType());

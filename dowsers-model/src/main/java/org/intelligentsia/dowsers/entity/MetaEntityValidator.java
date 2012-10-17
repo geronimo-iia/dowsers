@@ -65,7 +65,7 @@ public class MetaEntityValidator extends EntityDecorator {
 	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
-		final MetaAttribute metaAttribute = metaEntityContext().metaAttributes(name);
+		final MetaAttribute metaAttribute = metaEntityContext().findMetaAttribute(name);
 		if (metaAttribute == null) {
 			throw new IllegalArgumentException(StringUtils.format("Attribute %s did not exists for entity %s", name, metaEntityContext().name()));
 		}

@@ -38,7 +38,6 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
-import org.intelligentsia.dowsers.core.Identified;
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.keystone.api.artifacts.Version;
@@ -75,7 +74,7 @@ import com.google.common.collect.ImmutableCollection;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface MetaEntity extends Identified, Iterable<MetaAttribute> {
+public interface MetaEntity extends Entity, Iterable<MetaAttribute> {
 
 	/**
 	 * Returns a textual class name of the entity.
@@ -106,7 +105,7 @@ public interface MetaEntity extends Identified, Iterable<MetaAttribute> {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	MetaAttribute metaAttributes(String name) throws NullPointerException, IllegalArgumentException;
+	MetaAttribute findMetaAttribute(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * @return a {@link ReadOnlyIterator} on attribute name.

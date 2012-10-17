@@ -58,7 +58,7 @@ public class EntityFactoryDynamicCachedSupport extends EntityFactoryDynamicSuppo
 				final Map<String, Object> properties = Maps.newHashMap();
 				final Iterator<String> iterator = metaEntityContext.metaAttributeNames();
 				while (iterator.hasNext()) {
-					final MetaAttribute metaAttribute = metaEntityContext.metaAttributes(iterator.next());
+					final MetaAttribute metaAttribute = metaEntityContext.findMetaAttribute(iterator.next());
 					// TODO clone it
 					properties.put(metaAttribute.name(), metaAttribute.defaultValue());
 				}

@@ -112,10 +112,10 @@ public class MetaEntityContextDefinition implements MetaEntityContext, Entity {
 	}
 
 	@Override
-	public MetaAttribute metaAttributes(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+	public MetaAttribute findMetaAttribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		final Iterator<MetaEntityDefinition> iterator = metaEntityDefinitions.values().iterator();
 		MetaAttribute result = null;
-		while (iterator.hasNext() && ((result = iterator.next().metaAttributes(name)) == null)) {
+		while (iterator.hasNext() && ((result = iterator.next().findMetaAttribute(name)) == null)) {
 		}
 		return result;
 	}

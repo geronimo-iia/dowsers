@@ -21,8 +21,8 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
-import org.intelligentsia.dowsers.core.Identified;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import org.intelligentsia.dowsers.entity.Entity;
 
 /**
  * MetaAttribute: Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk
@@ -38,7 +38,7 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface MetaAttribute extends Identified {
+public interface MetaAttribute extends Entity {
 
 	/**
 	 * Returns the attribute name.
