@@ -72,9 +72,9 @@ public abstract class MetaEntityContextRepositorySupport implements MetaEntityCo
 	}
 
 	@Override
-	public MetaEntityContext find(final String className) throws NullPointerException, MetaEntityContextNotFoundException, IllegalStateException {
+	public ClassInformation resolve(final String className) throws NullPointerException, IllegalStateException {
 		try {
-			return find(classes.get(Preconditions.checkNotNull(className)).getType());
+			return classes.get(Preconditions.checkNotNull(className));
 		} catch (final ExecutionException e) {
 			throw new IllegalStateException(e);
 		}

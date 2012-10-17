@@ -17,12 +17,12 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.intelligentsia.dowsers.core.io.serializers.DowsersJacksonModule;
+import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 
 import com.google.common.base.Throwables;
 

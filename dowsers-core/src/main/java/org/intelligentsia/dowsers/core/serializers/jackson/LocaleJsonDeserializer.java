@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
+package org.intelligentsia.dowsers.core.serializers.jackson;
 
 import java.io.IOException;
 import java.util.Locale;

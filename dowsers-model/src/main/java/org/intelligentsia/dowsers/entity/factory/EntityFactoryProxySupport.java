@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.EntityDynamicProxyHandler;
+import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicProxyHandler;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextNotFoundException;
 
 import com.google.common.base.Preconditions;

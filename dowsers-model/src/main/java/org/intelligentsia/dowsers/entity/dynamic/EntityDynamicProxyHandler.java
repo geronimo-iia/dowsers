@@ -17,14 +17,17 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.entity.dynamic;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import org.intelligentsia.dowsers.core.reflection.Reflection;
+import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
+
+import com.google.common.base.Objects;
 
 /**
  * EntityDynamicProxyHandler implements {@link InvocationHandler}.
@@ -90,7 +93,7 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 		} else if (methodName.equals("equals")) {
 			return entity.equals(args[0]);
 		} else if (methodName.equals("toString")) {
-			return interfaceName + "#" + entity.identity();
+			return Objects.toStringHelper(interfaceName).add("identity", entity.identity()).toString();
 		}
 		// Dynamic attributes call
 		if (entity.metaEntityContext().contains(methodName)) {
@@ -103,6 +106,8 @@ public class EntityDynamicProxyHandler implements InvocationHandler, Entity {
 			}
 		}
 		// Oops WTF ?
+		//TODO try to find method on Entity instance and call it
+		
 		return null;
 	}
 

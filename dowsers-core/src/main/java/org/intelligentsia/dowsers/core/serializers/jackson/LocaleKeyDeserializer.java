@@ -17,22 +17,30 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers.jackson;
+
+import java.util.Locale;
+
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.deser.std.StdKeyDeserializer;
 
 /**
- * JsonSerializerTest.
+ * Deserializer for class {@link Locale} used as a key in a Map.
  * 
+ * @author LRI
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class JsonSerializerTest extends AbstractSerializerTest {
+public class LocaleKeyDeserializer extends StdKeyDeserializer {
 
 	/**
-	 * @see org.intelligentsia.dowsers.core.io.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
+	 * Build a new instance of LocaleKeyDeserializer.java.
 	 */
-	@Override
-	protected <T> Serializer<T> createSerializer(final Class<T> className) {
-		return Serializers.newJacksonSerializer(className);
+	public LocaleKeyDeserializer() {
+		super(Locale.class);
 	}
 
+	@Override
+	protected Object _parse(final String key, final DeserializationContext ctxt) throws Exception {
+		return LocaleJsonDeserializer.parse(key);
+	}
 }

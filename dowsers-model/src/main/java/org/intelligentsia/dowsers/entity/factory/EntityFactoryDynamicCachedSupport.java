@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.dowsers.core.EntityDowsersException;
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;

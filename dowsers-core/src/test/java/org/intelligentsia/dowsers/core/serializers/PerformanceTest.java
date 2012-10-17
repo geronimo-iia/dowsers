@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,6 +25,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.intelligentsia.dowsers.core.DummyObject;
+import org.intelligentsia.dowsers.core.serializers.JacksonSerializableWrapper;
+import org.intelligentsia.dowsers.core.serializers.KryoSerializableWrapper;
+import org.intelligentsia.dowsers.core.serializers.KryoSerializer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;

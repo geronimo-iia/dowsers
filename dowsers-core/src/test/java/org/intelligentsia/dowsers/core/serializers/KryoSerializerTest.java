@@ -17,35 +17,29 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
+package org.intelligentsia.dowsers.core.serializers;
 
-import java.io.IOException;
+import org.intelligentsia.dowsers.core.serializers.Serializer;
+import org.intelligentsia.dowsers.core.serializers.Serializers;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.ser.std.SerializerBase;
-import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import com.esotericsoftware.kryo.Kryo;
 
 /**
- * ClassInformationSerializer.
+ * KryoSerializerTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public class ClassInformationSerializer extends SerializerBase<ClassInformation> {
+public class KryoSerializerTest extends AbstractSerializerTest {
 
-	public ClassInformationSerializer() {
-		super(ClassInformation.class);
-	}
-
+	/**
+	 * @see org.intelligentsia.dowsers.core.serializers.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
+	 */
 	@Override
-	public void serialize(final ClassInformation value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
-		jgen.writeStartObject();
-		if (value != null) {
-			jgen.writeStringField("classInformation", value.getDescription());
-		}
-		jgen.writeEndObject();
-
+	protected <T> Serializer<T> createSerializer(final Class<T> className) {
+		final Kryo kryo = Serializers.newKryo();
+		kryo.register(className);
+		return Serializers.newKryoSerializer(className, kryo);
 	}
 
 }

@@ -20,7 +20,7 @@
 package org.intelligentsia.dowsers.entity.factory;
 
 import org.intelligentsia.dowsers.entity.Entity;
-import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextNotFoundException;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
@@ -34,7 +34,7 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 public class EntityFactoryDynamicSupport extends EntityFactorySupport {
 
 	/**
-	 * Build a new instance of EntityFactoryDynamicSupport.java ( @see
+	 * Build a new instance of EntityFactoryDynamicSupport ( @see
 	 * {@link EntityFactorySupport} )
 	 * 
 	 * @param metaEntityContextRepository

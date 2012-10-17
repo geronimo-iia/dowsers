@@ -17,30 +17,22 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
+package org.intelligentsia.dowsers.entity.annotation;
 
-import java.util.Locale;
-
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.deser.std.StdKeyDeserializer;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Deserializer for class {@link Locale} used as a key in a Map.
+ * Attribute annotation tag.
  * 
- * @author LRI
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class LocaleKeyDeserializer extends StdKeyDeserializer {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface Attribute {
 
-	/**
-	 * Build a new instance of LocaleKeyDeserializer.java.
-	 */
-	public LocaleKeyDeserializer() {
-		super(Locale.class);
-	}
-
-	@Override
-	protected Object _parse(final String key, final DeserializationContext ctxt) throws Exception {
-		return LocaleJsonDeserializer.parse(key);
-	}
 }

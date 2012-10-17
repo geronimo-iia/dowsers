@@ -17,11 +17,25 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
+
+import org.intelligentsia.dowsers.core.serializers.Serializer;
+import org.intelligentsia.dowsers.core.serializers.Serializers;
 
 /**
- * Package for all Input / Output stuff.
+ * JavaSerializerTest.
  * 
- *  Actually, lot of different design are evaluate.
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
+public class JavaSerializerTest extends AbstractSerializerTest {
+
+	/**
+	 * @see org.intelligentsia.dowsers.core.serializers.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
+	 */
+	@Override
+	protected <T> Serializer<T> createSerializer(final Class<T> className) {
+		return Serializers.newJavaSerializer(className);
+	}
+
+}

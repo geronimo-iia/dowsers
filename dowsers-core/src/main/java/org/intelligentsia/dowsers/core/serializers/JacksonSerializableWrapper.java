@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;

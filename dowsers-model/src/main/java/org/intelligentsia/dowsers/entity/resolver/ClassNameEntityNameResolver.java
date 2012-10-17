@@ -27,6 +27,10 @@ import com.google.common.base.Objects;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class ClassNameEntityNameResolver extends EntityNameResolverSupport {
+
+	/**
+	 * Build a new instance of ClassNameEntityNameResolver.java.
+	 */
 	public ClassNameEntityNameResolver() {
 		super();
 	}

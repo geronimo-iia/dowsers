@@ -17,14 +17,16 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.entity.dynamic;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.entity.Entity;
+import org.intelligentsia.dowsers.entity.EntitySupport;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 
 /**
  * EntityDynamicSupport extends {@link EntitySupport} and implements an
@@ -57,8 +59,7 @@ public class EntityDynamicSupport extends EntitySupport {
 	 *             if identifier is empty
 	 */
 	public EntityDynamicSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
-		super(identity, metaEntityContext);
-		attributes = Maps.newHashMap();
+		this(identity, metaEntityContext, new LinkedHashMap<String, Object>());
 	}
 
 	/**

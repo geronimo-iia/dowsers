@@ -17,42 +17,36 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers.jackson;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.ObjectBuffer;
+import java.io.IOException;
+import java.util.Locale;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.ser.std.SerializerBase;
 
 /**
- * KryoSerialize.
+ * {@link LocaleJsonSerializer} implements a serializer for {@link Locale}
+ * class. Use underlying method {@link Locale#toString()}.
  * 
- * From https://github.com/eivindw/hazelcast-kryo-example
- * 
+ * Examples: "en", "de_DE", "_GB", "en_US_WIN", "de__POSIX", "fr__MAC".
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class KryoSerializer {
+public class LocaleJsonSerializer extends SerializerBase<Locale> {
 
-	private static final Kryo kryo = new Kryo();
-
-	static {
-		KryoSerializer.kryo.setRegistrationOptional(true);
+	/**
+	 * Build a new instance of LocaleJsonSerializer.java.
+	 */
+	public LocaleJsonSerializer() {
+		super(Locale.class);
 	}
 
-	public static void register(final Class<?>... classes) {
-		for (final Class<?> clazz : classes) {
-			KryoSerializer.kryo.register(clazz);
-		}
-	}
-
-	public static byte[] write(final Object obj) {
-		final ObjectBuffer objectBuffer = new ObjectBuffer(KryoSerializer.kryo);
-		return objectBuffer.writeClassAndObject(obj);
-	}
-
-	public static Object read(final byte[] bytes) {
-		final ObjectBuffer objectBuffer = new ObjectBuffer(KryoSerializer.kryo);
-		return objectBuffer.readClassAndObject(bytes);
+	@Override
+	public void serialize(final Locale locale, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+		jgen.writeString(locale.toString());
 	}
 
 }

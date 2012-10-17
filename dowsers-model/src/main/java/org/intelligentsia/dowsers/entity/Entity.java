@@ -20,6 +20,7 @@
 package org.intelligentsia.dowsers.entity;
 
 import org.intelligentsia.dowsers.core.Identified;
+import org.intelligentsia.dowsers.entity.annotation.Attribute;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
 
 /**
@@ -49,6 +50,13 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContextAccessor;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface Entity extends Identified, MetaEntityContextAccessor {
+
+	/**
+	 * @see org.intelligentsia.dowsers.core.Identified#identity()
+	 */
+	@Override
+	@Attribute
+	public String identity();
 
 	/**
 	 * Return typed value of specified attribute name.

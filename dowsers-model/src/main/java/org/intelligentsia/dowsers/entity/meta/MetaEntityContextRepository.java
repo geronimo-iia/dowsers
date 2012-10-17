@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.dowsers.entity.meta;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
 /**
  * MetaEntityContextRepository define methods to access on
  * {@link MetaEntityContext} data.
@@ -42,18 +44,15 @@ public interface MetaEntityContextRepository {
 	MetaEntityContext find(Class<?> className) throws NullPointerException, MetaEntityContextNotFoundException;
 
 	/**
-	 * Find last version of {@link MetaEntityContext} of specified class name.
+	 * Resolve {@link MetaEntityContext} name to class information.
 	 * 
 	 * @param className
 	 *            class Name of entity
-	 * @return {@link MetaEntityContext} associated with specified class name.
+	 * @return {@link ClassInformation} associated with specified class name.
 	 * @throws NullPointerException
 	 *             if className is null
-	 * @throws MetaEntityContextNotFoundException
-	 *             if no {@link MetaEntityContext} was found for specified class
-	 *             name.
 	 * @throws IllegalStateException
 	 *             if specified class name cannot be found.
 	 */
-	MetaEntityContext find(String className) throws NullPointerException, MetaEntityContextNotFoundException, IllegalStateException;
+	public ClassInformation resolve(final String className) throws NullPointerException, IllegalStateException;
 }

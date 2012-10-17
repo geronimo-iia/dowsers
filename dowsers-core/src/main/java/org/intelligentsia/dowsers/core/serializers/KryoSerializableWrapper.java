@@ -17,22 +17,29 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
+
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /**
- * JavaSerializerTest.
+ * KryoSerializableWrapper. From
+ * https://github.com/eivindw/hazelcast-kryo-example.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class JavaSerializerTest extends AbstractSerializerTest {
+public class KryoSerializableWrapper implements Serializable {
 
-	/**
-	 * @see org.intelligentsia.dowsers.core.io.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
-	 */
-	@Override
-	protected <T> Serializer<T> createSerializer(final Class<T> className) {
-		return Serializers.newJavaSerializer(className);
+	private static final long serialVersionUID = 1L;
+
+	private final byte[] s;
+
+	public KryoSerializableWrapper(final Object target) {
+		s = KryoSerializer.write(target);
+	}
+
+	private Object readResolve() throws ObjectStreamException {
+		return KryoSerializer.read(s);
 	}
 
 }

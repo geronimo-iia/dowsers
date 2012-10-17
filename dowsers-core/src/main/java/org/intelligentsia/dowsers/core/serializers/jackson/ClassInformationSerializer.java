@@ -17,36 +17,35 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
+package org.intelligentsia.dowsers.core.serializers.jackson;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.ser.std.SerializerBase;
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
 /**
- * {@link LocaleJsonSerializer} implements a serializer for {@link Locale}
- * class. Use underlying method {@link Locale#toString()}.
- * 
- * Examples: "en", "de_DE", "_GB", "en_US_WIN", "de__POSIX", "fr__MAC".
+ * ClassInformationSerializer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class LocaleJsonSerializer extends SerializerBase<Locale> {
+public class ClassInformationSerializer extends SerializerBase<ClassInformation> {
 
-	/**
-	 * Build a new instance of LocaleJsonSerializer.java.
-	 */
-	public LocaleJsonSerializer() {
-		super(Locale.class);
+	public ClassInformationSerializer() {
+		super(ClassInformation.class);
 	}
 
 	@Override
-	public void serialize(final Locale locale, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
-		jgen.writeString(locale.toString());
+	public void serialize(final ClassInformation value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+		jgen.writeStartObject();
+		if (value != null) {
+			jgen.writeStringField("classInformation", value.getDescription());
+		}
+		jgen.writeEndObject();
+
 	}
 
 }

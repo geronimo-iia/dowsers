@@ -36,8 +36,8 @@ import java.io.StringWriter;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.intelligentsia.dowsers.core.io.JacksonSerializer;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 import org.junit.Test;
 
 import com.google.common.io.Closeables;

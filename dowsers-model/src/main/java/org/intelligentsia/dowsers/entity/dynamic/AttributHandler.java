@@ -17,34 +17,24 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
-
-import java.util.Locale;
-
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
-import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+package org.intelligentsia.dowsers.entity.dynamic;
 
 /**
- * DowsersJacksonModule.
+ * AttributHandler.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class DowsersJacksonModule extends SimpleModule {
+public interface AttributHandler {
 
 	/**
-	 * Build a new instance of DowsersJacksonModule.java.
+	 * @return attribute value.
 	 */
-	public DowsersJacksonModule() {
-		super("dowsers-jackson-core", VersionUtil.versionFor(DowsersJacksonModule.class));
+	<T> T get();
 
-		addKeyDeserializer(Locale.class, new LocaleKeyDeserializer());
-
-		addSerializer(new LocaleJsonSerializer());
-		addDeserializer(Locale.class, new LocaleJsonDeserializer());
-
-		addSerializer(new ClassInformationSerializer());
-		addDeserializer(ClassInformation.class, new ClassInformationDeserializer());
-	}
+	/**
+	 * Set attribute value
+	 * 
+	 * @param value
+	 */
+	<T> void set(T value);
 }

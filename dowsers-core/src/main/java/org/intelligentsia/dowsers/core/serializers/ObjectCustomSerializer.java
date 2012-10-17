@@ -17,29 +17,31 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.core.serializers;
 
-import org.junit.Test;
+import java.nio.ByteBuffer;
 
 /**
- * EntityDynamicBeanSupportTest.
+ * ObjectCustomSerializer declare methode to "write an object to" and
+ * "read an object from" a ByteBuffer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityDynamicBeanSupportTest {
+public interface ObjectCustomSerializer {
 
-	@Test
-	public void testFindSetter() {
-		// TODO implements it
-	}
+	/**
+	 * Write this instance to specified byte buffer.
+	 * 
+	 * @param byteBuffer
+	 *            destination byte buffer
+	 */
+	public void writeTo(ByteBuffer byteBuffer);
 
-	@Test
-	public void testFindGetter() {
-		// TODO implements it
-	}
-
-	@Test
-	public void testAttribute() {
-		// TODO implements it
-	}
+	/**
+	 * Read data from byte buffer
+	 * 
+	 * @param byteBuffer
+	 *            source
+	 */
+	public void readFrom(ByteBuffer byteBuffer);
 }

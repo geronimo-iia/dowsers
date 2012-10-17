@@ -27,7 +27,7 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.deser.std.StdDeserializer;
-import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 
 import com.google.common.base.Preconditions;
@@ -88,7 +88,7 @@ public class EntityDynamicJsonDeSerializer extends StdDeserializer<EntityDynamic
 				jp.nextToken();
 			}
 		}
-		return new EntityDynamicSupport(identity, metaEntityContextRepository.find(metaEntityContextName), attributes);
+		return new EntityDynamicSupport(identity, metaEntityContextRepository.find(metaEntityContextRepository.resolve(metaEntityContextName).getType()), attributes);
 	}
 
 }

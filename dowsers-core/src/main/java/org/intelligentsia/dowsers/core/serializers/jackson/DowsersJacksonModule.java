@@ -17,29 +17,34 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.core.serializers.jackson;
 
-import org.junit.Test;
+import java.util.Locale;
+
+import org.codehaus.jackson.map.module.SimpleModule;
+import org.codehaus.jackson.util.VersionUtil;
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
 /**
- * EntityDynamicBeanSupportTest.
+ * DowsersJacksonModule.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public class EntityDynamicBeanSupportTest {
+public class DowsersJacksonModule extends SimpleModule {
 
-	@Test
-	public void testFindSetter() {
-		// TODO implements it
-	}
+	/**
+	 * Build a new instance of DowsersJacksonModule.java.
+	 */
+	public DowsersJacksonModule() {
+		super("dowsers-jackson-core", VersionUtil.versionFor(DowsersJacksonModule.class));
 
-	@Test
-	public void testFindGetter() {
-		// TODO implements it
-	}
+		addKeyDeserializer(Locale.class, new LocaleKeyDeserializer());
 
-	@Test
-	public void testAttribute() {
-		// TODO implements it
+		addSerializer(new LocaleJsonSerializer());
+		addDeserializer(Locale.class, new LocaleJsonDeserializer());
+
+		addSerializer(new ClassInformationSerializer());
+		addDeserializer(ClassInformation.class, new ClassInformationDeserializer());
 	}
 }

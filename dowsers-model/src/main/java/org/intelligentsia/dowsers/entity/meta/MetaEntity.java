@@ -40,6 +40,7 @@ package org.intelligentsia.dowsers.entity.meta;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.entity.Entity;
+import org.intelligentsia.dowsers.entity.annotation.Attribute;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.ImmutableCollection;
@@ -81,11 +82,13 @@ public interface MetaEntity extends Entity, Iterable<MetaAttribute> {
 	 * 
 	 * @return non-<code>null</code>, empty or non-empty string
 	 */
+	@Attribute
 	String name();
 
 	/**
 	 * @return an {@link ImmutableCollection} on {@link MetaAttribute}.
 	 */
+	@Attribute
 	ImmutableCollection<MetaAttribute> metaAttributes();
 
 	/**
@@ -93,6 +96,7 @@ public interface MetaEntity extends Entity, Iterable<MetaAttribute> {
 	 * 
 	 * @return {@link Version} instance.
 	 */
+	@Attribute
 	Version version();
 
 	/**

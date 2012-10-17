@@ -17,42 +17,42 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io.serializers;
+package org.intelligentsia.dowsers.core.serializers;
 
-import java.io.IOException;
-
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.deser.std.StdDeserializer;
-import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.ObjectBuffer;
 
 /**
+ * KryoSerialize.
  * 
- * ClassInformationDeserializer.
+ * From https://github.com/eivindw/hazelcast-kryo-example
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public class ClassInformationDeserializer extends StdDeserializer<ClassInformation> {
+public class KryoSerializer {
 
-	public ClassInformationDeserializer() {
-		super(ClassInformation.class);
+	private static final Kryo kryo = new Kryo();
+
+	static {
+		KryoSerializer.kryo.setRegistrationOptional(true);
 	}
 
-	@Override
-	public ClassInformation deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		String description = null;
-
-		if (jp.hasCurrentToken()) {
-			if (jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
-				jp.nextValue();
-				description = jp.getText();
-				jp.nextToken();
-			}
+	public static void register(final Class<?>... classes) {
+		for (final Class<?> clazz : classes) {
+			KryoSerializer.kryo.register(clazz);
 		}
+	}
 
-		return description != null ? ClassInformation.parse(description) : null;
+	public static byte[] write(final Object obj) {
+		final ObjectBuffer objectBuffer = new ObjectBuffer(KryoSerializer.kryo);
+		return objectBuffer.writeClassAndObject(obj);
+	}
+
+	public static Object read(final byte[] bytes) {
+		final ObjectBuffer objectBuffer = new ObjectBuffer(KryoSerializer.kryo);
+		return objectBuffer.readClassAndObject(bytes);
 	}
 
 }

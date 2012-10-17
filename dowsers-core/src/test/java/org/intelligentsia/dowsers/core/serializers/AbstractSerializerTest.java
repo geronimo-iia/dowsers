@@ -17,11 +17,12 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
 import junit.framework.Assert;
 
 import org.intelligentsia.dowsers.core.DummyObject;
+import org.intelligentsia.dowsers.core.serializers.Serializer;
 import org.junit.Before;
 import org.junit.Test;
 

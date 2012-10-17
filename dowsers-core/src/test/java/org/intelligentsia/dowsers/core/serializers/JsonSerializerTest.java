@@ -17,26 +17,25 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
-import com.esotericsoftware.kryo.Kryo;
+import org.intelligentsia.dowsers.core.serializers.Serializer;
+import org.intelligentsia.dowsers.core.serializers.Serializers;
 
 /**
- * KryoSerializerTest.
+ * JsonSerializerTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class KryoSerializerTest extends AbstractSerializerTest {
+public class JsonSerializerTest extends AbstractSerializerTest {
 
 	/**
-	 * @see org.intelligentsia.dowsers.core.io.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
+	 * @see org.intelligentsia.dowsers.core.serializers.serializer.AbstractSerializerTest#createSerializer(java.lang.Class)
 	 */
 	@Override
 	protected <T> Serializer<T> createSerializer(final Class<T> className) {
-		final Kryo kryo = Serializers.newKryo();
-		kryo.register(className);
-		return Serializers.newKryoSerializer(className, kryo);
+		return Serializers.newJacksonSerializer(className);
 	}
 
 }

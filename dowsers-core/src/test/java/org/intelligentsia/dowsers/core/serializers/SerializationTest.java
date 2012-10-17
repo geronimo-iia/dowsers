@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
+package org.intelligentsia.dowsers.core.serializers;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,6 +27,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.intelligentsia.dowsers.core.DummyObject;
+import org.intelligentsia.dowsers.core.serializers.JacksonSerializableWrapper;
+import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
+import org.intelligentsia.dowsers.core.serializers.KryoSerializableWrapper;
+import org.intelligentsia.dowsers.core.serializers.KryoSerializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;

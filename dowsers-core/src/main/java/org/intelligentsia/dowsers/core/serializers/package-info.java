@@ -17,29 +17,11 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
-
-import java.io.ObjectStreamException;
-import java.io.Serializable;
+package org.intelligentsia.dowsers.core.serializers;
 
 /**
- * KryoSerializableWrapper. From
- * https://github.com/eivindw/hazelcast-kryo-example.
+ * Package for all Input / Output stuff.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ *  Actually, lot of different design are evaluate.
+ * 
  */
-public class KryoSerializableWrapper implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	private final byte[] s;
-
-	public KryoSerializableWrapper(final Object target) {
-		s = KryoSerializer.write(target);
-	}
-
-	private Object readResolve() throws ObjectStreamException {
-		return KryoSerializer.read(s);
-	}
-
-}

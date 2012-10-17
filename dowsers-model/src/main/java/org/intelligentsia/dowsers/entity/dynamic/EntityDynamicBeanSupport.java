@@ -17,13 +17,14 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.entity;
+package org.intelligentsia.dowsers.entity.dynamic;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.reflection.Reflection;
+import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 import com.google.common.annotations.VisibleForTesting;

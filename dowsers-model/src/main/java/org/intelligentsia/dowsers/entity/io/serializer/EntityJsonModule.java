@@ -21,7 +21,7 @@ package org.intelligentsia.dowsers.entity.io.serializer;
 
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.util.VersionUtil;
-import org.intelligentsia.dowsers.entity.EntityDynamicSupport;
+import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaAttributeDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;

@@ -17,31 +17,26 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.core.io;
-
-import java.nio.ByteBuffer;
+package org.intelligentsia.dowsers.entity;
 
 /**
- * ObjectCustomSerializer declare methode to "write an object to" and
- * "read an object from" a ByteBuffer.
+ * EntityRepository declare methods to deal with an {@link Entity} repository.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ObjectCustomSerializer {
+public interface EntityRepository {
 
-	/**
-	 * Write this instance to specified byte buffer.
-	 * 
-	 * @param byteBuffer
-	 *            destination byte buffer
-	 */
-	public void writeTo(ByteBuffer byteBuffer);
+	public interface Collection {
+		<T> Iterable<T> find(String query);
 
-	/**
-	 * Read data from byte buffer
-	 * 
-	 * @param byteBuffer
-	 *            source
-	 */
-	public void readFrom(ByteBuffer byteBuffer);
+		<T> T findOne(String query);
+
+		void save();
+
+		void update();
+
+		void remove();
+	}
+
+	Collection getCollection(String name);
 }

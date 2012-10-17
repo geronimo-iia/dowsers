@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.entity.Entity;
+import org.intelligentsia.dowsers.entity.annotation.Attribute;
 
 /**
  * MetaAttribute: Ash nazg durbatulûk, ash nazg gimbatul, ash nazg thrakatulûk
@@ -45,6 +46,7 @@ public interface MetaAttribute extends Entity {
 	 * 
 	 * @return non-<code>null</code> textual attribute name
 	 */
+	@Attribute
 	public String name();
 
 	/**
@@ -54,6 +56,7 @@ public interface MetaAttribute extends Entity {
 	 * @return non-<code>null</code> <code>{@link ClassInformation}</code>
 	 *         instance
 	 */
+	@Attribute
 	public ClassInformation valueClass();
 
 	/**
@@ -62,6 +65,7 @@ public interface MetaAttribute extends Entity {
 	 * @return <code>null</code> or non-<code>null</code> <code>Value</code>
 	 *         instance
 	 */
+	@Attribute
 	public <Value extends Serializable> Value defaultValue();
 
 }

@@ -22,7 +22,7 @@ package org.intelligentsia.dowsers.entity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.intelligentsia.dowsers.entity.factory.EntityFactoryDynamicCachedSupport;
+import org.intelligentsia.dowsers.entity.factory.EntityFactoryDynamicSupport;
 import org.intelligentsia.dowsers.entity.factory.EntityFactoryProxySupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class EntityTest {
 
 	@Before
 	public void init() {
-		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicCachedSupport(new MockMetaEntityContextRepository())));
+		entityManagerUnit = new EntityManagerUnit(new EntityFactoryProxySupport(new EntityFactoryDynamicSupport(new MockMetaEntityContextRepository())));
 	}
 
 	@Test
