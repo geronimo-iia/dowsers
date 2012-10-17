@@ -3,11 +3,11 @@ package org.intelligentsia.dowsers.entity;
 import org.junit.Test;
 
 /**
- * EntityBeanSupportTest.
+ * EntityDynamicBeanSupportTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityBeanSupportTest {
+public class EntityDynamicBeanSupportTest {
 
 	@Test
 	public void testFindSetter() {

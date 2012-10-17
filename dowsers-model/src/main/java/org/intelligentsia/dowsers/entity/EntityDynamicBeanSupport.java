@@ -21,6 +21,7 @@ package org.intelligentsia.dowsers.entity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
@@ -28,34 +29,29 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * EntityBeanSupport extends {@link EntitySupport}. This is the base class for
- * all POJO {@link Entity}.
+ * EntityDynamicBeanSupport is the base class for all POJO {@link Entity} with
+ * additional dynamic properties.
+ * 
  * 
  * First implementation of reflexive way. May we have a better deal with
  * Attribute Handler way...
  * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityBeanSupport extends EntitySupport {
-	/**
-	 * serialVersionUID:long.
-	 */
-	private static final long serialVersionUID = -6808544926562089303L;
+public class EntityDynamicBeanSupport extends EntityDynamicSupport {
 
 	/**
-	 * Build a new instance of <code>EntityBeanSupport</code>
-	 * 
-	 * @param identity
-	 *            entity's identity.
-	 * @param metaEntityContext
-	 *            {@link MetaEntityContext} associated with this instance.
-	 * @throws NullPointerException
-	 *             if identifier or metaEntityContext is null
-	 * @throws IllegalArgumentException
-	 *             if identifier is empty
+	 * serialVersionUID:long
 	 */
-	public EntityBeanSupport(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+	private static final long serialVersionUID = 4852179303357826154L;
+
+	public EntityDynamicBeanSupport(String identity, MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		super(identity, metaEntityContext);
+	}
+
+	public EntityDynamicBeanSupport(String identity, MetaEntityContext metaEntityContext, Map<String, Object> attributes) throws NullPointerException, IllegalArgumentException {
+		super(identity, metaEntityContext, attributes);
 	}
 
 	/**
@@ -66,23 +62,27 @@ public class EntityBeanSupport extends EntitySupport {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-		final Method method = findGetter(name);
-		if (method != null) {
-			try {
-				return (Value) method.invoke(this);
-			} catch (final Throwable e) {
-				throw new IllegalStateException(e);
+		Value value = super.attribute(name);
+		if (value == null) {
+			final Method method = findGetter(name);
+			if (method != null) {
+				try {
+					value = (Value) method.invoke(this);
+				} catch (final Throwable e) {
+					throw new IllegalStateException(e);
+				}
+			} else {
+				final Field field = Reflection.findField(getClass(), name);
+				if (field != null) {
+					try {
+						value = (Value) field.get(this);
+					} catch (final Throwable e) {
+						throw new IllegalStateException(e);
+					}
+				}
 			}
 		}
-		final Field field = Reflection.findField(getClass(), name);
-		if (field != null) {
-			try {
-				return (Value) field.get(this);
-			} catch (final Throwable e) {
-				throw new IllegalStateException(e);
-			}
-		}
-		return null;
+		return value;
 	}
 
 	@Override
@@ -94,13 +94,16 @@ public class EntityBeanSupport extends EntitySupport {
 			} catch (final Throwable e) {
 				throw new IllegalStateException(e);
 			}
-		}
-		final Field field = Reflection.findField(getClass(), name);
-		if (field != null) {
-			try {
-				field.set(this, value);
-			} catch (final Throwable e) {
-				throw new IllegalStateException(e);
+		} else {
+			final Field field = Reflection.findField(getClass(), name);
+			if (field != null) {
+				try {
+					field.set(this, value);
+				} catch (final Throwable e) {
+					throw new IllegalStateException(e);
+				}
+			} else {
+				super.attribute(name, value);
 			}
 		}
 		return this;
