@@ -363,6 +363,7 @@
 	<!-- ******************************************************************* -->
 	<modules>
 		<module>dowsers-core</module>
+		<module>dowsers-entity</module>
 		<module>dowsers-model</module>
 		<!-- <module>dowsers-meta-repository</module> -->
 		<module>dowsers-domain</module>
