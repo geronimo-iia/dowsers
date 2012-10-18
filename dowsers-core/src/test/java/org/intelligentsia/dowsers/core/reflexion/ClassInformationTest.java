@@ -33,13 +33,13 @@ import java.io.ObjectOutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Closeables;
 
 /**

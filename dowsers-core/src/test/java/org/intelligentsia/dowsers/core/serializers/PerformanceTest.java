@@ -25,9 +25,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.intelligentsia.dowsers.core.DummyObject;
-import org.intelligentsia.dowsers.core.serializers.JacksonSerializableWrapper;
-import org.intelligentsia.dowsers.core.serializers.KryoSerializableWrapper;
-import org.intelligentsia.dowsers.core.serializers.KryoSerializer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;

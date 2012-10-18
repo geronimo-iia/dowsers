@@ -22,10 +22,10 @@ package com.intelligentsia.dowsers.entity;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * EntityProxy implements {@link InvocationHandler}.
@@ -88,7 +88,7 @@ public class EntityProxy implements InvocationHandler, Entity {
 			return proxy;
 		}
 
-		// Dynamic attributes call
+		// TODO Dynamic method call
 		// if (entity.metaEntityContext().contains(methodName)) {
 		// if (method.getParameterTypes().length == 0) {
 		// return entity.attribute(methodName);
@@ -135,7 +135,7 @@ public class EntityProxy implements InvocationHandler, Entity {
 	}
 
 	@Override
-	public ReadOnlyIterator<String> attributeNames() {
+	public ImmutableSet<String> attributeNames() {
 		return entity.attributeNames();
 	}
 

@@ -22,10 +22,10 @@ package org.intelligentsia.dowsers.core.serializers.jackson;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.deser.std.StdDeserializer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * LocaleJsonDeserializer. Default locale is {@link Locale#ENGLISH}.
@@ -33,6 +33,10 @@ import org.codehaus.jackson.map.deser.std.StdDeserializer;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class LocaleJsonDeserializer extends StdDeserializer<Locale> {
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -23475403657913331L;
 	/**
 	 * Separator.
 	 */

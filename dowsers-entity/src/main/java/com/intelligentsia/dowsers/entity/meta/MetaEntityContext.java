@@ -19,8 +19,6 @@
  */
 package com.intelligentsia.dowsers.entity.meta;
 
-import java.util.Set;
-
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
@@ -36,9 +34,12 @@ import com.intelligentsia.dowsers.entity.Entity;
  * {@link MetaEntity}. Each component is an extends of meta data given by super
  * {@link MetaEntity} instance.
  * 
+ * We call version of {@link MetaEntity} definition the fisrst and initial
+ * {@link MetaEntity} set to a {@link MetaEntityContext}.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public interface MetaEntityContext {
+public interface MetaEntityContext extends Iterable<MetaAttribute> {
 
 	/**
 	 * Returns a textual class name of the entity.
@@ -46,6 +47,11 @@ public interface MetaEntityContext {
 	 * @return non-<code>null</code>, empty or non-empty string
 	 */
 	String name();
+
+	/**
+	 * @return {@link Version} of {@link MetaEntity} definition.
+	 */
+	Version version();
 
 	/**
 	 * @return an ordered {@link ReadOnlyIterator} on {@link Version} which
@@ -56,10 +62,14 @@ public interface MetaEntityContext {
 	ReadOnlyIterator<Version> versions();
 
 	/**
-	 * @return an ordered {@link ReadOnlyIterator} on {@link MetaEntity} which
-	 *         compose this {@link MetaEntityContext}.
+	 * @param version
+	 *            version
+	 * @return {@see Boolean#TRUE} if this context has specified version of
+	 *         {@link MetaEntity}.
+	 * @throws NullPointerException
+	 *             if version is null
 	 */
-	ReadOnlyIterator<MetaEntity> metaEntities();
+	boolean containsVersion(Version version) throws NullPointerException;
 
 	/**
 	 * @param version
@@ -68,7 +78,7 @@ public interface MetaEntityContext {
 	 * @throws NullPointerException
 	 *             if version is null
 	 */
-	MetaEntity metaEntity(Version version) throws NullPointerException;
+	ImmutableCollection<MetaAttribute> metaAttributes(Version version) throws NullPointerException;
 
 	/**
 	 * @param name
@@ -76,19 +86,18 @@ public interface MetaEntityContext {
 	 * @return {@see Boolean#TRUE} if this entity has specified named attribute.
 	 * @throws NullPointerException
 	 *             if name is null
-	 * @throws IllegalArgumentException
-	 *             if name is empty
 	 */
-	public boolean containsAttribute(String name) throws NullPointerException, IllegalArgumentException;
-	
-	/**
-	 * @return an {@link ImmutableCollection} on {@link MetaAttribute}.
-	 */
-	ImmutableCollection<MetaAttribute> metaAttributes();
+	boolean containsAttribute(String name) throws NullPointerException;
 
 	/**
-	 * @return a immutable {@link Set} of attributes names define by all extended
-	 *         {@link MetaEntity} version.
+	 * @return a {@link ImmutableSet} of attributes names define by version
+	 *         of {@link MetaEntity} definition.
+	 */
+	ImmutableSet<String> definitionAttributeNames();
+
+	/**
+	 * @return a {@link ImmutableCollection} of attributes names define by all
+	 *         extended {@link MetaEntity} version.
 	 */
 	ImmutableSet<String> allExtendedAttributeNames();
 

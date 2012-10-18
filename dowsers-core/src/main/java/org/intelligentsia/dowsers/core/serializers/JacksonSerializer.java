@@ -19,11 +19,11 @@
  */
 package org.intelligentsia.dowsers.core.serializers;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Throwables;
 
 /**
@@ -36,8 +36,23 @@ public class JacksonSerializer {
 	private static final ObjectMapper mapper = new ObjectMapper();
 
 	static {
-		JacksonSerializer.mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		JacksonSerializer.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, false);
+
+		// SerializationFeature for changing how JSON is written
+
+		// to enable standard indentation ("pretty-printing"):
+		JacksonSerializer.mapper.disable(SerializationFeature.INDENT_OUTPUT);
+		// to allow serialization of "empty" POJOs (no properties to serialize)
+		// (without this setting, an exception is thrown in those cases)
+		JacksonSerializer.mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		// to write java.util.Date, Calendar as number (timestamp):
+		JacksonSerializer.mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+		// DeserializationFeature for changing how JSON is read as POJOs:
+		// to prevent exception when encountering unknown property:
+		JacksonSerializer.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		// to allow coercion of JSON empty String ("") to null Object value:
+		JacksonSerializer.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
 		mapper.registerModule(new DowsersJacksonModule());
 	}
 

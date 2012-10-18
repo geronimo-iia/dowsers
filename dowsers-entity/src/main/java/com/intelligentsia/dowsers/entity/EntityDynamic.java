@@ -29,6 +29,7 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * EntityDynamic.
@@ -164,8 +165,8 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	}
 
 	@Override
-	public ReadOnlyIterator<String> attributeNames() {
-		return ReadOnlyIterator.newReadOnlyIterator(attributes.keySet().iterator());
+	public ImmutableSet<String> attributeNames() {
+		return ImmutableSet.copyOf(attributes.keySet());
 	}
 
 	/**

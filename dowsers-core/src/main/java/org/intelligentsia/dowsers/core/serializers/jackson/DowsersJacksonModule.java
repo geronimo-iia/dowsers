@@ -21,9 +21,10 @@ package org.intelligentsia.dowsers.core.serializers.jackson;
 
 import java.util.Locale;
 
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
+import com.fasterxml.jackson.core.util.VersionUtil;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * DowsersJacksonModule.
@@ -32,6 +33,11 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
  * 
  */
 public class DowsersJacksonModule extends SimpleModule {
+
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -6249864403762645088L;
 
 	/**
 	 * Build a new instance of DowsersJacksonModule.java.

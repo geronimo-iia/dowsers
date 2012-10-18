@@ -19,9 +19,6 @@
  */
 package org.intelligentsia.dowsers.core.serializers;
 
-import org.intelligentsia.dowsers.core.serializers.Serializer;
-import org.intelligentsia.dowsers.core.serializers.Serializers;
-
 import com.esotericsoftware.kryo.Kryo;
 
 /**

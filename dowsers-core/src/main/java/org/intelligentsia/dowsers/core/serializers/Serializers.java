@@ -32,11 +32,10 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.ObjectBuffer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Preconditions;
 
 /**
@@ -72,7 +71,7 @@ public enum Serializers {
 	 */
 	public static <T> Serializer<T> newJacksonSerializer(final Class<T> innerType) {
 		final ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 		return Serializers.newJacksonSerializer(innerType, mapper);
 	}
 

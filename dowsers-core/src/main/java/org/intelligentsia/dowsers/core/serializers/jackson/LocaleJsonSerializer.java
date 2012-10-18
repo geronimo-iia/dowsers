@@ -22,10 +22,10 @@ package org.intelligentsia.dowsers.core.serializers.jackson;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.ser.std.SerializerBase;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
  * {@link LocaleJsonSerializer} implements a serializer for {@link Locale}
@@ -35,7 +35,7 @@ import org.codehaus.jackson.map.ser.std.SerializerBase;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class LocaleJsonSerializer extends SerializerBase<Locale> {
+public class LocaleJsonSerializer extends StdSerializer<Locale> {
 
 	/**
 	 * Build a new instance of LocaleJsonSerializer.java.

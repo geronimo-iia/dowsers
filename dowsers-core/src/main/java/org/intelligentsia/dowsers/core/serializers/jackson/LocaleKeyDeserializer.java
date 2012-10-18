@@ -21,8 +21,8 @@ package org.intelligentsia.dowsers.core.serializers.jackson;
 
 import java.util.Locale;
 
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.deser.std.StdKeyDeserializer;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer;
 
 /**
  * Deserializer for class {@link Locale} used as a key in a Map.

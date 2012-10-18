@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.meta.support;
+package com.intelligentsia.dowsers.entity.meta;
 
 import java.io.Serializable;
 
@@ -28,7 +28,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
-import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 
 /**
  * <code>MetaAttributeDefinition</code> implements {@link MetaAttribute}.

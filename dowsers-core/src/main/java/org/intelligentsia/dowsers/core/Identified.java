@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.dowsers.core;
 
-
 /**
  * Identified declare methods to get an identity.
  * 

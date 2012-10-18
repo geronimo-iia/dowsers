@@ -21,18 +21,19 @@ package org.intelligentsia.dowsers.core.serializers.jackson;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.ser.std.SerializerBase;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 /**
  * ClassInformationSerializer.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class ClassInformationSerializer extends SerializerBase<ClassInformation> {
+public class ClassInformationSerializer extends StdSerializer<ClassInformation> {
 
 	public ClassInformationSerializer() {
 		super(ClassInformation.class);

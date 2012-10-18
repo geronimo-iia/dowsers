@@ -19,7 +19,7 @@
  */
 package com.intelligentsia.dowsers.entity;
 
-import org.intelligentsia.dowsers.core.ReadOnlyIterator;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Entity.
@@ -98,8 +98,8 @@ public interface Entity {
 	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
-	 * @return a {@link ReadOnlyIterator} on attribute name.
+	 * @return a {@link ImmutableSet} on attribute name.
 	 */
-	public ReadOnlyIterator<String> attributeNames();
+	public ImmutableSet<String> attributeNames();
 	
 }
