@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
-import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.base.Objects;
@@ -263,28 +262,6 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalStateException
 		 *             if value is not assignable to specified value class
 		 */
-		public Builder addMetaAttribute(final String name, final ClassInformation valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-			this.metaAttributes.add(new MetaAttributeDefinition(name, valueClass, defaultValue));
-			return this;
-		}
-
-		/**
-		 * Add a new instance of <code>MetaAttributeDefinition</code>.
-		 * 
-		 * @param name
-		 *            attribute name
-		 * @param valueClass
-		 *            value class
-		 * @param defaultValue
-		 *            default value
-		 * @return this instance.
-		 * @throws NullPointerException
-		 *             if name or valueClass is null
-		 * @throws IllegalArgumentException
-		 *             if name is empty
-		 * @throws IllegalStateException
-		 *             if value is not assignable to specified value class
-		 */
 		public Builder addMetaAttribute(final String name, final Class<?> valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 			this.metaAttributes.add(new MetaAttributeDefinition(name, valueClass, defaultValue));
 			return this;
@@ -303,26 +280,8 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalArgumentException
 		 *             if name is empty
 		 */
-		public Builder addMetaAttribute(final String name, final ClassInformation valueClass) throws NullPointerException, IllegalArgumentException {
-			this.metaAttributes(new MetaAttributeDefinition(name, valueClass, null));
-			return this;
-		}
-
-		/**
-		 * Add a new instance of <code>MetaAttributeDefinition</code>.
-		 * 
-		 * @param name
-		 *            attribute name
-		 * @param valueClass
-		 *            value class
-		 * @return this instance.
-		 * @throws NullPointerException
-		 *             if name or valueClass is null
-		 * @throws IllegalArgumentException
-		 *             if name is empty
-		 */
 		public Builder addMetaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
-			this.metaAttributes(new MetaAttributeDefinition(name, valueClass, null));
+			this.metaAttributes(new MetaAttributeDefinition(name, valueClass));
 			return this;
 		}
 

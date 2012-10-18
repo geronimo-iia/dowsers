@@ -34,10 +34,19 @@ public class BuilderTest {
 
 	@Test
 	public void testMetaEntityBuilder() {
-		final MetaEntity definition = new MetaEntityDefinition.Builder().name("test").version(new Version(1)).build();
+		final MetaEntity definition = new MetaEntityDefinition.Builder().name("test").version(new Version(1)).
+				addMetaAttribute("test-attribute", String.class).
+				build();
 		assertNotNull(definition);
+		assertNotNull(definition.identity());
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
+		assertNotNull(definition.attribute("metaAttributes"));
+		
+		ImmutableCollection<MetaAttribute> metaAttributes =   definition.attribute("metaAttributes");
+		assertNotNull(metaAttributes);
+		assertNotNull(metaAttributes.contains("test-attribute"));
+		assertNotNull(metaAttributes.asList().get(0).identity());
 	}
 
 	@Test

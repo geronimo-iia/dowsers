@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +39,10 @@ import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.EntityMapper;
 import com.intelligentsia.dowsers.entity.EntityProxy;
+import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityDefinition;
+import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 
 public class SerializationTest {
@@ -104,6 +109,28 @@ public class SerializationTest {
 
 		assertEquals(entity, entity2);
 
+	}
+
+	@Test
+	public void testMetaAttribute() {
+		final EntityMapper mapper = new EntityMapper();
+		final StringWriter writer = new StringWriter();
+
+		MetaEntity definition = new MetaEntityDefinition.Builder(). // definition
+				name(MetaAttribute.class.getName()).version(MetaModel.VERSION)
+				// identity
+				.addMetaAttribute("identity", String.class)
+				// name
+				.addMetaAttribute("name", String.class)
+				// value
+				.addMetaAttribute("valueClass", ClassInformation.class)
+				// default value
+				.addMetaAttribute("defaultValue", Object.class).build();
+
+		mapper.writeValue(writer, definition);
+		final String result = writer.toString();
+		System.err.println(result);
+		// TODO finalize
 	}
 
 	protected CustomizableSampleEntity getCustomizableSampleEntity() {

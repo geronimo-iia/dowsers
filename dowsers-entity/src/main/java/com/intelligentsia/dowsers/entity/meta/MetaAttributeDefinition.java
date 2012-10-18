@@ -40,21 +40,21 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = -5802346012784857540L;
-
-	/**
-	 * attribute name.
-	 */
-	private final String name;
-
-	/**
-	 * attribute value class.
-	 */
-	private final ClassInformation valueClass;
-
-	/**
-	 * attribute default value.
-	 */
-	private final Object defaultValue;
+//
+//	/**
+//	 * attribute name.
+//	 */
+//	private final String name;
+//
+//	/**
+//	 * attribute value class.
+//	 */
+//	private final ClassInformation valueClass;
+//
+//	/**
+//	 * attribute default value.
+//	 */
+//	private final Object defaultValue;
 
 	/**
 	 * Build a new instance of <code>MetaAttributeDefinition</code>.
@@ -86,7 +86,7 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	 * 
 	 */
 	public MetaAttributeDefinition(final String name, final Class<?> valueClass, final Object defaultValue) {
-		this(name, new ClassInformation(valueClass), defaultValue);
+		this(name, new ClassInformation(valueClass), defaultValue, IdentifierFactoryProvider.generateNewIdentifier());
 	}
 
 	/**
@@ -95,9 +95,7 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	 * @param name
 	 *            attribute name
 	 * @param valueClass
-	 *            value class
-	 * @param defaultValue
-	 *            default value
+	 *            value class 
 	 * @throws NullPointerException
 	 *             if name or valueClass is null
 	 * @throws IllegalArgumentException
@@ -105,8 +103,8 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	 * @throws IllegalStateException
 	 *             if value is not assignable to specified value class
 	 */
-	public MetaAttributeDefinition(final String name, final ClassInformation valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-		this(name, valueClass, defaultValue, new StringBuilder(name).append(':').append(IdentifierFactoryProvider.generateNewIdentifier()).toString());
+	public MetaAttributeDefinition(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		this(name, new ClassInformation(valueClass), null, IdentifierFactoryProvider.generateNewIdentifier());
 	}
 
 	/**
@@ -130,9 +128,12 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	public MetaAttributeDefinition(final String name, final ClassInformation valueClass, final Object defaultValue, final String identity) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 		super(identity);
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		this.name = name;
-		this.valueClass = Preconditions.checkNotNull(valueClass);
-		this.defaultValue = defaultValue;
+		super.attribute( "name", name);
+		super.attribute( "valueClass", Preconditions.checkNotNull(valueClass));
+		super.attribute( "defaultValue", defaultValue);
+//		this.name = name;
+//		this.valueClass = Preconditions.checkNotNull(valueClass);
+//		this.defaultValue = defaultValue;
 		if (defaultValue != null) {
 			Preconditions.checkState(valueClass.isAssignableFrom(defaultValue.getClass()));
 		}
@@ -142,13 +143,16 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	@Override
 	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkState(!"".equals(Preconditions.checkNotNull(name)));
-		if ("name".equals(name)) {
-			return (Value) name();
-		} else if ("valueClass".equals(name)) {
-			return (Value) valueClass();
-		} else if ("defaultValue".equals(name)) {
-			return (Value) defaultValue();
+		if ("identity".equals(name)) {
+			return (Value) identity();
 		}
+//		if ("name".equals(name)) {
+//			return (Value) name();
+//		} else if ("valueClass".equals(name)) {
+//			return (Value) valueClass();
+//		} else if ("defaultValue".equals(name)) {
+//			return (Value) defaultValue();
+//		}
 		return super.attribute(name);
 	}
 
@@ -164,23 +168,23 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 
 	@Override
 	public String name() {
-		return name;
+		return attribute("name");//name;
 	}
 
 	@Override
 	public ClassInformation valueClass() {
-		return valueClass;
+		return attribute("valueClass");//valueClass;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Value extends Serializable> Value defaultValue() {
-		return (Value) defaultValue;
+		return (Value) attribute("defaultValue");// defaultValue;
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(getClass()).add("name", name).add("valueClass", valueClass).add("defaultValue", defaultValue).toString();
+		return Objects.toStringHelper(getClass()).add("name", name()).add("valueClass", valueClass()).add("defaultValue", defaultValue()).toString();
 	}
 
 }
