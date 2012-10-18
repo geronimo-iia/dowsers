@@ -54,26 +54,26 @@ public class MetaEntityContextSupport implements MetaEntityContext {
 	private transient final ImmutableMultimap<Version, MetaAttribute> definition;
 
 	private transient final ImmutableSet<String> definitionAttributeNames;
-	
+
 	private transient final ImmutableSet<String> allExtendedAttributeNames;
 
-	public MetaEntityContextSupport(MetaEntity definition, MetaEntity... extendedDefinitions) throws NullPointerException {
+	public MetaEntityContextSupport(final MetaEntity definition, final MetaEntity... extendedDefinitions) throws NullPointerException {
 		this(definition, extendedDefinitions != null ? Arrays.asList(extendedDefinitions) : null);
 	}
 
-	public MetaEntityContextSupport(MetaEntity definition, Collection<MetaEntity> extendedDefinitions) throws NullPointerException {
+	public MetaEntityContextSupport(final MetaEntity definition, final Collection<MetaEntity> extendedDefinitions) throws NullPointerException {
 		super();
 		// definition
 		Preconditions.checkNotNull(definition);
 		this.name = definition.name();
 		this.version = definition.version();
 		this.definitionAttributeNames = definition.attributeNames();
-		ImmutableMultimap.Builder<Version, MetaAttribute> builder = ImmutableMultimap.builder();
+		final ImmutableMultimap.Builder<Version, MetaAttribute> builder = ImmutableMultimap.builder();
 		builder.putAll(version, definition.metaAttributes());
 		// extended
-		ImmutableSet.Builder<String> nameBuilder = ImmutableSet.builder();
+		final ImmutableSet.Builder<String> nameBuilder = ImmutableSet.builder();
 		if (extendedDefinitions != null) {
-			for (MetaEntity metaEntity : extendedDefinitions) {
+			for (final MetaEntity metaEntity : extendedDefinitions) {
 				builder.putAll(metaEntity.version(), metaEntity.metaAttributes());
 				nameBuilder.addAll(metaEntity.attributeNames());
 			}
@@ -99,7 +99,7 @@ public class MetaEntityContextSupport implements MetaEntityContext {
 	}
 
 	@Override
-	public boolean containsVersion(Version version) throws NullPointerException {
+	public boolean containsVersion(final Version version) throws NullPointerException {
 		return definition.containsKey(version);
 	}
 
@@ -109,12 +109,12 @@ public class MetaEntityContextSupport implements MetaEntityContext {
 	}
 
 	@Override
-	public ImmutableCollection<MetaAttribute> metaAttributes(Version version) throws NullPointerException {
+	public ImmutableCollection<MetaAttribute> metaAttributes(final Version version) throws NullPointerException {
 		return ImmutableSet.copyOf(definition.get(version));
 	}
 
 	@Override
-	public boolean containsAttribute(String name) throws NullPointerException {
+	public boolean containsAttribute(final String name) throws NullPointerException {
 		return definitionAttributeNames.contains(name) || allExtendedAttributeNames.contains(name);
 	}
 
@@ -150,12 +150,12 @@ public class MetaEntityContextSupport implements MetaEntityContext {
 			return new MetaEntityContextSupport(definition, extendedMetaEntityDefinitions);
 		}
 
-		public Builder definition(MetaEntity metaEntity) {
+		public Builder definition(final MetaEntity metaEntity) {
 			definition = metaEntity;
 			return this;
 		}
 
-		public Builder addExtendedDefinition(MetaEntity metaEntity) {
+		public Builder addExtendedDefinition(final MetaEntity metaEntity) {
 			extendedMetaEntityDefinitions.add(metaEntity);
 			return this;
 		}

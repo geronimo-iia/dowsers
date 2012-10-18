@@ -34,7 +34,7 @@ public class BuilderTest {
 
 	@Test
 	public void testMetaEntityBuilder() {
-		MetaEntity definition = new MetaEntityDefinition.Builder().name("test").version(new Version(1)).build();
+		final MetaEntity definition = new MetaEntityDefinition.Builder().name("test").version(new Version(1)).build();
 		assertNotNull(definition);
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
@@ -43,7 +43,7 @@ public class BuilderTest {
 	@Test
 	public void testMetaEntityContextBuilder() {
 
-		MetaEntityContext context = new MetaEntityContextSupport.Builder()
+		final MetaEntityContext context = new MetaEntityContextSupport.Builder()
 		// definition
 				.definition(new MetaEntityDefinition.Builder().name(CustomizableSampleEntity.class.getName()).version(new Version(1)).
 				// attributes
@@ -56,7 +56,7 @@ public class BuilderTest {
 		assertNotNull(context);
 		assertEquals(CustomizableSampleEntity.class.getName(), context.name());
 		assertEquals(new Version(1), context.version());
-		
+
 		// definition name
 		assertTrue(context.definitionAttributeNames().contains("name"));
 		assertTrue(context.definitionAttributeNames().contains("description"));
@@ -65,32 +65,31 @@ public class BuilderTest {
 		assertTrue(!context.allExtendedAttributeNames().contains("name"));
 		assertTrue(!context.allExtendedAttributeNames().contains("description"));
 		assertTrue(context.allExtendedAttributeNames().contains("order"));
-		
+
 		// version
 		assertTrue(context.containsVersion(new Version(1)));
 		assertTrue(context.containsVersion(new Version(2)));
 		// version iterator
-		ReadOnlyIterator<Version> versions = context.versions();
+		final ReadOnlyIterator<Version> versions = context.versions();
 		assertTrue(versions.hasNext());
 		assertEquals(new Version(1), versions.next());
 		assertTrue(versions.hasNext());
 		assertEquals(new Version(2), versions.next());
 		assertTrue(!versions.hasNext());
-		
+
 		// attributes
 		assertTrue(context.containsAttribute("name"));
 		assertTrue(context.containsAttribute("description"));
 		assertTrue(context.containsAttribute("order"));
-	
-		ImmutableCollection<MetaAttribute> metaAttributes=  context.metaAttributes(new Version(1));
+
+		ImmutableCollection<MetaAttribute> metaAttributes = context.metaAttributes(new Version(1));
 		assertEquals(2L, metaAttributes.size());
 		assertEquals("name", metaAttributes.asList().get(0).name());
 		assertEquals("description", metaAttributes.asList().get(1).name());
-		
-		
-		metaAttributes=  context.metaAttributes(new Version(2));
+
+		metaAttributes = context.metaAttributes(new Version(2));
 		assertEquals(1L, metaAttributes.size());
 		assertEquals("order", metaAttributes.asList().get(0).name());
-		
+
 	}
 }

@@ -101,5 +101,5 @@ public interface Entity {
 	 * @return a {@link ImmutableSet} on attribute name.
 	 */
 	public ImmutableSet<String> attributeNames();
-	
+
 }

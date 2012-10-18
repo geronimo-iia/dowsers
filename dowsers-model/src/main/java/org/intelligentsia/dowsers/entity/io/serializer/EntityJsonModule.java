@@ -18,14 +18,15 @@
  *
  */
 package org.intelligentsia.dowsers.entity.io.serializer;
-
-import org.codehaus.jackson.map.module.SimpleModule;
-import org.codehaus.jackson.util.VersionUtil;
+ 
 import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.meta.MetaAttributeDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextDefinition;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityDefinition;
+
+import com.fasterxml.jackson.core.util.VersionUtil;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * EntityJsonModule.
@@ -34,6 +35,11 @@ import org.intelligentsia.dowsers.entity.meta.MetaEntityDefinition;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class EntityJsonModule extends SimpleModule {
+
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = 1421909448372149344L;
 
 	/**
 	 * Build a new instance of EntityJsonModule.java.

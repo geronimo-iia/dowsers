@@ -26,9 +26,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 import org.intelligentsia.dowsers.entity.Entity;
 import org.intelligentsia.dowsers.entity.MockMetaEntityContextRepository;
@@ -37,6 +34,10 @@ import org.intelligentsia.dowsers.entity.dynamic.EntityDynamicSupport;
 import org.intelligentsia.dowsers.entity.io.serializer.EntityJsonModule;
 import org.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * EntityJsonSerializerTest.

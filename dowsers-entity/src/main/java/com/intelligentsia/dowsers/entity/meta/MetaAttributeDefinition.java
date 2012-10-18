@@ -40,7 +40,7 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = -5802346012784857540L;
- 
+
 	/**
 	 * attribute name.
 	 */
@@ -135,7 +135,7 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 		this.defaultValue = defaultValue;
 		if (defaultValue != null) {
 			Preconditions.checkState(valueClass.isAssignableFrom(defaultValue.getClass()));
-		} 
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -148,7 +148,7 @@ public class MetaAttributeDefinition extends EntityDynamic implements MetaAttrib
 			return (Value) valueClass();
 		} else if ("defaultValue".equals(name)) {
 			return (Value) defaultValue();
-		} 
+		}
 		return super.attribute(name);
 	}
 

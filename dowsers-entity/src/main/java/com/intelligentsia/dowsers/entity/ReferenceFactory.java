@@ -17,31 +17,26 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.command;
+package com.intelligentsia.dowsers.entity;
 
-import java.util.Collection;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
- * CommandHistory.
+ * ReferenceFactory generate {@link Entity} or attribute's {@link Entity}
+ * reference.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface CommandHistory {
+public enum ReferenceFactory {
+	;
 
-	/**
-	 * Push a command instance on history
-	 * 
-	 * @param command
-	 */
-	public void push(final Command command);
+	public static URI newReference(final Entity entity) throws URISyntaxException {
+		return newReference(entity, "identity");
+	}
 
-	/**
-	 * @return an unmodifiable an ordered collection of command (older first).
-	 */
-	public Collection<Command> history();
+	public static URI newReference(final Entity entity, final String attributeName) throws URISyntaxException {
+		return new URI("urn", "dowsers:" + attributeName, entity.identity());
+	}
 
-	/**
-	 * Remove all history.
-	 */
-	public void clear();
 }

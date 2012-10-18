@@ -90,8 +90,8 @@ public interface MetaEntityContext extends Iterable<MetaAttribute> {
 	boolean containsAttribute(String name) throws NullPointerException;
 
 	/**
-	 * @return a {@link ImmutableSet} of attributes names define by version
-	 *         of {@link MetaEntity} definition.
+	 * @return a {@link ImmutableSet} of attributes names define by version of
+	 *         {@link MetaEntity} definition.
 	 */
 	ImmutableSet<String> definitionAttributeNames();
 

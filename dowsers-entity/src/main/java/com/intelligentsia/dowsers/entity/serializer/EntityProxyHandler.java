@@ -17,31 +17,25 @@
  *        under the License.
  *
  */
-package org.intelligentsia.dowsers.command;
+package com.intelligentsia.dowsers.entity.serializer;
 
-import java.util.Collection;
+import com.intelligentsia.dowsers.entity.Entity;
 
 /**
- * CommandHistory.
+ * EntityProxyHandler act as a marker for serialization purpose.
+ * 
+ * <p>
+ * This interface enable serialization like:
+ * </p>
+ * <code>
+ * 	EntityFactory factory = EntityFactories.newEntityProxyDynamicFactory(MyEntityInterface.class);
+ *  MyEntityInterface sampleEntity = factory.newInstance(); // obtain a proxy
+ *  // serialize
+ *  mapper.writeValue(writer, sampleEntity);
+ * </code>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface CommandHistory {
+public interface EntityProxyHandler extends Entity {
 
-	/**
-	 * Push a command instance on history
-	 * 
-	 * @param command
-	 */
-	public void push(final Command command);
-
-	/**
-	 * @return an unmodifiable an ordered collection of command (older first).
-	 */
-	public Collection<Command> history();
-
-	/**
-	 * Remove all history.
-	 */
-	public void clear();
 }

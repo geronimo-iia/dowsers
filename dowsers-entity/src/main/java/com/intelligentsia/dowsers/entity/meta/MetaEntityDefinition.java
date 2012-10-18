@@ -183,7 +183,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalArgumentException
 		 *             if identity is empty
 		 */
-		public Builder identity(String identity) throws NullPointerException, IllegalArgumentException {
+		public Builder identity(final String identity) throws NullPointerException, IllegalArgumentException {
 			Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 			this.identity = identity;
 			return this;
@@ -199,7 +199,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalArgumentException
 		 *             if name is empty
 		 */
-		public Builder name(String name) throws NullPointerException, IllegalArgumentException {
+		public Builder name(final String name) throws NullPointerException, IllegalArgumentException {
 			Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 			this.name = name;
 			return this;
@@ -213,7 +213,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws NullPointerException
 		 *             if version is null
 		 */
-		public Builder version(Version version) throws NullPointerException {
+		public Builder version(final Version version) throws NullPointerException {
 			this.version = Preconditions.checkNotNull(version);
 			return this;
 		}
@@ -227,7 +227,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws NullPointerException
 		 *             if metaAttributes is null
 		 */
-		public Builder metaAttributes(Collection<MetaAttribute> metaAttributes) throws NullPointerException {
+		public Builder metaAttributes(final Collection<MetaAttribute> metaAttributes) throws NullPointerException {
 			this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 			return this;
 		}
@@ -241,7 +241,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws NullPointerException
 		 *             if metaAttributes is null
 		 */
-		public Builder metaAttributes(MetaAttribute... metaAttributes) throws NullPointerException {
+		public Builder metaAttributes(final MetaAttribute... metaAttributes) throws NullPointerException {
 			this.metaAttributes.addAll(Arrays.asList(Preconditions.checkNotNull(metaAttributes)));
 			return this;
 		}
@@ -263,7 +263,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalStateException
 		 *             if value is not assignable to specified value class
 		 */
-		public Builder addMetaAttribute(String name, ClassInformation valueClass, Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		public Builder addMetaAttribute(final String name, final ClassInformation valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 			this.metaAttributes.add(new MetaAttributeDefinition(name, valueClass, defaultValue));
 			return this;
 		}
@@ -285,7 +285,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalStateException
 		 *             if value is not assignable to specified value class
 		 */
-		public Builder addMetaAttribute(String name, Class<?> valueClass, Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
+		public Builder addMetaAttribute(final String name, final Class<?> valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
 			this.metaAttributes.add(new MetaAttributeDefinition(name, valueClass, defaultValue));
 			return this;
 		}
@@ -303,7 +303,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalArgumentException
 		 *             if name is empty
 		 */
-		public Builder addMetaAttribute(String name, ClassInformation valueClass) throws NullPointerException, IllegalArgumentException {
+		public Builder addMetaAttribute(final String name, final ClassInformation valueClass) throws NullPointerException, IllegalArgumentException {
 			this.metaAttributes(new MetaAttributeDefinition(name, valueClass, null));
 			return this;
 		}
@@ -321,7 +321,7 @@ public class MetaEntityDefinition extends EntityDynamic implements MetaEntity {
 		 * @throws IllegalArgumentException
 		 *             if name is empty
 		 */
-		public Builder addMetaAttribute(String name, Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
+		public Builder addMetaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
 			this.metaAttributes(new MetaAttributeDefinition(name, valueClass, null));
 			return this;
 		}

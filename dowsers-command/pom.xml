@@ -21,9 +21,6 @@
 	<packaging>jar</packaging>
 	<name>dowsers-command</name>
 	<dependencies>
-		<!-- ******************************************************************* -->
-		<!-- DOWSERS -->
-		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>dowsers-core</artifactId>

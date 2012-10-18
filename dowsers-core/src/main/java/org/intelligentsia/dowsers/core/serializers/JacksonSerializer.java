@@ -24,6 +24,7 @@ import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.base.Throwables;
 
 /**
@@ -53,6 +54,7 @@ public class JacksonSerializer {
 		// to allow coercion of JSON empty String ("") to null Object value:
 		JacksonSerializer.mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 
+		mapper.registerModule(new GuavaModule());
 		mapper.registerModule(new DowsersJacksonModule());
 	}
 

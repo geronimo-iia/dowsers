@@ -21,11 +21,13 @@ package com.intelligentsia.dowsers.entity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
 /**
  * EntityProxy implements {@link InvocationHandler}.
@@ -34,7 +36,7 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class EntityProxy implements InvocationHandler, Entity {
+public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 
 	private final Entity entity;
 	private final Class<?> interfaceName;
@@ -58,9 +60,16 @@ public class EntityProxy implements InvocationHandler, Entity {
 		// object method base
 		if (methodName.equals("hashCode")) {
 			return new Integer(entity.hashCode());
-		} else if (methodName.equals("equals")) {
-			return entity.equals(args[0]);
-		} else if (methodName.equals("toString")) {
+		} else if (methodName.equals("equals")) { // Equals Stuff
+			Object object = args[0];
+			if (Proxy.isProxyClass(object.getClass())) {
+				final InvocationHandler handler = Proxy.getInvocationHandler(object);
+				if (EntityProxy.class.isAssignableFrom(handler.getClass())) {
+					object = ((EntityProxy) handler).entity;
+				}
+			}
+			return entity.equals(object);
+		} else if (methodName.equals("toString")) { // To String Stuff
 			return Objects.toStringHelper(interfaceName).add("identity", entity.identity()).toString();
 		}
 		// Entity stuff
@@ -104,16 +113,10 @@ public class EntityProxy implements InvocationHandler, Entity {
 		return null;
 	}
 
-	/**
-	 * @return underlying entity instance.
-	 */
 	public Entity getEntity() {
 		return entity;
 	}
 
-	/**
-	 * @return public interface name.
-	 */
 	public Class<?> getInterfaceName() {
 		return interfaceName;
 	}
@@ -142,6 +145,26 @@ public class EntityProxy implements InvocationHandler, Entity {
 	@Override
 	public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
 		return entity.contains(name);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(entity, interfaceName.getName());
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final EntityProxy other = (EntityProxy) obj;
+		return Objects.equal(interfaceName.getName(), other.interfaceName.getName()) && Objects.equal(entity, other.entity);
 	}
 
 }

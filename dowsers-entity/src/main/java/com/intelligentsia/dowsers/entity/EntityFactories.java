@@ -21,6 +21,8 @@ package com.intelligentsia.dowsers.entity;
 
 import java.lang.reflect.Proxy;
 
+import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
+
 /**
  * EntityFactories.
  * 
@@ -29,19 +31,17 @@ import java.lang.reflect.Proxy;
 public enum EntityFactories {
 	;
 
-	public static EntityFactory newEntityDynamicFactory() {
-		return new EntityFactory() {
+	public static EntityFactory<EntityDynamic> newEntityDynamicFactory() {
+		return new EntityFactory<EntityDynamic>() {
 
-			@SuppressWarnings("unchecked")
 			@Override
-			public <T extends Entity> T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return (T) new EntityDynamic(identity);
+			public EntityDynamic newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
+				return new EntityDynamic(identity);
 			}
 
-			@SuppressWarnings("unchecked")
 			@Override
-			public <T extends Entity> T newInstance() {
-				return (T) new EntityDynamic();
+			public EntityDynamic newInstance() {
+				return new EntityDynamic();
 			}
 		};
 	}
@@ -54,7 +54,7 @@ public enum EntityFactories {
 	 *            entity class Name
 	 * @return a {@link EntityFactory} instance.
 	 */
-	public static EntityFactory newEntityProxyDynamicFactory(final Class<?> className) {
+	public static <T> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className) {
 		return newEntityProxyDynamicFactory(className, newEntityDynamicFactory());
 	}
 
@@ -69,19 +69,19 @@ public enum EntityFactories {
 	 *            entity factory
 	 * @return a {@link EntityFactory} instance.
 	 */
-	public static EntityFactory newEntityProxyDynamicFactory(final Class<?> className, final EntityFactory factory) {
-		return new EntityFactory() {
+	public static <T, Y extends Entity> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className, final EntityFactory<Y> factory) {
+		return new EntityFactory<T>() {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public <T extends Entity> T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, Entity.class }, new EntityProxy(className, factory.newInstance(identity)));
+			public T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance(identity)));
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public <T extends Entity> T newInstance() {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, Entity.class }, new EntityProxy(className, factory.newInstance()));
+			public T newInstance() {
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance()));
 			}
 		};
 	}
@@ -91,12 +91,12 @@ public enum EntityFactories {
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
-	public interface EntityFactory {
+	public interface EntityFactory<T> {
 
 		/**
 		 * @return an {@link Entity} instance.
 		 */
-		<T extends Entity> T newInstance();
+		T newInstance();
 
 		/**
 		 * @param identity
@@ -108,7 +108,7 @@ public enum EntityFactories {
 		 *             if identifier is empty
 		 * 
 		 */
-		<T extends Entity> T newInstance(final String identity) throws NullPointerException, IllegalArgumentException;
+		T newInstance(final String identity) throws NullPointerException, IllegalArgumentException;
 
 	}
 }
