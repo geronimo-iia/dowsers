@@ -23,6 +23,8 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.EntityDynamic;
 
 /**
  * MetaModel define Meta model for of meta data.
@@ -40,15 +42,17 @@ public enum MetaModel {
 	/**
 	 * Attribute meta model.
 	 */
-	private static final MetaEntityContext metaAttribute;
+	private static final MetaEntityContext metaAttributeContext;
 
 	/**
 	 * Entity meta model.
 	 */
-	private static final MetaEntityContext metaEntity;
+	private static final MetaEntityContext metaEntityContext;
+
+	private static final MetaEntityContext entityDynamicModel;
 
 	static {
-		metaAttribute = new MetaEntityContextSupport.Builder().definition(new MetaEntityDefinition.Builder(). // definition
+		metaAttributeContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
 				name(MetaAttribute.class.getName()).version(VERSION)
 				// identity
 				.addMetaAttribute("identity", String.class)
@@ -61,7 +65,9 @@ public enum MetaModel {
 
 		).build();
 
-		metaEntity = new MetaEntityContextSupport.Builder().definition(new MetaEntityDefinition.Builder(). // definition
+		ImmutableSet<MetaAttribute> attributes = ImmutableSet.of();
+
+		metaEntityContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
 				name(MetaEntity.class.getName()).version(VERSION)
 				// identity
 				.addMetaAttribute("identity", String.class)
@@ -70,20 +76,29 @@ public enum MetaModel {
 				// version
 				.addMetaAttribute("version", Version.class, MetaModel.VERSION)
 				// metaAttributes
-				.addMetaAttribute("metaAttributes", ImmutableCollection.class).build()).build();
+				.metaAttributes(MetaAttribute.builder().name("metaAttributes").valueClass(new ClassInformation(attributes)).build()).build()).build();
+
+		entityDynamicModel = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
+				name(EntityDynamic.class.getName()).version(VERSION)
+				// identity
+				.addMetaAttribute("identity", String.class).build()).build();
 	}
 
 	/**
 	 * @return {@link MetaEntityContext} instance of {@link MetaAttribute}.
 	 */
 	public static MetaEntityContext getMetaAttributModel() {
-		return metaAttribute;
+		return metaAttributeContext;
 	}
 
 	/**
 	 * @return {@link MetaEntityContext} instance of {@link MetaEntity}
 	 */
 	public static MetaEntityContext getMetaEntityModel() {
-		return metaEntity;
+		return metaEntityContext;
+	}
+
+	public static MetaEntityContext getEntityDynamicModel() {
+		return entityDynamicModel;
 	}
 }

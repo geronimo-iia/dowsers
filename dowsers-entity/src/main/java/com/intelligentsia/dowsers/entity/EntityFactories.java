@@ -23,6 +23,7 @@ import java.lang.reflect.Proxy;
 
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
+
 /**
  * EntityFactories.
  * 

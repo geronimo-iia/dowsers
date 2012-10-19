@@ -19,16 +19,17 @@
  */
 package com.intelligentsia.dowsers.entity;
 
+import java.lang.reflect.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * ReferenceFactory generate {@link Entity} or attribute's {@link Entity}
+ * Reference generate {@link Entity} or attribute's {@link Entity}
  * reference.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public enum ReferenceFactory {
+public enum Reference {
 	;
 
 	public static URI newReference(final Entity entity) throws URISyntaxException {
@@ -36,7 +37,25 @@ public enum ReferenceFactory {
 	}
 
 	public static URI newReference(final Entity entity, final String attributeName) throws URISyntaxException {
-		return new URI("urn", "dowsers:" + attributeName, entity.identity());
+		if (Proxy.isProxyClass(entity.getClass())) {
+			EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(entity);
+			return new URI("urn", "dowsers:" + entityProxy.getInterfaceName().getName() + ':' + attributeName, entity.identity());
+		}
+		return new URI("urn", "dowsers:" + entity.getClass().getName() + ':' + attributeName, entity.identity());
+	}
+
+	public static String getIdentity(URI uri) {
+		return uri.getFragment();
+	}
+
+	public static String getEntityPart(URI uri) {
+		String ssp = uri.getSchemeSpecificPart();
+		return ssp.substring(ssp.indexOf(':') + 1, ssp.lastIndexOf(':'));
+	}
+
+	public static String getAttributPart(URI uri) {
+		String ssp = uri.getSchemeSpecificPart();
+		return ssp.substring(ssp.lastIndexOf(':') + 1);
 	}
 
 }

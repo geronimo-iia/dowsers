@@ -33,17 +33,25 @@ import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 public class ReferenceFactoryTest {
 
 	@Test
-	public void testEntityReference() throws URISyntaxException {
-
-		URI uri = ReferenceFactory.newReference(getCustomizableSampleEntity());
+	public void testEntityAttributeReference() throws URISyntaxException {
+		URI uri = Reference.newReference(getCustomizableSampleEntity(), "name");
 		assertNotNull(uri);
-		assertEquals("urn:dowsers:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
-
-		uri = ReferenceFactory.newReference(getCustomizableSampleEntity(), "name");
-		assertNotNull(uri);
-		assertEquals("urn:dowsers:name#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
+		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:name#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
+		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", Reference.getEntityPart(uri));
+		assertEquals("name", Reference.getAttributPart(uri));
+		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
 	}
 
+	@Test
+	public void testEntityReference() throws URISyntaxException {
+		URI uri = Reference.newReference(getCustomizableSampleEntity());
+		assertNotNull(uri);
+		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
+		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", Reference.getEntityPart(uri));
+		assertEquals("identity", Reference.getAttributPart(uri));
+		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
+	}
+	
 	protected CustomizableSampleEntity getCustomizableSampleEntity() {
 		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class);
 		final CustomizableSampleEntity sampleEntity = factory.newInstance("4c8b03dd-908a-4cad-8d48-3c7277d44ac9");

@@ -162,6 +162,10 @@ public class ClassInformation implements Serializable {
 		}
 	}
 
+	public static ClassInformation toClassInformation(Class<?> type) {
+		return new ClassInformation(type);
+	}
+
 	@Override
 	public final boolean equals(final Object obj) {
 		if (this == obj) {

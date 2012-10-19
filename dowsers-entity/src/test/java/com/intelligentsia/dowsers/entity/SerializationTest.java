@@ -17,10 +17,11 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.serializer;
+package com.intelligentsia.dowsers.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -34,25 +35,27 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intelligentsia.dowsers.entity.EntityDynamic;
-import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
-import com.intelligentsia.dowsers.entity.EntityMapper;
-import com.intelligentsia.dowsers.entity.EntityProxy;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityDefinition;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
+/**
+ * SerializationTest.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public class SerializationTest {
 
 	private ObjectMapper mapper;
+	private EntityMapper entityMapper;
 
 	@Before
 	public void initialize() {
 		mapper = JacksonSerializer.getMapper();
-		mapper.registerModule(new EntityDowsersJacksonModule());
+		entityMapper = new EntityMapper(mapper, new MockMetaEntityContextRepository());
 	}
 
 	@Test
@@ -68,10 +71,11 @@ public class SerializationTest {
 		mapper.writeValue(writer, dynamic);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"identity\":\"6787007f-f424-40b7-b240-64206b1177e2\",\"attributes\":{\"name\":\"Steve\",\"idea\":\"Sweet apple\"}}", result);
+		assertEquals("{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\",\"@attributes\":{\"name\":\"Steve\",\"idea\":\"Sweet apple\"}}", result);
 
 		final EntityDynamic entityDynamic = mapper.readValue(new StringReader(result), EntityDynamic.class);
 
+		assertEquals(dynamic.identity(), entityDynamic.identity());
 		assertEquals(dynamic.attribute("name"), entityDynamic.attribute("name"));
 		assertEquals(dynamic.attribute("idea"), entityDynamic.attribute("idea"));
 	}
@@ -85,11 +89,13 @@ public class SerializationTest {
 		mapper.writeValue(writer, sampleEntity);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals(
-				"{\"interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\",\"support-class\":\"com.intelligentsia.dowsers.entity.EntityDynamic\",\"entity\":{\"identity\":\"4c8b03dd-908a-4cad-8d48-3c7277d44ac9\",\"attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}",
-				result);
+		assertEquals("{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
+				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," + //
+				"\"@entity\":{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
+				"\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}", result);
 
 		final EntityProxy customizableSampleEntity = mapper.readValue(new StringReader(result), EntityProxy.class);
+		assertEquals(sampleEntity.identity(), customizableSampleEntity.identity());
 		assertEquals(sampleEntity.attribute("name"), customizableSampleEntity.attribute("name"));
 		assertEquals(sampleEntity.attribute("description"), customizableSampleEntity.attribute("description"));
 		assertEquals(sampleEntity.attribute("order"), customizableSampleEntity.attribute("order"));
@@ -97,26 +103,49 @@ public class SerializationTest {
 
 	@Test
 	public void testEntityMapper() {
-		final EntityMapper mapper = new EntityMapper();
 		final CustomizableSampleEntity entity = getCustomizableSampleEntity();
+
 		final StringWriter writer = new StringWriter();
-
-		mapper.writeValue(writer, entity);
+		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
-		System.err.println(result);
 
-		final CustomizableSampleEntity entity2 = mapper.readValue(new StringReader(result), CustomizableSampleEntity.class);
+		final CustomizableSampleEntity entity2 = entityMapper.readValue(new StringReader(result), CustomizableSampleEntity.class);
 
 		assertEquals(entity, entity2);
-
 	}
 
 	@Test
 	public void testMetaAttribute() {
-		final EntityMapper mapper = new EntityMapper();
 		final StringWriter writer = new StringWriter();
+		MetaAttribute attribute = MetaAttribute.builder().name(MetaAttribute.class.getName()).valueClass(String.class).build();
+		entityMapper.writeValue(writer, attribute);
+		final String result = writer.toString();
+		MetaAttribute attribute2 = entityMapper.readValue(new StringReader(result), MetaAttribute.class);
+		assertNotNull(attribute2);
+		assertEquals(attribute.identity(), attribute2.identity());
+		assertEquals(attribute.name(), attribute2.name());
+		assertEquals(attribute.valueClass(), attribute2.valueClass());
+	}
 
-		MetaEntity definition = new MetaEntityDefinition.Builder(). // definition
+	@Test
+	public void testMetaEntityWithoutAttribut() {
+		final StringWriter writer = new StringWriter();
+		MetaEntity entity = MetaEntity.builder().name(MetaAttribute.class.getName()).version(MetaModel.VERSION).build();
+		entityMapper.writeValue(writer, entity);
+		final String result = writer.toString();
+		MetaEntity entity2 = entityMapper.readValue(new StringReader(result), MetaEntity.class);
+		assertNotNull(entity);
+		assertEquals(entity.identity(), entity2.identity());
+		assertEquals(entity.name(), entity2.name());
+		assertEquals(entity.version(), entity2.version());
+	}
+
+	
+	
+	@Test
+	public void testMetaEntity() {
+		final StringWriter writer = new StringWriter();
+		MetaEntity definition = MetaEntity.builder(). // definition
 				name(MetaAttribute.class.getName()).version(MetaModel.VERSION)
 				// identity
 				.addMetaAttribute("identity", String.class)
@@ -126,11 +155,20 @@ public class SerializationTest {
 				.addMetaAttribute("valueClass", ClassInformation.class)
 				// default value
 				.addMetaAttribute("defaultValue", Object.class).build();
-
-		mapper.writeValue(writer, definition);
+		entityMapper.writeValue(writer, definition);
 		final String result = writer.toString();
 		System.err.println(result);
-		// TODO finalize
+ 		MetaEntity entity = entityMapper.readValue(new StringReader(result), MetaEntity.class);
+//		assertNotNull(entity);
+//		assertTrue(definition.equals(entity));
+//		assertEquals(definition.name(), entity.name());
+//		assertEquals(definition.version(), entity.version());
+//		assertEquals(definition.identity(), entity.identity());
+//		assertTrue(entity.containsMetaAttribute("identity"));
+//		assertTrue(entity.containsMetaAttribute("name"));
+//		assertTrue(entity.containsMetaAttribute("valueClass"));
+//		assertTrue(entity.containsMetaAttribute("defaultValue"));
+
 	}
 
 	protected CustomizableSampleEntity getCustomizableSampleEntity() {

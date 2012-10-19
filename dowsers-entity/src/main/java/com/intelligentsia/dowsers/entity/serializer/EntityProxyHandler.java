@@ -32,7 +32,7 @@ import com.intelligentsia.dowsers.entity.Entity;
  *  MyEntityInterface sampleEntity = factory.newInstance(); // obtain a proxy
  *  // serialize
  *  mapper.writeValue(writer, sampleEntity);
- * </code>
+ * </code> TODO remove this with extra code in EntityMapper
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

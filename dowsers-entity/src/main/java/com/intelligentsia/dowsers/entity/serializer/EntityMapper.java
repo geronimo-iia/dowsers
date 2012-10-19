@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity;
+package com.intelligentsia.dowsers.entity.serializer;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -28,8 +28,8 @@ import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intelligentsia.dowsers.entity.serializer.EntityDowsersJacksonModule;
-import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
+import com.intelligentsia.dowsers.entity.EntityProxy;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
 
 /**
  * EntityMapper is a base class to read and write entity.
@@ -40,14 +40,14 @@ public class EntityMapper {
 
 	private final ObjectMapper mapper;
 
-	public EntityMapper(final ObjectMapper mapper) {
+	public EntityMapper(final ObjectMapper mapper, MetaEntityContextRepository metaEntityContextRepository) {
 		super();
 		this.mapper = mapper;
-		this.mapper.registerModule(new EntityDowsersJacksonModule());
+		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextRepository));
 	}
 
-	public EntityMapper() {
-		this(JacksonSerializer.getMapper());
+	public EntityMapper(MetaEntityContextRepository metaEntityContextRepository) {
+		this(JacksonSerializer.getMapper(), metaEntityContextRepository);
 	}
 
 	public void writeValue(final Writer writer, final Object value) throws DowsersException {
@@ -61,7 +61,7 @@ public class EntityMapper {
 	@SuppressWarnings("unchecked")
 	public <T> T readValue(final Reader reader, final Class<T> valueType) throws DowsersException {
 		if (valueType.isInterface() || Modifier.isAbstract(valueType.getModifiers())) {
-			// build proxy
+			// build proxy TODO add features
 			try {
 				final EntityProxy entityProxy = mapper.readValue(reader, EntityProxy.class);
 				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { valueType, EntityProxyHandler.class }, entityProxy);

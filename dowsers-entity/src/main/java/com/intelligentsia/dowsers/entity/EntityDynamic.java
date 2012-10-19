@@ -44,7 +44,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	/**
 	 * Entity identity.
 	 */
-	private final String identity;
+	private final transient String identity;
 	/**
 	 * Map of attributes.
 	 */
@@ -55,6 +55,18 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 */
 	public EntityDynamic() {
 		this(IdentifierFactoryProvider.generateNewIdentifier());
+	}
+
+	/**
+	 * Build a new instance of {@link EntityDynamic}.
+	 * 
+	 * @param attributes
+	 *            Map of attributes. Map is not copied.
+	 * @throws NullPointerException
+	 *             if attributes is null
+	 */
+	public EntityDynamic(final Map<String, Object> attributes) throws NullPointerException {
+		this(IdentifierFactoryProvider.generateNewIdentifier(), attributes);
 	}
 
 	/**
@@ -91,10 +103,13 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 		this.identity = identity;
 		this.attributes = Preconditions.checkNotNull(attributes);
+		// TODO identity is a special attribute
+		//this.attributes.put("identity", identity);
 	}
 
 	@Override
 	public final String identity() {
+		// may we get from attributes map
 		return identity;
 	}
 
