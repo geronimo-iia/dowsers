@@ -32,10 +32,21 @@ import java.net.URISyntaxException;
 public enum Reference {
 	;
 
+	/**
+	 * @param entity entity instance to reference
+	 * @return an urn which identify an {@link Entity}.
+	 * @throws URISyntaxException
+	 */
 	public static URI newReference(final Entity entity) throws URISyntaxException {
 		return newReference(entity, "identity");
 	}
 
+	/**
+	 * @param entity entity instance to reference
+	 * @param attributeName attribute Name to reference
+	 * @return an urn which identify an attribute of specified entity. 
+	 * @throws URISyntaxException
+	 */
 	public static URI newReference(final Entity entity, final String attributeName) throws URISyntaxException {
 		if (Proxy.isProxyClass(entity.getClass())) {
 			EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(entity);
@@ -44,15 +55,28 @@ public enum Reference {
 		return new URI("urn", "dowsers:" + entity.getClass().getName() + ':' + attributeName, entity.identity());
 	}
 
+	/**
+	 * @param uri
+	 * @return identity part of an urn entity reference
+	 */
 	public static String getIdentity(URI uri) {
 		return uri.getFragment();
 	}
 
+	/**
+	 * @param uri
+	 * @return entity part of an urn reference
+	 */
 	public static String getEntityPart(URI uri) {
 		String ssp = uri.getSchemeSpecificPart();
 		return ssp.substring(ssp.indexOf(':') + 1, ssp.lastIndexOf(':'));
 	}
 
+	
+	/**
+	 * @param uri
+	 * @return attribute name of an urn attribute reference
+	 */
 	public static String getAttributPart(URI uri) {
 		String ssp = uri.getSchemeSpecificPart();
 		return ssp.substring(ssp.lastIndexOf(':') + 1);

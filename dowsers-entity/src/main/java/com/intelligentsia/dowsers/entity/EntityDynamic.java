@@ -97,19 +97,15 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws IllegalArgumentException
 	 *             if identifier is empty
 	 */
-
 	public EntityDynamic(final String identity, final Map<String, Object> attributes) throws NullPointerException, IllegalArgumentException {
 		super();
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 		this.identity = identity;
 		this.attributes = Preconditions.checkNotNull(attributes);
-		// TODO identity is a special attribute
-		//this.attributes.put("identity", identity);
 	}
 
 	@Override
 	public final String identity() {
-		// may we get from attributes map
 		return identity;
 	}
 
@@ -155,9 +151,6 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 		return Objects.equal(other.identity(), identity);
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("identity", identity).toString();
@@ -184,10 +177,4 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 		return ImmutableSet.copyOf(attributes.keySet());
 	}
 
-	/**
-	 * @return {@link Map} of attributes.
-	 */
-	protected Map<String, Object> attributes() {
-		return attributes;
-	}
 }
