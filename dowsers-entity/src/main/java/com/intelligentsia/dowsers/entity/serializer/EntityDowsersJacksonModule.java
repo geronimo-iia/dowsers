@@ -26,7 +26,6 @@ import java.util.Map;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -113,52 +112,42 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 			this.factory = Preconditions.checkNotNull(factory);
 		}
 
-		@Override
 		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 			System.err.println(_valueClass.getName());
-			if (jp.hasCurrentToken()) {
-				if (!jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
-					throw new JsonParseException("Object attended", jp.getCurrentLocation());
-				}
-				jp.nextToken();
 
-				
-				//reference
-				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@reference".equals(jp.getText())) {
-					throw new JsonParseException("@reference attended", jp.getCurrentLocation());
-				}
-				jp.nextToken();
-				
-				URI uri = jp.readValueAs(URI.class);
-				String identity = Reference.getIdentity(uri);
-				MetaEntityContext context = metaEntityContextRepository.find(uri);
-				
-				// attributes
-				jp.nextToken();
-				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@attributes".equals(jp.getText())) {
-					throw new JsonParseException("@attributes attended", jp.getCurrentLocation());
-				} 
-				jp.nextToken(); // start @attributes
-				jp.nextToken();
-				final Map<String, Object> attributes = Maps.newLinkedHashMap();
-				do {
-					final String name = jp.getCurrentName();
-					jp.nextToken();
-					MetaAttribute attribute = context.metaAttribute(name);
-					final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
-					jp.nextToken();
-					attributes.put(name, value);
+			final Map<String, Object> attributes = Maps.newLinkedHashMap();
 
-				} while (!jp.getCurrentToken().equals(JsonToken.END_OBJECT));
-				jp.nextToken(); // end @attributes
-				
-				jp.nextToken(); // end entity
-				
-				System.err.println(_valueClass.getName() + " OK");
-				return factory.newInstance(identity, attributes);
+			URI reference = null;
+			MetaEntityContext context = null;
+			String identity = null;
+
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+				String fieldname = jp.getCurrentName();
+				if ("@reference".equals(fieldname)) {
+					jp.nextToken();
+					reference = jp.readValueAs(URI.class);
+					identity = Reference.getIdentity(reference);
+					context = metaEntityContextRepository.find(reference);
+				}
+				if ("@attributes".equals(fieldname)) {
+					jp.nextToken();
+					String name = null;
+					while (jp.nextToken() != JsonToken.END_OBJECT) {
+						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
+							name = jp.getText();
+							MetaAttribute attribute = context.metaAttribute(name);
+							jp.nextToken();
+							final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
+							attributes.put(name, value);
+						}
+					}
+				}
+
 			}
-			return null;
+			return reference != null ? factory.newInstance(identity, attributes) : null;
 		}
+
 	}
 
 }
