@@ -105,12 +105,12 @@ public class MetaEntity extends EntityDynamic {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntity(final String name, final Version version, final Collection<MetaAttribute> metaAttributes, final String identity) throws NullPointerException, IllegalArgumentException {
+	public MetaEntity(final String name, final Version version, final MetaAttributeCollection metaAttributes, final String identity) throws NullPointerException, IllegalArgumentException {
 		super(identity);
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		super.attribute("name", name);
 		super.attribute("version", Preconditions.checkNotNull(version));
-		super.attribute("metaAttributes",  Preconditions.checkNotNull(metaAttributes));
+		super.attribute("metaAttributes", Preconditions.checkNotNull(metaAttributes));
 		// meta attributes
 		ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
 		Iterator<MetaAttribute> iterator = metaAttributes.iterator();
@@ -136,9 +136,8 @@ public class MetaEntity extends EntityDynamic {
 	 * @param identity
 	 * @param attributes
 	 */
-	@SuppressWarnings("unchecked")
 	public MetaEntity(String identity, Map<String, Object> attributes) {
-		this((String) attributes.get("name"), (Version) attributes.get("version"), (Collection<MetaAttribute>) attributes.get("metaAttributes"), identity);
+		this((String) attributes.get("name"), (Version) attributes.get("version"), (MetaAttributeCollection) attributes.get("metaAttributes"), identity);
 	}
 
 	/**
@@ -162,7 +161,7 @@ public class MetaEntity extends EntityDynamic {
 	/**
 	 * @return an {@link ImmutableCollection} on {@link MetaAttribute}.
 	 */
-	public ImmutableCollection<MetaAttribute> metaAttributes() {
+	public MetaAttributeCollection metaAttributes() {
 		return attribute("metaAttributes");
 	}
 
@@ -354,7 +353,7 @@ public class MetaEntity extends EntityDynamic {
 		}
 
 		public MetaEntity build() {
-			return new MetaEntity(name, version, metaAttributes.build(), identity);
+			return new MetaEntity(name, version, new MetaAttributeCollection(metaAttributes.build()), identity);
 		}
 
 	}

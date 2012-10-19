@@ -22,8 +22,6 @@ package com.intelligentsia.dowsers.entity.meta;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 
 /**
@@ -64,8 +62,7 @@ public enum MetaModel {
 				.addMetaAttribute("defaultValue", Object.class).build()
 
 		).build();
-
-		ImmutableSet<MetaAttribute> attributes = ImmutableSet.of();
+ 
 
 		metaEntityContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
 				name(MetaEntity.class.getName()).version(VERSION)
@@ -76,7 +73,7 @@ public enum MetaModel {
 				// version
 				.addMetaAttribute("version", Version.class, MetaModel.VERSION)
 				// metaAttributes
-				.metaAttributes(MetaAttribute.builder().name("metaAttributes").valueClass(new ClassInformation(attributes)).build()).build()).build();
+				.metaAttributes(MetaAttribute.builder().name("metaAttributes").valueClass(MetaAttributeCollection.class).build()).build()).build();
 
 		entityDynamicModel = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
 				name(EntityDynamic.class.getName()).version(VERSION)

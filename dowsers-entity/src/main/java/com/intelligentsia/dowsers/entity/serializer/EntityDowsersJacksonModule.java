@@ -115,27 +115,31 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 		@Override
 		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			System.err.println(_valueClass.getName());
 			if (jp.hasCurrentToken()) {
-
 				if (!jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
 					throw new JsonParseException("Object attended", jp.getCurrentLocation());
 				}
 				jp.nextToken();
+
+				
+				//reference
 				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@reference".equals(jp.getText())) {
 					throw new JsonParseException("@reference attended", jp.getCurrentLocation());
 				}
 				jp.nextToken();
+				
 				URI uri = jp.readValueAs(URI.class);
-				jp.nextToken();
 				String identity = Reference.getIdentity(uri);
-				// get MetaEntityContext
 				MetaEntityContext context = metaEntityContextRepository.find(uri);
-
+				
+				// attributes
+				jp.nextToken();
 				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@attributes".equals(jp.getText())) {
 					throw new JsonParseException("@attributes attended", jp.getCurrentLocation());
-				}
-				jp.nextToken();
+				} 
 				jp.nextToken(); // start @attributes
+				jp.nextToken();
 				final Map<String, Object> attributes = Maps.newLinkedHashMap();
 				do {
 					final String name = jp.getCurrentName();
@@ -147,7 +151,10 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 				} while (!jp.getCurrentToken().equals(JsonToken.END_OBJECT));
 				jp.nextToken(); // end @attributes
+				
 				jp.nextToken(); // end entity
+				
+				System.err.println(_valueClass.getName() + " OK");
 				return factory.newInstance(identity, attributes);
 			}
 			return null;

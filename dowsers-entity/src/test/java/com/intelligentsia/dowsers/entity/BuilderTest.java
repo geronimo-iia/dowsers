@@ -33,6 +33,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
+import com.intelligentsia.dowsers.entity.meta.MetaAttributeCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
@@ -129,7 +130,7 @@ public class BuilderTest {
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertNotNull(definition.attribute("metaAttributes"));
-		ImmutableCollection<MetaAttribute> metaAttributes = definition.attribute("metaAttributes");
+		MetaAttributeCollection metaAttributes = definition.attribute("metaAttributes");
 		assertNotNull(metaAttributes);
 		assertNotNull(metaAttributes.contains("test-attribute"));
 		assertNotNull(metaAttributes.asList().get(0).identity());
