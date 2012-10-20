@@ -3,11 +3,11 @@ package com.intelligentsia.dowsers.entity.meta;
 import java.net.URI;
 
 /**
- * MetaEntityContextRepository.
+ * MetaEntityContextProvider.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public interface MetaEntityContextRepository {
+public interface MetaEntityContextProvider {
 
 	/**
 	 * 

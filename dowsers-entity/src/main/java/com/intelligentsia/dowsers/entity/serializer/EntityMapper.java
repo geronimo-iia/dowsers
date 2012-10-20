@@ -29,7 +29,7 @@ import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelligentsia.dowsers.entity.EntityProxy;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 
 /**
  * EntityMapper is a base class to read and write entity.
@@ -40,14 +40,14 @@ public class EntityMapper {
 
 	private final ObjectMapper mapper;
 
-	public EntityMapper(final ObjectMapper mapper, MetaEntityContextRepository metaEntityContextRepository) {
+	public EntityMapper(final ObjectMapper mapper, MetaEntityContextProvider metaEntityContextProvider) {
 		super();
 		this.mapper = mapper;
-		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextRepository));
+		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider));
 	}
 
-	public EntityMapper(MetaEntityContextRepository metaEntityContextRepository) {
-		this(JacksonSerializer.getMapper(), metaEntityContextRepository);
+	public EntityMapper(MetaEntityContextProvider metaEntityContextProvider) {
+		this(JacksonSerializer.getMapper(), metaEntityContextProvider);
 	}
 
 	public void writeValue(final Writer writer, final Object value) throws DowsersException {

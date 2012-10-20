@@ -7,12 +7,12 @@ import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 import com.intelligentsia.dowsers.entity.model.SampleEntity;
 
-public class MockMetaEntityContextRepository implements MetaEntityContextRepository {
+public class MockMetaEntityContextRepository implements MetaEntityContextProvider {
 
 	Map<String, MetaEntityContext> map = Maps.newHashMap();
 

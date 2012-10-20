@@ -40,7 +40,7 @@ import com.intelligentsia.dowsers.entity.Reference;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextRepository;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 
 /**
  * EntityDowsersJacksonModule.
@@ -54,11 +54,11 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 */
 	private static final long serialVersionUID = -5511198331164987259L;
 
-	private final MetaEntityContextRepository metaEntityContextRepository;
+	private final MetaEntityContextProvider metaEntityContextProvider;
 
-	public EntityDowsersJacksonModule(MetaEntityContextRepository metaEntityContextRepository) throws NullPointerException {
+	public EntityDowsersJacksonModule(MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		super();
-		this.metaEntityContextRepository = Preconditions.checkNotNull(metaEntityContextRepository);
+		this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 
 		// proxy support
 		addSerializer(EntityProxyHandler.class, new EntityProxySerializer());
@@ -128,7 +128,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 					jp.nextToken();
 					reference = jp.readValueAs(URI.class);
 					identity = Reference.getIdentity(reference);
-					context = metaEntityContextRepository.find(reference);
+					context = metaEntityContextProvider.find(reference);
 				}
 				if ("@attributes".equals(fieldname)) {
 					jp.nextToken();
