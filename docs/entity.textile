@@ -1,94 +1,58 @@
 
+h1. Dowsers Entity
+
+
+
+
 
 h1. Terminology
 
-from JSR 351
-
-**Active Entity**
-An Entity identified by the access control context of the thread(s) on which some activity (such as with the Attribute Service) is performed.
-
-**Attribute**
-A named value that exports a standard meta-data interface though which a uniform taxonomy of characteristics pertaining to the value is available. 
-The taxonomy is an evolving collection of common, and useful characteristics with governed, and thus reliable, semantics.
-
-**Attribute Governance Policy**
-A system of rules to regulate and control the exchange of Attributes between Entities.
-
-**Attribute Meta-data**
-A uniform taxonomy of characteristics that may be associated with an Attribute value and where such characteristics are deemed necessary or appropriate to effect or enable the use of the value. Such information may establish the source and authenticity of its value, its validity period, or more generally define constraints or tags that effect the use of the value.
-
-**Attribute Provider**
-An integration agent that serves an Attribute Service as an Attribute Repository connector. The Provider performs both outbound and inbound interface and protocol transformations.
-
-**Attribute Reference**
-A representation of an Attribute that does not convey the value of the associated Attribute, that may be used to request the associated Attribute from the Attribute Service, and that may be communicated between Entities without exposing the Attribute value or otherwise compromising its associated Governance 
-Policy.
-
-**Attribute Repository**
-A service or data store that contains Attribute values and that may contain associated meta-data.
-
-**Attribute Service**
-A local (presumably singleton) interface through which an Active Entity may request operations on Attributes. The implementation of the interface/agent encapsulates the interactions with the Attribute Repositories, serves to enforce an Attribute Governance Policy, and is the source of standard, meta-data qualified Attribute representations.
-
-**Attribute Value**
-A quantitative or existential representation of the property or characteristic conveyed by the Attribute. A value may be empty (as distinct from the Attribute being undefined), a scalar, an Object, or a collection of Objects.
+Adapted from JSR 351
 
 **Entity**
 An object that may be identified or described by a collection of Attributes.
 
-**Entity Reference**
-A collection of Attributes that identify or describe an Entity to the Attribute Service.
+**Attribute**
+A named value.
+
+**Attribute Value**
+A quantitative or existential representation of the property or characteristic conveyed by the Attribute. A value may be empty (as distinct from the Attribute being undefined), a scalar, an Object, or a collection of Objects.
 
 **Identity Attribute**
-An Attribute that is subject to an Identity Governance Policy.
+An Attribute that identify a specific instance of an entity.
 
-**Identity Governance Policy**
-An Attribute Governance Policy that is based on laws, norms, or contracts relating to privacy.
+**Attribute Meta-data**
+A uniform taxonomy of characteristics that may be associated with an Attribute and where such characteristics are deemed necessary or appropriate to effect or enable the use of the value. Such information may establish its validity period, or more generally define constraints or tags that effect the use of the value.
 
-**Identity Oracle**
-An authoritative service that holds Identity Attributes, that supports queries on those Attributes, and that enforces and assumes liability for the Identity Governance Policy that applies to those Attributes.
+**Entity Meta-data**
+A collection of Attribute Meta-data which apply on a specific entity version.  
 
-**Policy Decision Agent**
-An object or service, local to one or more Policy Enforcement Points, that exports the interfaces used by the Enforcement Points to request access decisions from a Policy Engine.
-
-**Policy Enforcement Point**
-A system location that interacts with a Policy Decision Agent to determine whether an operation is to be permitted and that controls whether the operation is performed based on the decision obtained from the decision agent.
-
-**Policy Engine**
-A system that returns access decisions in response to decision requests by applying rules that establish a decision for an access defined in terms of received or obtained representations of Entity, resource, and action.
-
-**Target Entity**
-An object effected by (or that is the subject of an activity), as typically distinct from an Entity that performs the activity.
-
- 
-
-h1. Identifier
-
-Wikipedia's entry on the philosophical meaning of identity starts:
-
-In philosophy, identity is whatever makes an entity definable and recognizable, in terms of possessing a set of qualities or characteristics that distinguish it from entities of a different type. Or, in layman's terms, identity is whatever makes stuff the same or different.
+**Entity Meta-data Context**
+A collection of Attribute Meta-data which apply on a specific entity. Generally its an instance of entity meta-data.
+But, it could be an aggregation of entity meta-data.
 
 
-An EntityManager is identified by 
-* group identifier
-* artifact identifier
-* version
-g:a:v define an artifact identifier where entity definition goes.  
+**Meta Entity Reference**
+An attribute that identify or describe a meta entity/ entity class name
 
-A MetaEntityContext is identified by
-* EntityManager identifier
-* Entity class name
-example: g:a:v#class
+urn:dowsers:{entity class name}
 
-A Entity is identified by
-* MetaEntityContext identifier
-* universal identifier
-example: g:a:v#class#uuid
+**Entity Reference**
+A collection of Attributes that identify or describe an Entity. 
 
-A property is identified by
-* Entity identifier
-* property name
-example: g:a:v#class#uuid#name
+urn:dowsers:{meta entity reference}:identity@{identity attribute}
+
+**Attribute Reference**
+A representation of an Attribute that does not convey the value of the associated Attribute, that may be communicated between Entities without exposing the Attribute value.
+
+urn:dowsers:{meta entity reference}:{attribut name}@{entity identity attribute}
+
+**Meta Entity Context Provider**
+A service which build meta entity context from meta entity provider.
+
+**Meta Entity Repository**
+A service or data store that contains meta data on Entity and Attribute values.
+
 
 
 
@@ -99,9 +63,22 @@ An entity is defined by:
 * An unique identity. Her identity does not change when any of its attributes change
 * A set of attributes
 
-Examples: Customer, Order, ...
+Examples: Customer, Order, Organization, Car ...
  
 Attributes are characteristics of entities
+
+
+h2. Identity
+
+Wikipedia's entry on the philosophical meaning of identity starts:
+
+In philosophy, identity is whatever makes an entity definable and recognizable, in terms of possessing a set of qualities or characteristics that distinguish it from entities of a different type. Or, in layman's terms, identity is whatever makes stuff the same or different.
+
+
+h2. Identity Provider
+
+
+
 
 h2. What is a value object (an attribute) ? 
 
@@ -112,18 +89,37 @@ Eric Evans:
 [Evans 2003]
 
 
+h2. Interface entity 
+
+h2. Reference and URN
+
+
+h1. Meta Data
+
+h2. Meta Attribute
+
+h2. Meta Entity
+
+h2. Meta data Extension mechanism
+
+
+h1. Use case
+
+h2. Organization entity
+
+h2. Customization of Organization
+
+
+h1. Entity Serialization
+
+h2. Technology
+
+h2. Json/XML Format
+
+h2. Register Custom Jackson Module
 
 
 
-h1. JSR 351
-
-named, multi-valued, and meta-data qualified
-public interface IdentityAttribute {
-Collection getAttributeNames();
-Collection getAttributeValues();
-Collection<String> getPropertyNames();
-Collection getPropertyValues(String propertyName);
-}
 
 
 
