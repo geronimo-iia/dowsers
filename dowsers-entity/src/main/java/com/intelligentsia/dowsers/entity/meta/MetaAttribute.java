@@ -42,10 +42,10 @@ import com.intelligentsia.dowsers.entity.EntityDynamic;
  * </ul>
  * 
  * 
- * Note on Removing local attribute:
+ * Note on Removing local attribute versus attribute map usage:
  * <ul>
  * <li>Avoid if-else test on attribute()</li>
- * <li>Easier serialization</li>
+ * <li>uniform serialization</li>
  * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
@@ -157,13 +157,13 @@ public class MetaAttribute extends EntityDynamic {
 	}
 
 	/**
-	 * Always throw IllegalStateException:a {@link MetaAttribute} is Immutable.
+	 * Always throw UnsupportedOperationException {@link MetaAttribute} is Immutable.
 	 * 
-	 * @throw IllegalStateException
+	 * @throw UnsupportedOperationException always
 	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
-		throw new IllegalStateException("MetaAttribute is Immutable");
+		throw new UnsupportedOperationException();
 	}
 
 	/**

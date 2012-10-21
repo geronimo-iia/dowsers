@@ -199,13 +199,13 @@ public class MetaEntity extends EntityDynamic {
 	}
 
 	/**
-	 * Always throw IllegalStateException:a {@link MetaEntity} is Immutable.
+	 * Always throw UnsupportedOperationException {@link MetaEntity} is Immutable.
 	 * 
-	 * @throw IllegalStateException
+	 * @throw UnsupportedOperationException
 	 */
 	@Override
 	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
-		throw new IllegalStateException("MetaEntity is Immutable");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
