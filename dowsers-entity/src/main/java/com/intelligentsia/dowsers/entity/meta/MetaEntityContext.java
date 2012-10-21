@@ -110,7 +110,7 @@ public class MetaEntityContext implements Iterable<MetaAttribute> {
 		final ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
 		Iterator<MetaAttribute> iterator = definition.metaAttributes().iterator();
 		while (iterator.hasNext()) {
-			MetaAttribute attribute = iterator.next();
+			final MetaAttribute attribute = iterator.next();
 			builder.put(attribute.name(), attribute);
 		}
 		// extended attribute of definition
@@ -121,7 +121,7 @@ public class MetaEntityContext implements Iterable<MetaAttribute> {
 				nameBuilder.addAll(metaEntity.metaAttributeNames());
 				iterator = metaEntity.metaAttributes().iterator();
 				while (iterator.hasNext()) {
-					MetaAttribute attribute = iterator.next();
+					final MetaAttribute attribute = iterator.next();
 					builder.put(attribute.name(), attribute);
 				}
 			}
@@ -197,7 +197,7 @@ public class MetaEntityContext implements Iterable<MetaAttribute> {
 	 *             if attributName id null
 	 * @throws {@link IllegalArgumentException} if attributName is empty
 	 */
-	public MetaAttribute metaAttribute(String attributeName) throws NullPointerException, IllegalArgumentException {
+	public MetaAttribute metaAttribute(final String attributeName) throws NullPointerException, IllegalArgumentException {
 		return definition.get(attributeName);
 	}
 

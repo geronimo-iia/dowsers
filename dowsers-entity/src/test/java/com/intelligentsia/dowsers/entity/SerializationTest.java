@@ -21,7 +21,6 @@ package com.intelligentsia.dowsers.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -117,10 +116,10 @@ public class SerializationTest {
 	@Test
 	public void testMetaAttribute() {
 		final StringWriter writer = new StringWriter();
-		MetaAttribute attribute = MetaAttribute.builder().name(MetaAttribute.class.getName()).valueClass(String.class).build();
+		final MetaAttribute attribute = MetaAttribute.builder().name(MetaAttribute.class.getName()).valueClass(String.class).build();
 		entityMapper.writeValue(writer, attribute);
 		final String result = writer.toString();
-		MetaAttribute attribute2 = entityMapper.readValue(new StringReader(result), MetaAttribute.class);
+		final MetaAttribute attribute2 = entityMapper.readValue(new StringReader(result), MetaAttribute.class);
 		assertNotNull(attribute2);
 		assertEquals(attribute.identity(), attribute2.identity());
 		assertEquals(attribute.name(), attribute2.name());
@@ -130,22 +129,20 @@ public class SerializationTest {
 	@Test
 	public void testMetaEntityWithoutAttribut() {
 		final StringWriter writer = new StringWriter();
-		MetaEntity entity = MetaEntity.builder().name(MetaAttribute.class.getName()).version(MetaModel.VERSION).build();
+		final MetaEntity entity = MetaEntity.builder().name(MetaAttribute.class.getName()).version(MetaModel.VERSION).build();
 		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
-		MetaEntity entity2 = entityMapper.readValue(new StringReader(result), MetaEntity.class);
+		final MetaEntity entity2 = entityMapper.readValue(new StringReader(result), MetaEntity.class);
 		assertNotNull(entity);
 		assertEquals(entity.identity(), entity2.identity());
 		assertEquals(entity.name(), entity2.name());
 		assertEquals(entity.version(), entity2.version());
 	}
 
-	
-	
 	@Test
 	public void testMetaEntity() {
 		final StringWriter writer = new StringWriter();
-		MetaEntity definition = MetaEntity.builder(). // definition
+		final MetaEntity definition = MetaEntity.builder(). // definition
 				name(MetaAttribute.class.getName()).version(MetaModel.VERSION)
 				// identity
 				.addMetaAttribute("identity", String.class)
@@ -158,16 +155,7 @@ public class SerializationTest {
 		entityMapper.writeValue(writer, definition);
 		final String result = writer.toString();
 		System.err.println(result);
- 		MetaEntity entity = entityMapper.readValue(new StringReader(result), MetaEntity.class);
-//		assertNotNull(entity);
-//		assertTrue(definition.equals(entity));
-//		assertEquals(definition.name(), entity.name());
-//		assertEquals(definition.version(), entity.version());
-//		assertEquals(definition.identity(), entity.identity());
-//		assertTrue(entity.containsMetaAttribute("identity"));
-//		assertTrue(entity.containsMetaAttribute("name"));
-//		assertTrue(entity.containsMetaAttribute("valueClass"));
-//		assertTrue(entity.containsMetaAttribute("defaultValue"));
+		entityMapper.readValue(new StringReader(result), MetaEntity.class);
 
 	}
 

@@ -20,14 +20,13 @@ public class MockMetaEntityContextRepository implements MetaEntityContextProvide
 		map.put(MetaAttribute.class.getName(), MetaModel.getMetaAttributModel());
 		map.put(MetaEntity.class.getName(), MetaModel.getMetaEntityModel());
 		map.put(EntityDynamic.class.getName(), MetaModel.getEntityDynamicModel());
-				
-		
+
 		map.put(SampleEntity.class.getName(), MetaEntityContext.builder().definition( // definition
 				MetaEntity.builder().name(SampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
 						addMetaAttribute("name", String.class).//
 						addMetaAttribute("description", String.class).build())//
 				.build());
-		
+
 		map.put(CustomizableSampleEntity.class.getName(), MetaEntityContext.builder().definition( // definition
 				MetaEntity.builder().name(CustomizableSampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
 						addMetaAttribute("name", String.class).//
@@ -36,8 +35,8 @@ public class MockMetaEntityContextRepository implements MetaEntityContextProvide
 	}
 
 	@Override
-	public MetaEntityContext find(URI reference) throws IllegalArgumentException, NullPointerException {
-		MetaEntityContext context = map.get(Reference.getEntityPart(reference));
+	public MetaEntityContext find(final URI reference) throws IllegalArgumentException, NullPointerException {
+		final MetaEntityContext context = map.get(Reference.getEntityPart(reference));
 		if (context == null) {
 			throw new IllegalArgumentException("no context found for " + reference);
 		}

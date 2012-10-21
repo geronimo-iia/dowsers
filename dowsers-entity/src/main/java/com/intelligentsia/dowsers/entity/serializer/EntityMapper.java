@@ -40,13 +40,13 @@ public class EntityMapper {
 
 	private final ObjectMapper mapper;
 
-	public EntityMapper(final ObjectMapper mapper, MetaEntityContextProvider metaEntityContextProvider) {
+	public EntityMapper(final ObjectMapper mapper, final MetaEntityContextProvider metaEntityContextProvider) {
 		super();
 		this.mapper = mapper;
 		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider));
 	}
 
-	public EntityMapper(MetaEntityContextProvider metaEntityContextProvider) {
+	public EntityMapper(final MetaEntityContextProvider metaEntityContextProvider) {
 		this(JacksonSerializer.getMapper(), metaEntityContextProvider);
 	}
 

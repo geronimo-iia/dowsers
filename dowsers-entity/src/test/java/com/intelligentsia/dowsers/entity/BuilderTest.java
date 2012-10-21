@@ -31,7 +31,6 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaAttributeCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
@@ -50,13 +49,13 @@ public class BuilderTest {
 		try {
 			MetaAttribute.builder().build();
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 			// ok
 		}
 		try {
 			MetaAttribute.builder().name("test-attribute").build();
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 			// ok
 		}
 		MetaAttribute.builder().name("test-attribute").valueClass(String.class).build();
@@ -64,7 +63,7 @@ public class BuilderTest {
 
 	@Test
 	public void testMetaAttributBuilderWithoutDefaultValue() {
-		MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).build();
+		final MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).build();
 		assertNotNull(attribute);
 		assertNotNull(attribute.identity());
 		assertTrue(!"".equals(attribute.identity()));
@@ -74,7 +73,7 @@ public class BuilderTest {
 		assertEquals(new ClassInformation(String.class), attribute.valueClass());
 		assertNull(attribute.defaultValue());
 
-		//assertTrue(attribute.attributeNames().contains("identity"));
+		// assertTrue(attribute.attributeNames().contains("identity"));
 		assertTrue(attribute.attributeNames().contains("name"));
 		assertTrue(attribute.attributeNames().contains("valueClass"));
 		assertTrue(attribute.attributeNames().contains("defaultValue"));
@@ -83,7 +82,7 @@ public class BuilderTest {
 	@Test
 	public void testMetaAttributBuilderWithDefaultValue() {
 
-		MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).defaultValue("a default value").build();
+		final MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).defaultValue("a default value").build();
 		assertNotNull(attribute);
 		assertNotNull(attribute.identity());
 		assertTrue(!"".equals(attribute.identity()));
@@ -97,8 +96,8 @@ public class BuilderTest {
 
 	@Test
 	public void testMetaAttributBuilderWithIdentitySet() {
-		String id = IdentifierFactoryProvider.generateNewIdentifier();
-		MetaAttribute attribute = MetaAttribute.builder().identity(id).name("test-attribute").valueClass(String.class).build();
+		final String id = IdentifierFactoryProvider.generateNewIdentifier();
+		final MetaAttribute attribute = MetaAttribute.builder().identity(id).name("test-attribute").valueClass(String.class).build();
 		assertNotNull(attribute.identity());
 		assertEquals(id, attribute.identity());
 	}
@@ -108,13 +107,13 @@ public class BuilderTest {
 		try {
 			MetaEntity.builder().build();
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 			// ok
 		}
 		try {
 			MetaEntity.builder().name("test-attribute").build();
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 			// ok
 		}
 		MetaEntity.builder().name("test-attribute").version(new Version(1)).build();
@@ -122,7 +121,7 @@ public class BuilderTest {
 
 	@Test
 	public void testMetaEntityBuilder() {
-		MetaEntity definition = MetaEntity.builder().name("test").version(new Version(1)) // attributes
+		final MetaEntity definition = MetaEntity.builder().name("test").version(new Version(1)) // attributes
 				.addMetaAttribute("test-attribute", String.class).build();
 
 		assertNotNull(definition);
@@ -130,7 +129,7 @@ public class BuilderTest {
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertNotNull(definition.attribute("metaAttributes"));
-		MetaAttributeCollection metaAttributes = definition.attribute("metaAttributes");
+		final MetaAttributeCollection metaAttributes = definition.attribute("metaAttributes");
 		assertNotNull(metaAttributes);
 		assertNotNull(metaAttributes.contains("test-attribute"));
 		assertNotNull(metaAttributes.asList().get(0).identity());
@@ -138,7 +137,7 @@ public class BuilderTest {
 		assertEquals(new ClassInformation(String.class), metaAttributes.asList().get(0).valueClass());
 		assertNull(metaAttributes.asList().get(0).defaultValue());
 
-		//assertTrue(definition.attributeNames().contains("identity"));
+		// assertTrue(definition.attributeNames().contains("identity"));
 		assertTrue(definition.attributeNames().contains("name"));
 		assertTrue(definition.attributeNames().contains("version"));
 		assertTrue(definition.attributeNames().contains("metaAttributes"));

@@ -29,7 +29,7 @@ public class VersionDeSerializer extends StdDeserializer<Version> {
 	@Override
 	public Version deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 		if (jp.hasCurrentToken()) {
-			String value = jp.getText();
+			final String value = jp.getText();
 			if (value != null) {
 				return Version.parse(value);
 			}

@@ -62,7 +62,6 @@ public enum MetaModel {
 				.addMetaAttribute("defaultValue", Object.class).build()
 
 		).build();
- 
 
 		metaEntityContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
 				name(MetaEntity.class.getName()).version(VERSION)

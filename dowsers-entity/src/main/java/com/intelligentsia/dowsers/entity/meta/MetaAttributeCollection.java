@@ -27,8 +27,8 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	private final ImmutableCollection<MetaAttribute> metaAttributes;
 
 	/**
-	 * Build a new instance of <code>MetaAttributeCollection</code>.
-	 * For serialization purpose.
+	 * Build a new instance of <code>MetaAttributeCollection</code>. For
+	 * serialization purpose.
 	 */
 	@SuppressWarnings("unused")
 	private MetaAttributeCollection() {
@@ -41,7 +41,7 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	 * 
 	 * @param metaAttributes
 	 */
-	public MetaAttributeCollection(ImmutableCollection<MetaAttribute> metaAttributes) {
+	public MetaAttributeCollection(final ImmutableCollection<MetaAttribute> metaAttributes) {
 		super();
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 	}
@@ -55,7 +55,7 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 		return metaAttributes;
 	}
 
-	public boolean contains(Object object) {
+	public boolean contains(final Object object) {
 		return metaAttributes.contains(object);
 	}
 

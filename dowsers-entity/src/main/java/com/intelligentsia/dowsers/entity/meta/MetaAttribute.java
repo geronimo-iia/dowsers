@@ -142,7 +142,7 @@ public class MetaAttribute extends EntityDynamic {
 	 * 
 	 * @param attributes
 	 */
-	public MetaAttribute(Map<String, Object> attributes) {
+	public MetaAttribute(final Map<String, Object> attributes) {
 		this(IdentifierFactoryProvider.generateNewIdentifier(), attributes);
 	}
 
@@ -152,12 +152,13 @@ public class MetaAttribute extends EntityDynamic {
 	 * @param identity
 	 * @param attributes
 	 */
-	public MetaAttribute(String identity, Map<String, Object> attributes) {
+	public MetaAttribute(final String identity, final Map<String, Object> attributes) {
 		this((String) attributes.get("name"), (ClassInformation) attributes.get("valueClass"), attributes.get("defaultValue"), identity);
 	}
 
 	/**
-	 * Always throw UnsupportedOperationException {@link MetaAttribute} is Immutable.
+	 * Always throw UnsupportedOperationException {@link MetaAttribute} is
+	 * Immutable.
 	 * 
 	 * @throw UnsupportedOperationException always
 	 */

@@ -23,7 +23,6 @@ import java.lang.reflect.Proxy;
 
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
-
 /**
  * EntityFactories.
  * 
@@ -33,7 +32,7 @@ public enum EntityFactories {
 	;
 
 	/**
-	 * @return an {@link EntityFactory} of {@link EntityDynamic}. 
+	 * @return an {@link EntityFactory} of {@link EntityDynamic}.
 	 */
 	public static EntityFactory<EntityDynamic> newEntityDynamicFactory() {
 		return new EntityFactory<EntityDynamic>() {
@@ -91,7 +90,8 @@ public enum EntityFactories {
 	}
 
 	/**
-	 * EntityFactory declare methods to instantiate some Class which could live without extending an {@link Entity}.
+	 * EntityFactory declare methods to instantiate some Class which could live
+	 * without extending an {@link Entity}.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */

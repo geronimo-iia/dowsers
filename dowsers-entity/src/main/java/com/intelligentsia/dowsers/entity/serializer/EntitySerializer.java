@@ -18,7 +18,7 @@ import com.intelligentsia.dowsers.entity.Reference;
  */
 public class EntitySerializer<T extends Entity> extends StdSerializer<T> {
 
-	public EntitySerializer(Class<T> className) {
+	public EntitySerializer(final Class<T> className) {
 		super(className);
 	}
 
@@ -28,7 +28,7 @@ public class EntitySerializer<T extends Entity> extends StdSerializer<T> {
 		if (value != null) {
 			try {
 				jgen.writeObjectField("@reference", Reference.newReference(value));
-			} catch (URISyntaxException e) {
+			} catch (final URISyntaxException e) {
 				throw new JsonGenerationException("Unable to build entity reference");
 			}
 			jgen.writeFieldName("@attributes");

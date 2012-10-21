@@ -56,7 +56,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 	private final MetaEntityContextProvider metaEntityContextProvider;
 
-	public EntityDowsersJacksonModule(MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+	public EntityDowsersJacksonModule(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		super();
 		this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 
@@ -69,7 +69,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		addDeserializer(EntityDynamic.class, new EntityDeSerializer<EntityDynamic>(EntityDynamic.class, new EntityDynamicFactory<EntityDynamic>() {
 
 			@Override
-			public EntityDynamic newInstance(String identity, Map<String, Object> attributes) {
+			public EntityDynamic newInstance(final String identity, final Map<String, Object> attributes) {
 				return new EntityDynamic(identity, attributes);
 			}
 		}));
@@ -81,7 +81,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		// meta attribute
 		addDeserializer(MetaAttribute.class, new EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new EntityDynamicFactory<MetaAttribute>() {
 			@Override
-			public MetaAttribute newInstance(String identity, Map<String, Object> attributes) {
+			public MetaAttribute newInstance(final String identity, final Map<String, Object> attributes) {
 				return new MetaAttribute(identity, attributes);
 			}
 		}));
@@ -89,7 +89,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		// meta entity
 		addDeserializer(MetaEntity.class, new EntityDeSerializer<MetaEntity>(MetaEntity.class, new EntityDynamicFactory<MetaEntity>() {
 			@Override
-			public MetaEntity newInstance(String identity, Map<String, Object> attributes) {
+			public MetaEntity newInstance(final String identity, final Map<String, Object> attributes) {
 				return new MetaEntity(identity, attributes);
 			}
 		}));
@@ -107,11 +107,12 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 		private final EntityDynamicFactory<T> factory;
 
-		public EntityDeSerializer(Class<T> className, EntityDynamicFactory<T> factory) throws NullPointerException {
+		public EntityDeSerializer(final Class<T> className, final EntityDynamicFactory<T> factory) throws NullPointerException {
 			super(className);
 			this.factory = Preconditions.checkNotNull(factory);
 		}
 
+		@Override
 		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 			System.err.println(_valueClass.getName());
 
@@ -123,7 +124,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 			while (jp.nextToken() != JsonToken.END_OBJECT) {
 
-				String fieldname = jp.getCurrentName();
+				final String fieldname = jp.getCurrentName();
 				if ("@reference".equals(fieldname)) {
 					jp.nextToken();
 					reference = jp.readValueAs(URI.class);
@@ -136,7 +137,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 					while (jp.nextToken() != JsonToken.END_OBJECT) {
 						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
 							name = jp.getText();
-							MetaAttribute attribute = context.metaAttribute(name);
+							final MetaAttribute attribute = context.metaAttribute(name);
 							jp.nextToken();
 							final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
 							attributes.put(name, value);

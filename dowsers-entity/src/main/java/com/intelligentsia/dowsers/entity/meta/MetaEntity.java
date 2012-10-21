@@ -112,10 +112,10 @@ public class MetaEntity extends EntityDynamic {
 		super.attribute("version", Preconditions.checkNotNull(version));
 		super.attribute("metaAttributes", Preconditions.checkNotNull(metaAttributes));
 		// meta attributes
-		ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
-		Iterator<MetaAttribute> iterator = metaAttributes.iterator();
+		final ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
+		final Iterator<MetaAttribute> iterator = metaAttributes.iterator();
 		while (iterator.hasNext()) {
-			MetaAttribute attribute = iterator.next();
+			final MetaAttribute attribute = iterator.next();
 			builder.put(attribute.name(), attribute);
 		}
 		this.metaAttributes = builder.build();
@@ -126,7 +126,7 @@ public class MetaEntity extends EntityDynamic {
 	 * 
 	 * @param attributes
 	 */
-	public MetaEntity(Map<String, Object> attributes) {
+	public MetaEntity(final Map<String, Object> attributes) {
 		this(IdentifierFactoryProvider.generateNewIdentifier(), attributes);
 	}
 
@@ -136,7 +136,7 @@ public class MetaEntity extends EntityDynamic {
 	 * @param identity
 	 * @param attributes
 	 */
-	public MetaEntity(String identity, Map<String, Object> attributes) {
+	public MetaEntity(final String identity, final Map<String, Object> attributes) {
 		this((String) attributes.get("name"), (Version) attributes.get("version"), (MetaAttributeCollection) attributes.get("metaAttributes"), identity);
 	}
 
@@ -172,7 +172,7 @@ public class MetaEntity extends EntityDynamic {
 	 * @throws NullPointerException
 	 *             if name is null
 	 */
-	public boolean containsMetaAttribute(String name) throws NullPointerException {
+	public boolean containsMetaAttribute(final String name) throws NullPointerException {
 		return metaAttributes.containsKey(name);
 	}
 
@@ -194,12 +194,13 @@ public class MetaEntity extends EntityDynamic {
 	 *             if attributName id null
 	 * @throws {@link IllegalArgumentException} if attributName is empty
 	 */
-	public MetaAttribute metaAttribute(String attributeName) throws NullPointerException, IllegalArgumentException {
+	public MetaAttribute metaAttribute(final String attributeName) throws NullPointerException, IllegalArgumentException {
 		return metaAttributes.get(attributeName);
 	}
 
 	/**
-	 * Always throw UnsupportedOperationException {@link MetaEntity} is Immutable.
+	 * Always throw UnsupportedOperationException {@link MetaEntity} is
+	 * Immutable.
 	 * 
 	 * @throw UnsupportedOperationException
 	 */
@@ -243,7 +244,7 @@ public class MetaEntity extends EntityDynamic {
 		/**
 		 * Set of meta properties.
 		 */
-		private ImmutableSet.Builder<MetaAttribute> metaAttributes = ImmutableSet.builder();
+		private final ImmutableSet.Builder<MetaAttribute> metaAttributes = ImmutableSet.builder();
 
 		/**
 		 * Build a new instance of MetaEntity.Builder.
