@@ -26,23 +26,19 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
-import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
-import com.intelligentsia.dowsers.entity.meta.MetaAttributeCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 
 /**
- * BuilderTest.
+ * MetaAttributeTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BuilderTest {
+public class MetaAttributeTest {
 
 	@Test
 	public void testMetaAttributBuilderMandatory() {
@@ -117,72 +113,5 @@ public class BuilderTest {
 			// ok
 		}
 		MetaEntity.builder().name("test-attribute").version(new Version(1)).build();
-	}
-
-	@Test
-	public void testMetaEntityBuilder() {
-		final MetaEntity definition = MetaEntity.builder().name("test").version(new Version(1)) // attributes
-				.addMetaAttribute("test-attribute", String.class).build();
-
-		assertNotNull(definition);
-		assertNotNull(definition.identity());
-		assertEquals("test", definition.name());
-		assertEquals(new Version(1), definition.version());
-		assertNotNull(definition.attribute("metaAttributes"));
-		final MetaAttributeCollection metaAttributes = definition.attribute("metaAttributes");
-		assertNotNull(metaAttributes);
-		assertNotNull(metaAttributes.contains("test-attribute"));
-		assertNotNull(metaAttributes.asList().get(0).identity());
-		assertEquals("test-attribute", metaAttributes.asList().get(0).name());
-		assertEquals(new ClassInformation(String.class), metaAttributes.asList().get(0).valueClass());
-		assertNull(metaAttributes.asList().get(0).defaultValue());
-
-		// assertTrue(definition.attributeNames().contains("identity"));
-		assertTrue(definition.attributeNames().contains("name"));
-		assertTrue(definition.attributeNames().contains("version"));
-		assertTrue(definition.attributeNames().contains("metaAttributes"));
-
-		assertTrue(definition.metaAttributeNames().contains("test-attribute"));
-	}
-
-	@Test
-	public void testMetaEntityContextBuilder() {
-		final MetaEntityContext context = MetaEntityContext.builder() // definition
-				.definition(new MetaEntity.Builder().name(CustomizableSampleEntity.class.getName()).version(new Version(1))// attributes
-						.addMetaAttribute("name", String.class, null) //
-						.addMetaAttribute("description", String.class).build()) // extension
-				.addExtendedDefinition(new MetaEntity.Builder().name("test-extended").version(new Version(2)). // attributes
-						addMetaAttribute("order", Long.class, 1L).build()).build();
-
-		assertNotNull(context);
-		assertEquals(CustomizableSampleEntity.class.getName(), context.name());
-		assertEquals(new Version(1), context.version());
-
-		// definition name
-		assertTrue(context.definitionAttributeNames().contains("name"));
-		assertTrue(context.definitionAttributeNames().contains("description"));
-		assertTrue(!context.definitionAttributeNames().contains("order"));
-		// extended
-		assertTrue(!context.allExtendedAttributeNames().contains("name"));
-		assertTrue(!context.allExtendedAttributeNames().contains("description"));
-		assertTrue(context.allExtendedAttributeNames().contains("order"));
-
-		// version
-		assertTrue(context.containsVersion(new Version(1)));
-		assertTrue(context.containsVersion(new Version(2)));
-
-		// version iterator
-		final ReadOnlyIterator<Version> versions = context.versions();
-		assertTrue(versions.hasNext());
-		assertEquals(new Version(1), versions.next());
-		assertTrue(versions.hasNext());
-		assertEquals(new Version(2), versions.next());
-		assertTrue(!versions.hasNext());
-
-		// meta attributes
-		assertTrue(context.containsMetaAttribute("name"));
-		assertTrue(context.containsMetaAttribute("description"));
-		assertTrue(context.containsMetaAttribute("order"));
-
 	}
 }
