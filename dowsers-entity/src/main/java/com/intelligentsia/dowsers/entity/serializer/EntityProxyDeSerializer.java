@@ -51,37 +51,27 @@ public class EntityProxyDeSerializer extends StdDeserializer<EntityProxy> {
 
 	@Override
 	public EntityProxy deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		if (jp.hasCurrentToken()) {
-			ClassInformation interfaceName = null;
-			ClassInformation support = null;
-			Entity entity = null;
-			if (jp.getCurrentToken().equals(JsonToken.START_OBJECT)) {
-
-				jp.nextToken();
-				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@interface".equals(jp.getText())) {
-					throw new JsonParseException("@interface attended", jp.getCurrentLocation());
-				}
+		ClassInformation interfaceName = null;
+		ClassInformation support = null;
+		Entity entity = null;
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+			final String fieldname = jp.getCurrentName();
+			if ("@interface".equals(fieldname)) {
 				jp.nextToken();
 				interfaceName = ClassInformation.parse(jp.getText());
-				jp.nextToken();
-				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@support".equals(jp.getText())) {
-					throw new JsonParseException("@support attended", jp.getCurrentLocation());
-				}
+			}
+			if ("@support".equals(fieldname)) {
 				jp.nextToken();
 				support = ClassInformation.parse(jp.getText());
-				jp.nextToken();
-
-				if (!jp.getCurrentToken().equals(JsonToken.FIELD_NAME) || !"@entity".equals(jp.getText())) {
-					throw new JsonParseException("@entity attended", jp.getCurrentLocation());
+			}
+			if ("@entity".equals(fieldname)) {
+				if (support == null) {
+					throw new JsonParseException("@support is required in order to decode Entity", jp.getCurrentLocation());
 				}
 				jp.nextToken();
 				entity = (Entity) jp.readValueAs(support.getType());
-				jp.nextToken();
 			}
-
-			return new EntityProxy(interfaceName.getType(), entity);
 		}
-
-		return null;
+		return entity != null ? new EntityProxy(interfaceName.getType(), entity) : null;
 	}
 }
