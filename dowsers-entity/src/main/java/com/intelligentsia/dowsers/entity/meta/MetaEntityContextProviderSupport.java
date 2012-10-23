@@ -81,8 +81,26 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 * @param metaEntityContext
 	 * @return this instance
 	 */
-	public MetaEntityContextProviderSupport add(final URI reference, final MetaEntityContext metaEntityContext) {
+	public MetaEntityContextProviderSupport add(final URI reference, final MetaEntityContext metaEntityContext) throws NullPointerException {
 		contextEntities.put(Preconditions.checkNotNull(reference).toString(), metaEntityContext);
+		return this;
+	}
+
+	/**
+	 * Add {@link MetaEntityContext} defintion for specified class name.
+	 * 
+	 * @param className
+	 * @param definition
+	 * @param extension
+	 * @return this instance
+	 */
+	public MetaEntityContextProviderSupport add(final Class<?> className, MetaEntity definition, MetaEntity... extension) throws NullPointerException {
+		MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(Preconditions.checkNotNull(definition));
+		if (extension != null)
+			for (MetaEntity metaEntity : extension) {
+				builder.addExtendedDefinition(metaEntity);
+			}
+		contextEntities.put(Preconditions.checkNotNull(className).getName(), builder.build());
 		return this;
 	}
 
@@ -93,7 +111,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 * @param metaEntityContext
 	 * @return this instance.
 	 */
-	public MetaEntityContextProviderSupport add(final Class<?> className, final MetaEntityContext metaEntityContext) {
+	public MetaEntityContextProviderSupport add(final Class<?> className, final MetaEntityContext metaEntityContext) throws NullPointerException {
 		contextEntities.put(Preconditions.checkNotNull(className).getName(), metaEntityContext);
 		return this;
 	}
