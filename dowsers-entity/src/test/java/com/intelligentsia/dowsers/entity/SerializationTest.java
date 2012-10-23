@@ -27,18 +27,17 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
-import org.intelligentsia.dowsers.core.serializers.JacksonSerializer;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
+import com.intelligentsia.dowsers.entity.model.Util;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -48,13 +47,11 @@ import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
  */
 public class SerializationTest {
 
-	private ObjectMapper mapper;
 	private EntityMapper entityMapper;
 
 	@Before
 	public void initialize() {
-		mapper = JacksonSerializer.getMapper();
-		entityMapper = new EntityMapper(mapper, new MockMetaEntityContextRepository());
+		entityMapper = new EntityMapper(Util.getMetaEntityContextProvider());
 	}
 
 	@Test
@@ -67,12 +64,12 @@ public class SerializationTest {
 		assertEquals("Steve", dynamic.attribute("name"));
 		assertEquals("Sweet apple", dynamic.attribute("idea"));
 
-		mapper.writeValue(writer, dynamic);
+		entityMapper.writeValue(writer, dynamic);
 		final String result = writer.toString();
 		assertNotNull(result);
 		assertEquals("{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\",\"@attributes\":{\"name\":\"Steve\",\"idea\":\"Sweet apple\"}}", result);
 
-		final EntityDynamic entityDynamic = mapper.readValue(new StringReader(result), EntityDynamic.class);
+		final EntityDynamic entityDynamic = entityMapper.readValue(new StringReader(result), EntityDynamic.class);
 
 		assertEquals(dynamic.identity(), entityDynamic.identity());
 		assertEquals(dynamic.attribute("name"), entityDynamic.attribute("name"));
@@ -85,7 +82,7 @@ public class SerializationTest {
 
 		final CustomizableSampleEntity sampleEntity = getCustomizableSampleEntity();
 
-		mapper.writeValue(writer, sampleEntity);
+		entityMapper.writeValue(writer, sampleEntity);
 		final String result = writer.toString();
 		assertNotNull(result);
 		assertEquals("{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
@@ -93,7 +90,7 @@ public class SerializationTest {
 				"\"@entity\":{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
 				"\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}", result);
 
-		final EntityProxy customizableSampleEntity = mapper.readValue(new StringReader(result), EntityProxy.class);
+		final EntityProxy customizableSampleEntity = entityMapper.readValue(new StringReader(result), EntityProxy.class);
 		assertEquals(sampleEntity.identity(), customizableSampleEntity.identity());
 		assertEquals(sampleEntity.attribute("name"), customizableSampleEntity.attribute("name"));
 		assertEquals(sampleEntity.attribute("description"), customizableSampleEntity.attribute("description"));
@@ -154,7 +151,7 @@ public class SerializationTest {
 				.addMetaAttribute("defaultValue", Object.class).build();
 		entityMapper.writeValue(writer, definition);
 		final String result = writer.toString();
-		System.err.println(result);
+		// System.err.println(result);
 		entityMapper.readValue(new StringReader(result), MetaEntity.class);
 
 	}

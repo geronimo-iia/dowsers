@@ -37,14 +37,11 @@ public class EntityTest {
 
 	@Test
 	public void testSampleEntity() {
-
 		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class);
-
 		final SampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
-
 		assertEquals("Hello John", sampleEntity.getName());
 		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
 	}
@@ -57,11 +54,9 @@ public class EntityTest {
 		sampleEntity.setName("Hello John");
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 		sampleEntity.attribute("order", 1L);
-
 		assertEquals("Hello John", sampleEntity.getName());
 		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
 		assertEquals(1L, sampleEntity.attribute("order"));
-
 	}
 
 }

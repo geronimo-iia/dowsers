@@ -38,63 +38,65 @@ public enum MetaModel {
 	public static final Version VERSION = new Version(1, 0, 0);
 
 	/**
-	 * Attribute meta model.
+	 * META DEFINITION for {@link MetaAttribute}.
 	 */
-	private static final MetaEntityContext metaAttributeContext;
-
+	private static final MetaEntity metaMetaAttribute;
 	/**
-	 * Entity meta model.
+	 * META DEFINITION for {@link MetaEntity}.
 	 */
-	private static final MetaEntityContext metaEntityContext;
-
-	private static final MetaEntityContext entityDynamicModel;
+	private static final MetaEntity metaMetaEntity;
+	/**
+	 * META DEFINITION for {@link EntityDynamic}.
+	 */
+	private static final MetaEntity metaEntityDynamic;
 
 	static {
-		metaAttributeContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
-				name(MetaAttribute.class.getName()).version(VERSION)
-				// identity
-				.addMetaAttribute("identity", String.class)
-				// name
-				.addMetaAttribute("name", String.class)
-				// value
-				.addMetaAttribute("valueClass", ClassInformation.class)
-				// default value
-				.addMetaAttribute("defaultValue", Object.class).build()
 
-		).build();
+		// META ATTRIBUTE DEFINITION
+		final MetaAttribute identity = MetaAttribute.builder().identity("a3d44fd4-385d-4d09-b11b-21932abe2a25").name("identity").valueClass(String.class).build();
+		final MetaAttribute name = MetaAttribute.builder().identity("c2d720af-55eb-468d-adda-477b824d872c").name("name").valueClass(String.class).build();
 
-		metaEntityContext = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
-				name(MetaEntity.class.getName()).version(VERSION)
-				// identity
-				.addMetaAttribute("identity", String.class)
-				// name
-				.addMetaAttribute("name", String.class)
-				// version
-				.addMetaAttribute("version", Version.class, MetaModel.VERSION)
-				// metaAttributes
-				.metaAttributes(MetaAttribute.builder().name("metaAttributes").valueClass(MetaAttributeCollection.class).build()).build()).build();
+		final MetaAttribute valueClass = MetaAttribute.builder().identity("cd607a66-1e85-4bcc-b83e-e6494c0a1f09").name("valueClass").valueClass(ClassInformation.class).build();
+		final MetaAttribute defaultValue = MetaAttribute.builder().identity("afcf1994-ea0f-41e7-9924-ca8fec99430e").name("defaultValue").valueClass(Object.class).build();
 
-		entityDynamicModel = MetaEntityContext.builder().definition(new MetaEntity.Builder(). // definition
-				name(EntityDynamic.class.getName()).version(VERSION)
-				// identity
-				.addMetaAttribute("identity", String.class).build()).build();
+		final MetaAttribute version = MetaAttribute.builder().identity("53eb2d34-ab5c-4f29-93ba-678c08e64304").name("version").valueClass(Version.class).defaultValue(MetaModel.VERSION).build();
+		final MetaAttribute metaAttributes = MetaAttribute.builder().identity("7b3f0f26-8ab5-4a94-8e15-0fc2dd8fcb60").name("metaAttributes").valueClass(MetaAttributeCollection.class).build();
+
+		// META ENTITY DEFINITION
+		metaMetaAttribute = new MetaEntity.Builder(). // definition
+				name(MetaAttribute.class.getName()).version(VERSION).identity("f45e8827-c619-4b99-a8a2-e5c36d11ee47")
+				// attributes
+				.metaAttributes(identity, name, valueClass, defaultValue).build();
+		metaMetaEntity = new MetaEntity.Builder(). // definition
+				name(MetaEntity.class.getName()).version(VERSION).identity("fbdff898-07c0-4933-9751-667c308831d6")
+				// attributes
+				.metaAttributes(identity, name, version, metaAttributes).build();
+		metaEntityDynamic = new MetaEntity.Builder(). // definition
+				name(EntityDynamic.class.getName()).version(VERSION).identity("f3506e0b-e726-4924-9835-072ada7b8d29")
+				// attributes
+				.metaAttributes(identity).build();
+
 	}
 
 	/**
-	 * @return {@link MetaEntityContext} instance of {@link MetaAttribute}.
+	 * @return {@link MetaEntity} definition of {@link MetaAttribute}.
 	 */
-	public static MetaEntityContext getMetaAttributModel() {
-		return metaAttributeContext;
+	public static MetaEntity getMetaOfMetaAttribute() {
+		return metaMetaAttribute;
 	}
 
 	/**
-	 * @return {@link MetaEntityContext} instance of {@link MetaEntity}
+	 * @return {@link MetaEntity} definition of {@link MetaEntity}.
 	 */
-	public static MetaEntityContext getMetaEntityModel() {
-		return metaEntityContext;
+	public static MetaEntity getMetaOfMetaEntity() {
+		return metaMetaEntity;
 	}
 
-	public static MetaEntityContext getEntityDynamicModel() {
-		return entityDynamicModel;
+	/**
+	 * @return {@link MetaEntity} definition of {@link EntityDynamic}.
+	 */
+	public static MetaEntity getMetaOfEntitydynamic() {
+		return metaEntityDynamic;
 	}
+
 }

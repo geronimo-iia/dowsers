@@ -19,27 +19,15 @@
  */
 package com.intelligentsia.dowsers.entity.serializer;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
-import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.EntityProxy;
-import com.intelligentsia.dowsers.entity.Reference;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 
 /**
@@ -54,17 +42,45 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 */
 	private static final long serialVersionUID = -5511198331164987259L;
 
-	private final MetaEntityContextProvider metaEntityContextProvider;
-
+	/**
+	 * Build a new instance of EntityDowsersJacksonModule.java.
+	 * 
+	 * @param metaEntityContextProvider
+	 * @throws NullPointerException
+	 */
 	public EntityDowsersJacksonModule(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		super();
-		this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
+		declareEntityProxy();
+		declareEntityDynamic(metaEntityContextProvider);
+		declareVersion();
+		declareMetaAttribute(metaEntityContextProvider);
+		declareMetaEntity(metaEntityContextProvider);
+	}
 
-		// proxy support
-		addSerializer(EntityProxyHandler.class, new EntityProxySerializer());
-		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
+	public void declareMetaEntity(final MetaEntityContextProvider metaEntityContextProvider) {
+		addDeserializer(MetaEntity.class, new EntityDeSerializer<MetaEntity>(MetaEntity.class, new EntityDynamicFactory<MetaEntity>() {
+			@Override
+			public MetaEntity newInstance(final String identity, final Map<String, Object> attributes) {
+				return new MetaEntity(identity, attributes);
+			}
+		}, metaEntityContextProvider));
+	}
 
-		// entity dynamic
+	public void declareMetaAttribute(final MetaEntityContextProvider metaEntityContextProvider) {
+		addDeserializer(MetaAttribute.class, new EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new EntityDynamicFactory<MetaAttribute>() {
+			@Override
+			public MetaAttribute newInstance(final String identity, final Map<String, Object> attributes) {
+				return new MetaAttribute(identity, attributes);
+			}
+		}, metaEntityContextProvider));
+	}
+
+	public void declareVersion() {
+		addSerializer(new VersionSerializer());
+		addDeserializer(Version.class, new VersionDeSerializer());
+	}
+
+	public void declareEntityDynamic(final MetaEntityContextProvider metaEntityContextProvider) {
 		addSerializer(new EntitySerializer<EntityDynamic>(EntityDynamic.class));
 		addDeserializer(EntityDynamic.class, new EntityDeSerializer<EntityDynamic>(EntityDynamic.class, new EntityDynamicFactory<EntityDynamic>() {
 
@@ -72,83 +88,12 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 			public EntityDynamic newInstance(final String identity, final Map<String, Object> attributes) {
 				return new EntityDynamic(identity, attributes);
 			}
-		}));
-
-		// Version object
-		addSerializer(new VersionSerializer());
-		addDeserializer(Version.class, new VersionDeSerializer());
-
-		// meta attribute
-		addDeserializer(MetaAttribute.class, new EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new EntityDynamicFactory<MetaAttribute>() {
-			@Override
-			public MetaAttribute newInstance(final String identity, final Map<String, Object> attributes) {
-				return new MetaAttribute(identity, attributes);
-			}
-		}));
-
-		// meta entity
-		addDeserializer(MetaEntity.class, new EntityDeSerializer<MetaEntity>(MetaEntity.class, new EntityDynamicFactory<MetaEntity>() {
-			@Override
-			public MetaEntity newInstance(final String identity, final Map<String, Object> attributes) {
-				return new MetaEntity(identity, attributes);
-			}
-		}));
-
+		}, metaEntityContextProvider));
 	}
 
-	/**
-	 * EntityDynamicDeSerializer.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
-	 */
-	public class EntityDeSerializer<T extends Entity> extends StdDeserializer<T> {
-
-		private static final long serialVersionUID = 7124116996885105048L;
-
-		private final EntityDynamicFactory<T> factory;
-
-		public EntityDeSerializer(final Class<T> className, final EntityDynamicFactory<T> factory) throws NullPointerException {
-			super(className);
-			this.factory = Preconditions.checkNotNull(factory);
-		}
-
-		@Override
-		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-			System.err.println(_valueClass.getName());
-
-			final Map<String, Object> attributes = Maps.newLinkedHashMap();
-
-			URI reference = null;
-			MetaEntityContext context = null;
-			String identity = null;
-
-			while (jp.nextToken() != JsonToken.END_OBJECT) {
-
-				final String fieldname = jp.getCurrentName();
-				if ("@reference".equals(fieldname)) {
-					jp.nextToken();
-					reference = jp.readValueAs(URI.class);
-					identity = Reference.getIdentity(reference);
-					context = metaEntityContextProvider.find(reference);
-				}
-				if ("@attributes".equals(fieldname)) {
-					jp.nextToken();
-					String name = null;
-					while (jp.nextToken() != JsonToken.END_OBJECT) {
-						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
-							name = jp.getText();
-							final MetaAttribute attribute = context.metaAttribute(name);
-							jp.nextToken();
-							final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
-							attributes.put(name, value);
-						}
-					}
-				}
-
-			}
-			return reference != null ? factory.newInstance(identity, attributes) : null;
-		}
-
+	public void declareEntityProxy() {
+		addSerializer(EntityProxyHandler.class, new EntityProxySerializer());
+		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
 	}
 
 }
