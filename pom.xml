@@ -304,13 +304,11 @@
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
 		</repository>
-		<repositories>
-			<repository>
-				<id>lambdaj</id>
-				<name>Lambdaj Repository</name>
-				<url>http://lambdaj.googlecode.com/svn/repo/releases/</url>
-			</repository>
-		</repositories>
+		<repository>
+			<id>lambdaj</id>
+			<name>Lambdaj Repository</name>
+			<url>http://lambdaj.googlecode.com/svn/repo/releases/</url>
+		</repository>
 		<repository>
 			<id>intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository</name>
