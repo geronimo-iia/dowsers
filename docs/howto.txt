@@ -9,3 +9,6 @@ remotes/origin/[NameOfYourBranch]
 In order to start a local branch, based on that remote branch, and switch to it, go:
 git checkout -t -b [NameOfYourBranch] remotes/origin/[NameOfYourBranch]
 
+
+see
+http://java.dzone.com/articles/bean-validation-and-jsr-303

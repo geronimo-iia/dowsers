@@ -373,6 +373,7 @@
 	<modules>
 		<module>dowsers-core</module>
 		<module>dowsers-entity</module>
+		<module>dowsers-entity-manager</module>
 		<!-- <module>dowsers-meta-repository</module> -->
 		<!-- <module>dowsers-domain</module> -->
 		<module>dowsers-command</module>
