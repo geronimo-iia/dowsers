@@ -21,14 +21,18 @@ package com.intelligentsia.dowsers.entity.model;
 
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 
+/**
+ * Util.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public enum Util {
 	;
 
-	public static MetaEntityContextProvider getMetaEntityContextProvider() {
+	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
 		return MetaEntityContextProviderSupport.builder().addDefaultMetaEntityContext().add(SampleEntity.class, MetaEntityContext.builder().definition( // definition
 				MetaEntity.builder().name(SampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
 						addMetaAttribute("name", String.class).//

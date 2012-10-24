@@ -21,6 +21,11 @@
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<dependencies>
+
+		<dependency>
+			<groupId>com.googlecode.lambdaj</groupId>
+			<artifactId>lambdaj</artifactId>
+		</dependency>
 		<!-- ******************************************************************* -->
 		<!-- DOWSERS -->
 		<!-- ******************************************************************* -->

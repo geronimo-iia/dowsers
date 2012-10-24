@@ -42,6 +42,16 @@ public enum Reference {
 	}
 
 	/**
+	 * @param any
+	 *            proxified entity
+	 * @return an urn which identify an {@link Entity}.
+	 * @throws URISyntaxException
+	 */
+	public static URI newReference(final Object any) throws URISyntaxException {
+		return newReference(any, "identity");
+	}
+
+	/**
 	 * @param entity
 	 *            entity instance to reference
 	 * @param attributeName
@@ -50,11 +60,27 @@ public enum Reference {
 	 * @throws URISyntaxException
 	 */
 	public static URI newReference(final Entity entity, final String attributeName) throws URISyntaxException {
-		if (Proxy.isProxyClass(entity.getClass())) {
-			final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(entity);
+		if (EntityProxy.class.isAssignableFrom(entity.getClass())) {
+			final EntityProxy entityProxy = (EntityProxy) entity;
 			return new URI("urn", "dowsers:" + entityProxy.getInterfaceName().getName() + ':' + attributeName, entity.identity());
 		}
 		return new URI("urn", "dowsers:" + entity.getClass().getName() + ':' + attributeName, entity.identity());
+	}
+
+	/**
+	 * @param any
+	 *            proxified entity
+	 * @param attributeName
+	 *            attribute Name to reference
+	 * @return an urn which identify an attribute of specified entity.
+	 * @throws URISyntaxException
+	 */
+	public static URI newReference(final Object any, final String attributeName) throws URISyntaxException {
+		if (!Proxy.isProxyClass(any.getClass())) {
+			throw new IllegalArgumentException("unknow object");
+		}
+		final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
+		return newReference(entityProxy, attributeName);
 	}
 
 	/**

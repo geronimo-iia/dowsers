@@ -54,8 +54,6 @@ A service which build meta entity context from meta entity provider.
 A service or data store that contains meta data on Entity and Attribute values.
 
 
-
-
 h1. Entity
 
 
@@ -77,6 +75,54 @@ In philosophy, identity is whatever makes an entity definable and recognizable, 
 
 h2. Identity Provider
 
+An Identity provider act as a factory of identifier. It must implements this interface:
+
+
+bc.. 
+	/**
+	 * IdentifierFactory declare methode to generate new identifier.
+	 * 
+	 * <pre>
+	 * IdentifierFactoryProvider.generateNewIdentifier();
+	 * 
+	 * <pre>
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public interface IdentifierFactory {
+
+		/**
+		 * @return a new generated identifier.
+		 */
+		public abstract String generateNewIdentifier();
+
+	}
+p. IdentifierFactoryProvider lookup in class path using ServiceLoader in order to find am implementation of IdentifierFactory.
+A default provider is based on UUID scheme:
+
+bc.. 
+	/**
+	 * 
+	 * DefaultIdentifierFactory extends abstract and use UUID class as
+	 * identifier.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	private class DefaultIdentifierFactory implements IdentifierFactory {
+
+		/**
+		 * @see org.intelligentsia.dowsers.domain.IdentifierFactory#generateNewIdentifier()
+		 */
+		@Override
+		public String generateNewIdentifier() {
+			return UUID.randomUUID().toString();
+		}
+
+	}
+p. You could obtain a new identifier like this:
+
+bc. IdentifierFactoryProvider.generateNewIdentifier();
+
 
 
 
@@ -89,16 +135,71 @@ Eric Evans:
 [Evans 2003]
 
 
+Technically, a value class should :
+* be serializable
+* have a default constructor
+* have only getter
+* all member marked as final
+
+
 h2. Interface entity 
 
+Declare methods to :
+* get entity's identity
+* get/set attribute value
+* test if entity contains a specific attribute name
+* get a set of attributes contained in the entity
+
+bc.. 
+public interface Entity {
+
+	String identity();
+
+	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
+
+	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
+
+	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
+
+	public ImmutableSet<String> attributeNames();
+p. Main implementation of this interface is EntityDynamic and EntityProxy.
+
+EntityDynamic is base class for all entities.
+
+EntityProxy implements an InvokerHandler in order to create a proxy dynamic on a EI (entity as interface).
+
+
 h2. Reference and URN
+
+URN: http://en.wikipedia.org/wiki/Uniform_resource_name
+
+A uniform resource name (URN) is a uniform resource identifier (URI) that uses the urn scheme and does not imply availability of the identified resource.
+
+
+Example:
+
+# urn:dowsers:org.intelligentsia.dowsers.sample.entity.User:identity#6787007f-f424-40b7-b240-64206b1177e2
+# urn:dowsers:org.intelligentsia.dowsers.sample.entity.User:name#6787007f-f424-40b7-b240-64206b1177e2 
+
+(1) reference a specific entity instance of User identified by '6787007f-f424-40b7-b240-64206b1177e2. 
+(2) reference attribute 'name' of instance identified by '6787007f-f424-40b7-b240-64206b1177e2' with kind org.intelligentsia.dowsers.sample.entity.User.
+
+
+org.intelligentsia.dowsers.sample.entity.User is the entity part
+
+6787007f-f424-40b7-b240-64206b1177e2 is the identifier part
+
+Note that an entity reference and a reference on identity entity's attribute is exactly the same thing
 
 
 h1. Meta Data
 
+
 h2. Meta Attribute
 
+
 h2. Meta Entity
+
 
 h2. Meta data Extension mechanism
 
