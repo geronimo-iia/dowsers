@@ -49,7 +49,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	/**
 	 * Map of attributes.
 	 */
-	private final Map<String, Object> attributes;
+	private final transient Map<String, Object> attributes;
 
 	/**
 	 * {@link MetaEntityContext} instance.
@@ -64,7 +64,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws NullPointerException
 	 *             if metaEntityContextis null
 	 */
-	public EntityDynamic(MetaEntityContext metaEntityContext) throws NullPointerException {
+	public EntityDynamic(final MetaEntityContext metaEntityContext) throws NullPointerException {
 		this(IdentifierFactoryProvider.generateNewIdentifier(), new LinkedHashMap<String, Object>(), metaEntityContext);
 	}
 
@@ -80,7 +80,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws IllegalArgumentException
 	 *             if identifier is empty
 	 */
-	public EntityDynamic(final String identity, MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+	public EntityDynamic(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		this(identity, new LinkedHashMap<String, Object>(), metaEntityContext);
 	}
 
@@ -99,7 +99,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws IllegalArgumentException
 	 *             if identifier is empty
 	 */
-	public EntityDynamic(final String identity, final Map<String, Object> attributes, MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+	public EntityDynamic(final String identity, final Map<String, Object> attributes, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 		this.identity = identity;
 		this.attributes = Preconditions.checkNotNull(attributes);

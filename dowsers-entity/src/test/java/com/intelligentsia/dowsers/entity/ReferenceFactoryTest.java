@@ -33,7 +33,6 @@ import com.intelligentsia.dowsers.entity.model.Util;
 
 public class ReferenceFactoryTest {
 
-	
 	@Test
 	public void testEntityAttributeReference() throws URISyntaxException {
 		final URI uri = Reference.newReference(Util.getCustomizableSampleEntity(), "name");
@@ -54,15 +53,14 @@ public class ReferenceFactoryTest {
 		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
 	}
 
- 
 	@Test
 	public void testProxyReference() throws IllegalArgumentException, URISyntaxException {
-		EntityFactory<Person> factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class));
+		final EntityFactory<Person> factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class));
 		final Person person = factory.newInstance("4c8b03dd-908a-4cad-8d48-3c7277d44ac9");
 		person.setFirstName("Mario");
 		person.setLastName("Fusco");
 		person.setYearOld(35);
-		
+
 		final URI uri = Reference.newReference(person);
 		assertNotNull(uri);
 		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());

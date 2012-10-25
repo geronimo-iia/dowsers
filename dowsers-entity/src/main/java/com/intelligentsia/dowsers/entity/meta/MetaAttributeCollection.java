@@ -45,7 +45,7 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	/**
 	 * {@link ImmutableSet} {@link MetaAttribute}.
 	 */
-	@JsonProperty
+	@JsonProperty("items")
 	private final ImmutableSet<MetaAttribute> metaAttributes;
 
 	/**
@@ -54,7 +54,7 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	 * @param metaAttributes
 	 */
 	@JsonCreator
-	public MetaAttributeCollection(@JsonProperty("metaAttributes") final ImmutableSet<MetaAttribute> metaAttributes) {
+	public MetaAttributeCollection(@JsonProperty("items") final ImmutableSet<MetaAttribute> metaAttributes) {
 		super();
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 	}

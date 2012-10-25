@@ -28,11 +28,11 @@ import com.google.common.base.Preconditions;
 /**
  * EntityCollection.
  * 
- * TODO: define entity reference collection 
+ * TODO: define entity reference collection
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityCollection implements Iterable<URI>{
+public class EntityCollection implements Iterable<URI> {
 
 	private final LinkedList<URI> entities;
 
@@ -40,7 +40,7 @@ public class EntityCollection implements Iterable<URI>{
 		this(new LinkedList<URI>());
 	}
 
-	public EntityCollection(LinkedList<URI> entities) throws NullPointerException {
+	public EntityCollection(final LinkedList<URI> entities) throws NullPointerException {
 		super();
 		this.entities = Preconditions.checkNotNull(entities);
 	}
@@ -57,5 +57,5 @@ public class EntityCollection implements Iterable<URI>{
 	public LinkedList<URI> getEntities() {
 		return entities;
 	}
-	
+
 }

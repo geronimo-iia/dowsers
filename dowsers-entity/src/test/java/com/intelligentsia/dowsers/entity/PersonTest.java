@@ -84,7 +84,7 @@ public class PersonTest {
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());
 
-		URI urn = Reference.newReference(person);
+		final URI urn = Reference.newReference(person);
 		assertNotNull(urn);
 		assertEquals(Person.class.getName(), Reference.getEntityPart(urn));
 
@@ -122,7 +122,7 @@ public class PersonTest {
 		assertEquals(person.getYearOld(), person2.getYearOld());
 
 	}
-	
+
 	@Test
 	public void testSelection() {
 		final Person me = factory.newInstance();
@@ -145,12 +145,12 @@ public class PersonTest {
 		celestino.setLastName("Bellone");
 		celestino.setYearOld(29);
 
-		List<Person> meAndMyFriends = Lists.newArrayList(me, luca, biagio, celestino);
+		final List<Person> meAndMyFriends = Lists.newArrayList(me, luca, biagio, celestino);
 
 		// it is possible to filter the ones having more than 30 years applying
 		// the following filter:
 
-		List<Person> oldFriends = filter(having(on(Person.class).getYearOld(), Matchers.greaterThan(30)), meAndMyFriends);
+		final List<Person> oldFriends = filter(having(on(Person.class).getYearOld(), Matchers.greaterThan(30)), meAndMyFriends);
 		assertNotNull(oldFriends);
 		assertTrue(oldFriends.contains(me));
 		assertTrue(oldFriends.contains(biagio));
@@ -158,13 +158,13 @@ public class PersonTest {
 		assertTrue(!oldFriends.contains(celestino));
 
 		// sum
-		int totalAge = sum(meAndMyFriends, on(Person.class).getYearOld());
-		assertEquals((Integer) 35 + 29 + 39 + 29, totalAge);
-		int totalAge2 = sumFrom(meAndMyFriends).getYearOld();
+		final int totalAge = sum(meAndMyFriends, on(Person.class).getYearOld());
+		assertEquals(35 + 29 + 39 + 29, totalAge);
+		final int totalAge2 = sumFrom(meAndMyFriends).getYearOld();
 		assertEquals(totalAge, totalAge2);
 
 		// projection
-		List<PersonDto> personsDto = project(meAndMyFriends, PersonDto.class, on(Person.class).getFirstName(), on(Person.class).getYearOld());
+		final List<PersonDto> personsDto = project(meAndMyFriends, PersonDto.class, on(Person.class).getFirstName(), on(Person.class).getYearOld());
 		assertNotNull(oldFriends);
 		assertEquals((Integer) 4, (Integer) personsDto.size());
 	}

@@ -44,20 +44,23 @@ public class EntityDecorator implements Entity {
 	 * @throws NullPointerException
 	 *             if entity is null
 	 */
-	public EntityDecorator(EntityDynamic entity) throws NullPointerException {
+	public EntityDecorator(final EntityDynamic entity) throws NullPointerException {
 		super();
 		this.entity = Preconditions.checkNotNull(entity);
 	}
 
+	@Override
 	public final String identity() {
 		return entity.identity();
 	}
 
-	public <Value> Value attribute(String name) throws NullPointerException {
+	@Override
+	public <Value> Value attribute(final String name) throws NullPointerException {
 		return entity.attribute(name);
 	}
 
-	public <Value> Entity attribute(String name, Value value) throws NullPointerException {
+	@Override
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
 		return entity.attribute(name, value);
 	}
 
@@ -67,11 +70,13 @@ public class EntityDecorator implements Entity {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
+		}
 		// find good instance
 		Object other = obj;
 		if (getClass().isAssignableFrom(obj.getClass())) {
@@ -80,11 +85,12 @@ public class EntityDecorator implements Entity {
 		return entity.equals(other);
 	}
 
+	@Override
 	public String toString() {
 		return entity.toString();
 	}
 
-	public int compareTo(Entity o) {
+	public int compareTo(final Entity o) {
 		return entity.compareTo(o);
 	}
 
@@ -92,17 +98,19 @@ public class EntityDecorator implements Entity {
 		return entity.iterator();
 	}
 
-	public boolean contains(String name) throws NullPointerException, IllegalArgumentException {
+	@Override
+	public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
 		return entity.contains(name);
 	}
 
+	@Override
 	public ImmutableSet<String> attributeNames() {
 		return entity.attributeNames();
 	}
 
+	@Override
 	public MetaEntityContext metaEntityContext() {
 		return entity.metaEntityContext();
 	}
- 
 
 }

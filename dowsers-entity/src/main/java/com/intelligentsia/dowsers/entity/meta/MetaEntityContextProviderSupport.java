@@ -55,17 +55,18 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	}
 
 	@Override
-	public MetaEntityContext find(Class<?> clazz, String identity) throws IllegalArgumentException, NullPointerException {
+	public MetaEntityContext find(final Class<?> clazz, final String identity) throws IllegalArgumentException, NullPointerException {
 		return find(clazz.getName(), identity);
 	}
 
-	public MetaEntityContext find(Class<?> clazz) throws NullPointerException {
+	@Override
+	public MetaEntityContext find(final Class<?> clazz) throws NullPointerException {
 		return find(clazz.getName());
 	}
 
-	public MetaEntityContext find(String className, String identity) throws IllegalArgumentException, NullPointerException {
+	public MetaEntityContext find(final String className, final String identity) throws IllegalArgumentException, NullPointerException {
 		if (identity != null) {
-			MetaEntityContext context = specificContextEntities.get(identity);
+			final MetaEntityContext context = specificContextEntities.get(identity);
 			if (context != null) {
 				return context;
 			}
@@ -73,8 +74,8 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		return find(className);
 	}
 
-	public MetaEntityContext find(String className) throws NullPointerException {
-		MetaEntityContext context = contextEntities.get(className);
+	public MetaEntityContext find(final String className) throws NullPointerException {
+		final MetaEntityContext context = contextEntities.get(className);
 		// check for error
 		if (context == null) {
 			throw new IllegalArgumentException("no context found");
@@ -115,12 +116,13 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 * @param extension
 	 * @return this instance
 	 */
-	public MetaEntityContextProviderSupport add(final Class<?> className, MetaEntity definition, MetaEntity... extension) throws NullPointerException {
-		MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(Preconditions.checkNotNull(definition));
-		if (extension != null)
-			for (MetaEntity metaEntity : extension) {
+	public MetaEntityContextProviderSupport add(final Class<?> className, final MetaEntity definition, final MetaEntity... extension) throws NullPointerException {
+		final MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(Preconditions.checkNotNull(definition));
+		if (extension != null) {
+			for (final MetaEntity metaEntity : extension) {
 				builder.addExtendedDefinition(metaEntity);
 			}
+		}
 		contextEntities.put(Preconditions.checkNotNull(className).getName(), builder.build());
 		return this;
 	}

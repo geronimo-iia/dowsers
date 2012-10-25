@@ -54,7 +54,7 @@ public enum Reference {
 	 */
 	public static URI newReference(final Object any, final String attributeName) throws URISyntaxException, IllegalArgumentException {
 		if (Proxy.isProxyClass(any.getClass())) {
-			EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
+			final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
 			return newReference(entityProxy, attributeName);
 		}
 		if (EntityProxy.class.isAssignableFrom(any.getClass())) {
@@ -77,7 +77,7 @@ public enum Reference {
 	 * @return an urn which identify an attribute of specified entity.
 	 * @throws URISyntaxException
 	 */
-	public static URI newReference(EntityProxy entityProxy, final String attributeName) throws URISyntaxException {
+	public static URI newReference(final EntityProxy entityProxy, final String attributeName) throws URISyntaxException {
 		return newReference(entityProxy.getInterfaceName(), attributeName, entityProxy.identity());
 	}
 
@@ -116,7 +116,7 @@ public enum Reference {
 	 * @return an urn which identify an attribute of specified entity.
 	 * @throws URISyntaxException
 	 */
-	public static URI newReference(Class<?> clazz, String attributeName, String identity) throws URISyntaxException {
+	public static URI newReference(final Class<?> clazz, final String attributeName, final String identity) throws URISyntaxException {
 		return new URI("urn", "dowsers:" + clazz.getName() + ':' + attributeName, identity);
 	}
 

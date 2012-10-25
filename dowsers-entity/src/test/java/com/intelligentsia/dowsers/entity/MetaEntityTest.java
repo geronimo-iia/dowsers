@@ -51,11 +51,11 @@ public class MetaEntityTest {
 		final MetaAttributeCollection metaAttributes = definition.metaAttributes();
 		assertNotNull(metaAttributes);
 		assertNotNull(metaAttributes.getMetaAttributes().contains("test-attribute"));
-		ImmutableList<MetaAttribute> attributes = metaAttributes.getMetaAttributes().asList(); 
+		final ImmutableList<MetaAttribute> attributes = metaAttributes.getMetaAttributes().asList();
 		assertNotNull(attributes.get(0).identity());
 		assertEquals("test-attribute", attributes.get(0).name());
 		assertEquals(new ClassInformation(String.class), attributes.get(0).valueClass());
- 
+
 	}
 
 }

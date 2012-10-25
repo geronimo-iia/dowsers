@@ -101,7 +101,8 @@ public interface Entity extends Identified {
 	public ImmutableSet<String> attributeNames();
 
 	/**
-	 * @return a {@link MetaEntityContext} instance associated with this {@link Entity}.
+	 * @return a {@link MetaEntityContext} instance associated with this
+	 *         {@link Entity}.
 	 */
 	public MetaEntityContext metaEntityContext();
 }

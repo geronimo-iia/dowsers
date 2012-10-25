@@ -39,8 +39,15 @@ import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
  */
 public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 
-	private final Entity entity;
-	private final Class<?> interfaceName;
+	/**
+	 * Exposed interface.
+	 */
+	private final transient Class<?> interfaceName;
+
+	/**
+	 * Inner instance of Entity.
+	 */
+	private final transient Entity entity;
 
 	/**
 	 * Build a new instance of EntityProxy.

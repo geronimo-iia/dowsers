@@ -128,7 +128,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 			if (value != null) {
 				// proxy case
 				if (Proxy.isProxyClass(value.getClass())) {
-					InvocationHandler handler = Proxy.getInvocationHandler(value);
+					final InvocationHandler handler = Proxy.getInvocationHandler(value);
 					if (!EntityProxy.class.isAssignableFrom(handler.getClass())) {
 						throw new JsonGenerationException("Cannot Serialize an EntityProxyHandler that did not came from EntityProxy");
 					}
