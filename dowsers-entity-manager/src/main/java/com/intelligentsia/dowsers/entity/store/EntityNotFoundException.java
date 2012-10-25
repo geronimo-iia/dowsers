@@ -17,42 +17,53 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.serializer;
-
-import java.io.IOException;
-
-import org.intelligentsia.keystone.api.artifacts.Version;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
 /**
  * 
- * VersionDeSerializer.
- * 
+ */
+package com.intelligentsia.dowsers.entity.store;
+
+/**
+ * EntityNotFoundException. 
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class VersionDeSerializer extends StdDeserializer<Version> {
+public class EntityNotFoundException extends RuntimeException {
 
 	/**
 	 * serialVersionUID:long
 	 */
-	private static final long serialVersionUID = 1916647538058301330L;
+	private static final long serialVersionUID = 4086184226630110642L;
 
-	public VersionDeSerializer() {
-		super(Version.class);
+	/**
+	 * Build a new instance of EntityNotFoundException.java.
+	 */
+	public EntityNotFoundException() {
+		super();
 	}
 
-	@Override
-	public Version deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		if (jp.hasCurrentToken()) {
-			final String value = jp.getText();
-			if (value != null) {
-				return Version.parse(value);
-			}
-		}
-		return null;
+	/**
+	 * Build a new instance of EntityNotFoundException.java.
+	 * @param message
+	 */
+	public EntityNotFoundException(String message) {
+		super(message);
 	}
+
+	/**
+	 * Build a new instance of EntityNotFoundException.java.
+	 * @param cause
+	 */
+	public EntityNotFoundException(Throwable cause) {
+		super(cause);
+	}
+
+	/**
+	 * Build a new instance of EntityNotFoundException.java.
+	 * @param message
+	 * @param cause
+	 */
+	public EntityNotFoundException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

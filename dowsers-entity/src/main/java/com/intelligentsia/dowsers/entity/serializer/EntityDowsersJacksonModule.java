@@ -19,15 +19,37 @@
  */
 package com.intelligentsia.dowsers.entity.serializer;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.Map;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.EntityProxy;
+import com.intelligentsia.dowsers.entity.Reference;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 
 /**
@@ -94,6 +116,224 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	public void declareEntityProxy() {
 		addSerializer(EntityProxyHandler.class, new EntityProxySerializer());
 		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
+	}
+
+	/**
+	 * EntitySerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public static class EntitySerializer<T extends Entity> extends StdSerializer<T> {
+
+		public EntitySerializer(final Class<T> className) {
+			super(className);
+		}
+
+		@Override
+		public void serialize(final T value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+			jgen.writeStartObject();
+			if (value != null) {
+				try {
+					jgen.writeObjectField("@reference", Reference.newReference(value));
+				} catch (final URISyntaxException e) {
+					throw new JsonGenerationException("Unable to build entity reference");
+				}
+				jgen.writeFieldName("@attributes");
+				jgen.writeStartObject();
+				final Iterator<String> iterator = value.attributeNames().iterator();
+				while (iterator.hasNext()) {
+					final String name = iterator.next();
+					jgen.writeObjectField(name, value.attribute(name));
+				}
+				jgen.writeEndObject();
+			}
+			jgen.writeEndObject();
+		}
+	}
+
+	/**
+	 * EntityDynamicDeSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public static class EntityDeSerializer<T extends Entity> extends StdDeserializer<T> {
+
+		private static final long serialVersionUID = 7124116996885105048L;
+
+		private final EntityDynamicFactory<T> factory;
+		/**
+		 * {@link MetaEntityContextProvider} instance.
+		 */
+		private final MetaEntityContextProvider metaEntityContextProvider;
+
+		/**
+		 * Build a new instance of EntityDowsersJacksonModule.java.
+		 * 
+		 * @param className
+		 * @param factory
+		 * @param metaEntityContextProvider
+		 * @throws NullPointerException
+		 *             if on of parameters is null
+		 */
+		public EntityDeSerializer(final Class<T> className, final EntityDynamicFactory<T> factory, final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+			super(className);
+			this.factory = Preconditions.checkNotNull(factory);
+			this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
+		}
+
+		@Override
+		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			final Map<String, Object> attributes = Maps.newLinkedHashMap();
+			URI reference = null;
+			MetaEntityContext context = null;
+			String identity = null;
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
+				final String fieldname = jp.getCurrentName();
+				if ("@reference".equals(fieldname)) {
+					jp.nextToken();
+					reference = jp.readValueAs(URI.class);
+					identity = Reference.getIdentity(reference);
+					context = metaEntityContextProvider.find(reference);
+				}
+				if ("@attributes".equals(fieldname)) {
+					jp.nextToken();
+					String name = null;
+					while (jp.nextToken() != JsonToken.END_OBJECT) {
+						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
+							name = jp.getText();
+							final MetaAttribute attribute = context.metaAttribute(name);
+							jp.nextToken();
+							final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
+							attributes.put(name, value);
+						}
+					}
+				}
+			}
+			return reference != null ? factory.newInstance(identity, attributes) : null;
+		}
+
+	}
+
+	/**
+	 * EntityProxySerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class EntityProxySerializer extends StdSerializer<EntityProxyHandler> {
+
+		public EntityProxySerializer() {
+			super(EntityProxyHandler.class);
+		}
+
+		@Override
+		public void serialize(final EntityProxyHandler value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+			jgen.writeStartObject();
+			if (value != null) {
+				final InvocationHandler handler = Proxy.getInvocationHandler(value);
+				if (!EntityProxy.class.isAssignableFrom(handler.getClass())) {
+					throw new JsonGenerationException("Cannot Serialize an EntityProxyHandler that did not came from EntityProxy");
+				}
+				final EntityProxy entityProxy = (EntityProxy) handler;
+				jgen.writeObjectField("@interface", entityProxy.getInterfaceName().getName());
+				jgen.writeObjectField("@support", entityProxy.getEntity().getClass().getName());
+				jgen.writeObjectField("@entity", entityProxy.getEntity());
+			}
+			jgen.writeEndObject();
+		}
+	}
+
+	/**
+	 * 
+	 * EntityProxyDeSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class EntityProxyDeSerializer extends StdDeserializer<EntityProxy> {
+
+		/**
+		 * serialVersionUID:long
+		 */
+		private static final long serialVersionUID = -1025718595928596570L;
+
+		public EntityProxyDeSerializer() {
+			super(EntityProxy.class);
+		}
+
+		@Override
+		public EntityProxy deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			ClassInformation interfaceName = null;
+			ClassInformation support = null;
+			Entity entity = null;
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
+				final String fieldname = jp.getCurrentName();
+				if ("@interface".equals(fieldname)) {
+					jp.nextToken();
+					interfaceName = ClassInformation.parse(jp.getText());
+				}
+				if ("@support".equals(fieldname)) {
+					jp.nextToken();
+					support = ClassInformation.parse(jp.getText());
+				}
+				if ("@entity".equals(fieldname)) {
+					if (support == null) {
+						throw new JsonParseException("@support is required in order to decode Entity", jp.getCurrentLocation());
+					}
+					jp.nextToken();
+					entity = (Entity) jp.readValueAs(support.getType());
+				}
+			}
+			return entity != null ? new EntityProxy(interfaceName.getType(), entity) : null;
+		}
+	}
+
+	/**
+	 * VersionSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class VersionSerializer extends StdSerializer<Version> {
+
+		public VersionSerializer() {
+			super(Version.class);
+		}
+
+		@Override
+		public void serialize(final Version value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+			if (value != null) {
+				jgen.writeString(Version.format(value));
+			} else {
+				jgen.writeNull();
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * VersionDeSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class VersionDeSerializer extends StdDeserializer<Version> {
+
+		/**
+		 * serialVersionUID:long
+		 */
+		private static final long serialVersionUID = 1916647538058301330L;
+
+		public VersionDeSerializer() {
+			super(Version.class);
+		}
+
+		@Override
+		public Version deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			if (jp.hasCurrentToken()) {
+				final String value = jp.getText();
+				if (value != null) {
+					return Version.parse(value);
+				}
+			}
+			return null;
+		}
 	}
 
 }

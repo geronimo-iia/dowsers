@@ -40,16 +40,35 @@ public class EntityMapper {
 
 	private final ObjectMapper mapper;
 
+	/**
+	 * Build a new instance of EntityMapper.java.
+	 * 
+	 * @param metaEntityContextProvider
+	 */
+	public EntityMapper(final MetaEntityContextProvider metaEntityContextProvider) {
+		this(JacksonSerializer.getMapper(), metaEntityContextProvider);
+	}
+
+	/**
+	 * Build a new instance of EntityMapper.java.
+	 * 
+	 * @param mapper
+	 * @param metaEntityContextProvider
+	 */
 	public EntityMapper(final ObjectMapper mapper, final MetaEntityContextProvider metaEntityContextProvider) {
 		super();
 		this.mapper = mapper;
 		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider));
 	}
 
-	public EntityMapper(final MetaEntityContextProvider metaEntityContextProvider) {
-		this(JacksonSerializer.getMapper(), metaEntityContextProvider);
-	}
-
+	/**
+	 * Method that can be used to serialize any Java value as JSON output, using
+	 * Writer provided.
+	 * 
+	 * @param writer
+	 * @param value
+	 * @throws DowsersException
+	 */
 	public void writeValue(final Writer writer, final Object value) throws DowsersException {
 		try {
 			mapper.writeValue(writer, value);
@@ -58,10 +77,18 @@ public class EntityMapper {
 		}
 	}
 
+	/**
+	 * Method that can be used to parse JSON to specified Java value, using
+	 * reader provided.
+	 * 
+	 * @param reader
+	 * @param valueType
+	 * @return
+	 * @throws DowsersException
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T readValue(final Reader reader, final Class<T> valueType) throws DowsersException {
 		if (valueType.isInterface() || Modifier.isAbstract(valueType.getModifiers())) {
-			// build proxy TODO add features
 			try {
 				final EntityProxy entityProxy = mapper.readValue(reader, EntityProxy.class);
 				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { valueType, EntityProxyHandler.class }, entityProxy);
