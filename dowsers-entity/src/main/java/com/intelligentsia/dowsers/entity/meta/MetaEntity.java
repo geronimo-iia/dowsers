@@ -19,21 +19,20 @@
  */
 package com.intelligentsia.dowsers.entity.meta;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 
+import org.intelligentsia.dowsers.core.Identified;
 import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.EntityDynamic;
 
 /**
  * A {@link MetaEntity} define:
@@ -66,33 +65,42 @@ import com.intelligentsia.dowsers.entity.EntityDynamic;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntity extends EntityDynamic {
+public class MetaEntity implements Identified, Serializable {
 
 	/**
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = 5799292993506157623L;
+	/**
+	 * Identity.
+	 */
+	@JsonProperty
+	private final String identity;
+	/**
+	 * Meta entity name.
+	 */
+	@JsonProperty
+	private final String name;
 
 	/**
-	 * ImmutableMap of {@link MetaAttribute}.
+	 * Meta entity version.
 	 */
-	private final transient ImmutableMap<String, MetaAttribute> metaAttributes;
+	@JsonProperty
+	private final Version version;
+
+	/**
+	 * {@link MetaAttributeCollection}.
+	 */
+	@JsonProperty
+	private final MetaAttributeCollection metaAttributes;
 
 	/**
 	 * Build a new instance of {@link MetaEntity}.
 	 * 
-	 * @param definition
-	 *            {@link MetaEntity} to copy
-	 * @throws NullPointerException
-	 *             if definition is null
-	 */
-	public MetaEntity(final MetaEntity definition) throws NullPointerException {
-		this(Preconditions.checkNotNull(definition).name(), definition.version(), definition.metaAttributes(), definition.identity());
-	}
-
-	/**
-	 * Build a new instance of {@link MetaEntity}.
-	 * 
+	 * @param identity
+	 *            MetaEntity identity
+	 * @param metaEntityContext
+	 *            meta entity Context
 	 * @param name
 	 *            entity name
 	 * @param version
@@ -105,39 +113,21 @@ public class MetaEntity extends EntityDynamic {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
-	public MetaEntity(final String name, final Version version, final MetaAttributeCollection metaAttributes, final String identity) throws NullPointerException, IllegalArgumentException {
-		super(identity);
+	@JsonCreator
+	private MetaEntity(@JsonProperty("identity") final String identity, @JsonProperty("name") final String name, @JsonProperty("version") final Version version, @JsonProperty("metaAttributes") final MetaAttributeCollection metaAttributes)
+			throws NullPointerException, IllegalArgumentException {
+		super();
+		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		this.identity = identity;
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
-		super.attribute("name", name);
-		super.attribute("version", Preconditions.checkNotNull(version));
-		super.attribute("metaAttributes", Preconditions.checkNotNull(metaAttributes));
-		// meta attributes
-		final ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
-		final Iterator<MetaAttribute> iterator = metaAttributes.iterator();
-		while (iterator.hasNext()) {
-			final MetaAttribute attribute = iterator.next();
-			builder.put(attribute.name(), attribute);
-		}
-		this.metaAttributes = builder.build();
+		this.name = name;
+		this.version = Preconditions.checkNotNull(version);
+		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 	}
 
-	/**
-	 * Build a new instance of MetaEntity.
-	 * 
-	 * @param attributes
-	 */
-	public MetaEntity(final Map<String, Object> attributes) {
-		this(IdentifierFactoryProvider.generateNewIdentifier(), attributes);
-	}
-
-	/**
-	 * Build a new instance of MetaEntity.java.
-	 * 
-	 * @param identity
-	 * @param attributes
-	 */
-	public MetaEntity(final String identity, final Map<String, Object> attributes) {
-		this((String) attributes.get("name"), (Version) attributes.get("version"), (MetaAttributeCollection) attributes.get("metaAttributes"), identity);
+	@Override
+	public String identity() {
+		return identity;
 	}
 
 	/**
@@ -146,7 +136,7 @@ public class MetaEntity extends EntityDynamic {
 	 * @return non-<code>null</code>, empty or non-empty string
 	 */
 	public String name() {
-		return attribute("name");
+		return name;
 	}
 
 	/**
@@ -155,58 +145,14 @@ public class MetaEntity extends EntityDynamic {
 	 * @return {@link Version} instance.
 	 */
 	public Version version() {
-		return attribute("version");
+		return version;
 	}
 
 	/**
-	 * @return an {@link ImmutableCollection} on {@link MetaAttribute}.
+	 * @return an {@link MetaAttributeCollection}.
 	 */
 	public MetaAttributeCollection metaAttributes() {
-		return attribute("metaAttributes");
-	}
-
-	/**
-	 * @param name
-	 *            attribute name
-	 * @return {@see Boolean#TRUE} if this entity has specified named attribute.
-	 * @throws NullPointerException
-	 *             if name is null
-	 */
-	public boolean containsMetaAttribute(final String name) throws NullPointerException {
-		return metaAttributes.containsKey(name);
-	}
-
-	/**
-	 * @return a {@link ImmutableSet} of meta attributes names .
-	 */
-	public ImmutableSet<String> metaAttributeNames() {
-		return metaAttributes.keySet();
-	}
-
-	/**
-	 * Get {@link MetaAttribute} of specified name.
-	 * 
-	 * @param attributeName
-	 *            attribute name
-	 * @return {@link MetaAttribute} instance or specified name or null if none
-	 *         is found
-	 * @throws NullPointerException
-	 *             if attributName id null
-	 * @throws {@link IllegalArgumentException} if attributName is empty
-	 */
-	public MetaAttribute metaAttribute(final String attributeName) throws NullPointerException, IllegalArgumentException {
-		return metaAttributes.get(attributeName);
-	}
-
-	/**
-	 * Always throw UnsupportedOperationException {@link MetaEntity} is
-	 * Immutable.
-	 * 
-	 * @throw UnsupportedOperationException
-	 */
-	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws IllegalStateException {
-		throw new UnsupportedOperationException();
+		return metaAttributes;
 	}
 
 	@Override
@@ -320,28 +266,6 @@ public class MetaEntity extends EntityDynamic {
 		 *            attribute name
 		 * @param valueClass
 		 *            value class
-		 * @param defaultValue
-		 *            default value
-		 * @return this instance.
-		 * @throws NullPointerException
-		 *             if name or valueClass is null
-		 * @throws IllegalArgumentException
-		 *             if name is empty
-		 * @throws IllegalStateException
-		 *             if value is not assignable to specified value class
-		 */
-		public Builder addMetaAttribute(final String name, final Class<?> valueClass, final Object defaultValue) throws NullPointerException, IllegalArgumentException, IllegalStateException {
-			this.metaAttributes.add(new MetaAttribute(name, valueClass, defaultValue));
-			return this;
-		}
-
-		/**
-		 * Add a new instance of <code>MetaAttributeDefinition</code>.
-		 * 
-		 * @param name
-		 *            attribute name
-		 * @param valueClass
-		 *            value class
 		 * @return this instance.
 		 * @throws NullPointerException
 		 *             if name or valueClass is null
@@ -349,12 +273,12 @@ public class MetaEntity extends EntityDynamic {
 		 *             if name is empty
 		 */
 		public Builder addMetaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
-			this.metaAttributes(new MetaAttribute(name, valueClass));
+			this.metaAttributes(MetaAttribute.builder().name(name).valueClass(valueClass).build());
 			return this;
 		}
 
 		public MetaEntity build() {
-			return new MetaEntity(name, version, new MetaAttributeCollection(metaAttributes.build()), identity);
+			return new MetaEntity(identity, name, version, new MetaAttributeCollection(metaAttributes.build()));
 		}
 
 	}

@@ -28,13 +28,15 @@ import java.net.URISyntaxException;
 import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
-import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
+import com.intelligentsia.dowsers.entity.model.Person;
+import com.intelligentsia.dowsers.entity.model.Util;
 
 public class ReferenceFactoryTest {
 
+	
 	@Test
 	public void testEntityAttributeReference() throws URISyntaxException {
-		final URI uri = Reference.newReference(getCustomizableSampleEntity(), "name");
+		final URI uri = Reference.newReference(Util.getCustomizableSampleEntity(), "name");
 		assertNotNull(uri);
 		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:name#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
 		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", Reference.getEntityPart(uri));
@@ -44,7 +46,7 @@ public class ReferenceFactoryTest {
 
 	@Test
 	public void testEntityReference() throws URISyntaxException {
-		final URI uri = Reference.newReference(getCustomizableSampleEntity());
+		final URI uri = Reference.newReference(Util.getCustomizableSampleEntity());
 		assertNotNull(uri);
 		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
 		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", Reference.getEntityPart(uri));
@@ -52,12 +54,20 @@ public class ReferenceFactoryTest {
 		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
 	}
 
-	protected CustomizableSampleEntity getCustomizableSampleEntity() {
-		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class);
-		final CustomizableSampleEntity sampleEntity = factory.newInstance("4c8b03dd-908a-4cad-8d48-3c7277d44ac9");
-		sampleEntity.setName("Hello John");
-		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.attribute("order", 1);
-		return sampleEntity;
+ 
+	@Test
+	public void testProxyReference() throws IllegalArgumentException, URISyntaxException {
+		EntityFactory<Person> factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class));
+		final Person person = factory.newInstance("4c8b03dd-908a-4cad-8d48-3c7277d44ac9");
+		person.setFirstName("Mario");
+		person.setLastName("Fusco");
+		person.setYearOld(35);
+		
+		final URI uri = Reference.newReference(person);
+		assertNotNull(uri);
+		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
+		assertEquals("com.intelligentsia.dowsers.entity.model.Person", Reference.getEntityPart(uri));
+		assertEquals("identity", Reference.getAttributPart(uri));
+		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
 	}
 }

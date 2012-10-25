@@ -24,39 +24,60 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.google.common.base.Preconditions;
+import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.Reference;
 
 /**
  * MetaEntityContextProviderSupport implements {@link MetaEntityContextProvider}
- * .
+ * . TODO better impls.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class MetaEntityContextProviderSupport implements MetaEntityContextProvider {
 
 	private final Map<String, MetaEntityContext> contextEntities;
+	private final Map<String, MetaEntityContext> specificContextEntities;
 
 	public MetaEntityContextProviderSupport() {
-		this(new LinkedHashMap<String, MetaEntityContext>());
+		this(new LinkedHashMap<String, MetaEntityContext>(), new LinkedHashMap<String, MetaEntityContext>());
 	}
 
-	public MetaEntityContextProviderSupport(final Map<String, MetaEntityContext> contextEntities) throws NullPointerException {
+	public MetaEntityContextProviderSupport(final Map<String, MetaEntityContext> contextEntities, final Map<String, MetaEntityContext> specificContextEntities) throws NullPointerException {
 		super();
 		this.contextEntities = Preconditions.checkNotNull(contextEntities);
+		this.specificContextEntities = Preconditions.checkNotNull(specificContextEntities);
 	}
 
 	@Override
 	public MetaEntityContext find(final URI reference) throws IllegalArgumentException, NullPointerException {
-		// try to find a specific one
-		MetaEntityContext context = contextEntities.get(Preconditions.checkNotNull(reference));
-		if (context == null) {
-			// try to find for class name
-			context = contextEntities.get(Reference.getEntityPart(reference));
+		return find(Reference.getEntityPart(Preconditions.checkNotNull(reference)), Reference.getIdentity(reference));
+	}
+
+	@Override
+	public MetaEntityContext find(Class<?> clazz, String identity) throws IllegalArgumentException, NullPointerException {
+		return find(clazz.getName(), identity);
+	}
+
+	public MetaEntityContext find(Class<?> clazz) throws NullPointerException {
+		return find(clazz.getName());
+	}
+
+	public MetaEntityContext find(String className, String identity) throws IllegalArgumentException, NullPointerException {
+		if (identity != null) {
+			MetaEntityContext context = specificContextEntities.get(identity);
+			if (context != null) {
+				return context;
+			}
 		}
+		return find(className);
+	}
+
+	public MetaEntityContext find(String className) throws NullPointerException {
+		MetaEntityContext context = contextEntities.get(className);
 		// check for error
 		if (context == null) {
-			throw new IllegalArgumentException("no context found for " + reference);
+			throw new IllegalArgumentException("no context found");
 		}
 		return context;
 	}
@@ -82,7 +103,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 * @return this instance
 	 */
 	public MetaEntityContextProviderSupport add(final URI reference, final MetaEntityContext metaEntityContext) throws NullPointerException {
-		contextEntities.put(Preconditions.checkNotNull(reference).toString(), metaEntityContext);
+		specificContextEntities.put(Reference.getIdentity(Preconditions.checkNotNull(reference)), metaEntityContext);
 		return this;
 	}
 

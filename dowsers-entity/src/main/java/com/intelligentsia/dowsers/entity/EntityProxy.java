@@ -27,6 +27,7 @@ import org.intelligentsia.dowsers.core.reflection.Reflection;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
 /**
@@ -89,6 +90,9 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 		if (methodName.equals("attributeNames")) {
 			return entity.attributeNames();
 		}
+		if ("metaEntityContext".equals(methodName)) {
+			return entity.metaEntityContext();
+		}
 		// Dynamic Stuff based on Getter/Setter pattern
 		if (methodName.startsWith("get")) {
 			return entity.attribute(Reflection.toFieldName(methodName));
@@ -140,6 +144,11 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 	@Override
 	public ImmutableSet<String> attributeNames() {
 		return entity.attributeNames();
+	}
+
+	@Override
+	public MetaEntityContext metaEntityContext() {
+		return entity.metaEntityContext();
 	}
 
 	@Override

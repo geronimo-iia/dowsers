@@ -30,18 +30,6 @@ import java.net.URISyntaxException;
  */
 public enum Reference {
 	;
-
-	// /**
-	// * @param entity
-	// * entity instance to reference
-	// * @return an urn which identify an {@link Entity}.
-	// * @throws URISyntaxException
-	// */
-	// public static URI newReference(final Entity entity) throws
-	// URISyntaxException {
-	// return newReference(entity, "identity");
-	// }
-
 	/**
 	 * @param any
 	 *            entity representation
@@ -75,14 +63,22 @@ public enum Reference {
 		}
 		if (Entity.class.isAssignableFrom(any.getClass())) {
 			final Entity entity = (Entity) any;
-			return new URI("urn", "dowsers:" + entity.getClass().getName() + ':' + attributeName, entity.identity());
+			return newReference(entity.getClass(), attributeName, entity.identity());
 		}
 		throw new IllegalArgumentException("Argument is not an entity");
 
 	}
 
+	/**
+	 * @param entityProxy
+	 *            proxy of entity representation
+	 * @param attributeName
+	 *            attribute Name to reference
+	 * @return an urn which identify an attribute of specified entity.
+	 * @throws URISyntaxException
+	 */
 	public static URI newReference(EntityProxy entityProxy, final String attributeName) throws URISyntaxException {
-		return new URI("urn", "dowsers:" + entityProxy.getInterfaceName().getName() + ':' + attributeName, entityProxy.identity());
+		return newReference(entityProxy.getInterfaceName(), attributeName, entityProxy.identity());
 	}
 
 	/**
@@ -109,6 +105,19 @@ public enum Reference {
 	public static String getAttributPart(final URI uri) {
 		final String ssp = uri.getSchemeSpecificPart();
 		return ssp.substring(ssp.lastIndexOf(':') + 1);
+	}
+
+	/**
+	 * @param className
+	 *            entity class name
+	 * @param attributeName
+	 *            attribut name
+	 * @param identity
+	 * @return an urn which identify an attribute of specified entity.
+	 * @throws URISyntaxException
+	 */
+	public static URI newReference(Class<?> clazz, String attributeName, String identity) throws URISyntaxException {
+		return new URI("urn", "dowsers:" + clazz.getName() + ':' + attributeName, identity);
 	}
 
 }

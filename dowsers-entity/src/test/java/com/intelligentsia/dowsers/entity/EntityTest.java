@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 import com.intelligentsia.dowsers.entity.model.SampleEntity;
+import com.intelligentsia.dowsers.entity.model.Util;
 
 /**
  * EntityTest.
@@ -37,7 +38,7 @@ public class EntityTest {
 
 	@Test
 	public void testSampleEntity() {
-		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class);
+		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, Util.getMetaEntityContextProvider().find(SampleEntity.class));
 		final SampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
@@ -48,7 +49,7 @@ public class EntityTest {
 
 	@Test
 	public void testCustomizableSampleEntity() {
-		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class);
+		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, Util.getMetaEntityContextProvider().find(CustomizableSampleEntity.class));
 		final CustomizableSampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");

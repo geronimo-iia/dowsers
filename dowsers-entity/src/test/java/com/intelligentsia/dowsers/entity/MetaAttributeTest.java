@@ -21,7 +21,6 @@ package com.intelligentsia.dowsers.entity;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
@@ -58,7 +57,7 @@ public class MetaAttributeTest {
 	}
 
 	@Test
-	public void testMetaAttributBuilderWithoutDefaultValue() {
+	public void testMetaAttributBuilder() {
 		final MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).build();
 		assertNotNull(attribute);
 		assertNotNull(attribute.identity());
@@ -67,27 +66,6 @@ public class MetaAttributeTest {
 		assertEquals("test-attribute", attribute.name());
 		assertNotNull(attribute.valueClass());
 		assertEquals(new ClassInformation(String.class), attribute.valueClass());
-		assertNull(attribute.defaultValue());
-
-		// assertTrue(attribute.attributeNames().contains("identity"));
-		assertTrue(attribute.attributeNames().contains("name"));
-		assertTrue(attribute.attributeNames().contains("valueClass"));
-		assertTrue(attribute.attributeNames().contains("defaultValue"));
-	}
-
-	@Test
-	public void testMetaAttributBuilderWithDefaultValue() {
-
-		final MetaAttribute attribute = MetaAttribute.builder().name("test-attribute").valueClass(String.class).defaultValue("a default value").build();
-		assertNotNull(attribute);
-		assertNotNull(attribute.identity());
-		assertTrue(!"".equals(attribute.identity()));
-		assertNotNull(attribute.name());
-		assertEquals("test-attribute", attribute.name());
-		assertNotNull(attribute.valueClass());
-		assertEquals(new ClassInformation(String.class), attribute.valueClass());
-		assertNotNull(attribute.defaultValue());
-		assertEquals("a default value", attribute.defaultValue());
 	}
 
 	@Test

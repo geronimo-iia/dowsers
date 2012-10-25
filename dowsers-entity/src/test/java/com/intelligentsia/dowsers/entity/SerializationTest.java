@@ -32,9 +32,9 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 import com.intelligentsia.dowsers.entity.model.Util;
@@ -58,7 +58,7 @@ public class SerializationTest {
 	public void testEntityDynamicSerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final StringWriter writer = new StringWriter();
 
-		final EntityDynamic dynamic = new EntityDynamic("6787007f-f424-40b7-b240-64206b1177e2");
+		final EntityDynamic dynamic = new EntityDynamic("6787007f-f424-40b7-b240-64206b1177e2", MetaEntityContext.builder().definition(MetaModel.getMetaOfEntitydynamic()).build());
 		dynamic.attribute("name", "Steve");
 		dynamic.attribute("idea", "Sweet apple");
 		assertEquals("Steve", dynamic.attribute("name"));
@@ -80,34 +80,38 @@ public class SerializationTest {
 	public void testProxySerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final StringWriter writer = new StringWriter();
 
-		final CustomizableSampleEntity sampleEntity = getCustomizableSampleEntity();
+		final CustomizableSampleEntity entity = Util.getCustomizableSampleEntity();
 
-		entityMapper.writeValue(writer, sampleEntity);
+		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
-				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," + //
-				"\"@entity\":{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
-				"\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}", result);
+		assertEquals(
+				"{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\",\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\",\"@entity\":{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\",\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}",
+				result);
 
-		final EntityProxy customizableSampleEntity = entityMapper.readValue(new StringReader(result), EntityProxy.class);
-		assertEquals(sampleEntity.identity(), customizableSampleEntity.identity());
-		assertEquals(sampleEntity.attribute("name"), customizableSampleEntity.attribute("name"));
-		assertEquals(sampleEntity.attribute("description"), customizableSampleEntity.attribute("description"));
-		assertEquals(sampleEntity.attribute("order"), customizableSampleEntity.attribute("order"));
+		final Entity entity2 = entityMapper.readValue(new StringReader(result), EntityProxy.class);
+		assertNotNull(entity2);
+		assertEquals(entity.identity(), entity2.identity());
+		assertEquals(entity.attribute("name"), entity2.attribute("name"));
+		assertEquals(entity.attribute("description"), entity2.attribute("description"));
+		assertEquals(entity.attribute("order"), entity2.attribute("order"));
+
 	}
 
 	@Test
 	public void testEntityMapper() {
-		final CustomizableSampleEntity entity = getCustomizableSampleEntity();
+		final CustomizableSampleEntity entity = Util.getCustomizableSampleEntity();
 
 		final StringWriter writer = new StringWriter();
 		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
 
 		final CustomizableSampleEntity entity2 = entityMapper.readValue(new StringReader(result), CustomizableSampleEntity.class);
-
 		assertEquals(entity, entity2);
+		assertEquals(Util.IDENTIFIER, entity2.identity());
+		assertEquals(Util.NAME, entity2.getName());
+		assertEquals(Util.DESCRIPTION, entity2.getDescription());
+		assertEquals(1L, entity2.attribute(Util.ORDER));
 	}
 
 	@Test
@@ -156,17 +160,4 @@ public class SerializationTest {
 
 	}
 
-	protected CustomizableSampleEntity getCustomizableSampleEntity() {
-		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class);
-
-		final CustomizableSampleEntity sampleEntity = factory.newInstance("4c8b03dd-908a-4cad-8d48-3c7277d44ac9");
-		assertNotNull(sampleEntity);
-		sampleEntity.setName("Hello John");
-		sampleEntity.setDescription("a blablablabalbablbalablabb");
-		sampleEntity.attribute("order", 1);
-		assertEquals("Hello John", sampleEntity.getName());
-		assertEquals("a blablablabalbablbalablabb", sampleEntity.getDescription());
-		assertEquals(1, sampleEntity.attribute("order"));
-		return sampleEntity;
-	}
 }

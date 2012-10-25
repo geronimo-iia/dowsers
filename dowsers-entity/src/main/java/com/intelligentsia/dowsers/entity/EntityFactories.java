@@ -21,6 +21,7 @@ package com.intelligentsia.dowsers.entity;
 
 import java.lang.reflect.Proxy;
 
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
 /**
@@ -32,70 +33,12 @@ public enum EntityFactories {
 	;
 
 	/**
-	 * @return an {@link EntityFactory} of {@link EntityDynamic}.
-	 */
-	public static EntityFactory<EntityDynamic> newEntityDynamicFactory() {
-		return new EntityFactory<EntityDynamic>() {
-
-			@Override
-			public EntityDynamic newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return new EntityDynamic(identity);
-			}
-
-			@Override
-			public EntityDynamic newInstance() {
-				return new EntityDynamic();
-			}
-		};
-	}
-
-	/**
-	 * Build a new {@link EntityFactory} which build {@link EntityProxy} for
-	 * specified class name and use {@link EntityDynamic} as implementation.
-	 * 
-	 * @param className
-	 *            entity class Name
-	 * @return a {@link EntityFactory} instance.
-	 */
-	public static <T> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className) {
-		return newEntityProxyDynamicFactory(className, newEntityDynamicFactory());
-	}
-
-	/**
-	 * Build a new {@link EntityFactory} which build {@link EntityProxy} for
-	 * specified class name and use implementation given by specified
-	 * {@link EntityFactory}.
-	 * 
-	 * @param className
-	 *            entity class Name
-	 * @param factory
-	 *            entity factory
-	 * @return a {@link EntityFactory} instance.
-	 */
-	public static <T, Y extends Entity> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className, final EntityFactory<Y> factory) {
-		return new EntityFactory<T>() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance(identity)));
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public T newInstance() {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance()));
-			}
-		};
-	}
-
-	/**
 	 * EntityFactory declare methods to instantiate some Class which could live
 	 * without extending an {@link Entity}.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
-	public interface EntityFactory<T> {
+	public static interface EntityFactory<T> {
 
 		/**
 		 * @return an {@link Entity} instance.
@@ -115,4 +58,65 @@ public enum EntityFactories {
 		T newInstance(final String identity) throws NullPointerException, IllegalArgumentException;
 
 	}
+
+	/**
+	 * @return an {@link EntityFactory} of {@link EntityDynamic}.
+	 */
+	public static EntityFactory<EntityDynamic> newEntityDynamicFactory(final MetaEntityContext metaEntityContext) {
+		return new EntityFactory<EntityDynamic>() {
+
+			@Override
+			public EntityDynamic newInstance() {
+				return new EntityDynamic(metaEntityContext);
+			}
+
+			@Override
+			public EntityDynamic newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
+				return new EntityDynamic(identity, metaEntityContext);
+			}
+
+		};
+	}
+
+	/**
+	 * Build a new {@link EntityFactory} which build {@link EntityProxy} for
+	 * specified class name and use {@link EntityDynamic} as implementation.
+	 * 
+	 * @param className
+	 *            entity class Name
+	 * @return a {@link EntityFactory} instance.
+	 */
+	public static <T> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className, final MetaEntityContext metaEntityContext) {
+		return newEntityProxyDynamicFactory(className, newEntityDynamicFactory(metaEntityContext));
+	}
+
+	/**
+	 * Build a new {@link EntityFactory} which build {@link EntityProxy} for
+	 * specified class name and use implementation given by specified
+	 * {@link EntityFactory}.
+	 * 
+	 * @param className
+	 *            entity class Name
+	 * @param factory
+	 *            entity factory
+	 * @return a {@link EntityFactory} instance.
+	 */
+	public static <T, Y extends Entity> EntityFactory<T> newEntityProxyDynamicFactory(final Class<T> className, final EntityFactory<Y> factory) {
+		return new EntityFactory<T>() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public T newInstance() {
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance()));
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance(identity)));
+			}
+
+		};
+	}
+
 }

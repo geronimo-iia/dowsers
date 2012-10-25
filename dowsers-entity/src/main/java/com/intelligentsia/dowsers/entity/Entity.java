@@ -19,7 +19,10 @@
  */
 package com.intelligentsia.dowsers.entity;
 
+import org.intelligentsia.dowsers.core.Identified;
+
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 /**
  * Entity.
@@ -47,12 +50,7 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Entity {
-
-	/**
-	 * @return identity
-	 */
-	String identity();
+public interface Entity extends Identified {
 
 	/**
 	 * Return typed value of specified attribute name.
@@ -102,4 +100,8 @@ public interface Entity {
 	 */
 	public ImmutableSet<String> attributeNames();
 
+	/**
+	 * @return a {@link MetaEntityContext} instance associated with this {@link Entity}.
+	 */
+	public MetaEntityContext metaEntityContext();
 }

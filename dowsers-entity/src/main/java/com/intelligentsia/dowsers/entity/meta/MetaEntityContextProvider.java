@@ -40,4 +40,7 @@ public interface MetaEntityContextProvider {
 	 */
 	MetaEntityContext find(URI reference) throws IllegalArgumentException, NullPointerException;
 
+	MetaEntityContext find(Class<?> clazz, String identity) throws IllegalArgumentException, NullPointerException;
+
+	MetaEntityContext find(Class<?> clazz) throws NullPointerException;
 }

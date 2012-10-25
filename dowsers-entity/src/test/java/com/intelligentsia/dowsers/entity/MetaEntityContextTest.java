@@ -37,10 +37,10 @@ public class MetaEntityContextTest {
 	public void testMetaEntityContextBuilder() {
 		final MetaEntityContext context = MetaEntityContext.builder() // definition
 				.definition(new MetaEntity.Builder().name(CustomizableSampleEntity.class.getName()).version(new Version(1))// attributes
-						.addMetaAttribute("name", String.class, null) //
+						.addMetaAttribute("name", String.class) //
 						.addMetaAttribute("description", String.class).build()) // extension
 				.addExtendedDefinition(new MetaEntity.Builder().name("test-extended").version(new Version(2)). // attributes
-						addMetaAttribute("order", Long.class, 1L).build()).build();
+						addMetaAttribute("order", Long.class).build()).build();
 
 		assertNotNull(context);
 		assertEquals(CustomizableSampleEntity.class.getName(), context.name());

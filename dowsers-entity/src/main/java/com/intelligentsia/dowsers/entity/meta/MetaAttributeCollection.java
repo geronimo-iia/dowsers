@@ -22,9 +22,11 @@ package com.intelligentsia.dowsers.entity.meta;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -41,26 +43,18 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	private static final long serialVersionUID = -4410480905712842651L;
 
 	/**
-	 * {@link ImmutableCollection} {@link MetaAttribute}.
+	 * {@link ImmutableSet} {@link MetaAttribute}.
 	 */
-	private final ImmutableCollection<MetaAttribute> metaAttributes;
-
-	/**
-	 * Build a new instance of <code>MetaAttributeCollection</code>. For
-	 * serialization purpose.
-	 */
-	@SuppressWarnings("unused")
-	private MetaAttributeCollection() {
-		super();
-		metaAttributes = ImmutableSet.of();
-	}
+	@JsonProperty
+	private final ImmutableSet<MetaAttribute> metaAttributes;
 
 	/**
 	 * Build a new instance of <code>MetaAttributeCollection</code>.
 	 * 
 	 * @param metaAttributes
 	 */
-	public MetaAttributeCollection(final ImmutableCollection<MetaAttribute> metaAttributes) {
+	@JsonCreator
+	public MetaAttributeCollection(@JsonProperty("metaAttributes") final ImmutableSet<MetaAttribute> metaAttributes) {
 		super();
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
 	}
@@ -70,18 +64,11 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 		return metaAttributes.iterator();
 	}
 
-	public ImmutableCollection<MetaAttribute> getMetaAttributes() {
+	public ImmutableSet<MetaAttribute> getMetaAttributes() {
 		return metaAttributes;
 	}
 
-	public boolean contains(final Object object) {
-		return metaAttributes.contains(object);
-	}
-
-	public ImmutableList<MetaAttribute> asList() {
-		return metaAttributes.asList();
-	}
-
+	@JsonIgnore
 	public boolean isEmpty() {
 		return metaAttributes.isEmpty();
 	}

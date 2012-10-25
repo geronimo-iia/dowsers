@@ -41,41 +41,61 @@ public enum MetaModel {
 	 * META DEFINITION for {@link MetaAttribute}.
 	 */
 	private static final MetaEntity metaMetaAttribute;
+
+	/**
+	 * Default {@link MetaEntityContext} for {@link MetaAttribute}.
+	 */
+	private static final MetaEntityContext metaAttributeContext;
+
 	/**
 	 * META DEFINITION for {@link MetaEntity}.
 	 */
 	private static final MetaEntity metaMetaEntity;
+
+	/**
+	 * Default {@link MetaEntityContext} for {@link MetaEntity}.
+	 */
+	private static final MetaEntityContext metaEntityContext;
+
 	/**
 	 * META DEFINITION for {@link EntityDynamic}.
 	 */
 	private static final MetaEntity metaEntityDynamic;
 
+	/**
+	 * META DEFINITION for Identity {@link MetaAttribute}.
+	 */
+	private static final MetaAttribute identityAttribute;
+
 	static {
 
 		// META ATTRIBUTE DEFINITION
-		final MetaAttribute identity = MetaAttribute.builder().identity("a3d44fd4-385d-4d09-b11b-21932abe2a25").name("identity").valueClass(String.class).build();
+		identityAttribute = MetaAttribute.builder().identity("a3d44fd4-385d-4d09-b11b-21932abe2a25").name("identity").valueClass(String.class).build();
 		final MetaAttribute name = MetaAttribute.builder().identity("c2d720af-55eb-468d-adda-477b824d872c").name("name").valueClass(String.class).build();
 
 		final MetaAttribute valueClass = MetaAttribute.builder().identity("cd607a66-1e85-4bcc-b83e-e6494c0a1f09").name("valueClass").valueClass(ClassInformation.class).build();
-		final MetaAttribute defaultValue = MetaAttribute.builder().identity("afcf1994-ea0f-41e7-9924-ca8fec99430e").name("defaultValue").valueClass(Object.class).build();
 
-		final MetaAttribute version = MetaAttribute.builder().identity("53eb2d34-ab5c-4f29-93ba-678c08e64304").name("version").valueClass(Version.class).defaultValue(MetaModel.VERSION).build();
+		final MetaAttribute version = MetaAttribute.builder().identity("53eb2d34-ab5c-4f29-93ba-678c08e64304").name("version").valueClass(Version.class).build();
 		final MetaAttribute metaAttributes = MetaAttribute.builder().identity("7b3f0f26-8ab5-4a94-8e15-0fc2dd8fcb60").name("metaAttributes").valueClass(MetaAttributeCollection.class).build();
 
 		// META ENTITY DEFINITION
 		metaMetaAttribute = new MetaEntity.Builder(). // definition
 				name(MetaAttribute.class.getName()).version(VERSION).identity("f45e8827-c619-4b99-a8a2-e5c36d11ee47")
 				// attributes
-				.metaAttributes(identity, name, valueClass, defaultValue).build();
+				.metaAttributes(identityAttribute, name, valueClass).build();
 		metaMetaEntity = new MetaEntity.Builder(). // definition
 				name(MetaEntity.class.getName()).version(VERSION).identity("fbdff898-07c0-4933-9751-667c308831d6")
 				// attributes
-				.metaAttributes(identity, name, version, metaAttributes).build();
+				.metaAttributes(identityAttribute, name, version, metaAttributes).build();
 		metaEntityDynamic = new MetaEntity.Builder(). // definition
 				name(EntityDynamic.class.getName()).version(VERSION).identity("f3506e0b-e726-4924-9835-072ada7b8d29")
 				// attributes
-				.metaAttributes(identity).build();
+				.metaAttributes(identityAttribute).build();
 
+		// META CONTEXT
+		metaAttributeContext = MetaEntityContext.builder().definition(metaMetaAttribute).build();
+
+		metaEntityContext = MetaEntityContext.builder().definition(metaMetaEntity).build();
 	}
 
 	/**
@@ -97,6 +117,21 @@ public enum MetaModel {
 	 */
 	public static MetaEntity getMetaOfEntitydynamic() {
 		return metaEntityDynamic;
+	}
+
+	/**
+	 * @return {@link MetaAttribute} instance of identity.
+	 */
+	public static MetaAttribute getIdentityAttribute() {
+		return identityAttribute;
+	}
+
+	public static MetaEntityContext getDefaultMetaAttributeContext() {
+		return metaAttributeContext;
+	}
+
+	public static MetaEntityContext getDefaultMetaEntityContext() {
+		return metaEntityContext;
 	}
 
 }

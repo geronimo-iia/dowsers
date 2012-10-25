@@ -102,27 +102,29 @@ public class MetaEntityContext implements Iterable<MetaAttribute> {
 		// definition
 		Preconditions.checkNotNull(definition);
 		this.name = definition.name();
-		this.definitionAttributeNames = definition.metaAttributeNames();
 		// versions
 		final ImmutableSet.Builder<Version> versionBuilder = ImmutableSet.builder();
 		versionBuilder.add(definition.version());
 		// meta attribute of definition
+		ImmutableSet.Builder<String> nameBuilder = ImmutableSet.builder();
 		final ImmutableMap.Builder<String, MetaAttribute> builder = ImmutableMap.builder();
 		Iterator<MetaAttribute> iterator = definition.metaAttributes().iterator();
 		while (iterator.hasNext()) {
 			final MetaAttribute attribute = iterator.next();
 			builder.put(attribute.name(), attribute);
+			nameBuilder.add(attribute.name());
 		}
+		this.definitionAttributeNames = nameBuilder.build();
 		// extended attribute of definition
-		final ImmutableSet.Builder<String> nameBuilder = ImmutableSet.builder();
+		nameBuilder = ImmutableSet.builder();
 		if (extendedDefinitions != null) {
 			for (final MetaEntity metaEntity : extendedDefinitions) {
 				versionBuilder.add(metaEntity.version());
-				nameBuilder.addAll(metaEntity.metaAttributeNames());
 				iterator = metaEntity.metaAttributes().iterator();
 				while (iterator.hasNext()) {
 					final MetaAttribute attribute = iterator.next();
 					builder.put(attribute.name(), attribute);
+					nameBuilder.add(attribute.name());
 				}
 			}
 		}

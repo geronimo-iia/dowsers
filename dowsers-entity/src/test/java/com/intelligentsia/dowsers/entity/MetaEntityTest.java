@@ -21,13 +21,13 @@ package com.intelligentsia.dowsers.entity;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
+import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaAttributeCollection;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 
@@ -47,21 +47,15 @@ public class MetaEntityTest {
 		assertNotNull(definition.identity());
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
-		assertNotNull(definition.attribute("metaAttributes"));
-		final MetaAttributeCollection metaAttributes = definition.attribute("metaAttributes");
+		assertNotNull(definition.metaAttributes());
+		final MetaAttributeCollection metaAttributes = definition.metaAttributes();
 		assertNotNull(metaAttributes);
-		assertNotNull(metaAttributes.contains("test-attribute"));
-		assertNotNull(metaAttributes.asList().get(0).identity());
-		assertEquals("test-attribute", metaAttributes.asList().get(0).name());
-		assertEquals(new ClassInformation(String.class), metaAttributes.asList().get(0).valueClass());
-		assertNull(metaAttributes.asList().get(0).defaultValue());
-
-		// assertTrue(definition.attributeNames().contains("identity"));
-		assertTrue(definition.attributeNames().contains("name"));
-		assertTrue(definition.attributeNames().contains("version"));
-		assertTrue(definition.attributeNames().contains("metaAttributes"));
-
-		assertTrue(definition.metaAttributeNames().contains("test-attribute"));
+		assertNotNull(metaAttributes.getMetaAttributes().contains("test-attribute"));
+		ImmutableList<MetaAttribute> attributes = metaAttributes.getMetaAttributes().asList(); 
+		assertNotNull(attributes.get(0).identity());
+		assertEquals("test-attribute", attributes.get(0).name());
+		assertEquals(new ClassInformation(String.class), attributes.get(0).valueClass());
+ 
 	}
 
 }

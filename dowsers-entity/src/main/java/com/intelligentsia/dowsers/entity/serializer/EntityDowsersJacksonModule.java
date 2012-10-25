@@ -48,7 +48,6 @@ import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.EntityProxy;
 import com.intelligentsia.dowsers.entity.Reference;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 
@@ -72,50 +71,44 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 */
 	public EntityDowsersJacksonModule(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		super();
-		declareEntityProxy();
-		declareEntityDynamic(metaEntityContextProvider);
+
+		addSerializer(new EntitySerializer<Entity>(Entity.class));
+		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
+		addDeserializer(EntityDynamic.class, new EntityDynamicDeSerializer(metaEntityContextProvider));
 		declareVersion();
-		declareMetaAttribute(metaEntityContextProvider);
-		declareMetaEntity(metaEntityContextProvider);
+		// declareMetaAttribute(metaEntityContextProvider);
+		// declareMetaEntity(metaEntityContextProvider);
 	}
 
-	public void declareMetaEntity(final MetaEntityContextProvider metaEntityContextProvider) {
-		addDeserializer(MetaEntity.class, new EntityDeSerializer<MetaEntity>(MetaEntity.class, new EntityDynamicFactory<MetaEntity>() {
-			@Override
-			public MetaEntity newInstance(final String identity, final Map<String, Object> attributes) {
-				return new MetaEntity(identity, attributes);
-			}
-		}, metaEntityContextProvider));
-	}
-
-	public void declareMetaAttribute(final MetaEntityContextProvider metaEntityContextProvider) {
-		addDeserializer(MetaAttribute.class, new EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new EntityDynamicFactory<MetaAttribute>() {
-			@Override
-			public MetaAttribute newInstance(final String identity, final Map<String, Object> attributes) {
-				return new MetaAttribute(identity, attributes);
-			}
-		}, metaEntityContextProvider));
-	}
+	// public void declareMetaEntity(final MetaEntityContextProvider
+	// metaEntityContextProvider) {
+	// addDeserializer(MetaEntity.class, new
+	// EntityDeSerializer<MetaEntity>(MetaEntity.class, new
+	// EntityFactory<MetaEntity>() {
+	// @Override
+	// public MetaEntity newInstance(final String identity, final Map<String,
+	// Object> attributes) {
+	// return new MetaEntity(identity, attributes);
+	// }
+	// }, metaEntityContextProvider));
+	// }
+	//
+	// public void declareMetaAttribute(final MetaEntityContextProvider
+	// metaEntityContextProvider) {
+	// addDeserializer(MetaAttribute.class, new
+	// EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new
+	// EntityFactory<MetaAttribute>() {
+	// @Override
+	// public MetaAttribute newInstance(final String identity, final Map<String,
+	// Object> attributes) {
+	// return new MetaAttribute(identity, attributes);
+	// }
+	// }, metaEntityContextProvider));
+	// }
 
 	public void declareVersion() {
 		addSerializer(new VersionSerializer());
 		addDeserializer(Version.class, new VersionDeSerializer());
-	}
-
-	public void declareEntityDynamic(final MetaEntityContextProvider metaEntityContextProvider) {
-		addSerializer(new EntitySerializer<EntityDynamic>(EntityDynamic.class));
-		addDeserializer(EntityDynamic.class, new EntityDeSerializer<EntityDynamic>(EntityDynamic.class, new EntityDynamicFactory<EntityDynamic>() {
-
-			@Override
-			public EntityDynamic newInstance(final String identity, final Map<String, Object> attributes) {
-				return new EntityDynamic(identity, attributes);
-			}
-		}, metaEntityContextProvider));
-	}
-
-	public void declareEntityProxy() {
-		addSerializer(EntityProxyHandler.class, new EntityProxySerializer());
-		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
 	}
 
 	/**
@@ -133,19 +126,39 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		public void serialize(final T value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
 			jgen.writeStartObject();
 			if (value != null) {
-				try {
-					jgen.writeObjectField("@reference", Reference.newReference(value));
-				} catch (final URISyntaxException e) {
-					throw new JsonGenerationException("Unable to build entity reference");
+				// proxy case
+				if (Proxy.isProxyClass(value.getClass())) {
+					InvocationHandler handler = Proxy.getInvocationHandler(value);
+					if (!EntityProxy.class.isAssignableFrom(handler.getClass())) {
+						throw new JsonGenerationException("Cannot Serialize an EntityProxyHandler that did not came from EntityProxy");
+					}
+					final EntityProxy entityProxy = (EntityProxy) handler;
+					jgen.writeObjectField("@interface", entityProxy.getInterfaceName().getName());
+					jgen.writeObjectField("@support", entityProxy.getEntity().getClass().getName());
+					jgen.writeFieldName("@entity");
+					jgen.writeStartObject();
+					serializeEntity(value, jgen);
+					jgen.writeEndObject();
+				} else {
+					// normal case
+					serializeEntity(value, jgen);
 				}
-				jgen.writeFieldName("@attributes");
-				jgen.writeStartObject();
-				final Iterator<String> iterator = value.attributeNames().iterator();
-				while (iterator.hasNext()) {
-					final String name = iterator.next();
-					jgen.writeObjectField(name, value.attribute(name));
-				}
-				jgen.writeEndObject();
+			}
+			jgen.writeEndObject();
+		}
+
+		public void serializeEntity(final T value, final JsonGenerator jgen) throws IOException, JsonProcessingException, JsonGenerationException {
+			try {
+				jgen.writeObjectField("@reference", Reference.newReference(value));
+			} catch (final URISyntaxException e) {
+				throw new JsonGenerationException("Unable to build entity reference");
+			}
+			jgen.writeFieldName("@attributes");
+			jgen.writeStartObject();
+			final Iterator<String> iterator = value.attributeNames().iterator();
+			while (iterator.hasNext()) {
+				final String name = iterator.next();
+				jgen.writeObjectField(name, value.attribute(name));
 			}
 			jgen.writeEndObject();
 		}
@@ -156,33 +169,29 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
 	 */
-	public static class EntityDeSerializer<T extends Entity> extends StdDeserializer<T> {
+	public static class EntityDynamicDeSerializer extends StdDeserializer<EntityDynamic> {
 
 		private static final long serialVersionUID = 7124116996885105048L;
 
-		private final EntityDynamicFactory<T> factory;
 		/**
 		 * {@link MetaEntityContextProvider} instance.
 		 */
 		private final MetaEntityContextProvider metaEntityContextProvider;
 
 		/**
-		 * Build a new instance of EntityDowsersJacksonModule.java.
+		 * Build a new instance of EntityDynamicDeSerializer.
 		 * 
-		 * @param className
-		 * @param factory
 		 * @param metaEntityContextProvider
 		 * @throws NullPointerException
-		 *             if on of parameters is null
+		 *             if metaEntityContextProvider is null
 		 */
-		public EntityDeSerializer(final Class<T> className, final EntityDynamicFactory<T> factory, final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
-			super(className);
-			this.factory = Preconditions.checkNotNull(factory);
+		public EntityDynamicDeSerializer(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+			super(EntityDynamic.class);
 			this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 		}
 
 		@Override
-		public T deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		public EntityDynamic deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 			final Map<String, Object> attributes = Maps.newLinkedHashMap();
 			URI reference = null;
 			MetaEntityContext context = null;
@@ -209,37 +218,9 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 					}
 				}
 			}
-			return reference != null ? factory.newInstance(identity, attributes) : null;
+			return reference != null ? new EntityDynamic(identity, attributes, context) : null;
 		}
 
-	}
-
-	/**
-	 * EntityProxySerializer.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 */
-	public static class EntityProxySerializer extends StdSerializer<EntityProxyHandler> {
-
-		public EntityProxySerializer() {
-			super(EntityProxyHandler.class);
-		}
-
-		@Override
-		public void serialize(final EntityProxyHandler value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
-			jgen.writeStartObject();
-			if (value != null) {
-				final InvocationHandler handler = Proxy.getInvocationHandler(value);
-				if (!EntityProxy.class.isAssignableFrom(handler.getClass())) {
-					throw new JsonGenerationException("Cannot Serialize an EntityProxyHandler that did not came from EntityProxy");
-				}
-				final EntityProxy entityProxy = (EntityProxy) handler;
-				jgen.writeObjectField("@interface", entityProxy.getInterfaceName().getName());
-				jgen.writeObjectField("@support", entityProxy.getEntity().getClass().getName());
-				jgen.writeObjectField("@entity", entityProxy.getEntity());
-			}
-			jgen.writeEndObject();
-		}
 	}
 
 	/**

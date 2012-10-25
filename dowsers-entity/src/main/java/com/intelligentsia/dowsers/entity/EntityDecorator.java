@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 /**
  * EntityDecorator implements decorator pattern on {@link EntityDynamic}.
@@ -98,5 +99,10 @@ public class EntityDecorator implements Entity {
 	public ImmutableSet<String> attributeNames() {
 		return entity.attributeNames();
 	}
+
+	public MetaEntityContext metaEntityContext() {
+		return entity.metaEntityContext();
+	}
+ 
 
 }

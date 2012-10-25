@@ -59,7 +59,7 @@ public class PersonTest {
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class);
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class));
 		entityMapper = new EntityMapper(Util.getMetaEntityContextProvider().add(Person.class, Person.META));
 	}
 

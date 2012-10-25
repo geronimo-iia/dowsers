@@ -30,6 +30,7 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 
 /**
  * EntityDynamic.
@@ -51,57 +52,58 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	private final Map<String, Object> attributes;
 
 	/**
-	 * Build a new instance of {@link EntityDynamic}.
+	 * {@link MetaEntityContext} instance.
 	 */
-	public EntityDynamic() {
-		this(IdentifierFactoryProvider.generateNewIdentifier());
-	}
+	protected transient MetaEntityContext metaEntityContext;
 
 	/**
-	 * Build a new instance of {@link EntityDynamic}.
+	 * Build a new instance of EntityDynamic.java.
 	 * 
-	 * @param attributes
-	 *            Map of attributes. Map is not copied.
+	 * @param metaEntityContext
+	 *            meta entity context
 	 * @throws NullPointerException
-	 *             if attributes is null
+	 *             if metaEntityContextis null
 	 */
-	public EntityDynamic(final Map<String, Object> attributes) throws NullPointerException {
-		this(IdentifierFactoryProvider.generateNewIdentifier(), attributes);
+	public EntityDynamic(MetaEntityContext metaEntityContext) throws NullPointerException {
+		this(IdentifierFactoryProvider.generateNewIdentifier(), new LinkedHashMap<String, Object>(), metaEntityContext);
 	}
 
 	/**
-	 * Build a new instance of {@link EntityDynamic} with an empty attribute's
-	 * collection.
+	 * Build a new instance of EntityDynamic.java.
 	 * 
 	 * @param identity
 	 *            entity's identity.
-	 * @throws NullPointerException
-	 *             if identity is null
-	 * @throws IllegalArgumentException
-	 *             if identifier is empty
-	 */
-	public EntityDynamic(final String identity) throws NullPointerException, IllegalArgumentException {
-		this(identity, new LinkedHashMap<String, Object>());
-	}
-
-	/**
-	 * Build a new instance of {@link EntityDynamic} with an empty attribute's
-	 * collection.
-	 * 
-	 * @param identity
-	 *            entity's identity.
-	 * @param attributes
-	 *            Map of attributes. Map is not copied.
+	 * @param metaEntityContext
+	 *            meta entity context
 	 * @throws NullPointerException
 	 *             if one of parameter is null
 	 * @throws IllegalArgumentException
 	 *             if identifier is empty
 	 */
-	public EntityDynamic(final String identity, final Map<String, Object> attributes) throws NullPointerException, IllegalArgumentException {
-		super();
+	public EntityDynamic(final String identity, MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+		this(identity, new LinkedHashMap<String, Object>(), metaEntityContext);
+	}
+
+	/**
+	 * Build a new instance of {@link EntityDynamic} with an empty attribute's
+	 * collection.
+	 * 
+	 * @param identity
+	 *            entity's identity.
+	 * @param attributes
+	 *            Map of attributes. Map is not copied.
+	 * @param metaEntityContext
+	 *            meta entity context
+	 * @throws NullPointerException
+	 *             if one of parameter is null
+	 * @throws IllegalArgumentException
+	 *             if identifier is empty
+	 */
+	public EntityDynamic(final String identity, final Map<String, Object> attributes, MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
 		this.identity = identity;
 		this.attributes = Preconditions.checkNotNull(attributes);
+		this.metaEntityContext = Preconditions.checkNotNull(metaEntityContext);
 	}
 
 	@Override
@@ -177,4 +179,8 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 		return ImmutableSet.copyOf(attributes.keySet());
 	}
 
+	@Override
+	public MetaEntityContext metaEntityContext() {
+		return metaEntityContext;
+	}
 }
