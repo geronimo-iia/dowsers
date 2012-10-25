@@ -17,36 +17,24 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.manager;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import com.intelligentsia.dowsers.entity.Entity;
 
-/**
- * Person.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- */
-@MetaCompliant
-public interface Person {
+public interface EntityListener {
+	
+	void entityAccessed(Entity entity);
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			addMetaAttribute("firstName", String.class).//
-			addMetaAttribute("lastName", String.class).//
-			addMetaAttribute("yearOld", Integer.class)//
-			.build();
+	void entityCreated(Entity entity);
 
-	String getFirstName();
+	void entityLoaded(Entity entity);
 
-	String getLastName();
+	void entitySaving(Entity entity);
 
-	Integer getYearOld();
+	void entitySaved(Entity entity);
 
-	void setFirstName(String name);
+	void entityRemoving(Entity entity);
 
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
+	void entityRemoved(Entity entity);
 
 }

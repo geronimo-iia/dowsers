@@ -168,4 +168,5 @@ public class PersonTest {
 		assertNotNull(oldFriends);
 		assertEquals((Integer) 4, (Integer) personsDto.size());
 	}
+
 }

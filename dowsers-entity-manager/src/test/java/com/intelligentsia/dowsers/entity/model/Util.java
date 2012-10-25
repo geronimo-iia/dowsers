@@ -19,34 +19,26 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 
 /**
- * Person.
+ * Util.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@MetaCompliant
-public interface Person {
+public enum Util {
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			addMetaAttribute("firstName", String.class).//
-			addMetaAttribute("lastName", String.class).//
-			addMetaAttribute("yearOld", Integer.class)//
-			.build();
+	; 
 
-	String getFirstName();
+	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = MetaEntityContextProviderSupport.builder().addDefaultMetaEntityContext(). //
+			add(Person.class, MetaEntityContext.builder().definition( // definition
+					Person.META).build());
 
-	String getLastName();
+	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
+		return metaEntityContextProviderSupport;
+	}
 
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
+ 
 
 }

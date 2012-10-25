@@ -52,6 +52,21 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-guava</artifactId>
 		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- Validation JSR 303 FRAMEWORK -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<!-- Hibernate Validation provider for JSR 303 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.0.2.GA</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	<properties>
 		<header.path>${basedir}/../header.txt</header.path>

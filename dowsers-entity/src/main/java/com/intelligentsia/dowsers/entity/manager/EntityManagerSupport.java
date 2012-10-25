@@ -17,36 +17,29 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.manager;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
+import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
-/**
- * Person.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- */
-@MetaCompliant
-public interface Person {
+public class EntityManagerSupport implements EntityManager {
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			addMetaAttribute("firstName", String.class).//
-			addMetaAttribute("lastName", String.class).//
-			addMetaAttribute("yearOld", Integer.class)//
-			.build();
+	@Override
+	public <T> T newInstance(Class<T> expectedType) throws NullPointerException {
+		return null;
+	}
 
-	String getFirstName();
+	@Override
+	public <T> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
+		return null;
+	}
 
-	String getLastName();
+	@Override
+	public <T> void store(T entity) throws NullPointerException, ConcurrencyException {
+	}
 
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
+	@Override
+	public <T> void remove(T entity) throws NullPointerException {
+	}
 
 }

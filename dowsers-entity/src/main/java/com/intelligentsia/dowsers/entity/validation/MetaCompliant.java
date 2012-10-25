@@ -17,36 +17,29 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.validation;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 /**
- * Person.
- * 
+ * MetaCompliant annotation. 
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@MetaCompliant
-public interface Person {
+@Target({ ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = MetaCompliantValidator.class)
+public @interface MetaCompliant {
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			addMetaAttribute("firstName", String.class).//
-			addMetaAttribute("lastName", String.class).//
-			addMetaAttribute("yearOld", Integer.class)//
-			.build();
+	String message() default "{com.intelligentsia.dowsers.entity.validation.metacompliant}";
 
-	String getFirstName();
+	Class<?>[] groups() default {};
 
-	String getLastName();
-
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
-
+	Class<? extends Payload>[] payload() default {};
 }

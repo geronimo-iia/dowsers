@@ -23,7 +23,6 @@ import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
 public interface EntityManager {
-
 	/**
 	 * Create a new entity instance
 	 * 
