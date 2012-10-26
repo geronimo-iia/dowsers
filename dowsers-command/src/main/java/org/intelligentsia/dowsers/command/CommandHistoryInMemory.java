@@ -25,18 +25,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * DefaultCommandHistory implements in memory CommandHistory.
+ * CommandHistoryInMemory implements in memory CommandHistory.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultCommandHistory implements CommandHistory {
+public class CommandHistoryInMemory implements CommandHistory {
 
 	private final List<Command> commands;
 
 	/**
-	 * Build a new instance of DefaultCommandHistory.
+	 * Build a new instance of CommandHistoryInMemory.
 	 */
-	public DefaultCommandHistory() {
+	public CommandHistoryInMemory() {
 		commands = Collections.synchronizedList(new ArrayList<Command>());
 	}
 

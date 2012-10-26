@@ -19,6 +19,9 @@
  */
 package org.intelligentsia.dowsers.command;
 
+import java.util.UUID;
+import java.util.concurrent.Executors;
+
 import org.intelligentsia.dowsers.core.Handler;
 
 import com.google.common.base.Preconditions;
@@ -102,7 +105,7 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 	 */
 	@Override
 	public <T extends Command> void register(final Handler<T> commandHandler) {
-		eventBus.register(new CommandBusHandler<T>(commandHandler));
+		eventBus.register(new CommandBusHandler<T>(commandHandler, commandHistory));
 	}
 
 	/**
@@ -114,11 +117,15 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 	 * 
 	 * @param <T>
 	 */
-	private class CommandBusHandler<T extends Command> {
+	private static class CommandBusHandler<T extends Command> {
 		/**
 		 * Handler where to delegate command process.
 		 */
 		private final Handler<T> handler;
+		/**
+		 * Command history instance.
+		 */
+		private final CommandHistory commandHistory;
 
 		/**
 		 * Build a new instance of CommandBusHandler.
@@ -126,9 +133,10 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 		 * @param handler
 		 *            command Handler instance
 		 */
-		public CommandBusHandler(final Handler<T> handler) {
+		public CommandBusHandler(final Handler<T> handler, final CommandHistory commandHistory) {
 			super();
 			this.handler = handler;
+			this.commandHistory = commandHistory;
 		}
 
 		/**
@@ -150,5 +158,39 @@ public class CommandBus implements CommandInvoker, CommandHandlerRegistry {
 			}
 		}
 
+	}
+
+	/**
+	 * @return a new synchrony CommandBus instance without history.
+	 */
+	public static CommandBus newCommandBus() {
+		return new CommandBus(new EventBus(UUID.randomUUID().toString()));
+	}
+
+	/**
+	 * @param commandHistory
+	 *            history instance to use.
+	 * @return a new synchrony CommandBus instance with history.
+	 */
+	public static CommandBus newCommandBus(final CommandHistory commandHistory) {
+		return new CommandBus(new EventBus(UUID.randomUUID().toString()), commandHistory);
+	}
+
+	/**
+	 * @return a new asynchrony CommandBus instance without history (@see
+	 *         {@link Executors#newCachedThreadPool}).
+	 */
+	public static CommandBus newAsyncCommandBus() {
+		return new CommandBus(new AsyncEventBus(UUID.randomUUID().toString(), Executors.newCachedThreadPool()));
+	}
+
+	/**
+	 * @param commandHistory
+	 *            history instance to use.
+	 * @return a new asynchrony CommandBus instance with history (@see
+	 *         {@link Executors#newCachedThreadPool}).
+	 */
+	public static CommandBus newAsyncCommandBus(final CommandHistory commandHistory) {
+		return new CommandBus(new AsyncEventBus(UUID.randomUUID().toString(), Executors.newCachedThreadPool()), commandHistory);
 	}
 }

@@ -19,9 +19,6 @@
  */
 package org.intelligentsia.dowsers.command;
 
-import org.intelligentsia.dowsers.command.Command;
-import org.intelligentsia.dowsers.command.CommandInvoker;
-
 import com.google.common.base.Preconditions;
 
 /**

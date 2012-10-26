@@ -41,8 +41,8 @@ public class CommandBusTest {
 
 	@Test
 	public void testCalled() {
-		CommandBus commandBus = CommandBusBuilder.newCommandBus();
-		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
+		final CommandBus commandBus = CommandBus.newCommandBus();
+		final FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
 
 		final FakeHelloCommand command = new FakeHelloCommand(commandBus, "John");
 		Assert.assertEquals("John", command.getName());
@@ -56,8 +56,8 @@ public class CommandBusTest {
 
 	@Test
 	public void testOrdonnedCommandCalled() {
-		CommandBus commandBus = CommandBusBuilder.newCommandBus();
-		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
+		final CommandBus commandBus = CommandBus.newCommandBus();
+		final FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
 
 		Assert.assertEquals(null, commandHandler.getLastCalled());
 		new FakeHelloCommand(commandBus, "John");
@@ -71,17 +71,17 @@ public class CommandBusTest {
 
 	@Test
 	public void testCommandHistory() {
-		CommandHistory history = new DefaultCommandHistory();
-		CommandBus commandBus = CommandBusBuilder.newCommandBus(history);
-		FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
+		final CommandHistory history = new CommandHistoryInMemory();
+		final CommandBus commandBus = CommandBus.newCommandBus(history);
+		final FakeHelloCommandHandler commandHandler = new FakeHelloCommandHandler(commandBus);
 
-		FakeHelloCommand one = new FakeHelloCommand(commandBus, "A");
-		FakeHelloCommand two = new FakeHelloCommand(commandBus, "B");
-		FakeHelloCommand three = new FakeHelloCommand(commandBus, "C");
+		final FakeHelloCommand one = new FakeHelloCommand(commandBus, "A");
+		final FakeHelloCommand two = new FakeHelloCommand(commandBus, "B");
+		final FakeHelloCommand three = new FakeHelloCommand(commandBus, "C");
 
 		Assert.assertEquals("C", commandHandler.getLastCalled());
 
-		Iterator<Command> commands = history.history().iterator();
+		final Iterator<Command> commands = history.history().iterator();
 		Assert.assertNotNull(commands);
 		Assert.assertEquals(one.getId(), commands.next().getId());
 		Assert.assertEquals(two.getId(), commands.next().getId());

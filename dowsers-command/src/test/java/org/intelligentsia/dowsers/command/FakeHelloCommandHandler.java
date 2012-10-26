@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.dowsers.command;
 
-import org.intelligentsia.dowsers.command.CommandHandlerRegistry;
 import org.intelligentsia.dowsers.core.Handler;
 
 import com.google.common.base.Preconditions;
