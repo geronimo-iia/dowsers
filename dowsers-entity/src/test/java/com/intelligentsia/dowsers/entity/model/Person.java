@@ -32,6 +32,7 @@ import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
 public interface Person {
 
 	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
+			metaAttributes(MetaModel.getIdentityAttribute()).//
 			addMetaAttribute("firstName", String.class).//
 			addMetaAttribute("lastName", String.class).//
 			addMetaAttribute("yearOld", Integer.class)//
