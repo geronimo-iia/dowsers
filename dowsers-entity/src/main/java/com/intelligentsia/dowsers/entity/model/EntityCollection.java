@@ -19,30 +19,74 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
+import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
+import com.intelligentsia.dowsers.entity.Reference;
 
 /**
  * EntityCollection.
  * 
- * TODO: define entity reference collection
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityCollection implements Iterable<URI> {
+public class EntityCollection implements Iterable<URI>, Serializable {
 
-	private final LinkedList<URI> entities;
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -6158983976858817330L;
 
+	/**
+	 * {@link Collection} of {@link URI} instance.
+	 */
+	@JsonProperty
+	private final Collection<URI> entities;
+
+	/**
+	 * Build a new instance of EntityCollection. with a {@link LinkedList}
+	 * instance.
+	 */
 	public EntityCollection() {
 		this(new LinkedList<URI>());
 	}
 
-	public EntityCollection(final LinkedList<URI> entities) throws NullPointerException {
+	/**
+	 * Build a new instance of EntityCollection.java.
+	 * 
+	 * @param entities
+	 * @throws NullPointerException
+	 *             if entities is null
+	 */
+	public EntityCollection(final Collection<URI> entities) throws NullPointerException {
 		super();
 		this.entities = Preconditions.checkNotNull(entities);
+	}
+
+	/**
+	 * Add a {@link Reference} on any object which is an entity Representation
+	 * 
+	 * @param any
+	 * @return this instance
+	 * @throws NullPointerException
+	 *             if any is null
+	 * @throws {@link IllegalArgumentException} if any is not an entity
+	 *         representation
+	 */
+	public EntityCollection add(Object any) throws NullPointerException, IllegalArgumentException {
+		try {
+			this.entities.add(Reference.newReference(Preconditions.checkNotNull(any)));
+		} catch (URISyntaxException e) {
+			throw Throwables.propagate(e);
+		}
+		return this;
 	}
 
 	@Override
@@ -50,11 +94,12 @@ public class EntityCollection implements Iterable<URI> {
 		return entities.iterator();
 	}
 
+	@JsonIgnore
 	public boolean isEmpty() {
 		return entities.isEmpty();
 	}
 
-	public LinkedList<URI> getEntities() {
+	public Collection<URI> entities() {
 		return entities;
 	}
 
