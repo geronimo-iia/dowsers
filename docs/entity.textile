@@ -45,7 +45,7 @@ urn:dowsers:{meta entity reference}:identity@{identity attribute}
 **Attribute Reference**
 A representation of an Attribute that does not convey the value of the associated Attribute, that may be communicated between Entities without exposing the Attribute value.
 
-urn:dowsers:{meta entity reference}:{attribut name}@{entity identity attribute}
+urn:dowsers:{meta entity reference}:{attribute name}@{entity identity attribute}
 
 **Meta Entity Context Provider**
 A service which build meta entity context from meta entity provider.
@@ -162,6 +162,8 @@ public interface Entity {
 	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
 
 	public ImmutableSet<String> attributeNames();
+	
+	
 p. Main implementation of this interface is EntityDynamic and EntityProxy.
 
 EntityDynamic is base class for all entities.
@@ -179,6 +181,7 @@ A uniform resource name (URN) is a uniform resource identifier (URI) that uses t
 Example:
 
 # urn:dowsers:org.intelligentsia.dowsers.sample.entity.User:identity#6787007f-f424-40b7-b240-64206b1177e2
+
 # urn:dowsers:org.intelligentsia.dowsers.sample.entity.User:name#6787007f-f424-40b7-b240-64206b1177e2 
 
 (1) reference a specific entity instance of User identified by '6787007f-f424-40b7-b240-64206b1177e2. 

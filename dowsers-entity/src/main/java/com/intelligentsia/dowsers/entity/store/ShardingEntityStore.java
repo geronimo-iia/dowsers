@@ -19,41 +19,118 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
+import java.net.URI;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.Reference;
 
-//TODO finalize
+/**
+ * ShardingEntityStore.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public class ShardingEntityStore extends EntityStoreDecorator {
-
-	@SuppressWarnings("unused")
-	private Map<String, EntityStore> stores = Maps.newHashMap();
+	/**
+	 * {@link Map} of URI and {@link EntityStore}.
+	 */
+	private Map<URI, EntityStore> stores = Maps.newHashMap();
 
 	/**
 	 * Build a new instance of ShardingEntityStore.java.
 	 * 
-	 * @param entityStore
+	 * @param defaultEntityStore
+	 *            default {@link EntityStore}
+	 * @param stores
+	 *            a Map of Reference, {@link EntityStore}
 	 * @throws NullPointerException
+	 *             if one of parameters is null
 	 */
-	public ShardingEntityStore(EntityStore entityStore) throws NullPointerException {
-		super(entityStore);
+	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<URI, EntityStore> stores) throws NullPointerException {
+		super(defaultEntityStore);
+		this.stores = Preconditions.checkNotNull(stores);
 	}
 
 	@Override
-	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
-		return super.find(expectedType, identity);
+	public <T extends Entity> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
+		return find(Reference.newReference(expectedType, "identity", identity)).find(expectedType, identity);
 	}
 
 	@Override
-	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException {
-
-		super.store(entity);
+	public <T extends Entity> void store(final T entity) throws NullPointerException, ConcurrencyException {
+		find(Reference.newReference(entity.getClass())).store(entity);
 	}
 
 	@Override
-	public <T extends Entity> void remove(T entity) throws NullPointerException {
-		super.remove(entity);
+	public <T extends Entity> void remove(final T entity) throws NullPointerException {
+		find(Reference.newReference(entity.getClass())).remove(entity);
 	}
 
+	/**
+	 * Find {@link EntityStore} instance of use with this reference
+	 * 
+	 * @param reference
+	 * @return {@link EntityStore} instance.
+	 */
+	public EntityStore find(final URI reference) {
+		final EntityStore result = stores.get(reference);
+		if (result == null) {
+			return this.entityStore;
+		}
+		return result;
+	}
+
+	/**
+	 * @return a {@link Builder} instance of {@link ShardingEntityStore}.
+	 */
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	/**
+	 * Builder of {@link ShardingEntityStore} .
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class Builder {
+		private final Map<URI, EntityStore> stores = Maps.newHashMap();
+
+		/**
+		 * Build a new instance of ShardingEntityStore.java.
+		 */
+		public Builder() {
+			super();
+		}
+
+		/**
+		 * Add a specific {@link EntityStore} for specified {@link Class}
+		 * 
+		 * @param clazz
+		 *            specified class name
+		 * @param entityStore
+		 *            {@link EntityStore} to add for specified class
+		 * @return this instance
+		 * @throws NullPointerException
+		 *             if one of parameters is null
+		 */
+		public Builder add(final URI reference, final EntityStore entityStore) throws NullPointerException {
+			stores.put(reference, Preconditions.checkNotNull(entityStore));
+			return this;
+		}
+
+		/**
+		 * Build a new instance of {@link ShardingEntityStore}.
+		 * 
+		 * @param defaultEntityStore
+		 *            default {@link EntityStore}
+		 * @return a new instance of {@link ShardingEntityStore}.
+		 * @throws NullPointerException
+		 *             if defaultEntityStoreis nul
+		 */
+		public ShardingEntityStore build(final EntityStore defaultEntityStore) throws NullPointerException {
+			return new ShardingEntityStore(Preconditions.checkNotNull(defaultEntityStore), stores);
+		}
+	}
 }

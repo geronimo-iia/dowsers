@@ -23,6 +23,8 @@ import java.lang.reflect.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.google.common.base.Throwables;
+
 /**
  * Reference generate {@link Entity} or attribute's {@link Entity} reference.
  * 
@@ -34,11 +36,10 @@ public enum Reference {
 	 * @param any
 	 *            entity representation
 	 * @return an urn which identify an {@link Entity}.
-	 * @throws URISyntaxException
 	 * @throws {@link IllegalArgumentException} if any is not an entity
 	 *         representation
 	 */
-	public static URI newReference(final Object any) throws URISyntaxException, IllegalArgumentException {
+	public static URI newReference(final Object any) throws IllegalArgumentException {
 		return newReference(any, "identity");
 	}
 
@@ -48,11 +49,10 @@ public enum Reference {
 	 * @param attributeName
 	 *            attribute Name to reference
 	 * @return an urn which identify an attribute of specified entity.
-	 * @throws URISyntaxException
 	 * @throws {@link IllegalArgumentException} if any is not an entity
 	 *         representation
 	 */
-	public static URI newReference(final Object any, final String attributeName) throws URISyntaxException, IllegalArgumentException {
+	public static URI newReference(final Object any, final String attributeName) throws IllegalArgumentException {
 		if (Proxy.isProxyClass(any.getClass())) {
 			final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
 			return newReference(entityProxy, attributeName);
@@ -75,10 +75,17 @@ public enum Reference {
 	 * @param attributeName
 	 *            attribute Name to reference
 	 * @return an urn which identify an attribute of specified entity.
-	 * @throws URISyntaxException
 	 */
-	public static URI newReference(final EntityProxy entityProxy, final String attributeName) throws URISyntaxException {
+	public static URI newReference(final EntityProxy entityProxy, final String attributeName) {
 		return newReference(entityProxy.getInterfaceName(), attributeName, entityProxy.identity());
+	}
+
+	/**
+	 * @param clazz
+	 * @return a entity collection reference (aka class)
+	 */
+	public static URI newReference(final Class<?> clazz) {
+		return newReference(clazz, null, null);
 	}
 
 	/**
@@ -116,8 +123,16 @@ public enum Reference {
 	 * @return an urn which identify an attribute of specified entity.
 	 * @throws URISyntaxException
 	 */
-	public static URI newReference(final Class<?> clazz, final String attributeName, final String identity) throws URISyntaxException {
-		return new URI("urn", "dowsers:" + clazz.getName() + ':' + attributeName, identity);
+	public static URI newReference(final Class<?> clazz, final String attributeName, final String identity) {
+		StringBuilder builder = new StringBuilder("dowsers:").append(clazz.getName()).append(':');
+		if (attributeName != null) {
+			builder.append(attributeName);
+		}
+		try {
+			return new URI("urn", builder.toString(), identity);
+		} catch (URISyntaxException e) {
+			throw Throwables.propagate(e);
+		}
 	}
 
 }

@@ -21,7 +21,6 @@ package com.intelligentsia.dowsers.entity.model;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,7 +28,6 @@ import java.util.LinkedList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
 import com.intelligentsia.dowsers.entity.Reference;
 
 /**
@@ -81,11 +79,7 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 	 *         representation
 	 */
 	public EntityCollection add(Object any) throws NullPointerException, IllegalArgumentException {
-		try {
-			this.entities.add(Reference.newReference(Preconditions.checkNotNull(any)));
-		} catch (URISyntaxException e) {
-			throw Throwables.propagate(e);
-		}
+		this.entities.add(Reference.newReference(Preconditions.checkNotNull(any)));
 		return this;
 	}
 

@@ -53,6 +53,7 @@ public class EntityTest {
 		final CustomizableSampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
+		
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 		sampleEntity.attribute("order", 1L);
 		assertEquals("Hello John", sampleEntity.getName());

@@ -21,6 +21,7 @@ package com.intelligentsia.dowsers.entity;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -67,5 +68,16 @@ public class ReferenceFactoryTest {
 		assertEquals("com.intelligentsia.dowsers.entity.model.Person", Reference.getEntityPart(uri));
 		assertEquals("identity", Reference.getAttributPart(uri));
 		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", Reference.getIdentity(uri));
+	}
+
+	@Test
+	public void testCollectionReference() throws URISyntaxException {
+		final URI uri = Reference.newReference(Person.class);
+		assertNotNull(uri);
+		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:", uri.toString());
+		assertEquals("com.intelligentsia.dowsers.entity.model.Person", Reference.getEntityPart(uri));
+		assertEquals("", Reference.getAttributPart(uri));
+		assertNull(Reference.getIdentity(uri));
+
 	}
 }

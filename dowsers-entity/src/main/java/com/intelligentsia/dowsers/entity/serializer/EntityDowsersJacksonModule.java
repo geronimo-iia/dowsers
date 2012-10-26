@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -148,11 +147,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		}
 
 		public void serializeEntity(final T value, final JsonGenerator jgen) throws IOException, JsonProcessingException, JsonGenerationException {
-			try {
-				jgen.writeObjectField("@reference", Reference.newReference(value));
-			} catch (final URISyntaxException e) {
-				throw new JsonGenerationException("Unable to build entity reference");
-			}
+			jgen.writeObjectField("@reference", Reference.newReference(value));
 			jgen.writeFieldName("@attributes");
 			jgen.writeStartObject();
 			final Iterator<String> iterator = value.attributeNames().iterator();

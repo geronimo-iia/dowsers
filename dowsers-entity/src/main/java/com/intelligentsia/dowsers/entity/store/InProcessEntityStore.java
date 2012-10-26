@@ -20,18 +20,25 @@
 package com.intelligentsia.dowsers.entity.store;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.Reference;
 
+/**
+ * InProcessEntityStore implements a {@link EntityStore} in memory (only for
+ * test so ??).
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public class InProcessEntityStore implements EntityStore {
 
 	private Map<URI, Entity> entities = Maps.newHashMap();
 
+	/**
+	 * Build a new instance of InProcessEntityStore.java.
+	 */
 	public InProcessEntityStore() {
 		super();
 	}
@@ -39,29 +46,17 @@ public class InProcessEntityStore implements EntityStore {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
-		try {
-			return (T) entities.get(Reference.newReference(expectedType, "identity", identity));
-		} catch (URISyntaxException e) {
-			throw Throwables.propagate(e);
-		}
+		return (T) entities.get(Reference.newReference(expectedType, "identity", identity));
 	}
 
 	@Override
 	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException {
-		try {
-			entities.put(Reference.newReference(entity), entity);
-		} catch (URISyntaxException e) {
-			throw Throwables.propagate(e);
-		}
+		entities.put(Reference.newReference(entity), entity);
 	}
 
 	@Override
 	public <T extends Entity> void remove(T entity) throws NullPointerException {
-		try {
-			entities.remove(Reference.newReference(entity));
-		} catch (URISyntaxException e) {
-			throw Throwables.propagate(e);
-		}
+		entities.remove(Reference.newReference(entity));
 	}
 
 }
