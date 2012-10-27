@@ -67,7 +67,11 @@ public class SerializationTest {
 		entityMapper.writeValue(writer, dynamic);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\",\"@attributes\":{\"name\":\"Steve\",\"idea\":\"Sweet apple\"}}", result);
+		assertEquals("{\"" +//
+				"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," +//
+				"\"@attributes\":{" +//
+					"\"name\":\"Steve\"," +//
+					"\"idea\":\"Sweet apple\"}}", result);
 
 		final EntityDynamic entityDynamic = entityMapper.readValue(new StringReader(result), EntityDynamic.class);
 
@@ -86,7 +90,15 @@ public class SerializationTest {
 		final String result = writer.toString();
 		assertNotNull(result);
 		assertEquals(
-				"{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\",\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\",\"@entity\":{\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\",\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}",
+				"{\"" + //
+				"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," +//
+				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," +//
+				"\"@entity\":{" +//
+					"\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," +//
+					"\"@attributes\":{" +//
+						"\"name\":\"Hello John\"," +//
+						"\"description\":\"a blablablabalbablbalablabb\"," +//
+						"\"order\":1}}}",
 				result);
 
 		final Entity entity2 = entityMapper.readValue(new StringReader(result), EntityProxy.class);

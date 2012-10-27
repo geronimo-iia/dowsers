@@ -55,17 +55,17 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 
 	@Override
 	public <T extends Entity> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
-		return find(Reference.newReference(expectedType, "identity", identity)).find(expectedType, identity);
+		return find(Reference.newAttributeReference(expectedType, "identity", identity)).find(expectedType, identity);
 	}
 
 	@Override
 	public <T extends Entity> void store(final T entity) throws NullPointerException, ConcurrencyException {
-		find(Reference.newReference(entity.getClass())).store(entity);
+		find(Reference.newEntityCollectionReference(entity.getClass())).store(entity);
 	}
 
 	@Override
 	public <T extends Entity> void remove(final T entity) throws NullPointerException {
-		find(Reference.newReference(entity.getClass())).remove(entity);
+		find(Reference.newEntityCollectionReference(entity.getClass())).remove(entity);
 	}
 
 	/**

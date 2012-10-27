@@ -147,7 +147,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		}
 
 		public void serializeEntity(final T value, final JsonGenerator jgen) throws IOException, JsonProcessingException, JsonGenerationException {
-			jgen.writeObjectField("@reference", Reference.newReference(value));
+			jgen.writeObjectField("@reference", Reference.newEntityReference(value));
 			jgen.writeFieldName("@attributes");
 			jgen.writeStartObject();
 			final Iterator<String> iterator = value.attributeNames().iterator();

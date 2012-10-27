@@ -46,17 +46,17 @@ public class InProcessEntityStore implements EntityStore {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
-		return (T) entities.get(Reference.newReference(expectedType, "identity", identity));
+		return (T) entities.get(Reference.newAttributeReference(expectedType, "identity", identity));
 	}
 
 	@Override
 	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException {
-		entities.put(Reference.newReference(entity), entity);
+		entities.put(Reference.newEntityReference(entity), entity);
 	}
 
 	@Override
 	public <T extends Entity> void remove(T entity) throws NullPointerException {
-		entities.remove(Reference.newReference(entity));
+		entities.remove(Reference.newEntityReference(entity));
 	}
 
 }

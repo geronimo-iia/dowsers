@@ -81,7 +81,7 @@ public class FileEntityStore implements EntityStore {
 
 	@Override
 	public <T extends Entity> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
-		File file = getFile(Reference.newReference(expectedType, "identity", identity), false);
+		File file = getFile(Reference.newAttributeReference(expectedType, "identity", identity), false);
 		if (!file.exists()) {
 			throw new EntityNotFoundException();
 		}
@@ -100,7 +100,7 @@ public class FileEntityStore implements EntityStore {
 
 	@Override
 	public <T extends Entity> void store(final T entity) throws NullPointerException, ConcurrencyException, DowsersException {
-		File file = getFile(Reference.newReference(entity), true);
+		File file = getFile(Reference.newEntityReference(entity), true);
 		Writer writer = null;
 		try {
 			writer = new FileWriter(file);
@@ -116,7 +116,7 @@ public class FileEntityStore implements EntityStore {
 
 	@Override
 	public <T extends Entity> void remove(final T entity) throws NullPointerException {
-		final File file = getFile(Reference.newReference(entity), false);
+		final File file = getFile(Reference.newEntityReference(entity), false);
 		file.delete();
 	}
 
@@ -125,7 +125,7 @@ public class FileEntityStore implements EntityStore {
 		for (final String p : uri.getFragment().split("\b{2}")) {
 			builder.append(File.separator).append(p);
 		}
-		final File file = new File(new File(root, Reference.getEntityPart(uri)), builder.deleteCharAt(0).toString());
+		final File file = new File(new File(root, Reference.getEntityClassName(uri)), builder.deleteCharAt(0).toString());
 		if (create) {
 			file.getParentFile().mkdirs();
 		}

@@ -84,9 +84,9 @@ public class PersonTest {
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());
 
-		final URI urn = Reference.newReference(person);
+		final URI urn = Reference.newEntityReference(person);
 		assertNotNull(urn);
-		assertEquals(Person.class.getName(), Reference.getEntityPart(urn));
+		assertEquals(Person.class.getName(), Reference.getEntityClassName(urn));
 
 	}
 
@@ -98,7 +98,7 @@ public class PersonTest {
 		 * 	"@interface":"com.intelligentsia.dowsers.entity.model.Person",
 		 * 	"@support":"com.intelligentsia.dowsers.entity.EntityDynamic",
 		 * 	"@entity":{
-		 * 		"@reference":"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be",
+		 * 		"@reference":"urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be",
 		 * 		"@attributes":{
 		 * 			"firstName":"Mario",
 		 * 			"lastName":"Fusco",

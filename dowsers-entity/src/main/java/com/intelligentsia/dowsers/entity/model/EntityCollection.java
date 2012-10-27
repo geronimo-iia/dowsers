@@ -79,7 +79,7 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 	 *         representation
 	 */
 	public EntityCollection add(Object any) throws NullPointerException, IllegalArgumentException {
-		this.entities.add(Reference.newReference(Preconditions.checkNotNull(any)));
+		this.entities.add(Reference.newEntityReference(Preconditions.checkNotNull(any)));
 		return this;
 	}
 

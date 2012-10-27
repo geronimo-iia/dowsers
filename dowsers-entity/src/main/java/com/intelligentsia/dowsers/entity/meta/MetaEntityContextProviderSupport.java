@@ -51,7 +51,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 
 	@Override
 	public MetaEntityContext find(final URI reference) throws IllegalArgumentException, NullPointerException {
-		return find(Reference.getEntityPart(Preconditions.checkNotNull(reference)), Reference.getIdentity(reference));
+		return find(Reference.getEntityClassName(Preconditions.checkNotNull(reference)), Reference.getIdentity(reference));
 	}
 
 	@Override
