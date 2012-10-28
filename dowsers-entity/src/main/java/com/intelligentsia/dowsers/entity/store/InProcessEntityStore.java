@@ -19,12 +19,11 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
-import java.net.URI;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.Reference;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * InProcessEntityStore implements a {@link EntityStore} in memory (only for
@@ -34,7 +33,7 @@ import com.intelligentsia.dowsers.entity.Reference;
  */
 public class InProcessEntityStore implements EntityStore {
 
-	private Map<URI, Entity> entities = Maps.newHashMap();
+	private Map<String, Entity> entities = Maps.newHashMap();
 
 	/**
 	 * Build a new instance of InProcessEntityStore.java.

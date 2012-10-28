@@ -20,7 +20,6 @@
 package com.intelligentsia.dowsers.entity.model;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,14 +27,14 @@ import java.util.LinkedList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
-import com.intelligentsia.dowsers.entity.Reference;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * EntityCollection.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityCollection implements Iterable<URI>, Serializable {
+public class EntityCollection implements Iterable<String>, Serializable {
 
 	/**
 	 * serialVersionUID:long
@@ -43,17 +42,17 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 	private static final long serialVersionUID = -6158983976858817330L;
 
 	/**
-	 * {@link Collection} of {@link URI} instance.
+	 * {@link Collection} of {@link String} instance.
 	 */
 	@JsonProperty
-	private final Collection<URI> entities;
+	private final Collection<String> entities;
 
 	/**
 	 * Build a new instance of EntityCollection. with a {@link LinkedList}
 	 * instance.
 	 */
 	public EntityCollection() {
-		this(new LinkedList<URI>());
+		this(new LinkedList<String>());
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 	 * @throws NullPointerException
 	 *             if entities is null
 	 */
-	public EntityCollection(final Collection<URI> entities) throws NullPointerException {
+	public EntityCollection(final Collection<String> entities) throws NullPointerException {
 		super();
 		this.entities = Preconditions.checkNotNull(entities);
 	}
@@ -84,7 +83,7 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 	}
 
 	@Override
-	public Iterator<URI> iterator() {
+	public Iterator<String> iterator() {
 		return entities.iterator();
 	}
 
@@ -93,7 +92,7 @@ public class EntityCollection implements Iterable<URI>, Serializable {
 		return entities.isEmpty();
 	}
 
-	public Collection<URI> entities() {
+	public Collection<String> entities() {
 		return entities;
 	}
 

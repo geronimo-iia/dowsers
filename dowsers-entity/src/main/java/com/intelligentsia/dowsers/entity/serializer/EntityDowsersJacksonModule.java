@@ -45,10 +45,10 @@ import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.EntityProxy;
-import com.intelligentsia.dowsers.entity.Reference;
 import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * EntityDowsersJacksonModule.

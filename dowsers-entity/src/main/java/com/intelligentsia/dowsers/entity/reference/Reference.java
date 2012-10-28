@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity;
+package com.intelligentsia.dowsers.entity.reference;
 
 import java.lang.reflect.Proxy;
 import java.net.URI;
@@ -25,8 +25,8 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
-
+import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.EntityProxy;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
 
@@ -80,7 +80,10 @@ public enum Reference {
 	private static final transient String URN_DOWSERS = "urn:dowsers:";
 	private static final transient String IDENTITY = "identity";
 
-	private static final ReferenceFactory referenceFactory = lookup(Thread.currentThread().getContextClassLoader());;
+	/**
+	 * IdentifierFactoryProvider instance.
+	 */
+	private static ReferenceFactory REFERENCE_FACTORY = lookup(Thread.currentThread().getContextClassLoader());
 
 	/**
 	 * Generate new Reference using configured {@link ReferenceFactory}
@@ -91,7 +94,7 @@ public enum Reference {
 	 * @return an new reference for specified class name
 	 */
 	public static String generateNewReference(Class<?> clazz) {
-		return referenceFactory.generateNewReference(clazz);
+		return REFERENCE_FACTORY.generateNewReference(clazz);
 	}
 
 	/**
@@ -233,33 +236,6 @@ public enum Reference {
 	}
 
 	/**
-	 * ReferenceFactory declare methods to generate new reference according
-	 * URN scheme.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 */
-	public interface ReferenceFactory {
-		/**
-		 * @param clazz
-		 *            entity class name
-		 * @return an new reference for specified class name
-		 */
-		public abstract String generateNewReference(Class<?> clazz);
-	}
-
-	/**
-	 * <code>DefaultReferenceFactory</code>.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
-	 */
-	public static class DefaultReferenceFactory implements ReferenceFactory {
-		@Override
-		public String generateNewReference(Class<?> clazz) {
-			return Reference.newEntityReference(clazz, IdentifierFactoryProvider.generateNewIdentifier()).toString();
-		}
-	}
-
-	/**
 	 * Try to locate a ReferenceFactory implementation using specific class
 	 * loader.
 	 * 
@@ -277,9 +253,9 @@ public enum Reference {
 			}
 		}
 		if (factory == null) {
-			factory = new DefaultReferenceFactory();
+			throw new RuntimeException("No ReferenceFactory Implementation found");
+			// factory = new DefaultReferenceFactory();
 		}
 		return factory;
 	}
-
 }

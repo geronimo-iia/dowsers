@@ -44,6 +44,7 @@ import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.model.PersonDto;
 import com.intelligentsia.dowsers.entity.model.Util;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -84,7 +85,7 @@ public class PersonTest {
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());
 
-		final URI urn = Reference.newEntityReference(person);
+		final String urn = Reference.newEntityReference(person);
 		assertNotNull(urn);
 		assertEquals(Person.class.getName(), Reference.getEntityClassName(urn));
 

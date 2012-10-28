@@ -26,7 +26,7 @@ import java.util.Map;
 import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
-import com.intelligentsia.dowsers.entity.Reference;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityContextProviderSupport implements {@link MetaEntityContextProvider}

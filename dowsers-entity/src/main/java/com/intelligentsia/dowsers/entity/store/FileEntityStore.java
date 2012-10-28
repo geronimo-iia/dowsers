@@ -26,7 +26,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.URI;
 
 import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.keystone.api.StringUtils;
@@ -34,7 +33,7 @@ import org.intelligentsia.keystone.api.StringUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.Reference;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -120,12 +119,12 @@ public class FileEntityStore implements EntityStore {
 		file.delete();
 	}
 
-	public File getFile(final URI uri, final boolean create) {
+	public File getFile(final String urn, final boolean create) {
 		final StringBuilder builder = new StringBuilder();
-		for (final String p : uri.getFragment().split("\b{2}")) {
+		for (final String p : Reference.getIdentity(urn).split("\b{2}")) {
 			builder.append(File.separator).append(p);
 		}
-		final File file = new File(new File(root, Reference.getEntityClassName(uri)), builder.deleteCharAt(0).toString());
+		final File file = new File(new File(root, Reference.getEntityClassName(urn)), builder.deleteCharAt(0).toString());
 		if (create) {
 			file.getParentFile().mkdirs();
 		}

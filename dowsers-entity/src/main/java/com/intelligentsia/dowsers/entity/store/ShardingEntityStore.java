@@ -19,13 +19,12 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
-import java.net.URI;
 import java.util.Map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.Reference;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * ShardingEntityStore.
@@ -36,7 +35,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	/**
 	 * {@link Map} of URI and {@link EntityStore}.
 	 */
-	private Map<URI, EntityStore> stores = Maps.newHashMap();
+	private Map<String, EntityStore> stores = Maps.newHashMap();
 
 	/**
 	 * Build a new instance of ShardingEntityStore.java.
@@ -48,7 +47,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<URI, EntityStore> stores) throws NullPointerException {
+	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<String, EntityStore> stores) throws NullPointerException {
 		super(defaultEntityStore);
 		this.stores = Preconditions.checkNotNull(stores);
 	}
@@ -74,7 +73,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @param reference
 	 * @return {@link EntityStore} instance.
 	 */
-	public EntityStore find(final URI reference) {
+	public EntityStore find(final String reference) {
 		final EntityStore result = stores.get(reference);
 		if (result == null) {
 			return this.entityStore;
@@ -95,7 +94,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
 	public static class Builder {
-		private final Map<URI, EntityStore> stores = Maps.newHashMap();
+		private final Map<String, EntityStore> stores = Maps.newHashMap();
 
 		/**
 		 * Build a new instance of ShardingEntityStore.java.
@@ -115,7 +114,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 		 * @throws NullPointerException
 		 *             if one of parameters is null
 		 */
-		public Builder add(final URI reference, final EntityStore entityStore) throws NullPointerException {
+		public Builder add(final String reference, final EntityStore entityStore) throws NullPointerException {
 			stores.put(reference, Preconditions.checkNotNull(entityStore));
 			return this;
 		}

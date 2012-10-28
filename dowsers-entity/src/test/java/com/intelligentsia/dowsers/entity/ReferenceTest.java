@@ -31,6 +31,7 @@ import org.junit.Test;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.model.Util;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * <code>ReferenceTest</code>.
@@ -40,6 +41,15 @@ import com.intelligentsia.dowsers.entity.model.Util;
  */
 public class ReferenceTest {
 
+	@Test
+	public void testGenerateReference() {
+//		final ServiceLoader<ReferenceFactory> loader = ServiceLoader.load(ReferenceFactory.class, Thread.currentThread().getContextClassLoader());
+//		assertTrue(loader.iterator().hasNext());
+//		
+		String urn = Reference.generateNewReference(Person.class);
+		assertEquals("com.intelligentsia.dowsers.entity.model.Person", Reference.getEntityClassName(urn));
+	}
+	
 	@Test
 	public void testBeforeSimplifyReference() throws URISyntaxException {
 		final String urn = "urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:name#4c8b03dd-908a-4cad-8d48-3c7277d44ac9";
