@@ -20,12 +20,6 @@
 
 
 
-
--> replace identity by entity reference as String + test
-=> create Reference object
-
--> refactor Reference and test
-
 -> test unit on FileEntityStore, 
 -> test unit on in memory Entity store
 -> test unit on Sharding Entity store
