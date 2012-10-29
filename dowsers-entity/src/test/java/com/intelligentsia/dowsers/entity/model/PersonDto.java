@@ -24,6 +24,7 @@ package com.intelligentsia.dowsers.entity.model;
  * 
  */
 public class PersonDto {
+
 	private final String name;
 	private final Integer age;
 

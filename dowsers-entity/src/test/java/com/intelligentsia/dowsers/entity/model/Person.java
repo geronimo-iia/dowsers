@@ -33,9 +33,9 @@ public interface Person {
 
 	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
 			metaAttributes(MetaModel.getIdentityAttribute()).//
-			addMetaAttribute("firstName", String.class).//
-			addMetaAttribute("lastName", String.class).//
-			addMetaAttribute("yearOld", Integer.class)//
+			metaAttribute("firstName", String.class).//
+			metaAttribute("lastName", String.class).//
+			metaAttribute("yearOld", Integer.class)//
 			.build();
 
 	String getFirstName();

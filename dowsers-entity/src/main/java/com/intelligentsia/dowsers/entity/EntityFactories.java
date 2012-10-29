@@ -22,6 +22,8 @@ package com.intelligentsia.dowsers.entity;
 import java.lang.reflect.Proxy;
 
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
 /**
@@ -52,10 +54,10 @@ public enum EntityFactories {
 		 * @throws NullPointerException
 		 *             if identity is null
 		 * @throws IllegalArgumentException
-		 *             if identifier is empty
+		 *             if identifier is not an identifier
 		 * 
 		 */
-		T newInstance(final String identity) throws NullPointerException, IllegalArgumentException;
+		T newInstance(final Reference identifier) throws NullPointerException, IllegalArgumentException;
 
 	}
 
@@ -67,12 +69,12 @@ public enum EntityFactories {
 
 			@Override
 			public EntityDynamic newInstance() {
-				return new EntityDynamic(metaEntityContext);
+				return new EntityDynamic(References.newReference(EntityDynamic.class), metaEntityContext);
 			}
 
 			@Override
-			public EntityDynamic newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return new EntityDynamic(identity, metaEntityContext);
+			public EntityDynamic newInstance(final Reference identifier) throws NullPointerException, IllegalArgumentException {
+				return new EntityDynamic(identifier, metaEntityContext);
 			}
 
 		};
@@ -107,13 +109,14 @@ public enum EntityFactories {
 			@SuppressWarnings("unchecked")
 			@Override
 			public T newInstance() {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance()));
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, //
+						new EntityProxy(className, factory.newInstance(References.newReference(className))));
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public T newInstance(final String identity) throws NullPointerException, IllegalArgumentException {
-				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance(identity)));
+			public T newInstance(final Reference identifier) throws NullPointerException, IllegalArgumentException {
+				return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class[] { className, EntityProxyHandler.class }, new EntityProxy(className, factory.newInstance(identifier)));
 			}
 
 		};

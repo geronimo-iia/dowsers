@@ -19,7 +19,7 @@
  */
 package com.intelligentsia.dowsers.entity.meta;
 
-import java.net.URI;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityContextProvider.
@@ -29,18 +29,35 @@ import java.net.URI;
 public interface MetaEntityContextProvider {
 
 	/**
-	 * 
 	 * @param reference
-	 * @return {@link MetaEntityContext} associated with thi reference
+	 * @return {@link MetaEntityContext} associated with this reference
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if no {@link MetaEntityContext} was found
 	 * @throws NullPointerException
 	 *             if reference is null
 	 */
-	MetaEntityContext find(URI reference) throws IllegalArgumentException, NullPointerException;
-
-	MetaEntityContext find(Class<?> clazz, String identity) throws IllegalArgumentException, NullPointerException;
-
-	MetaEntityContext find(Class<?> clazz) throws NullPointerException;
+	MetaEntityContext find(Reference reference) throws IllegalArgumentException, NullPointerException;
+	//
+	// /**
+	// *
+	// * @param clazz
+	// * entity class
+	// * @param identity
+	// * entit
+	// * @return
+	// * @throws IllegalArgumentException
+	// * @throws NullPointerException
+	// */
+	// MetaEntityContext find(Class<?> clazz, String identity) throws
+	// IllegalArgumentException, NullPointerException;
+	//
+	// /**
+	// * @param clazz
+	// * entity class
+	// * @return {@link MetaEntityContext} associated with this reference
+	// * @throws NullPointerException
+	// * if clazz is null
+	// */
+	// MetaEntityContext find(Class<?> clazz) throws NullPointerException;
 }

@@ -19,7 +19,6 @@
  */
 package com.intelligentsia.dowsers.entity.meta;
 
-import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,52 +35,62 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  */
 public class MetaEntityContextProviderSupport implements MetaEntityContextProvider {
 
-	private final Map<String, MetaEntityContext> contextEntities;
-	private final Map<String, MetaEntityContext> specificContextEntities;
+	private final Map<Reference, MetaEntityContext> contextEntities;
 
 	public MetaEntityContextProviderSupport() {
-		this(new LinkedHashMap<String, MetaEntityContext>(), new LinkedHashMap<String, MetaEntityContext>());
+		this(new LinkedHashMap<Reference, MetaEntityContext>());
 	}
 
-	public MetaEntityContextProviderSupport(final Map<String, MetaEntityContext> contextEntities, final Map<String, MetaEntityContext> specificContextEntities) throws NullPointerException {
+	public MetaEntityContextProviderSupport(final Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
 		super();
 		this.contextEntities = Preconditions.checkNotNull(contextEntities);
-		this.specificContextEntities = Preconditions.checkNotNull(specificContextEntities);
 	}
 
 	@Override
-	public MetaEntityContext find(final URI reference) throws IllegalArgumentException, NullPointerException {
-		return find(Reference.getEntityClassName(Preconditions.checkNotNull(reference)), Reference.getIdentity(reference));
-	}
-
-	@Override
-	public MetaEntityContext find(final Class<?> clazz, final String identity) throws IllegalArgumentException, NullPointerException {
-		return find(clazz.getName(), identity);
-	}
-
-	@Override
-	public MetaEntityContext find(final Class<?> clazz) throws NullPointerException {
-		return find(clazz.getName());
-	}
-
-	public MetaEntityContext find(final String className, final String identity) throws IllegalArgumentException, NullPointerException {
-		if (identity != null) {
-			final MetaEntityContext context = specificContextEntities.get(identity);
-			if (context != null) {
-				return context;
-			}
-		}
-		return find(className);
-	}
-
-	public MetaEntityContext find(final String className) throws NullPointerException {
-		final MetaEntityContext context = contextEntities.get(className);
-		// check for error
+	public MetaEntityContext find(final Reference reference) throws IllegalArgumentException, NullPointerException {
+		final MetaEntityContext context = contextEntities.get(Preconditions.checkNotNull(reference));
 		if (context == null) {
+			if (reference.getIdentity() != null) {
+				return contextEntities.get(reference.getEntityClassReference());
+			}
 			throw new IllegalArgumentException("no context found");
 		}
 		return context;
 	}
+
+	//
+	// @Override
+	// public MetaEntityContext find(final Class<?> clazz, final String
+	// identity) throws IllegalArgumentException, NullPointerException {
+	// return find(clazz.getName(), identity);
+	// }
+	//
+	// @Override
+	// public MetaEntityContext find(final Class<?> clazz) throws
+	// NullPointerException {
+	// return find(clazz.getName());
+	// }
+
+	// public MetaEntityContext find(final String className, final String
+	// identity) throws IllegalArgumentException, NullPointerException {
+	// if (identity != null) {
+	// final MetaEntityContext context = specificContextEntities.get(identity);
+	// if (context != null) {
+	// return context;
+	// }
+	// }
+	// return find(className);
+	// }
+	//
+	// public MetaEntityContext find(final String className) throws
+	// NullPointerException {
+	// final MetaEntityContext context = contextEntities.get(className);
+	// // check for error
+	// if (context == null) {
+	// throw new IllegalArgumentException("no context found");
+	// }
+	// return context;
+	// }
 
 	/**
 	 * Add default {@link MetaEntityContext} for {@link MetaAttribute},
@@ -103,47 +112,40 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 * @param metaEntityContext
 	 * @return this instance
 	 */
-	public MetaEntityContextProviderSupport add(final URI reference, final MetaEntityContext metaEntityContext) throws NullPointerException {
-		specificContextEntities.put(Reference.getIdentity(Preconditions.checkNotNull(reference)), metaEntityContext);
+	public MetaEntityContextProviderSupport add(final Reference reference, final MetaEntityContext metaEntityContext) throws NullPointerException {
+		contextEntities.put(Preconditions.checkNotNull(reference), metaEntityContext);
 		return this;
 	}
 
 	/**
 	 * Add {@link MetaEntityContext} defintion for specified class name.
 	 * 
-	 * @param className
+	 * @param clazz
 	 * @param definition
 	 * @param extension
 	 * @return this instance
 	 */
-	public MetaEntityContextProviderSupport add(final Class<?> className, final MetaEntity definition, final MetaEntity... extension) throws NullPointerException {
+	public MetaEntityContextProviderSupport add(final Class<?> clazz, final MetaEntity definition, final MetaEntity... extension) throws NullPointerException {
 		final MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(Preconditions.checkNotNull(definition));
 		if (extension != null) {
 			for (final MetaEntity metaEntity : extension) {
 				builder.addExtendedDefinition(metaEntity);
 			}
 		}
-		contextEntities.put(Preconditions.checkNotNull(className).getName(), builder.build());
+		contextEntities.put(Reference.newReference(clazz), builder.build());
 		return this;
 	}
 
 	/**
 	 * Add a {@link MetaEntityContext} instance for specified class name.
 	 * 
-	 * @param className
+	 * @param clazz
 	 * @param metaEntityContext
 	 * @return this instance.
 	 */
-	public MetaEntityContextProviderSupport add(final Class<?> className, final MetaEntityContext metaEntityContext) throws NullPointerException {
-		contextEntities.put(Preconditions.checkNotNull(className).getName(), metaEntityContext);
+	public MetaEntityContextProviderSupport add(final Class<?> clazz, final MetaEntityContext metaEntityContext) throws NullPointerException {
+		contextEntities.put(Reference.newReference(clazz), metaEntityContext);
 		return this;
-	}
-
-	/**
-	 * @return a {@link MetaEntityContextProviderSupport} instance.
-	 */
-	public static MetaEntityContextProviderSupport builder() {
-		return new MetaEntityContextProviderSupport();
 	}
 
 }

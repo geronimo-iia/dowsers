@@ -22,40 +22,45 @@ package com.intelligentsia.dowsers.entity.store;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
- * InProcessEntityStore implements a {@link EntityStore} in memory (only for
- * test so ??).
+ * InMemoryEntityStore implements a {@link EntityStore} in memory (only for
+ * testing purpose no ?).
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class InProcessEntityStore implements EntityStore {
+public class InMemoryEntityStore implements EntityStore {
 
-	private Map<String, Entity> entities = Maps.newHashMap();
+	private final Map<Reference, Object> entities = Maps.newHashMap();
 
 	/**
-	 * Build a new instance of InProcessEntityStore.java.
+	 * Build a new instance of InMemoryEntityStore.java.
 	 */
-	public InProcessEntityStore() {
+	public InMemoryEntityStore() {
 		super();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
-		return (T) entities.get(Reference.newAttributeReference(expectedType, "identity", identity));
+	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
+		return (T) entities.get(reference);
 	}
 
 	@Override
-	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException {
-		entities.put(Reference.newEntityReference(entity), entity);
+	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
+		entities.put(References.identify(entity), entity);
 	}
 
 	@Override
-	public <T extends Entity> void remove(T entity) throws NullPointerException {
-		entities.remove(Reference.newEntityReference(entity));
+	public <T> void remove(final T entity) throws NullPointerException, IllegalArgumentException {
+		entities.remove(References.identify(entity));
+	}
+
+	@Override
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
+		entities.remove(reference);
 	}
 
 }

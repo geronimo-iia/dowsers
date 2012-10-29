@@ -19,27 +19,37 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
 public class EntityManagerSupport implements EntityManager {
 
 	@Override
-	public <T> T newInstance(Class<T> expectedType) throws NullPointerException {
+	public <T> T newInstance(final Class<T> expectedType) throws NullPointerException {
 		return null;
 	}
 
 	@Override
-	public <T> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
+	public <T> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
 		return null;
 	}
 
 	@Override
-	public <T> void store(T entity) throws NullPointerException, ConcurrencyException {
+	public <T> T find(final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
+		return null;
 	}
 
 	@Override
-	public <T> void remove(T entity) throws NullPointerException {
+	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException {
+	}
+
+	@Override
+	public <T> void remove(final T entity) throws NullPointerException {
+	}
+
+	@Override
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
 	}
 
 }

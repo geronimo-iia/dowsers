@@ -22,7 +22,6 @@ package com.intelligentsia.dowsers.entity.serializer;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -49,6 +48,7 @@ import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * EntityDowsersJacksonModule.
@@ -74,7 +74,13 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		addSerializer(new EntitySerializer<Entity>(Entity.class));
 		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
 		addDeserializer(EntityDynamic.class, new EntityDynamicDeSerializer(metaEntityContextProvider));
-		declareVersion();
+
+		addSerializer(new ReferenceSerializer());
+		addDeserializer(Reference.class, new ReferenceDeSerializer());
+
+		addSerializer(new VersionSerializer());
+		addDeserializer(Version.class, new VersionDeSerializer());
+
 		// declareMetaAttribute(metaEntityContextProvider);
 		// declareMetaEntity(metaEntityContextProvider);
 	}
@@ -104,11 +110,6 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	// }
 	// }, metaEntityContextProvider));
 	// }
-
-	public void declareVersion() {
-		addSerializer(new VersionSerializer());
-		addDeserializer(Version.class, new VersionDeSerializer());
-	}
 
 	/**
 	 * EntitySerializer.
@@ -147,7 +148,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		}
 
 		public void serializeEntity(final T value, final JsonGenerator jgen) throws IOException, JsonProcessingException, JsonGenerationException {
-			jgen.writeObjectField("@reference", Reference.newEntityReference(value));
+			jgen.writeObjectField("@identity", value.identity());
 			jgen.writeFieldName("@attributes");
 			jgen.writeStartObject();
 			final Iterator<String> iterator = value.attributeNames().iterator();
@@ -188,16 +189,14 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		@Override
 		public EntityDynamic deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
 			final Map<String, Object> attributes = Maps.newLinkedHashMap();
-			URI reference = null;
+			Reference identity = null;
 			MetaEntityContext context = null;
-			String identity = null;
 			while (jp.nextToken() != JsonToken.END_OBJECT) {
 				final String fieldname = jp.getCurrentName();
-				if ("@reference".equals(fieldname)) {
+				if ("@identity".equals(fieldname)) {
 					jp.nextToken();
-					reference = jp.readValueAs(URI.class);
-					identity = Reference.getIdentity(reference);
-					context = metaEntityContextProvider.find(reference);
+					identity = jp.readValueAs(Reference.class);
+					context = metaEntityContextProvider.find(identity);
 				}
 				if ("@attributes".equals(fieldname)) {
 					jp.nextToken();
@@ -213,7 +212,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 					}
 				}
 			}
-			return reference != null ? new EntityDynamic(identity, attributes, context) : null;
+			return identity != null ? new EntityDynamic(identity, attributes, context) : new EntityDynamic(References.newReference(EntityDynamic.class), attributes, context);
 		}
 
 	}
@@ -312,4 +311,53 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		}
 	}
 
+	/**
+	 * ReferenceSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class ReferenceSerializer extends StdSerializer<Reference> {
+
+		public ReferenceSerializer() {
+			super(Reference.class);
+		}
+
+		@Override
+		public void serialize(final Reference value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+			if (value != null) {
+				jgen.writeString(value.toString());
+			} else {
+				jgen.writeNull();
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * ReferenceDeSerializer.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public static class ReferenceDeSerializer extends StdDeserializer<Reference> {
+
+		/**
+		 * serialVersionUID:long
+		 */
+		private static final long serialVersionUID = 1916647538058301330L;
+
+		public ReferenceDeSerializer() {
+			super(Reference.class);
+		}
+
+		@Override
+		public Reference deserialize(final JsonParser jp, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			if (jp.hasCurrentToken()) {
+				final String value = jp.getText();
+				if (value != null) {
+					return Reference.parseString(value);
+				}
+			}
+			return null;
+		}
+	}
 }

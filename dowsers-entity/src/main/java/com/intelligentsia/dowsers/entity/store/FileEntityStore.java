@@ -32,8 +32,8 @@ import org.intelligentsia.keystone.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Closeables;
-import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -79,8 +79,8 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	@Override
-	public <T extends Entity> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
-		File file = getFile(Reference.newAttributeReference(expectedType, "identity", identity), false);
+	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
+		final File file = getFile(reference, false);
 		if (!file.exists()) {
 			throw new EntityNotFoundException();
 		}
@@ -88,7 +88,7 @@ public class FileEntityStore implements EntityStore {
 		try {
 			reader = new FileReader(file);
 			return entityMapper.readValue(reader, expectedType);
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			throw new EntityNotFoundException(e);
 		} finally {
 			if (reader != null) {
@@ -98,13 +98,13 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	@Override
-	public <T extends Entity> void store(final T entity) throws NullPointerException, ConcurrencyException, DowsersException {
-		File file = getFile(Reference.newEntityReference(entity), true);
+	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, DowsersException {
+		final File file = getFile(References.identify(entity), true);
 		Writer writer = null;
 		try {
 			writer = new FileWriter(file);
 			entityMapper.writeValue(writer, entity);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new DowsersException(e);
 		} finally {
 			if (writer != null) {
@@ -114,17 +114,22 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	@Override
-	public <T extends Entity> void remove(final T entity) throws NullPointerException {
-		final File file = getFile(Reference.newEntityReference(entity), false);
+	public <T> void remove(final T entity) throws NullPointerException {
+		remove(References.identify(entity));
+	}
+
+	@Override
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
+		final File file = getFile(reference, false);
 		file.delete();
 	}
 
-	public File getFile(final String urn, final boolean create) {
+	public File getFile(final Reference urn, final boolean create) {
 		final StringBuilder builder = new StringBuilder();
-		for (final String p : Reference.getIdentity(urn).split("\b{2}")) {
+		for (final String p : urn.getIdentity().split("\b{2}")) {
 			builder.append(File.separator).append(p);
 		}
-		final File file = new File(new File(root, Reference.getEntityClassName(urn)), builder.deleteCharAt(0).toString());
+		final File file = new File(new File(root, urn.getEntityClassName()), builder.deleteCharAt(0).toString());
 		if (create) {
 			file.getParentFile().mkdirs();
 		}

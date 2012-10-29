@@ -23,6 +23,7 @@ import org.intelligentsia.dowsers.core.Identified;
 
 import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * Entity.
@@ -50,7 +51,7 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Entity extends Identified {
+public interface Entity extends Identified<Reference> {
 
 	/**
 	 * Return typed value of specified attribute name.

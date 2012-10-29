@@ -24,9 +24,9 @@ package org.intelligentsia.dowsers.core;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Identified {
+public interface Identified<T> {
 	/**
 	 * @return identity
 	 */
-	String identity();
+	T identity();
 }

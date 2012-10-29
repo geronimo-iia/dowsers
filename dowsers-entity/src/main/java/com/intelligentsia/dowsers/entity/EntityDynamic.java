@@ -24,13 +24,13 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * EntityDynamic.
@@ -45,7 +45,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	/**
 	 * Entity identity.
 	 */
-	private final transient String identity;
+	private final transient Reference identity;
 	/**
 	 * Map of attributes.
 	 */
@@ -54,19 +54,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	/**
 	 * {@link MetaEntityContext} instance.
 	 */
-	protected transient MetaEntityContext metaEntityContext;
-
-	/**
-	 * Build a new instance of EntityDynamic.java.
-	 * 
-	 * @param metaEntityContext
-	 *            meta entity context
-	 * @throws NullPointerException
-	 *             if metaEntityContextis null
-	 */
-	public EntityDynamic(final MetaEntityContext metaEntityContext) throws NullPointerException {
-		this(IdentifierFactoryProvider.generateNewIdentifier(), new LinkedHashMap<String, Object>(), metaEntityContext);
-	}
+	protected final transient MetaEntityContext metaEntityContext;
 
 	/**
 	 * Build a new instance of EntityDynamic.java.
@@ -78,9 +66,9 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws NullPointerException
 	 *             if one of parameter is null
 	 * @throws IllegalArgumentException
-	 *             if identifier is empty
+	 *             if identifier is not an identifier
 	 */
-	public EntityDynamic(final String identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+	public EntityDynamic(final Reference identity, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
 		this(identity, new LinkedHashMap<String, Object>(), metaEntityContext);
 	}
 
@@ -97,17 +85,17 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	 * @throws NullPointerException
 	 *             if one of parameter is null
 	 * @throws IllegalArgumentException
-	 *             if identifier is empty
+	 *             if identifier is not an identifier
 	 */
-	public EntityDynamic(final String identity, final Map<String, Object> attributes, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
-		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+	public EntityDynamic(final Reference identity, final Map<String, Object> attributes, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkArgument(Preconditions.checkNotNull(identity).isIdentifier());
 		this.identity = identity;
 		this.attributes = Preconditions.checkNotNull(attributes);
 		this.metaEntityContext = Preconditions.checkNotNull(metaEntityContext);
 	}
 
 	@Override
-	public final String identity() {
+	public final Reference identity() {
 		return identity;
 	}
 
@@ -155,7 +143,7 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("identity", identity).toString();
+		return identity.toString();
 	}
 
 	@Override

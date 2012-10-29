@@ -26,8 +26,10 @@ import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
+import com.intelligentsia.dowsers.entity.model.MetaDataUtil;
 import com.intelligentsia.dowsers.entity.model.SampleEntity;
-import com.intelligentsia.dowsers.entity.model.Util;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * EntityTest.
@@ -37,8 +39,27 @@ import com.intelligentsia.dowsers.entity.model.Util;
 public class EntityTest {
 
 	@Test
+	public void testIdentityOfFullProxyEntity() {
+		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, //
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(SampleEntity.class)));
+		final SampleEntity entity = factory.newInstance();
+
+		assertEquals(Reference.newReference(SampleEntity.class), References.identify(entity).getEntityClassReference());
+	}
+
+	@Test
+	public void testIdentityOfProxyEntity() {
+		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, //
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(CustomizableSampleEntity.class)));
+		final CustomizableSampleEntity entity = factory.newInstance();
+
+		assertEquals(Reference.newReference(CustomizableSampleEntity.class), entity.identity().getEntityClassReference());
+	}
+
+	@Test
 	public void testSampleEntity() {
-		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, Util.getMetaEntityContextProvider().find(SampleEntity.class));
+		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, //
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(SampleEntity.class)));
 		final SampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
@@ -49,11 +70,12 @@ public class EntityTest {
 
 	@Test
 	public void testCustomizableSampleEntity() {
-		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, Util.getMetaEntityContextProvider().find(CustomizableSampleEntity.class));
+		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, //
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(CustomizableSampleEntity.class)));
 		final CustomizableSampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
-		
+
 		sampleEntity.setDescription("a blablablabalbablbalablabb");
 		sampleEntity.attribute("order", 1L);
 		assertEquals("Hello John", sampleEntity.getName());

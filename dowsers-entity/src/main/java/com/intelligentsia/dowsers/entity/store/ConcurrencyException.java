@@ -23,8 +23,8 @@
 package com.intelligentsia.dowsers.entity.store;
 
 /**
- * ConcurrencyException. 
- *
+ * ConcurrencyException.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class ConcurrencyException extends RuntimeException {
@@ -43,26 +43,29 @@ public class ConcurrencyException extends RuntimeException {
 
 	/**
 	 * Build a new instance of ConcurrencyException.java.
+	 * 
 	 * @param message
 	 */
-	public ConcurrencyException(String message) {
+	public ConcurrencyException(final String message) {
 		super(message);
 	}
 
 	/**
 	 * Build a new instance of ConcurrencyException.java.
+	 * 
 	 * @param cause
 	 */
-	public ConcurrencyException(Throwable cause) {
+	public ConcurrencyException(final Throwable cause) {
 		super(cause);
 	}
 
 	/**
 	 * Build a new instance of ConcurrencyException.java.
+	 * 
 	 * @param message
 	 * @param cause
 	 */
-	public ConcurrencyException(String message, Throwable cause) {
+	public ConcurrencyException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

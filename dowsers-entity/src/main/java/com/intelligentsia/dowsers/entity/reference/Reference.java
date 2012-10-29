@@ -19,20 +19,18 @@
  */
 package com.intelligentsia.dowsers.entity.reference;
 
-import java.lang.reflect.Proxy;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.EntityProxy;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
 
 /**
- * Reference generate {@link Entity} or attribute's {@link Entity} reference.
- * 
  * A reference follow urn scheme: urn:dowsers:XXXX:YYYY#IIII, where
  * <ul>
  * <li>XXXX represent entity class name</li>
@@ -72,190 +70,246 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public enum Reference {
-	;
+public final class Reference implements Comparable<Reference>, Serializable {
+
+	private static final long serialVersionUID = -385235333185254142L;
 
 	private static final transient char URN_IDENTIFIER_SEPARATOR = '#';
 	private static final transient char URN_SEPARATOR = ':';
 	private static final transient String URN_DOWSERS = "urn:dowsers:";
-	private static final transient String IDENTITY = "identity";
+
+	public static final transient String IDENTITY = "identity";
+
+	private final transient String className;
+	private final transient String attributeName;
+	private final transient String identity;
 
 	/**
-	 * IdentifierFactoryProvider instance.
-	 */
-	private static ReferenceFactory REFERENCE_FACTORY = lookup(Thread.currentThread().getContextClassLoader());
-
-	/**
-	 * Generate new Reference using configured {@link ReferenceFactory}
-	 * provider.
+	 * The string form of this {@link Reference}.
 	 * 
-	 * @param clazz
-	 *            entity class name
-	 * @return an new reference for specified class name
+	 * @serial
 	 */
-	public static String generateNewReference(Class<?> clazz) {
-		return REFERENCE_FACTORY.generateNewReference(clazz);
-	}
+	public volatile String value = null;
 
 	/**
-	 * @param any
-	 *            entity representation
-	 * @return an urn which identify an {@link Entity}.
-	 * @throws {@link IllegalArgumentException} if any is not an entity
-	 *         representation
+	 * @param clazz
+	 *            entity class
+	 * @return a {@link Reference} instance of entity class
+	 * @throws NullPointerException
+	 *             if clazz is null
 	 */
-	public static String newEntityReference(final Object any) throws IllegalArgumentException {
-		return newAttributeReference(any, IDENTITY);
+	public static Reference newReference(final Class<?> clazz) throws NullPointerException {
+		return new Reference(clazz);
 	}
 
 	/**
 	 * @param clazz
 	 *            entity class
 	 * @param identity
-	 *            identifier part
-	 * @return a reference on specified entity instance
+	 * @return a {@link Reference} of entity instance.
+	 * @throws NullPointerException
+	 *             if clazz or identity is null
+	 * @throws IllegalArgumentException
+	 *             if identity is empty
 	 */
-	public static String newEntityReference(final Class<?> clazz, final String identity) {
-		return newAttributeReference(clazz, IDENTITY, identity);
+	public static Reference newReference(final Class<?> clazz, final String identity) throws NullPointerException, IllegalArgumentException {
+		return new Reference(clazz, identity);
 	}
 
 	/**
+	 * Build a new instance of <code>Reference</code> of entity class.
+	 * 
 	 * @param clazz
-	 * @return a entity collection reference (aka class)
+	 *            entity class
+	 * @throws NullPointerException
+	 *             if clazz is null
 	 */
-	public static String newEntityCollectionReference(final Class<?> clazz) {
-		return newAttributeReference(clazz, null, null);
+	public Reference(final Class<?> clazz) throws NullPointerException {
+		this(clazz, "", null);
 	}
 
 	/**
-	 * @param any
-	 *            entity representation
+	 * Build a new instance of <code>Reference</code> of entity instance.
+	 * 
+	 * @param clazz
+	 *            entity class
+	 * @param identity
+	 * @throws NullPointerException
+	 *             if clazz or identity is null
+	 * @throws IllegalArgumentException
+	 *             if identity is empty
+	 */
+	public Reference(final Class<?> clazz, final String identity) throws NullPointerException, IllegalArgumentException {
+		this(clazz, IDENTITY, Preconditions.checkNotNull(identity));
+		Preconditions.checkArgument(!"".equals(identity));
+	}
+
+	/**
+	 * Build a new instance of <code>Reference</code> of attribute's entity.
+	 * 
+	 * @param clazz
+	 *            entity class
 	 * @param attributeName
-	 *            attribute Name to reference
-	 * @return an urn which identify an attribute of specified entity.
-	 * @throws {@link IllegalArgumentException} if any is not an entity
-	 *         representation
+	 *            attribute name
+	 * @param identity
+	 *            identity
+	 * @throws NullPointerException
+	 *             if clazz is null
 	 */
-	public static String newAttributeReference(final Object any, final String attributeName) throws IllegalArgumentException {
-		if (Proxy.isProxyClass(any.getClass())) {
-			final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
-			return newAttributeReference(entityProxy, attributeName);
-		}
-		if (EntityProxy.class.isAssignableFrom(any.getClass())) {
-			final EntityProxy entityProxy = (EntityProxy) any;
-			return newAttributeReference(entityProxy, attributeName);
-		}
-		if (Entity.class.isAssignableFrom(any.getClass())) {
-			final Entity entity = (Entity) any;
-			return newAttributeReference(entity.getClass(), attributeName, entity.identity());
-		}
-		throw new IllegalArgumentException("Argument is not an entity");
-
+	public Reference(final Class<?> clazz, final String attributeName, final String identity) throws NullPointerException {
+		this(Preconditions.checkNotNull(clazz).getName(), attributeName, identity);
 	}
 
 	/**
-	 * @param entityProxy
-	 *            proxy of entity representation
-	 * @param attributeName
-	 *            attribute Name to reference
-	 * @return an urn which identify an attribute of specified entity.
-	 */
-	public static String newAttributeReference(final EntityProxy entityProxy, final String attributeName) {
-		return newAttributeReference(entityProxy.getInterfaceName(), attributeName, entityProxy.identity());
-	}
-
-	/**
+	 * Build a new instance of <code>Reference</code>.
+	 * 
 	 * @param className
 	 *            entity class name
 	 * @param attributeName
-	 *            attribute name to reference
+	 *            attribute name
 	 * @param identity
-	 * @return an urn which identify an attribute of specified entity.
+	 *            identity
+	 * @throws IllegalArgumentException
+	 *             if className is null
 	 */
-	public static String newAttributeReference(final Class<?> clazz, final String attributeName, final String identity) {
-		final StringBuilder builder = new StringBuilder(URN_DOWSERS).append(clazz.getName()).append(URN_SEPARATOR);
+	private Reference(final String className, final String attributeName, final String identity) throws IllegalArgumentException {
+		Preconditions.checkArgument(className != null);
+		this.className = className;
+		this.attributeName = attributeName == null ? "" : attributeName;
+		this.identity = identity;
+		defineString();
+	}
+
+	/**
+	 * @return true if this instance is an identifier ( attribute name is
+	 *         'identity' and identity field is not null)
+	 */
+	public boolean isIdentifier() {
+		return IDENTITY.equals(attributeName) && (identity != null);
+	}
+
+	/**
+	 * @return entity class name
+	 */
+	public String getEntityClassName() {
+		return className;
+	}
+
+	/**
+	 * @return a {@link Reference} instance on Entity class.
+	 */
+	public Reference getEntityClassReference() {
+		return new Reference(className, "", null);
+	}
+
+	/**
+	 * @return attribute name or an empty string if this reference represent a
+	 *         class of {@link Entity}
+	 */
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	/**
+	 * @return identity part of this {@link Reference}, or null if this
+	 *         {@link Reference} represent a class of {@link Entity} or an
+	 *         attribute class.
+	 */
+	public String getIdentity() {
+		return identity;
+	}
+
+	/**
+	 * @return an {@link URI} representation of this {@link Reference}.
+	 */
+	public URI toURI() {
+		try {
+			return new URI(value);
+		} catch (final URISyntaxException e) {
+			throw Throwables.propagate(e);
+		}
+	}
+
+	/**
+	 * Parse an {@link URI}.
+	 * 
+	 * @param uri
+	 * @return a {@link Reference} instance
+	 * @throws NullPointerException
+	 *             if uri is null
+	 * @throws IllegalArgumentException
+	 *             if uri is not a {@link Reference}.
+	 */
+	public static Reference parseURI(final URI uri) throws NullPointerException, IllegalArgumentException {
+		return parseString(Preconditions.checkNotNull(uri).toString());
+	}
+
+	/**
+	 * Parse a {@link String} representation of {@link Reference}.
+	 * 
+	 * @param urn
+	 * @return a {@link Reference} instance
+	 * @throws NullPointerException
+	 *             if urn is null
+	 * @throws IllegalArgumentException
+	 *             if urn is not a {@link Reference}.
+	 */
+	public static Reference parseString(final String urn) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkArgument(Preconditions.checkNotNull(urn).length() > URN_DOWSERS.length());
+		final int lastSeparator = urn.lastIndexOf(URN_SEPARATOR);
+		Preconditions.checkArgument(lastSeparator >= 0);
+		final String className = urn.substring(URN_DOWSERS.length(), lastSeparator);
+		final int index = urn.indexOf(URN_IDENTIFIER_SEPARATOR);
+		final String attributeName = index < 0 ? urn.substring(urn.lastIndexOf(URN_SEPARATOR) + 1) : urn.substring(urn.lastIndexOf(URN_SEPARATOR) + 1, index);
+		final String identity = index < 0 ? null : urn.substring(index + 1);
+		return new Reference(className, attributeName, identity);
+	}
+
+	@Override
+	public int compareTo(final Reference o) {
+		return value.compareTo(o.toString());
+	}
+
+	@Override
+	public String toString() {
+		return value;
+	}
+
+	@Override
+	public int hashCode() {
+		return value.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Reference other = (Reference) obj;
+		return Objects.equal(value, other.value);
+	}
+
+	/**
+	 * Build inner value.
+	 */
+	private void defineString() {
+		if (value != null) {
+			return;
+		}
+		final StringBuilder builder = new StringBuilder(URN_DOWSERS).append(className).append(URN_SEPARATOR);
 		if (attributeName != null) {
 			builder.append(attributeName);
 		}
 		if (identity != null) {
 			builder.append(URN_IDENTIFIER_SEPARATOR).append(identity);
 		}
-		return builder.toString();
+		value = builder.toString();
 	}
 
-	/**
-	 * @param uri
-	 * @return identity part of an urn entity reference
-	 */
-	public static String getIdentity(final URI uri) {
-		return uri.getFragment();
-	}
-
-	/**
-	 * @param uri
-	 * @return identity part of an urn entity reference
-	 */
-	public static String getIdentity(final String urn) {
-		final int index = urn.indexOf(URN_IDENTIFIER_SEPARATOR);
-		return index < 0 ? null : urn.substring(index + 1);
-	}
-
-	/**
-	 * @param uri
-	 * @return entity part of an urn reference
-	 */
-	public static String getEntityClassName(final URI uri) {
-		final String ssp = uri.getSchemeSpecificPart();
-		return ssp.substring(ssp.indexOf(URN_SEPARATOR) + 1, ssp.lastIndexOf(URN_SEPARATOR));
-	}
-
-	/**
-	 * @param uri
-	 * @return entity part of an urn reference
-	 */
-	public static String getEntityClassName(final String urn) {
-		return urn.substring(URN_DOWSERS.length(), urn.lastIndexOf(URN_SEPARATOR));
-	}
-
-	/**
-	 * @param uri
-	 * @return attribute name of an urn attribute reference
-	 */
-	public static String getAttributeName(final URI uri) {
-		final String ssp = uri.getSchemeSpecificPart();
-		return ssp.substring(ssp.lastIndexOf(URN_SEPARATOR) + 1);
-	}
-
-	/**
-	 * @param uri
-	 * @return attribute name of an urn attribute reference
-	 */
-	public static String getAttributeName(final String urn) {
-		final int index = urn.indexOf(URN_IDENTIFIER_SEPARATOR);
-		return index < 0 ? urn.substring(urn.lastIndexOf(URN_SEPARATOR) + 1) : urn.substring(urn.lastIndexOf(URN_SEPARATOR) + 1, index);
-	}
-
-	/**
-	 * Try to locate a ReferenceFactory implementation using specific class
-	 * loader.
-	 * 
-	 * @param classLoader
-	 * @return a ReferenceFactory instance or null or none was found.
-	 */
-	private static ReferenceFactory lookup(final ClassLoader classLoader) {
-		final ServiceLoader<ReferenceFactory> loader = ServiceLoader.load(ReferenceFactory.class, classLoader);
-		final Iterator<ReferenceFactory> iterator = loader.iterator();
-		ReferenceFactory factory = null;
-		while ((factory == null) && iterator.hasNext()) {
-			try {
-				factory = iterator.next();
-			} catch (final Throwable e) {
-			}
-		}
-		if (factory == null) {
-			throw new RuntimeException("No ReferenceFactory Implementation found");
-			// factory = new DefaultReferenceFactory();
-		}
-		return factory;
-	}
 }

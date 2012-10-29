@@ -22,13 +22,14 @@ package com.intelligentsia.dowsers.entity.meta;
 import java.io.Serializable;
 
 import org.intelligentsia.dowsers.core.Identified;
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * <code>MetaAttribute</code>: Ash nazg durbatulûk, ash nazg gimbatul, ash nazg
@@ -51,14 +52,14 @@ import com.google.common.base.Preconditions;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class MetaAttribute implements Identified, Serializable {
+public class MetaAttribute implements Identified<Reference>, Serializable {
 	/**
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = -5802346012784857540L;
 
 	@JsonProperty
-	private final String identity;
+	private final Reference identity;
 
 	@JsonProperty
 	private final String name;
@@ -82,9 +83,9 @@ public class MetaAttribute implements Identified, Serializable {
 	 *             if name or identity is empty
 	 */
 	@JsonCreator
-	private MetaAttribute(@JsonProperty("identity") final String identity, @JsonProperty("name") final String name, @JsonProperty("valueClass") final ClassInformation valueClass) throws NullPointerException, IllegalArgumentException {
+	private MetaAttribute(@JsonProperty("identity") final Reference identity, @JsonProperty("name") final String name, @JsonProperty("valueClass") final ClassInformation valueClass) throws NullPointerException, IllegalArgumentException {
 		super();
-		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		Preconditions.checkArgument(Preconditions.checkNotNull(identity).isIdentifier());
 		this.identity = identity;
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
@@ -93,7 +94,7 @@ public class MetaAttribute implements Identified, Serializable {
 	}
 
 	@Override
-	public String identity() {
+	public Reference identity() {
 		return identity;
 	}
 
@@ -136,7 +137,7 @@ public class MetaAttribute implements Identified, Serializable {
 	 */
 	public static class Builder {
 
-		private String identity;
+		private Reference identity;
 		private String name;
 		private ClassInformation valueClass;
 
@@ -145,7 +146,7 @@ public class MetaAttribute implements Identified, Serializable {
 		 */
 		public Builder() {
 			super();
-			identity = IdentifierFactoryProvider.generateNewIdentifier();
+			identity = References.newReference(MetaAttribute.class);
 		}
 
 		public MetaAttribute build() {
@@ -160,10 +161,10 @@ public class MetaAttribute implements Identified, Serializable {
 		 * @throws NullPointerException
 		 *             if identity is null
 		 * @throws IllegalArgumentException
-		 *             if identity is empty
+		 *             if identity is not an identifier
 		 */
-		public Builder identity(final String identity) throws NullPointerException, IllegalArgumentException {
-			Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		public Builder identity(final Reference identity) throws NullPointerException, IllegalArgumentException {
+			Preconditions.checkArgument(Preconditions.checkNotNull(identity).isIdentifier());
 			this.identity = identity;
 			return this;
 		}

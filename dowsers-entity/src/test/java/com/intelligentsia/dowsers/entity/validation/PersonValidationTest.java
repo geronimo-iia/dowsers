@@ -32,8 +32,9 @@ import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
+import com.intelligentsia.dowsers.entity.model.MetaDataUtil;
 import com.intelligentsia.dowsers.entity.model.Person;
-import com.intelligentsia.dowsers.entity.model.Util;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * 
@@ -43,11 +44,11 @@ import com.intelligentsia.dowsers.entity.model.Util;
  */
 public class PersonValidationTest {
 
-	private EntityFactory<Person> factory; 
+	private EntityFactory<Person> factory;
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class)); 
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
 	}
 
 	@Test
@@ -56,8 +57,8 @@ public class PersonValidationTest {
 		me.setFirstName("Mario");
 		me.setLastName("Fusco");
 		me.setYearOld(35);
-		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-		Set<ConstraintViolation<Person>> violations = validator.validate(me);
+		final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		final Set<ConstraintViolation<Person>> violations = validator.validate(me);
 		assertTrue(violations.isEmpty());
 	}
 }

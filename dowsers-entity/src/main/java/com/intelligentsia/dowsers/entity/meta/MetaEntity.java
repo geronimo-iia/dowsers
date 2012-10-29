@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.intelligentsia.dowsers.core.Identified;
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.keystone.api.artifacts.Version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -33,6 +32,8 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * A {@link MetaEntity} define:
@@ -65,7 +66,7 @@ import com.intelligentsia.dowsers.entity.Entity;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntity implements Identified, Serializable {
+public class MetaEntity implements Identified<Reference>, Serializable {
 
 	/**
 	 * serialVersionUID:long
@@ -75,7 +76,7 @@ public class MetaEntity implements Identified, Serializable {
 	 * Identity.
 	 */
 	@JsonProperty
-	private final String identity;
+	private final Reference identity;
 	/**
 	 * Meta entity name.
 	 */
@@ -111,13 +112,13 @@ public class MetaEntity implements Identified, Serializable {
 	 * @throws NullPointerException
 	 *             if name, version, metaAttributes is null
 	 * @throws IllegalArgumentException
-	 *             if name is empty
+	 *             if name is empty of identify is not an identifier
 	 */
 	@JsonCreator
-	private MetaEntity(@JsonProperty("identity") final String identity, @JsonProperty("name") final String name, @JsonProperty("version") final Version version, @JsonProperty("metaAttributes") final MetaAttributeCollection metaAttributes)
+	private MetaEntity(@JsonProperty("identity") final Reference identity, @JsonProperty("name") final String name, @JsonProperty("version") final Version version, @JsonProperty("metaAttributes") final MetaAttributeCollection metaAttributes)
 			throws NullPointerException, IllegalArgumentException {
 		super();
-		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		Preconditions.checkArgument(Preconditions.checkNotNull(identity).isIdentifier());
 		this.identity = identity;
 		Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(name)));
 		this.name = name;
@@ -126,7 +127,7 @@ public class MetaEntity implements Identified, Serializable {
 	}
 
 	@Override
-	public String identity() {
+	public Reference identity() {
 		return identity;
 	}
 
@@ -177,7 +178,7 @@ public class MetaEntity implements Identified, Serializable {
 		/**
 		 * Identity.
 		 */
-		private String identity;
+		private Reference identity;
 		/**
 		 * Meta entity name.
 		 */
@@ -197,7 +198,7 @@ public class MetaEntity implements Identified, Serializable {
 		 */
 		public Builder() {
 			super();
-			identity = IdentifierFactoryProvider.generateNewIdentifier();
+			identity = References.newReference(MetaEntity.class);
 		}
 
 		/**
@@ -208,10 +209,10 @@ public class MetaEntity implements Identified, Serializable {
 		 * @throws NullPointerException
 		 *             if identity is null
 		 * @throws IllegalArgumentException
-		 *             if identity is empty
+		 *             if identity is not an identifier
 		 */
-		public Builder identity(final String identity) throws NullPointerException, IllegalArgumentException {
-			Preconditions.checkArgument(!"".equals(Preconditions.checkNotNull(identity)));
+		public Builder identity(final Reference identity) throws NullPointerException, IllegalArgumentException {
+			Preconditions.checkArgument(Preconditions.checkNotNull(identity).isIdentifier());
 			this.identity = identity;
 			return this;
 		}
@@ -272,7 +273,7 @@ public class MetaEntity implements Identified, Serializable {
 		 * @throws IllegalArgumentException
 		 *             if name is empty
 		 */
-		public Builder addMetaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
+		public Builder metaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
 			this.metaAttributes(MetaAttribute.builder().name(name).valueClass(valueClass).build());
 			return this;
 		}

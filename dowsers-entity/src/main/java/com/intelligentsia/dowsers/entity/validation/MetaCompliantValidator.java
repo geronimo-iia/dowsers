@@ -36,21 +36,21 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 public class MetaCompliantValidator implements ConstraintValidator<MetaCompliant, Entity> {
 
 	@Override
-	public void initialize(MetaCompliant constraintAnnotation) {
+	public void initialize(final MetaCompliant constraintAnnotation) {
 	}
 
 	@Override
-	public boolean isValid(Entity value, ConstraintValidatorContext context) {
+	public boolean isValid(final Entity value, final ConstraintValidatorContext context) {
 		boolean valid = true;
-		MetaEntityContext entityContext = value.metaEntityContext();
-		Iterator<String> iterator = value.attributeNames().iterator();
+		final MetaEntityContext entityContext = value.metaEntityContext();
+		final Iterator<String> iterator = value.attributeNames().iterator();
 		while (iterator.hasNext() && valid) {
-			String name = iterator.next();
-			MetaAttribute metaAttribute = entityContext.metaAttribute(name);
+			final String name = iterator.next();
+			final MetaAttribute metaAttribute = entityContext.metaAttribute(name);
 			if (metaAttribute == null) {
 				valid = false;
 			} else {
-				Object attribute = value.attribute(name);
+				final Object attribute = value.attribute(name);
 				if (attribute != null) {
 					valid = metaAttribute.valueClass().getType().isAssignableFrom(attribute.getClass());
 				}

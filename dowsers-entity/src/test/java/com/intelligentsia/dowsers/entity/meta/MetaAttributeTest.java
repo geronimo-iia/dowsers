@@ -17,20 +17,19 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity;
+package com.intelligentsia.dowsers.entity.meta;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
-import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * MetaAttributeTest.
@@ -70,7 +69,7 @@ public class MetaAttributeTest {
 
 	@Test
 	public void testMetaAttributBuilderWithIdentitySet() {
-		final String id = IdentifierFactoryProvider.generateNewIdentifier();
+		final Reference id = References.newReference(MetaAttribute.class);
 		final MetaAttribute attribute = MetaAttribute.builder().identity(id).name("test-attribute").valueClass(String.class).build();
 		assertNotNull(attribute.identity());
 		assertEquals(id, attribute.identity());

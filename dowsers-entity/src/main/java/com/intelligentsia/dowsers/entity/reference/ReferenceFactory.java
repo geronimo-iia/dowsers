@@ -20,16 +20,17 @@
 package com.intelligentsia.dowsers.entity.reference;
 
 /**
- * ReferenceFactory declare methods to generate new reference according
- * URN scheme.
+ * <code>ReferenceFactory</code> declare methods to generate new
+ * {@link Reference}.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
  */
 public interface ReferenceFactory {
 	/**
 	 * @param clazz
 	 *            entity class name
-	 * @return an new reference for specified class name
+	 * @return an new {@link Reference} for specified class name
 	 */
-	public abstract String generateNewReference(Class<?> clazz);
+	Reference newReference(Class<?> clazz);
 }

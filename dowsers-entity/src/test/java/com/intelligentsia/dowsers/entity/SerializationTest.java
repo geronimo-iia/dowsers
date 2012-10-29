@@ -37,7 +37,8 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
-import com.intelligentsia.dowsers.entity.model.Util;
+import com.intelligentsia.dowsers.entity.model.MetaDataUtil;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -51,14 +52,14 @@ public class SerializationTest {
 
 	@Before
 	public void initialize() {
-		entityMapper = new EntityMapper(Util.getMetaEntityContextProvider());
+		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider());
 	}
 
 	@Test
 	public void testEntityDynamicSerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final StringWriter writer = new StringWriter();
 
-		final EntityDynamic dynamic = new EntityDynamic("6787007f-f424-40b7-b240-64206b1177e2", MetaEntityContext.builder().definition(MetaModel.getMetaOfEntitydynamic()).build());
+		final EntityDynamic dynamic = new EntityDynamic(Reference.newReference(EntityDynamic.class, "6787007f-f424-40b7-b240-64206b1177e2"), MetaEntityContext.builder().definition(MetaModel.getMetaOfEntitydynamic()).build());
 		dynamic.attribute("name", "Steve");
 		dynamic.attribute("idea", "Sweet apple");
 		assertEquals("Steve", dynamic.attribute("name"));
@@ -67,11 +68,11 @@ public class SerializationTest {
 		entityMapper.writeValue(writer, dynamic);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"" +//
-				"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," +//
-				"\"@attributes\":{" +//
-					"\"name\":\"Steve\"," +//
-					"\"idea\":\"Sweet apple\"}}", result);
+		assertEquals("{\"" + //
+				"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," + //
+				"\"@attributes\":{" + //
+				"\"name\":\"Steve\"," + //
+				"\"idea\":\"Sweet apple\"}}", result);
 
 		final EntityDynamic entityDynamic = entityMapper.readValue(new StringReader(result), EntityDynamic.class);
 
@@ -84,22 +85,20 @@ public class SerializationTest {
 	public void testProxySerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final StringWriter writer = new StringWriter();
 
-		final CustomizableSampleEntity entity = Util.getCustomizableSampleEntity();
+		final CustomizableSampleEntity entity = MetaDataUtil.getCustomizableSampleEntity();
 
 		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals(
-				"{\"" + //
-				"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," +//
-				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," +//
-				"\"@entity\":{" +//
-					"\"@reference\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," +//
-					"\"@attributes\":{" +//
-						"\"name\":\"Hello John\"," +//
-						"\"description\":\"a blablablabalbablbalablabb\"," +//
-						"\"order\":1}}}",
-				result);
+		assertEquals("{\"" + //
+				"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
+				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," + //
+				"\"@entity\":{" + //
+				"\"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
+				"\"@attributes\":{" + //
+				"\"name\":\"Hello John\"," + //
+				"\"description\":\"a blablablabalbablbalablabb\"," + //
+				"\"order\":1}}}", result);
 
 		final Entity entity2 = entityMapper.readValue(new StringReader(result), EntityProxy.class);
 		assertNotNull(entity2);
@@ -112,7 +111,7 @@ public class SerializationTest {
 
 	@Test
 	public void testEntityMapper() {
-		final CustomizableSampleEntity entity = Util.getCustomizableSampleEntity();
+		final CustomizableSampleEntity entity = MetaDataUtil.getCustomizableSampleEntity();
 
 		final StringWriter writer = new StringWriter();
 		entityMapper.writeValue(writer, entity);
@@ -120,10 +119,10 @@ public class SerializationTest {
 
 		final CustomizableSampleEntity entity2 = entityMapper.readValue(new StringReader(result), CustomizableSampleEntity.class);
 		assertEquals(entity, entity2);
-		assertEquals(Util.IDENTIFIER, entity2.identity());
-		assertEquals(Util.NAME, entity2.getName());
-		assertEquals(Util.DESCRIPTION, entity2.getDescription());
-		assertEquals(1L, entity2.attribute(Util.ORDER));
+		assertEquals(MetaDataUtil.IDENTIFIER, entity2.identity());
+		assertEquals(MetaDataUtil.NAME, entity2.getName());
+		assertEquals(MetaDataUtil.DESCRIPTION, entity2.getDescription());
+		assertEquals(1L, entity2.attribute(MetaDataUtil.ORDER));
 	}
 
 	@Test
@@ -155,20 +154,27 @@ public class SerializationTest {
 	@Test
 	public void testMetaEntity() {
 		final StringWriter writer = new StringWriter();
-		final MetaEntity definition = MetaEntity.builder(). // definition
+		final MetaEntity entity = MetaEntity.builder(). // definition
 				name(MetaAttribute.class.getName()).version(MetaModel.VERSION)
 				// identity
-				.addMetaAttribute("identity", String.class)
+				.metaAttribute("identity", String.class)
 				// name
-				.addMetaAttribute("name", String.class)
+				.metaAttribute("name", String.class)
 				// value
-				.addMetaAttribute("valueClass", ClassInformation.class)
+				.metaAttribute("valueClass", ClassInformation.class)
 				// default value
-				.addMetaAttribute("defaultValue", Object.class).build();
-		entityMapper.writeValue(writer, definition);
+				.metaAttribute("defaultValue", Object.class).build();
+		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
 		// System.err.println(result);
-		entityMapper.readValue(new StringReader(result), MetaEntity.class);
+		final MetaEntity entity2 = entityMapper.readValue(new StringReader(result), MetaEntity.class);
+
+		assertNotNull(entity);
+		assertEquals(entity.identity(), entity2.identity());
+		assertEquals(entity.name(), entity2.name());
+		assertEquals(entity.version(), entity2.version());
+
+		// TODO test attributes
 
 	}
 

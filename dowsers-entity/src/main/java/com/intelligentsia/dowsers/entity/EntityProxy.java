@@ -28,6 +28,7 @@ import org.intelligentsia.dowsers.core.reflection.Reflection;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityProxyHandler;
 
 /**
@@ -78,7 +79,7 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 			}
 			return entity.equals(object);
 		} else if (methodName.equals("toString")) { // To String Stuff
-			return Objects.toStringHelper(interfaceName).add("identity", entity.identity()).toString();
+			return entity.toString();
 		}
 		// Entity stuff
 		if ("identity".equals(methodName)) {
@@ -100,6 +101,7 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 		if ("metaEntityContext".equals(methodName)) {
 			return entity.metaEntityContext();
 		}
+
 		// Dynamic Stuff based on Getter/Setter pattern
 		if (methodName.startsWith("get")) {
 			return entity.attribute(Reflection.toFieldName(methodName));
@@ -108,16 +110,17 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 			return proxy;
 		}
 
-		// TODO Dynamic method call
-		// if (entity.metaEntityContext().contains(methodName)) {
-		// if (method.getParameterTypes().length == 0) {
-		// return entity.attribute(methodName);
-		// }
-		// if (method.getParameterTypes().length == 1) {
-		// entity.attribute(methodName, args[0]);
-		// return proxy;
-		// }
-		// }
+		// properties pattern without get/set prefix
+		if (entity.metaEntityContext().containsMetaAttribute(methodName)) {
+			if (method.getParameterTypes().length == 0) {
+				return entity.attribute(methodName);
+			}
+			if (method.getParameterTypes().length == 1) {
+				entity.attribute(methodName, args[0]);
+				return proxy;
+			}
+		}
+
 		// Oops WTF ?
 		// TODO try to find method on Entity instance and call it
 
@@ -133,7 +136,7 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 	}
 
 	@Override
-	public String identity() {
+	public Reference identity() {
 		return entity.identity();
 	}
 

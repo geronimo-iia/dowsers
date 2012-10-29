@@ -17,34 +17,21 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.reference;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
+import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
 
 /**
- * Person.
+ * <code>ReferenceFactoryProvider</code> implements {@link ReferenceFactory}
+ * with {@link IdentifierFactoryProvider} instance for identity part.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public interface Person {
+public class ReferenceFactoryProvider implements ReferenceFactory {
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			metaAttribute("firstName", String.class).//
-			metaAttribute("LastName", String.class).//
-			metaAttribute("yearOld", Integer.class)//
-			.build();
-
-	String getFirstName();
-
-	String getLastName();
-
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
+	@Override
+	public Reference newReference(final Class<?> clazz) {
+		return new Reference(clazz, IdentifierFactoryProvider.generateNewIdentifier());
+	}
 
 }

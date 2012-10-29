@@ -28,13 +28,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
- * EntityCollection.
+ * ReferenceCollection.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityCollection implements Iterable<String>, Serializable {
+public class ReferenceCollection implements Iterable<Reference>, Serializable {
 
 	/**
 	 * serialVersionUID:long
@@ -42,33 +43,33 @@ public class EntityCollection implements Iterable<String>, Serializable {
 	private static final long serialVersionUID = -6158983976858817330L;
 
 	/**
-	 * {@link Collection} of {@link String} instance.
+	 * {@link Collection} of {@link Reference} instance.
 	 */
 	@JsonProperty
-	private final Collection<String> entities;
+	private final Collection<Reference> references;
 
 	/**
-	 * Build a new instance of EntityCollection. with a {@link LinkedList}
+	 * Build a new instance of ReferenceCollection. with a {@link LinkedList}
 	 * instance.
 	 */
-	public EntityCollection() {
-		this(new LinkedList<String>());
+	public ReferenceCollection() {
+		this(new LinkedList<Reference>());
 	}
 
 	/**
-	 * Build a new instance of EntityCollection.java.
+	 * Build a new instance of ReferenceCollection.java.
 	 * 
-	 * @param entities
+	 * @param references
 	 * @throws NullPointerException
-	 *             if entities is null
+	 *             if references is null
 	 */
-	public EntityCollection(final Collection<String> entities) throws NullPointerException {
+	public ReferenceCollection(final Collection<Reference> references) throws NullPointerException {
 		super();
-		this.entities = Preconditions.checkNotNull(entities);
+		this.references = Preconditions.checkNotNull(references);
 	}
 
 	/**
-	 * Add a {@link Reference} on any object which is an entity Representation
+	 * Add a {@link References} on any object which is an entity Representation
 	 * 
 	 * @param any
 	 * @return this instance
@@ -77,23 +78,58 @@ public class EntityCollection implements Iterable<String>, Serializable {
 	 * @throws {@link IllegalArgumentException} if any is not an entity
 	 *         representation
 	 */
-	public EntityCollection add(Object any) throws NullPointerException, IllegalArgumentException {
-		this.entities.add(Reference.newEntityReference(Preconditions.checkNotNull(any)));
+	public ReferenceCollection add(final Object any) throws NullPointerException, IllegalArgumentException {
+		this.references.add(References.identify(Preconditions.checkNotNull(any)));
 		return this;
 	}
 
 	@Override
-	public Iterator<String> iterator() {
-		return entities.iterator();
+	public Iterator<Reference> iterator() {
+		return references.iterator();
 	}
 
 	@JsonIgnore
 	public boolean isEmpty() {
-		return entities.isEmpty();
+		return references.isEmpty();
 	}
 
-	public Collection<String> entities() {
-		return entities;
+	public Collection<Reference> entities() {
+		return references;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = (prime * result) + ((references == null) ? 0 : references.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ReferenceCollection other = (ReferenceCollection) obj;
+		if (references == null) {
+			if (other.references != null) {
+				return false;
+			}
+		} else if (!references.equals(other.references)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ReferenceCollection [references=" + references + "]";
 	}
 
 }

@@ -19,9 +19,16 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
+/**
+ * <code>EntityManager</code> declare methods to manage {@link Entity}.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ */
 public interface EntityManager {
 	/**
 	 * Create a new entity instance
@@ -51,6 +58,20 @@ public interface EntityManager {
 	public <T> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException;
 
 	/**
+	 * Find entity with the specified reference.
+	 * 
+	 * @param reference
+	 *            entity identifier
+	 * @return an entity representation of the expected type and reference
+	 * @throws EntityNotFoundException
+	 * @throws NullPointerException
+	 *             if reference is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not an identifier
+	 */
+	public <T> T find(Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException;
+
+	/**
 	 * Store specified entity.
 	 * 
 	 * @param entity
@@ -71,4 +92,15 @@ public interface EntityManager {
 	 */
 	public <T> void remove(T entity) throws NullPointerException;
 
+	/**
+	 * Remove specified referenced entity.
+	 * 
+	 * @param reference
+	 *            entity reference
+	 * @throws NullPointerException
+	 *             if reference is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not an identifier
+	 */
+	public void remove(Reference reference) throws NullPointerException, IllegalArgumentException;
 }

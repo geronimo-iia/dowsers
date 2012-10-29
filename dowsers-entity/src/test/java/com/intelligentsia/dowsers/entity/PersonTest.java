@@ -31,8 +31,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import org.hamcrest.Matchers;
@@ -41,10 +39,11 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
+import com.intelligentsia.dowsers.entity.model.MetaDataUtil;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.model.PersonDto;
-import com.intelligentsia.dowsers.entity.model.Util;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
@@ -60,8 +59,8 @@ public class PersonTest {
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, Util.getMetaEntityContextProvider().find(Person.class));
-		entityMapper = new EntityMapper(Util.getMetaEntityContextProvider().add(Person.class, Person.META));
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
+		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider().add(Person.class, Person.META));
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class PersonTest {
 	}
 
 	@Test
-	public void testReference() throws URISyntaxException {
+	public void testReference() {
 		final Person person = factory.newInstance();
 		person.setFirstName("Mario");
 		person.setLastName("Fusco");
@@ -85,10 +84,9 @@ public class PersonTest {
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());
 
-		final String urn = Reference.newEntityReference(person);
+		final Reference urn = References.identify(person);
 		assertNotNull(urn);
-		assertEquals(Person.class.getName(), Reference.getEntityClassName(urn));
-
+		assertEquals(Reference.newReference(Person.class), urn.getEntityClassReference());
 	}
 
 	@Test
@@ -99,7 +97,7 @@ public class PersonTest {
 		 * 	"@interface":"com.intelligentsia.dowsers.entity.model.Person",
 		 * 	"@support":"com.intelligentsia.dowsers.entity.EntityDynamic",
 		 * 	"@entity":{
-		 * 		"@reference":"urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be",
+		 * 		"@identity":"urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be",
 		 * 		"@attributes":{
 		 * 			"firstName":"Mario",
 		 * 			"lastName":"Fusco",
@@ -168,6 +166,18 @@ public class PersonTest {
 		final List<PersonDto> personsDto = project(meAndMyFriends, PersonDto.class, on(Person.class).getFirstName(), on(Person.class).getYearOld());
 		assertNotNull(oldFriends);
 		assertEquals((Integer) 4, (Integer) personsDto.size());
+	}
+
+	@Test
+	public void testProxyReference() throws IllegalArgumentException {
+		final Person person = factory.newInstance(Reference.newReference(Person.class, "4c8b03dd-908a-4cad-8d48-3c7277d44ac9"));
+		final Reference uri = References.identify(person);
+		assertNotNull(uri);
+		assertEquals("urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.toString());
+		assertEquals("com.intelligentsia.dowsers.entity.model.Person", uri.getEntityClassName());
+		assertEquals("identity", uri.getAttributeName());
+		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", uri.getIdentity());
+		assertTrue(uri.isIdentifier());
 	}
 
 }

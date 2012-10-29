@@ -23,8 +23,8 @@
 package com.intelligentsia.dowsers.entity.store;
 
 /**
- * EntityNotFoundException. 
- *
+ * EntityNotFoundException.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityNotFoundException extends RuntimeException {
@@ -43,26 +43,29 @@ public class EntityNotFoundException extends RuntimeException {
 
 	/**
 	 * Build a new instance of EntityNotFoundException.java.
+	 * 
 	 * @param message
 	 */
-	public EntityNotFoundException(String message) {
+	public EntityNotFoundException(final String message) {
 		super(message);
 	}
 
 	/**
 	 * Build a new instance of EntityNotFoundException.java.
+	 * 
 	 * @param cause
 	 */
-	public EntityNotFoundException(Throwable cause) {
+	public EntityNotFoundException(final Throwable cause) {
 		super(cause);
 	}
 
 	/**
 	 * Build a new instance of EntityNotFoundException.java.
+	 * 
 	 * @param message
 	 * @param cause
 	 */
-	public EntityNotFoundException(String message, Throwable cause) {
+	public EntityNotFoundException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

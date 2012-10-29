@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity;
+package com.intelligentsia.dowsers.entity.meta;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -27,9 +27,7 @@ import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
-import com.intelligentsia.dowsers.entity.meta.MetaAttributeCollection;
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityTest.
@@ -41,10 +39,11 @@ public class MetaEntityTest {
 	@Test
 	public void testMetaEntityBuilder() {
 		final MetaEntity definition = MetaEntity.builder().name("test").version(new Version(1)) // attributes
-				.addMetaAttribute("test-attribute", String.class).build();
+				.metaAttribute("test-attribute", String.class).build();
 
 		assertNotNull(definition);
 		assertNotNull(definition.identity());
+		assertEquals(new Reference(MetaEntity.class), definition.identity().getEntityClassReference());
 		assertEquals("test", definition.name());
 		assertEquals(new Version(1), definition.version());
 		assertNotNull(definition.metaAttributes());

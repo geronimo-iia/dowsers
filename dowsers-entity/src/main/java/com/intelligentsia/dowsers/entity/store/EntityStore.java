@@ -20,9 +20,10 @@
 package com.intelligentsia.dowsers.entity.store;
 
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * EntityStore declare methods to store Entity.
+ * EntityStore declare methods to store Entity representation.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -33,16 +34,18 @@ public interface EntityStore {
 	 * 
 	 * @param expectedType
 	 *            expected type entity
-	 * @param identity
-	 *            identity what we looking for
+	 * @param reference
+	 *            reference what we looking for
 	 * @return an entity instance of the expected type and identity
 	 * 
 	 * @throws EntityNotFoundException
 	 *             if no entity with specified identity and type exists.
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not an identifier
 	 */
-	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException;
+	public <T> T find(Class<T> expectedType, Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException;
 
 	/**
 	 * Store specified entity.
@@ -53,8 +56,10 @@ public interface EntityStore {
 	 *             if entity is null
 	 * @throws ConcurrencyException
 	 *             if entity to store is old dated
+	 * @throws IllegalArgumentException
+	 *             if entity is not an {@link Entity} representation
 	 */
-	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException;
+	public <T> void store(T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException;
 
 	/**
 	 * Remove specified entity.
@@ -62,7 +67,21 @@ public interface EntityStore {
 	 * @param entity
 	 * @throws NullPointerException
 	 *             if entity is null
+	 * @throws IllegalArgumentException
+	 *             if entity is not an {@link Entity} representation
 	 */
-	public <T extends Entity> void remove(T entity) throws NullPointerException;
+	public <T> void remove(T entity) throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Remove specified referenced entity.
+	 * 
+	 * @param reference
+	 *            entity reference
+	 * @throws NullPointerException
+	 *             if reference is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not an identifier
+	 */
+	public void remove(Reference reference) throws NullPointerException, IllegalArgumentException;
 
 }

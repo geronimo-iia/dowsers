@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity;
+package com.intelligentsia.dowsers.entity.meta;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -27,8 +27,6 @@ import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.keystone.api.artifacts.Version;
 import org.junit.Test;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;
 
 public class MetaEntityContextTest {
@@ -37,10 +35,10 @@ public class MetaEntityContextTest {
 	public void testMetaEntityContextBuilder() {
 		final MetaEntityContext context = MetaEntityContext.builder() // definition
 				.definition(new MetaEntity.Builder().name(CustomizableSampleEntity.class.getName()).version(new Version(1))// attributes
-						.addMetaAttribute("name", String.class) //
-						.addMetaAttribute("description", String.class).build()) // extension
+						.metaAttribute("name", String.class) //
+						.metaAttribute("description", String.class).build()) // extension
 				.addExtendedDefinition(new MetaEntity.Builder().name("test-extended").version(new Version(2)). // attributes
-						addMetaAttribute("order", Long.class).build()).build();
+						metaAttribute("order", Long.class).build()).build();
 
 		assertNotNull(context);
 		assertEquals(CustomizableSampleEntity.class.getName(), context.name());

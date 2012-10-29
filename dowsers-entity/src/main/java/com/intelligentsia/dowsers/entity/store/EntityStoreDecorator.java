@@ -20,7 +20,7 @@
 package com.intelligentsia.dowsers.entity.store;
 
 import com.google.common.base.Preconditions;
-import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * EntityStoreDecorator implements decorator pattern on {@link EntityStore}.
@@ -28,23 +28,39 @@ import com.intelligentsia.dowsers.entity.Entity;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class EntityStoreDecorator implements EntityStore {
+
 	protected final EntityStore entityStore;
 
-	public EntityStoreDecorator(EntityStore entityStore) throws NullPointerException {
+	/**
+	 * Build a new instance of <code>EntityStoreDecorator</code>.
+	 * 
+	 * @param entityStore
+	 * @throws NullPointerException
+	 *             if entityStore is null
+	 */
+	public EntityStoreDecorator(final EntityStore entityStore) throws NullPointerException {
 		super();
 		this.entityStore = Preconditions.checkNotNull(entityStore);
 	}
 
-	public <T extends Entity> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException {
-		return entityStore.find(expectedType, identity);
+	@Override
+	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
+		return entityStore.find(expectedType, reference);
 	}
 
-	public <T extends Entity> void store(T entity) throws NullPointerException, ConcurrencyException {
+	@Override
+	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
 		entityStore.store(entity);
 	}
 
-	public <T extends Entity> void remove(T entity) throws NullPointerException {
+	@Override
+	public <T> void remove(final T entity) throws NullPointerException, IllegalArgumentException {
 		entityStore.remove(entity);
+	}
+
+	@Override
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
+		entityStore.remove(reference);
 	}
 
 }

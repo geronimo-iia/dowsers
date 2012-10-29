@@ -17,19 +17,31 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.reference;
+package com.intelligentsia.dowsers.entity.meta;
 
-import org.intelligentsia.dowsers.core.IdentifierFactoryProvider;
+import static junit.framework.Assert.assertNotNull;
+
+import org.junit.Test;
+
+import com.intelligentsia.dowsers.entity.EntityDynamic;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>DefaultReferenceFactory</code> implements {@link ReferenceFactory} with
- * {@link IdentifierFactoryProvider} instance for id part.
+ * <code>MetaEntityContextProviderTest</code>.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
  */
-public class DefaultReferenceFactory implements ReferenceFactory {
-	@Override
-	public String generateNewReference(Class<?> clazz) {
-		return Reference.newEntityReference(clazz, IdentifierFactoryProvider.generateNewIdentifier()).toString();
+public class MetaEntityContextProviderTest {
+
+	@Test
+	public void testDefaultMetaData() {
+
+		final MetaEntityContextProvider provider = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext();
+		assertNotNull(provider);
+
+		final MetaEntityContext context = provider.find(Reference.newReference(EntityDynamic.class));
+		assertNotNull(context);
+
 	}
 }

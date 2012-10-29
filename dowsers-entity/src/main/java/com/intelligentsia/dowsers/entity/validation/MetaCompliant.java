@@ -28,8 +28,8 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * MetaCompliant annotation. 
- *
+ * MetaCompliant annotation.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 @Target({ ElementType.TYPE })

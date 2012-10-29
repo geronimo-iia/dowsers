@@ -23,8 +23,8 @@ import java.util.Map;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
  * ShardingEntityStore.
@@ -35,7 +35,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	/**
 	 * {@link Map} of URI and {@link EntityStore}.
 	 */
-	private Map<String, EntityStore> stores = Maps.newHashMap();
+	private Map<Reference, EntityStore> stores = Maps.newHashMap();
 
 	/**
 	 * Build a new instance of ShardingEntityStore.java.
@@ -43,28 +43,33 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @param defaultEntityStore
 	 *            default {@link EntityStore}
 	 * @param stores
-	 *            a Map of Reference, {@link EntityStore}
+	 *            a Map of {@link Reference}, {@link EntityStore}
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<String, EntityStore> stores) throws NullPointerException {
+	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<Reference, EntityStore> stores) throws NullPointerException {
 		super(defaultEntityStore);
 		this.stores = Preconditions.checkNotNull(stores);
 	}
 
 	@Override
-	public <T extends Entity> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
-		return find(Reference.newAttributeReference(expectedType, "identity", identity)).find(expectedType, identity);
+	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
+		return find(reference).find(expectedType, reference);
 	}
 
 	@Override
-	public <T extends Entity> void store(final T entity) throws NullPointerException, ConcurrencyException {
-		find(Reference.newEntityCollectionReference(entity.getClass())).store(entity);
+	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
+		find(References.identify(entity)).store(entity);
 	}
 
 	@Override
-	public <T extends Entity> void remove(final T entity) throws NullPointerException {
-		find(Reference.newEntityCollectionReference(entity.getClass())).remove(entity);
+	public <T> void remove(final T entity) throws NullPointerException, IllegalArgumentException {
+		find(References.identify(entity)).remove(entity);
+	}
+
+	@Override
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
+		find(reference).remove(reference);
 	}
 
 	/**
@@ -73,10 +78,13 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @param reference
 	 * @return {@link EntityStore} instance.
 	 */
-	public EntityStore find(final String reference) {
-		final EntityStore result = stores.get(reference);
+	public EntityStore find(final Reference reference) {
+		EntityStore result = stores.get(reference);
 		if (result == null) {
-			return this.entityStore;
+			result = stores.get(reference.getEntityClassReference());
+			if (result == null) {
+				result = this.entityStore;
+			}
 		}
 		return result;
 	}
@@ -94,7 +102,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
 	public static class Builder {
-		private final Map<String, EntityStore> stores = Maps.newHashMap();
+		private final Map<Reference, EntityStore> stores = Maps.newHashMap();
 
 		/**
 		 * Build a new instance of ShardingEntityStore.java.
@@ -114,7 +122,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 		 * @throws NullPointerException
 		 *             if one of parameters is null
 		 */
-		public Builder add(final String reference, final EntityStore entityStore) throws NullPointerException {
+		public Builder add(final Reference reference, final EntityStore entityStore) throws NullPointerException {
 			stores.put(reference, Preconditions.checkNotNull(entityStore));
 			return this;
 		}

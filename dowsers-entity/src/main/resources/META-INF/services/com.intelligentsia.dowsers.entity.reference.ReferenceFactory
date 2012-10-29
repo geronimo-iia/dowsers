@@ -1,1 +1,1 @@
-com.intelligentsia.dowsers.entity.reference.DefaultReferenceFactory # default reference factory
+com.intelligentsia.dowsers.entity.reference.ReferenceFactoryProvider # default reference factory provider
