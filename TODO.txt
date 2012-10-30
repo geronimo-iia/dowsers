@@ -22,9 +22,7 @@
 -> add model :
 	- entity collection
 	- entity life cycle (creation date, update...)
-
--> test performance
-
+- finalize entity meta
 -> create view and view definition
 
  
