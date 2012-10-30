@@ -29,7 +29,7 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
  */
 public enum MetaDataUtil {
 
-	; 
+	;
 
 	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext(). //
 			add(Person.class, MetaEntityContext.builder().definition( // definition

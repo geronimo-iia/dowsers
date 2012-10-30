@@ -21,20 +21,41 @@ package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>MetaEntityProvider</code> declare methods to find {@link MetaEntity}.
+ * <code>MetaEntityProviderComposite</code> aggregate {@link MetaEntity}
+ * definition from multiple {@link MetaEntityProvider}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
  */
-public interface MetaEntityProvider {
+public class MetaEntityProviderComposite implements MetaEntityProvider {
+
+	private final Collection<MetaEntityProvider> metaEntityProviders;
 
 	/**
-	 * @param reference
-	 * @return a {@link Collection} of {@link MetaEntity} instance
+	 * Build a new instance of <code>MetaEntityProviderComposite</code>.
+	 * 
+	 * @param metaEntityProviders
+	 *            collection of {@link MetaEntityProvider}
 	 * @throws NullPointerException
-	 *             if reference is null
+	 *             if metaEntityProviders is null
 	 */
-	public Collection<MetaEntity> find(Reference reference) throws NullPointerException;
+	public MetaEntityProviderComposite(final Collection<MetaEntityProvider> metaEntityProviders) throws NullPointerException {
+		super();
+		this.metaEntityProviders = Preconditions.checkNotNull(metaEntityProviders);
+	}
+
+	@Override
+	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
+		final Collection<MetaEntity> result = Sets.newHashSet();
+		for (final MetaEntityProvider provider : metaEntityProviders) {
+			result.addAll(provider.find(reference));
+		}
+		return result;
+	}
+
 }

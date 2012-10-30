@@ -17,6 +17,9 @@
  *        under the License.
  *
  */
+/**
+ * 
+ */
 package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
@@ -24,17 +27,20 @@ import java.util.Collection;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>MetaEntityProvider</code> declare methods to find {@link MetaEntity}.
+ * <code>ResourceMetaEntityProvider</code>.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
  */
-public interface MetaEntityProvider {
+public class ResourceMetaEntityProvider implements MetaEntityProvider {
 
 	/**
-	 * @param reference
-	 * @return a {@link Collection} of {@link MetaEntity} instance
-	 * @throws NullPointerException
-	 *             if reference is null
+	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
 	 */
-	public Collection<MetaEntity> find(Reference reference) throws NullPointerException;
+	@Override
+	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
