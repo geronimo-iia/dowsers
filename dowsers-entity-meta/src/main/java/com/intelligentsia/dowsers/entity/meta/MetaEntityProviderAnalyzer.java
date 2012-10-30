@@ -24,10 +24,16 @@ package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
+import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>MetaEntityProviderAnalyzer</code>.
+ * <code>MetaEntityProviderAnalyzer</code> implements {@link MetaEntityProvider}
+ * by analyzing specified {@link Entity} class in {@link Reference}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
@@ -39,7 +45,20 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
-		// TODO Auto-generated method stub
+		Preconditions.checkNotNull(reference);
+		Collection<MetaEntity> result = Sets.newHashSet();
+		// obtain class information
+		ClassInformation classInformation = ClassInformation.parse(reference.getEntityClassName());
+		// analyze
+		MetaEntity metaEntity = analyze(classInformation);
+		if (metaEntity != null) {
+			result.add(metaEntity);
+		}
+		return result;
+	}
+
+	public MetaEntity analyze(ClassInformation classInformation) throws NullPointerException {
+		//TODO implements it
 		return null;
 	}
 
