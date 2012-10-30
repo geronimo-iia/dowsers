@@ -19,19 +19,17 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
-import org.junit.Test;
-
 /**
  * <code>InMemoryEntityStoreTest</code>.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class InMemoryEntityStoreTest {
+public class InMemoryEntityStoreTest extends StoreBaseTest {
 
-	@Test
-	public void testEntityStore() {
-		// TODO
+	@Override
+	public EntityStore instanciateEntityStore() {
+		return new InMemoryEntityStore(entityMapper);
 	}
 
 }

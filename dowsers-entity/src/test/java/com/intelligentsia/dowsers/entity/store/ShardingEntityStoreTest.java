@@ -19,20 +19,48 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
-/**
- * <code>ShardingEntityStoreTest</code>. 
- *
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
- *
- */
-public class ShardingEntityStoreTest {
+import com.intelligentsia.dowsers.entity.model.Person;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 
+/**
+ * <code>ShardingEntityStoreTest</code>.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * 
+ */
+public class ShardingEntityStoreTest extends StoreBaseTest {
+
+	protected EntityStore personStore;
+	protected EntityStore defaultEntityStore;
+
+	@Override
+	public EntityStore instanciateEntityStore() {
+		personStore = new InMemoryEntityStore(entityMapper);
+		defaultEntityStore = new FileEntityStore(FileEntityStoreTest.getRoot(), entityMapper);
+		return ShardingEntityStore.builder().// person
+				add(Reference.newReference(Person.class), personStore).build(defaultEntityStore);
+	}
 
 	@Test
-	public void testEntityStore() {
-		// TODO
+	public void testSharding() {
+		final Person mario = getMario();
+		final Reference id = References.identify(mario);
+		// create on sharing
+		entityStore.store(mario);
+		// find it in person
+		personStore.find(Person.class, id);
+		// not found on default
+		try {
+			defaultEntityStore.find(Person.class, id);
+			Assert.fail();
+		} catch (final EntityNotFoundException e) {
+			// ok
+		}
 	}
 
 }

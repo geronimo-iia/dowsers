@@ -27,7 +27,8 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 
 /**
- * ShardingEntityStore.
+ * ShardingEntityStore implements a sharding {@link EntityStore}.
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

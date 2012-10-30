@@ -17,28 +17,32 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.store;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
+import java.io.Reader;
 
-/**
- * MetaDataUtil.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- */
-public enum Util {
+import com.google.common.base.Preconditions;
+import com.google.common.io.Closeables;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
-	; 
+public abstract class EntityStoreSerializer implements EntityStore {
+	/**
+	 * {@link EntityMapper} instance.
+	 */
+	protected final EntityMapper entityMapper;
 
-	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = MetaEntityContextProviderSupport.builder().addDefaultMetaEntityContext(). //
-			add(Person.class, MetaEntityContext.builder().definition( // definition
-					Person.META).build());
-
-	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
-		return metaEntityContextProviderSupport;
+	public EntityStoreSerializer(final EntityMapper entityMapper) throws NullPointerException {
+		super();
+		this.entityMapper = Preconditions.checkNotNull(entityMapper);
 	}
 
- 
-
+	public <T> T readValue(final Class<T> expectedType, final Reader reader) {
+		try {
+			return entityMapper.readValue(reader, expectedType);
+		} finally {
+			if (reader != null) {
+				Closeables.closeQuietly(reader);
+			}
+		}
+	}
 }

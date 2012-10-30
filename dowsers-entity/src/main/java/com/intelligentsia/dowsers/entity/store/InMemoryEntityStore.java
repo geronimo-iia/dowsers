@@ -19,11 +19,18 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
  * InMemoryEntityStore implements a {@link EntityStore} in memory (only for
@@ -33,24 +40,49 @@ import com.intelligentsia.dowsers.entity.reference.References;
  */
 public class InMemoryEntityStore implements EntityStore {
 
-	private final Map<Reference, Object> entities = Maps.newHashMap();
+	private final Map<Reference, String> entities = Maps.newHashMap();
+	/**
+	 * {@link EntityMapper} instance.
+	 */
+	private final EntityMapper entityMapper;
 
 	/**
 	 * Build a new instance of InMemoryEntityStore.java.
 	 */
-	public InMemoryEntityStore() {
+	public InMemoryEntityStore(final EntityMapper entityMapper) throws NullPointerException {
 		super();
+		this.entityMapper = Preconditions.checkNotNull(entityMapper);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
-		return (T) entities.get(reference);
+		final String data = entities.get(reference);
+		if (data == null) {
+			throw new EntityNotFoundException();
+		}
+		Reader reader = null;
+		try {
+			reader = new StringReader(data);
+			return entityMapper.readValue(reader, expectedType);
+		} finally {
+			if (reader != null) {
+				Closeables.closeQuietly(reader);
+			}
+		}
 	}
 
 	@Override
 	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
-		entities.put(References.identify(entity), entity);
+		Writer writer = null;
+		try {
+			writer = new StringWriter();
+			entityMapper.writeValue(writer, entity);
+			entities.put(References.identify(entity), writer.toString());
+		} finally {
+			if (writer != null) {
+				Closeables.closeQuietly(writer);
+			}
+		}
 	}
 
 	@Override

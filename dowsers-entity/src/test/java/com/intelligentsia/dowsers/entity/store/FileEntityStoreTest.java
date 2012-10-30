@@ -19,7 +19,11 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
-import org.junit.Test;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import com.google.common.base.Throwables;
 
 /**
  * <code>FileEntityStoreTest</code>.
@@ -27,11 +31,24 @@ import org.junit.Test;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class FileEntityStoreTest {
+public class FileEntityStoreTest extends StoreBaseTest {
 
-	@Test
-	public void testEntityStore() {
-		// TODO
+	@Override
+	public EntityStore instanciateEntityStore() {
+		return new FileEntityStore(getRoot(), entityMapper);
 	}
 
+	public static File getRoot() {
+		// Calculates the root directory of the demo project.
+		URI uri;
+		try {
+			uri = FileEntityStoreTest.class.getResource("FileEntityStoreTest.class").toURI();
+		} catch (final URISyntaxException e) {
+			throw Throwables.propagate(e);
+		}
+		final String path = new File(uri.getPath()).getAbsolutePath();
+		final String subPath = "\\target\\test-classes\\com\\intelligentsia\\dowsers\\entity\\store\\FileEntityStoreTest.class";
+		final File root = new File(new File(path.substring(0, path.length() - subPath.length())), File.separator + "target" + File.separator + "output");
+		return root;
+	}
 }

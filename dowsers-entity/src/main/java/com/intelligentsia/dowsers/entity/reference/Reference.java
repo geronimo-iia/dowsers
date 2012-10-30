@@ -26,8 +26,7 @@ import java.net.URISyntaxException;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
-import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.model.Person;
+import com.intelligentsia.dowsers.entity.Entity; 
 import com.intelligentsia.dowsers.entity.store.EntityStore;
 
 /**
@@ -42,23 +41,23 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * <code>urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:identity#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be</code>
  * represent:
  * <ul>
- * <li>a reference on a {@link Person} instance with
+ * <li>a reference on a Person instance with
  * '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
- * <li>a reference on attribute named 'identity' of a {@link Person} instance
+ * <li>a reference on attribute named 'identity' of a Person instance
  * with '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
  * </ul>
  * 
  * <code>urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:name#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be</code>
  * represent:
  * <ul>
- * <li>a reference on attribute named 'name' of a {@link Person} instance with
+ * <li>a reference on attribute named 'name' of a Person instance with
  * '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
  * </ul>
  * 
  * <code>urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:</code>
  * represent:
  * <ul>
- * <li>a reference on all entity of class {@link Person}.</li>
+ * <li>a reference on all entity of class Person.</li>
  * </ul>
  * 
  * Note: Why not use {@link URI} ?

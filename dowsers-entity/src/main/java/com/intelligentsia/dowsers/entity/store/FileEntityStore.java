@@ -26,26 +26,44 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.keystone.api.StringUtils;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 
 /**
- * FileEntityStore.
+ * FileEntityStore implements EntityStore using File system.
+ * 
+ * <p>
+ * Each entity is store under root directory like this:
+ * </p>
+ * <code>
+ * ${root}/${entity class name}/{insert(entity.reference.identity,/, %2)/entity.reference.identity
+ * </code>
+ * <p>
+ * Example for a instance of Person with id
+ * '1b8f388f-9bfb-429a-a68b-dea17c7765ee':
+ * </p>
+ * <code>
+ * ${root}/com.intelligentsia.dowsers.entity.model.Person/1b/8f/38/8f/9b/fb/42/9a/a6/8b/de/a1/7c/77/65/ee/1b8f388f-9bfb-429a-a68b-dea17c7765ee
+ * </code>
+ * 
+ * This implementation use a cache to map entity.reference and file.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class FileEntityStore implements EntityStore {
-	/**
-	 * {@link File} root.
-	 */
-	private final File root;
 
 	/**
 	 * {@link EntityMapper} instance.
@@ -53,7 +71,16 @@ public class FileEntityStore implements EntityStore {
 	private final EntityMapper entityMapper;
 
 	/**
-	 * Build a new instance of FileEntityStore.
+	 * {@link LoadingCache} of File.
+	 */
+	private final LoadingCache<Reference, File> files;
+
+	/**
+	 * Build a new instance of FileEntityStore with default cache:
+	 * <ul>
+	 * <li>Maximum size : 1000 elements</li>
+	 * <li>expire after access : 1 hour</li>
+	 * </ul>
 	 * 
 	 * @param root
 	 *            root directory of this {@link EntityStore}.
@@ -64,10 +91,29 @@ public class FileEntityStore implements EntityStore {
 	 * @throws IllegalStateException
 	 *             if root is not a directory of if it cannot be created
 	 */
-	public FileEntityStore(final File root, final EntityMapper entityMapper) throws NullPointerException, IllegalStateException {
+	public FileEntityStore(final File root, final EntityMapper entityMapper) {
+		this(root, entityMapper, CacheBuilder.newBuilder().maximumSize(1000).expireAfterAccess(1, TimeUnit.HOURS));
+	}
+
+	/**
+	 * Build a new instance of <code>FileEntityStore</code>.
+	 * 
+	 * @param root
+	 *            root directory of this {@link EntityStore}.
+	 * @param entityMapper
+	 *            {@link EntityMapper} to use
+	 * @param cacheBuilder
+	 *            cache Builder
+	 * @throws NullPointerException
+	 *             if one of parameters is null
+	 * @throws IllegalStateException
+	 *             if root is not a directory of if it cannot be created
+	 */
+	public FileEntityStore(final File root, final EntityMapper entityMapper, final CacheBuilder<Object, Object> cacheBuilder) throws NullPointerException, IllegalStateException {
 		super();
-		this.root = Preconditions.checkNotNull(root);
+		Preconditions.checkNotNull(root);
 		this.entityMapper = Preconditions.checkNotNull(entityMapper);
+		// check root
 		if (!root.exists()) {
 			if (!root.mkdirs()) {
 				throw new IllegalStateException(StringUtils.format("unable to create directory '%s'", root));
@@ -76,6 +122,19 @@ public class FileEntityStore implements EntityStore {
 		if (!root.isDirectory()) {
 			throw new IllegalStateException(StringUtils.format("'%s' is not a directory", root));
 		}
+		// cache
+		files = Preconditions.checkNotNull(cacheBuilder).build(new CacheLoader<Reference, File>() {
+			@Override
+			public File load(final Reference urn) throws Exception {
+				final StringBuilder builder = new StringBuilder(urn.getIdentity().replace("-", ""));
+				for (int i = 2; i < builder.length(); i += 2) {
+					builder.insert(i, File.separator);
+					i++;
+				}
+				builder.append(File.separator).append(urn.getIdentity());
+				return new File(new File(root, urn.getEntityClassName()), builder.toString());
+			}
+		});
 	}
 
 	@Override
@@ -125,14 +184,15 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	public File getFile(final Reference urn, final boolean create) {
-		final StringBuilder builder = new StringBuilder();
-		for (final String p : urn.getIdentity().split("\b{2}")) {
-			builder.append(File.separator).append(p);
+		try {
+			final File file = files.get(urn);
+			if (create) {
+				file.getParentFile().mkdirs();
+			}
+			return file;
+		} catch (final ExecutionException e) {
+			throw Throwables.propagate(e);
 		}
-		final File file = new File(new File(root, urn.getEntityClassName()), builder.deleteCharAt(0).toString());
-		if (create) {
-			file.getParentFile().mkdirs();
-		}
-		return file;
 	}
+
 }

@@ -31,5 +31,5 @@ public class EntityLifeCycleInformation implements Serializable {
 
 	private static final long serialVersionUID = 5565491968770081833L;
 
-	//TODO choose a good way to store date> may we see Joda
+	// TODO choose a good way to store date> may we see Joda
 }
