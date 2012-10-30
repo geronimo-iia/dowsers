@@ -27,12 +27,12 @@ import java.util.Collection;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>ReflectionMetaEntityProvider</code>.
+ * <code>MetaEntityProviderAnalyzer</code>.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class ReflectionMetaEntityProvider implements MetaEntityProvider {
+public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 
 	/**
 	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
