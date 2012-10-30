@@ -375,12 +375,7 @@
 		<module>dowsers-entity</module>
 		<module>dowsers-entity-manager</module>
 		<module>dowsers-entity-store</module>
-		<!-- <module>dowsers-meta-repository</module> -->
-		<!-- <module>dowsers-domain</module> -->
+		<module>dowsers-entity-meta</module>
 		<module>dowsers-command</module>
-		<!-- <module>dowsers-event</module> -->
-		<!-- <module>dowsers-eventstore</module> -->
-		<!-- <module>dowsers-test</module> -->
-		<!-- <module>dowsers-sample</module> -->
 	</modules>
 </project>
