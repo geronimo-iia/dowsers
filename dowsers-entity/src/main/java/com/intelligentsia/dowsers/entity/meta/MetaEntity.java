@@ -77,6 +77,7 @@ public class MetaEntity implements Identified<Reference>, Serializable {
 	 */
 	@JsonProperty
 	private final Reference identity;
+	
 	/**
 	 * Meta entity name.
 	 */
