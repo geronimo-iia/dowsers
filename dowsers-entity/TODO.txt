@@ -19,19 +19,10 @@
 ====
 
 
-
--> test unit on FileEntityStore, 
--> test unit on in memory Entity store
--> test unit on Sharding Entity store
-
 -> add model :
 	- entity collection
 	- entity life cycle (creation date, update...)
 	
--> add find(URI ), remove(URI ) on EntityStore
-
--> uniformize metaAttributes et addMetaAttribute on MetaEntity
-
 -> create a store module
 
 -> create a manager module

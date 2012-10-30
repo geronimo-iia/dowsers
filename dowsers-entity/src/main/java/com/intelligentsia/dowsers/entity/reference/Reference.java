@@ -26,8 +26,7 @@ import java.net.URISyntaxException;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
-import com.intelligentsia.dowsers.entity.Entity; 
-import com.intelligentsia.dowsers.entity.store.EntityStore;
+import com.intelligentsia.dowsers.entity.Entity;
 
 /**
  * A reference follow urn scheme: urn:dowsers:XXXX:YYYY#IIII, where
@@ -63,7 +62,7 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * Note: Why not use {@link URI} ?
  * <ul>
  * <li>Avoid try catching {@link URISyntaxException}...</li>
- * <li>Many {@link URI} instantiation when using with {@link EntityStore} and
+ * <li>Many {@link URI} instantiation when using with EntityStore and
  * other...</li>
  * </ul>
  * 

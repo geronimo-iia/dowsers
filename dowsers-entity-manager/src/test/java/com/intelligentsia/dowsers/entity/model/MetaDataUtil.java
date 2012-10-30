@@ -19,35 +19,24 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 
 /**
- * Person.
+ * MetaDataUtil.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@MetaCompliant
-public interface Person {
+public enum MetaDataUtil {
 
-	public static MetaEntity META = MetaEntity.builder().name(Person.class.getName()).version(MetaModel.VERSION). //
-			metaAttributes(MetaModel.getIdentityAttribute()).//
-			metaAttribute("firstName", String.class).//
-			metaAttribute("lastName", String.class).//
-			metaAttribute("yearOld", Integer.class)//
-			.build();
+	; 
 
-	String getFirstName();
+	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext(). //
+			add(Person.class, MetaEntityContext.builder().definition( // definition
+					Person.META).build());
 
-	String getLastName();
-
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
+	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
+		return metaEntityContextProviderSupport;
+	}
 
 }
