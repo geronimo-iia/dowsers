@@ -31,25 +31,25 @@ import com.google.common.collect.Multimap;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * <code>ResourceMetaEntityProvider</code> implements {@link MetaEntityProvider}
+ * <code>MetaEntityProviderSupport</code> implements {@link MetaEntityProvider}
  * using a {@link Multimap} as underlying implementation. .
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class ResourceMetaEntityProvider implements MetaEntityProvider {
+public class MetaEntityProviderSupport implements MetaEntityProvider {
 
 	private final Multimap<Reference, MetaEntity> definitions;
 
 	/**
-	 * Build a new instance of <code>ResourceMetaEntityProvider</code>.
+	 * Build a new instance of <code>MetaEntityProviderSupport</code>.
 	 * 
 	 * @param definitions
 	 *            a {@link Multimap} of {@link Reference}, {@link MetaEntity}.
 	 * @throws NullPointerException
 	 *             if definitions is null
 	 */
-	public ResourceMetaEntityProvider(final Multimap<Reference, MetaEntity> definitions) throws NullPointerException {
+	public MetaEntityProviderSupport(final Multimap<Reference, MetaEntity> definitions) throws NullPointerException {
 		super();
 		this.definitions = Preconditions.checkNotNull(definitions);
 	}
@@ -88,8 +88,8 @@ public class ResourceMetaEntityProvider implements MetaEntityProvider {
 			return this;
 		}
 
-		public ResourceMetaEntityProvider build() {
-			return new ResourceMetaEntityProvider(definitions);
+		public MetaEntityProviderSupport build() {
+			return new MetaEntityProviderSupport(definitions);
 		}
 	}
 }
