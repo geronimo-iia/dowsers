@@ -59,7 +59,7 @@ public class MetaEntityProviderSupport implements MetaEntityProvider {
 	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
-		return definitions.get(reference);
+		return definitions.get(Preconditions.checkNotNull(reference));
 	}
 
 	public static Builder builder() {

@@ -51,6 +51,7 @@ public class MetaEntityProviderComposite implements MetaEntityProvider {
 
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
+		Preconditions.checkNotNull(reference);
 		final Collection<MetaEntity> result = Sets.newHashSet();
 		for (final MetaEntityProvider provider : metaEntityProviders) {
 			result.addAll(provider.find(reference));
