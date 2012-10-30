@@ -19,7 +19,8 @@
  */
 package com.intelligentsia.dowsers.entity.manager.event;
 
-import java.net.URI;
+import com.google.common.base.Objects;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * AttributChangeEvent.
@@ -44,7 +45,7 @@ public class AttributChangeEvent extends ReferenceableEvent {
 	 * @throws NullPointerException
 	 *             if reference is null
 	 */
-	public AttributChangeEvent(final URI reference, final Object value) throws NullPointerException {
+	public AttributChangeEvent(final Reference reference, final Object value) throws NullPointerException {
 		super(reference);
 		this.value = value;
 	}
@@ -55,11 +56,7 @@ public class AttributChangeEvent extends ReferenceableEvent {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((reference == null) ? 0 : reference.hashCode());
-		result = (prime * result) + ((value == null) ? 0 : value.hashCode());
-		return result;
+		return Objects.hashCode(reference, value);
 	}
 
 	@Override
@@ -74,21 +71,7 @@ public class AttributChangeEvent extends ReferenceableEvent {
 			return false;
 		}
 		final AttributChangeEvent other = (AttributChangeEvent) obj;
-		if (reference == null) {
-			if (other.reference != null) {
-				return false;
-			}
-		} else if (!reference.equals(other.reference)) {
-			return false;
-		}
-		if (value == null) {
-			if (other.value != null) {
-				return false;
-			}
-		} else if (!value.equals(other.value)) {
-			return false;
-		}
-		return true;
+		return Objects.equal(reference, other.reference) && Objects.equal(value, other.value);
 	}
 
 	@Override

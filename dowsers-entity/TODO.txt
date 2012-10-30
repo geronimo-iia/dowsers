@@ -22,14 +22,8 @@
 -> add model :
 	- entity collection
 	- entity life cycle (creation date, update...)
-	
--> create a store module
-
--> create a manager module
 
 -> test performance
-
--> add entity manager listener
 
 -> create view and view definition
 

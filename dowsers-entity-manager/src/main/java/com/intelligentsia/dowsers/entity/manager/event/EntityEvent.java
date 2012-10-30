@@ -19,11 +19,11 @@
  */
 package com.intelligentsia.dowsers.entity.manager.event;
 
-import java.net.URI;
-
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
-/** 
+/**
  * EntityEvent.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
@@ -48,7 +48,7 @@ public class EntityEvent extends ReferenceableEvent {
 	 * @param kind
 	 * @throws NullPointerException
 	 */
-	public EntityEvent(URI reference, Kind kind) throws NullPointerException {
+	public EntityEvent(final Reference reference, final Kind kind) throws NullPointerException {
 		super(reference);
 		this.kind = Preconditions.checkNotNull(kind);
 	}
@@ -59,24 +59,22 @@ public class EntityEvent extends ReferenceableEvent {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((kind == null) ? 0 : kind.hashCode());
-		return result;
+		return Objects.hashCode(reference, kind);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		EntityEvent other = (EntityEvent) obj;
-		if (kind != other.kind)
-			return false;
-		return true;
+		}
+		final EntityEvent other = (EntityEvent) obj;
+		return Objects.equal(reference, other.reference) && Objects.equal(kind, other.kind);
 	}
 
 	@Override

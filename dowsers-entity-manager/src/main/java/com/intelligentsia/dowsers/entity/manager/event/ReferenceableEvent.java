@@ -20,9 +20,10 @@
 package com.intelligentsia.dowsers.entity.manager.event;
 
 import java.io.Serializable;
-import java.net.URI;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * ReferenceableEvent Event is base class for all dowsers event.
@@ -39,7 +40,7 @@ public class ReferenceableEvent implements Serializable {
 	/**
 	 * URN
 	 */
-	protected final URI reference;
+	protected final Reference reference;
 
 	/**
 	 * Build a new instance of ReferenceableEvent.java.
@@ -48,38 +49,33 @@ public class ReferenceableEvent implements Serializable {
 	 * @throws NullPointerException
 	 *             if reference is null
 	 */
-	public ReferenceableEvent(URI reference) throws NullPointerException {
+	public ReferenceableEvent(final Reference reference) throws NullPointerException {
 		super();
 		this.reference = Preconditions.checkNotNull(reference);
 	}
 
-	public URI getReference() {
+	public Reference getReference() {
 		return reference;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((reference == null) ? 0 : reference.hashCode());
-		return result;
+		return Objects.hashCode(reference);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		ReferenceableEvent other = (ReferenceableEvent) obj;
-		if (reference == null) {
-			if (other.reference != null)
-				return false;
-		} else if (!reference.equals(other.reference))
-			return false;
-		return true;
+		}
+		final ReferenceableEvent other = (ReferenceableEvent) obj;
+		return Objects.equal(reference, other.reference);
 	}
 
 }
