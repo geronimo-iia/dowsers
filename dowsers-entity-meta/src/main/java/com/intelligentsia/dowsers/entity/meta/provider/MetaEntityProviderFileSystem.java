@@ -32,6 +32,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 

@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**

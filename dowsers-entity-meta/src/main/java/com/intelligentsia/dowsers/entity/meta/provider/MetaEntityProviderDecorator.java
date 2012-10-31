@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**

@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.meta.provider;
+package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
 

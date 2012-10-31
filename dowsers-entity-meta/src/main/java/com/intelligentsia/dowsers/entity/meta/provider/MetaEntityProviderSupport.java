@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -56,7 +57,7 @@ public class MetaEntityProviderSupport implements MetaEntityProvider {
 	}
 
 	/**
-	 * @see com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
+	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
 	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
