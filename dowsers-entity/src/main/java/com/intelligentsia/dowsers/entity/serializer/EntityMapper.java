@@ -41,6 +41,28 @@ public class EntityMapper {
 	private final ObjectMapper mapper;
 
 	/**
+	 * Build a new instance of <code>EntityMapper</code>. You must call
+	 * {@link EntityMapper#initialize(MetaEntityContextProvider)} before using
+	 * this instance.
+	 */
+	public EntityMapper() {
+		this(JacksonSerializer.getMapper());
+	}
+
+	/**
+	 * Build a new instance of <code>EntityMapper</code>.
+	 * 
+	 * @param mapper
+	 *            You must call
+	 *            {@link EntityMapper#initialize(MetaEntityContextProvider)}
+	 *            before using this instance.
+	 */
+	public EntityMapper(ObjectMapper mapper) {
+		super();
+		this.mapper = mapper;
+	}
+
+	/**
 	 * Build a new instance of EntityMapper.java.
 	 * 
 	 * @param metaEntityContextProvider
@@ -58,6 +80,10 @@ public class EntityMapper {
 	public EntityMapper(final ObjectMapper mapper, final MetaEntityContextProvider metaEntityContextProvider) {
 		super();
 		this.mapper = mapper;
+		initialize(metaEntityContextProvider);
+	}
+
+	public void initialize(final MetaEntityContextProvider metaEntityContextProvider) {
 		this.mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider));
 	}
 

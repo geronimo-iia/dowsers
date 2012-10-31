@@ -19,24 +19,18 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
+import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaModel;
 
-/**
- * MetaDataUtil.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- */
-public enum MetaDataUtil {
+public interface Organization extends Entity {
 
-	;
+	public static MetaEntity META = MetaEntity.builder().name(Organization.class.getName()).version(MetaModel.VERSION). //
+			metaAttributes(MetaModel.getIdentityAttribute()).//
+			metaAttribute("name", String.class).build();
 
- 
-	private final static MetaEntityContextProvider metaEntityContextProviderSupport = MetaEntityContextProviderSupport.builder() //
-			.add(Person.class, Person.META).build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
+	public String name();
 
-	public static MetaEntityContextProvider getMetaEntityContextProvider() {
-		return metaEntityContextProviderSupport;
-	} 
+	public void name(String name);
+
 }
