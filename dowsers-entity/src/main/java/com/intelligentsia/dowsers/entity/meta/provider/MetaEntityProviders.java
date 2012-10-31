@@ -39,15 +39,12 @@ public enum MetaEntityProviders {
 	;
 
 	/**
-	 * Build a {@link MetaEntityProvider} which aggregate :
-	 * <ul>
-	 * <li>{@link MetaEntityProviderAnalyzer}</li>
-	 * <li>for each directory under root, add a
-	 * {@link MetaEntityProviderFileSystem} which select last version</li>
-	 * </ul>
+	 * Build a {@link MetaEntityProvider} which aggregate for each directory
+	 * under root, a {@link MetaEntityProviderFileSystem} which select last
+	 * version.
 	 * 
-	 * This permit to define meta entity from class analyze and add several
-	 * extension with version management.
+	 * This permit to define meta entity from several extension with version
+	 * management.
 	 * 
 	 * @param reference
 	 *            {@link Reference}
@@ -57,10 +54,34 @@ public enum MetaEntityProviders {
 	 * @return {@link MetaEntityProvider} instance
 	 */
 	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, File root, EntityMapper entityMapper) {
+		return newMetaEntityProvider(reference, root, entityMapper, false);
+	}
+
+	/**
+	 * Build a {@link MetaEntityProvider} which aggregate for each directory
+	 * under root, a {@link MetaEntityProviderFileSystem} which select last
+	 * version.
+	 * 
+	 * This permit to define meta entity from several extension with version
+	 * management.
+	 * 
+	 * @param reference
+	 *            {@link Reference}
+	 * @param root
+	 *            Root {@link File}
+	 * @param entityMapper
+	 * @param addAnalyzer
+	 *            if true add {@link MetaEntityProviderAnalyzer} in first
+	 *            {@link MetaEntityProvider}
+	 * @return {@link MetaEntityProvider} instance
+	 */
+	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, File root, EntityMapper entityMapper, boolean addAnalyzer) {
 		// for each directory under root, build a file meta entity provider and
 		// select last version under each
-		final Collection<MetaEntityProvider> metaEntityProviders = Lists.newArrayList();
-		metaEntityProviders.add(newMetaEntityProviderAnalyzer());
+		final Collection<MetaEntityProvider> metaEntityProviders = Lists.newLinkedList();
+		if (addAnalyzer) {
+			metaEntityProviders.add(newMetaEntityProviderAnalyzer());
+		}
 		for (File file : root.listFiles()) {
 			if (file.isDirectory()) {
 				metaEntityProviders.add(selectLastVersion(newMetaEntityProvider(file, entityMapper)));

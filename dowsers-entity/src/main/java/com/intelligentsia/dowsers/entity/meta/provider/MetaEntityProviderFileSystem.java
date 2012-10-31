@@ -110,8 +110,8 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 	 * If reference is an identifier, this implementation will try to find data
 	 * under <code>
 	 * ${root}/${entity class name}/${entity identifier }
-	 * </code> if this folder did not exists or if reference is not an
-	 * identifier, this implementation will try to find data under <code>
+	 * </code> if reference is not an identifier, this implementation will try
+	 * to find data under <code>
 	 * ${root}/${entity class name}
 	 * </code
 	 * 
@@ -119,16 +119,17 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
-		final Collection<MetaEntity> result = Sets.newHashSet();
+		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
 		File file = new File(root, reference.getEntityClassName());
 		if (!file.exists()) {
 			return result;
 		}
 		if (reference.isIdentifier()) {
 			File specific = new File(file, reference.getIdentity());
-			if (specific.exists()) {
-				file = specific;
+			if (!specific.exists()) {
+				return result;
 			}
+			file = specific;
 		}
 		if (file.isDirectory()) {
 			for (final File f : file.listFiles(FILTER)) {

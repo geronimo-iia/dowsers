@@ -22,9 +22,10 @@ package com.intelligentsia.dowsers.entity.model;
 import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
+import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
+import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -42,20 +43,18 @@ public enum MetaDataUtil {
 
 	public static final Reference IDENTIFIER = Reference.newReference(CustomizableSampleEntity.class, "4c8b03dd-908a-4cad-8d48-3c7277d44ac9");
 
-	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext(). //
-			add(SampleEntity.class, MetaEntityContext.builder().definition( // definition
-					MetaEntity.builder().name(SampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
-							metaAttribute("name", String.class).//
-							metaAttribute("description", String.class).build()).build()) //
-			.add(CustomizableSampleEntity.class, MetaEntityContext.builder().definition( // definition
-					MetaEntity.builder().name(CustomizableSampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
-							metaAttribute("name", String.class).//
-							metaAttribute("description", String.class).//
-							metaAttribute("order", Long.class).build()).build()) //
-			.add(Person.class, MetaEntityContext.builder().definition( // definition
-					Person.META).build());
+	private final static MetaEntityContextProvider metaEntityContextProviderSupport = MetaEntityContextProviderSupport.builder(). //
+			add(SampleEntity.class, MetaEntity.builder().name(SampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
+					metaAttribute("name", String.class).//
+					metaAttribute("description", String.class).build()) //
+			.add(CustomizableSampleEntity.class, MetaEntity.builder().name(CustomizableSampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
+					metaAttribute("name", String.class).//
+					metaAttribute("description", String.class).//
+					metaAttribute("order", Long.class).build()) //
+			.add(Organization.class, Organization.META)//
+			.add(Person.class, Person.META).build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
 
-	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
+	public static MetaEntityContextProvider getMetaEntityContextProvider() {
 		return metaEntityContextProviderSupport;
 	}
 

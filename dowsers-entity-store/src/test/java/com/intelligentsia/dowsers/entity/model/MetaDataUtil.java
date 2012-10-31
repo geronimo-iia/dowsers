@@ -19,8 +19,9 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
+import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
+import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 
 /**
  * MetaDataUtil.
@@ -29,14 +30,12 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
  */
 public enum MetaDataUtil {
 
-	; 
+	;
 
-	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext(). //
-			add(Person.class, MetaEntityContext.builder().definition( // definition
-					Person.META).build());
+	private final static MetaEntityContextProvider metaEntityContextProviderSupport = MetaEntityContextProviderSupport.builder() //
+			.add(Person.class, Person.META).build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
 
-	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
+	public static MetaEntityContextProvider getMetaEntityContextProvider() {
 		return metaEntityContextProviderSupport;
 	}
-
 }

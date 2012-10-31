@@ -60,7 +60,7 @@ public class PersonTest {
 	@Before
 	public void initialize() {
 		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
-		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider().add(Person.class, Person.META));
+		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider());
 	}
 
 	@Test
