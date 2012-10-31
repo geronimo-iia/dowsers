@@ -19,11 +19,31 @@
 ====
 
 
--> add model :
-	- entity collection
-	- entity life cycle (creation date, update...)
-- finalize entity meta
--> create view and view definition
+Add Test MetaEntityProvider
+
+Add Test MetaEntityContextProvider
+
+Add entityManager
+
+Add entityManager Listener
+
+Add an EntityStore which separate definition from extension data
+
+Add model entity life cycle (creation date, update...)
+
+Create view and view definition
+
+Add doc on
+  entity, 
+  identifier
+  meta attribute
+  meta entity
+  meta entity context
+  store: tree and doc
+  meta provider: tree and doc
+  validation: doc and sample
+  
+  
 
  
 
