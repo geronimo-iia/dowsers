@@ -47,51 +47,37 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 
 	private final Map<Reference, MetaEntityContext> contextEntities;
 
-	public MetaEntityContextProviderSupport(MetaEntityProvider metaEntityProvider) {
+	public MetaEntityContextProviderSupport(final MetaEntityProvider metaEntityProvider) {
 		this(metaEntityProvider, new LinkedHashMap<Reference, MetaEntityContext>());
 	}
 
-	public MetaEntityContextProviderSupport(MetaEntityProvider metaEntityProvider, final Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
+	public MetaEntityContextProviderSupport(final MetaEntityProvider metaEntityProvider, final Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
 		super();
 		this.metaEntityProvider = Preconditions.checkNotNull(metaEntityProvider);
 		this.contextEntities = Preconditions.checkNotNull(contextEntities);
 	}
 
 	@Override
-	public MetaEntityContext find(Reference reference) throws IllegalArgumentException, NullPointerException {
+	public MetaEntityContext find(final Reference reference) throws IllegalArgumentException, NullPointerException {
+		if (reference.isIdentifier()) {
+			return find(reference.getEntityClassReference());
+		}
 		// first check in local map
-		MetaEntityContext metaEntityContext = findRegistered(Preconditions.checkNotNull(reference));
+		final MetaEntityContext metaEntityContext = contextEntities.get(Preconditions.checkNotNull(reference));
 		if (metaEntityContext == null) {
 			// build it
-			metaEntityContext = buildFromEntityProvider(reference);
+			final Collection<MetaEntity> metaEntities = metaEntityProvider.find(reference);
+			if (metaEntities.isEmpty()) {
+				throw new IllegalArgumentException();
+			}
+			final Iterator<MetaEntity> iterator = metaEntities.iterator();
+			final MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(iterator.next());
+			while (iterator.hasNext()) {
+				builder.addExtendedDefinition(iterator.next());
+			}
+			return builder.build();
 		}
 		return metaEntityContext;
-	}
-
-	protected MetaEntityContext findRegistered(Reference reference) {
-		MetaEntityContext metaEntityContext = contextEntities.get(reference);
-		if (metaEntityContext == null) {
-			if (reference.isIdentifier()) {
-				metaEntityContext = contextEntities.get(reference.getEntityClassReference());
-			}
-		}
-		return metaEntityContext;
-	}
-
-	protected MetaEntityContext buildFromEntityProvider(Reference reference) {
-		Collection<MetaEntity> metaEntities = metaEntityProvider.find(reference);
-		if (metaEntities.isEmpty()) {
-			if (reference.isIdentifier()) {
-				return buildFromEntityProvider(reference.getEntityClassReference());
-			}
-			throw new IllegalArgumentException();
-		}
-		Iterator<MetaEntity> iterator = metaEntities.iterator();
-		MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(iterator.next());
-		while (iterator.hasNext()) {
-			builder.addExtendedDefinition(iterator.next());
-		}
-		return builder.build();
 	}
 
 	public static Builder builder() {
@@ -106,7 +92,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 	 */
 	public static class Builder {
 
-		private Map<Reference, MetaEntityContext> contextEntities = Maps.newLinkedHashMap();
+		private final Map<Reference, MetaEntityContext> contextEntities = Maps.newLinkedHashMap();
 
 		/**
 		 * Build a new instance of <code>Builder</code>.
@@ -119,7 +105,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 					add(EntityDynamic.class, MetaModel.getMetaOfEntitydynamic()); //
 		}
 
-		public MetaEntityContextProviderSupport build(MetaEntityProvider metaEntityProvider) throws NullPointerException {
+		public MetaEntityContextProviderSupport build(final MetaEntityProvider metaEntityProvider) throws NullPointerException {
 			return new MetaEntityContextProviderSupport(metaEntityProvider, contextEntities);
 		}
 
@@ -130,9 +116,16 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		 * @param reference
 		 * @param metaEntityContext
 		 * @return this instance
+		 * @throws NullPointerException
+		 *             if one of parameters is null
+		 * @throws {@link IllegalArgumentException} if reference is an
+		 *         identifier
 		 */
-		public Builder add(final Reference reference, final MetaEntityContext metaEntityContext) throws NullPointerException {
-			contextEntities.put(Preconditions.checkNotNull(reference), Preconditions.checkNotNull(metaEntityContext));
+		public Builder add(final Reference reference, final MetaEntityContext metaEntityContext) throws NullPointerException, IllegalArgumentException {
+			if (Preconditions.checkNotNull(reference).isIdentifier()) {
+				throw new IllegalArgumentException("Reference can only be an entity class reference");
+			}
+			contextEntities.put(reference, Preconditions.checkNotNull(metaEntityContext));
 			return this;
 		}
 

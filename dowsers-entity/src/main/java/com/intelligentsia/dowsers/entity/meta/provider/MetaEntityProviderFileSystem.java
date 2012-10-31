@@ -50,13 +50,6 @@ import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
  * 				${meta entity file 1}
  * 				${meta entity file 2}
  * 				. . . 
- * </code> or if reference is an identifier: <code>
- * 		${root}
- * 			${entity class name}
- * 				${entity identifier }
- * 					${meta entity file 1}
- * 					${meta entity file 2}
- * 					. . . 
  * </code>
  * <p>
  * meta entity file could have json, xml or have no extension.
@@ -107,11 +100,7 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 	}
 
 	/**
-	 * If reference is an identifier, this implementation will try to find data
-	 * under <code>
-	 * ${root}/${entity class name}/${entity identifier }
-	 * </code> if reference is not an identifier, this implementation will try
-	 * to find data under <code>
+	 * this implementation will try to find data under <code>
 	 * ${root}/${entity class name}
 	 * </code
 	 * 
@@ -120,30 +109,21 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
-		File file = new File(root, reference.getEntityClassName());
-		if (!file.exists()) {
+		final File file = new File(root, reference.getEntityClassName());
+		if (!file.exists() || !file.isDirectory()) {
 			return result;
 		}
-		if (reference.isIdentifier()) {
-			File specific = new File(file, reference.getIdentity());
-			if (!specific.exists()) {
-				return result;
-			}
-			file = specific;
-		}
-		if (file.isDirectory()) {
-			for (final File f : file.listFiles(FILTER)) {
-				// for each file, load it
-				Reader reader = null;
-				try {
-					reader = new FileReader(f);
-					final MetaEntity metaEntity = entityMapper.readValue(reader, MetaEntity.class);
-					result.add(metaEntity);
-				} catch (final FileNotFoundException e) {
-				} finally {
-					if (reader != null) {
-						Closeables.closeQuietly(reader);
-					}
+		for (final File f : file.listFiles(FILTER)) {
+			// for each file, load it
+			Reader reader = null;
+			try {
+				reader = new FileReader(f);
+				final MetaEntity metaEntity = entityMapper.readValue(reader, MetaEntity.class);
+				result.add(metaEntity);
+			} catch (final FileNotFoundException e) {
+			} finally {
+				if (reader != null) {
+					Closeables.closeQuietly(reader);
 				}
 			}
 		}

@@ -53,7 +53,7 @@ public enum MetaEntityProviders {
 	 * @param entityMapper
 	 * @return {@link MetaEntityProvider} instance
 	 */
-	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, File root, EntityMapper entityMapper) {
+	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, final File root, final EntityMapper entityMapper) {
 		return newMetaEntityProvider(reference, root, entityMapper, false);
 	}
 
@@ -75,14 +75,14 @@ public enum MetaEntityProviders {
 	 *            {@link MetaEntityProvider}
 	 * @return {@link MetaEntityProvider} instance
 	 */
-	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, File root, EntityMapper entityMapper, boolean addAnalyzer) {
+	public static MetaEntityProvider newMetaEntityProvider(final Reference reference, final File root, final EntityMapper entityMapper, final boolean addAnalyzer) {
 		// for each directory under root, build a file meta entity provider and
 		// select last version under each
 		final Collection<MetaEntityProvider> metaEntityProviders = Lists.newLinkedList();
 		if (addAnalyzer) {
 			metaEntityProviders.add(newMetaEntityProviderAnalyzer());
 		}
-		for (File file : root.listFiles()) {
+		for (final File file : root.listFiles()) {
 			if (file.isDirectory()) {
 				metaEntityProviders.add(selectLastVersion(newMetaEntityProvider(file, entityMapper)));
 			}
@@ -102,11 +102,11 @@ public enum MetaEntityProviders {
 		return MetaEntityProviderSupport.builder().add(reference, metaEntities).build();
 	}
 
-	public static MetaEntityProvider newMetaEntityProvider(File root, EntityMapper entityMapper) {
+	public static MetaEntityProvider newMetaEntityProvider(final File root, final EntityMapper entityMapper) {
 		return new MetaEntityProviderFileSystem(root, entityMapper);
 	}
 
-	public static MetaEntityProvider newMetaEntityProvider(MetaEntityProvider... metaEntityProviders) {
+	public static MetaEntityProvider newMetaEntityProvider(final MetaEntityProvider... metaEntityProviders) {
 		return new MetaEntityProviderComposite(metaEntityProviders);
 	}
 
@@ -114,11 +114,11 @@ public enum MetaEntityProviders {
 		return new MetaEntityProviderComposite(metaEntityProviders);
 	}
 
-	public static MetaEntityProvider selectLastVersion(MetaEntityProvider metaEntityProvider) {
+	public static MetaEntityProvider selectLastVersion(final MetaEntityProvider metaEntityProvider) {
 		return new MetaEntityProviderFilterLastVersion(metaEntityProvider);
 	}
 
-	public static MetaEntityProvider filter(MetaEntityProvider metaEntityProvider, Predicate<MetaEntity> predicate) {
+	public static MetaEntityProvider filter(final MetaEntityProvider metaEntityProvider, final Predicate<MetaEntity> predicate) {
 		return new MetaEntityProviderFilter(metaEntityProvider, predicate);
 	}
 

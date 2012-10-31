@@ -54,7 +54,7 @@ public class MetaEntityContextProviderWithCache implements MetaEntityContextProv
 	 * @param metaEntityContextProvider
 	 *            {@link MetaEntityContextProvider} instance
 	 */
-	public MetaEntityContextProviderWithCache(MetaEntityContextProvider metaEntityContextProvider) {
+	public MetaEntityContextProviderWithCache(final MetaEntityContextProvider metaEntityContextProvider) {
 		this(metaEntityContextProvider, CacheBuilder.newBuilder().maximumSize(5000).expireAfterAccess(1, TimeUnit.HOURS));
 	}
 
@@ -69,10 +69,10 @@ public class MetaEntityContextProviderWithCache implements MetaEntityContextProv
 	}
 
 	@Override
-	public MetaEntityContext find(Reference reference) throws IllegalArgumentException, NullPointerException {
+	public MetaEntityContext find(final Reference reference) throws IllegalArgumentException, NullPointerException {
 		try {
-			return context.get(Preconditions.checkNotNull(reference));
-		} catch (ExecutionException e) {
+			return context.get(Preconditions.checkNotNull(Preconditions.checkNotNull(reference).isIdentifier() ? reference.getEntityClassReference() : reference));
+		} catch (final ExecutionException e) {
 			throw new IllegalArgumentException(Throwables.getRootCause(e));
 		}
 	}

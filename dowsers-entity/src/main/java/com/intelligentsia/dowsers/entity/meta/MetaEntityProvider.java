@@ -21,7 +21,6 @@ package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
 
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**

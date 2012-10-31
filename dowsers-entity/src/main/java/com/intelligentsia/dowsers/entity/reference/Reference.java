@@ -42,8 +42,8 @@ import com.intelligentsia.dowsers.entity.Entity;
  * <ul>
  * <li>a reference on a Person instance with
  * '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
- * <li>a reference on attribute named 'identity' of a Person instance
- * with '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
+ * <li>a reference on attribute named 'identity' of a Person instance with
+ * '4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be' as identifier.</li>
  * </ul>
  * 
  * <code>urn:dowsers:com.intelligentsia.dowsers.entity.model.Person:name#4ca1ea7f-2dfe-4b8a-9008-97f3e30a36be</code>
@@ -62,8 +62,7 @@ import com.intelligentsia.dowsers.entity.Entity;
  * Note: Why not use {@link URI} ?
  * <ul>
  * <li>Avoid try catching {@link URISyntaxException}...</li>
- * <li>Many {@link URI} instantiation when using with EntityStore and
- * other...</li>
+ * <li>Many {@link URI} instantiation when using with EntityStore and other...</li>
  * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>

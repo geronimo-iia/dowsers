@@ -288,7 +288,7 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 	}
 
 	@Override
-	public int compareTo(MetaEntity o) {
+	public int compareTo(final MetaEntity o) {
 		return version.compareTo(o.version);
 	}
 }

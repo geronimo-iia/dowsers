@@ -49,7 +49,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		Preconditions.checkNotNull(reference);
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
-		if(reference.isIdentifier()) {
+		if (reference.isIdentifier()) {
 			return result;
 		}
 		// obtain class information

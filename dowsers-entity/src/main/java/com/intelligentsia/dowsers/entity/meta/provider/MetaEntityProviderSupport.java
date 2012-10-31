@@ -85,8 +85,11 @@ public class MetaEntityProviderSupport implements MetaEntityProvider {
 			return add(reference, Arrays.asList(Preconditions.checkNotNull(metaEntity)));
 		}
 
-		public Builder add(final Reference reference, final Collection<MetaEntity> metaEntities) throws NullPointerException {
-			definitions.putAll(Preconditions.checkNotNull(reference), Preconditions.checkNotNull(metaEntities));
+		public Builder add(final Reference reference, final Collection<MetaEntity> metaEntities) throws NullPointerException, IllegalArgumentException {
+			if (Preconditions.checkNotNull(reference).isIdentifier()) {
+				throw new IllegalArgumentException("Reference can only be an entity class reference");
+			}
+			definitions.putAll(reference, Preconditions.checkNotNull(metaEntities));
 			return this;
 		}
 
