@@ -42,7 +42,7 @@ import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
  * using file system.
  * <p>
  * This implementation load all {@link MetaEntity} definition from a root
- * directory according this source tree
+ * directory according this source tree:
  * </p>
  * <code>
  * 		${root}
@@ -50,13 +50,23 @@ import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
  * 				${meta entity file 1}
  * 				${meta entity file 2}
  * 				. . . 
- * <code>
- * <p>meta entity file could have json, xml or no extension.</p>
+ * </code> or if reference is an identifier: <code>
+ * 		${root}
+ * 			${entity class name}
+ * 				${entity identifier }
+ * 					${meta entity file 1}
+ * 					${meta entity file 2}
+ * 					. . . 
+ * </code>
+ * <p>
+ * meta entity file could have json, xml or have no extension.
+ * </p>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 
+	private static final transient MetaEntityFilenameFilter FILTER = new MetaEntityFilenameFilter();
 	/**
 	 * {@link EntityMapper} instance.
 	 */
@@ -69,6 +79,7 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 
 	/**
 	 * Build a new instance of <code>MetaEntityProviderFileSystem</code>.
+	 * 
 	 * @param root
 	 * 
 	 *            root directory of this {@link MetaEntityProvider}.
@@ -95,26 +106,32 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 		this.root = root;
 	}
 
+	/**
+	 * If reference is an identifier, this implementation will try to find data
+	 * under <code>
+	 * ${root}/${entity class name}/${entity identifier }
+	 * </code> if this folder did not exists or if reference is not an
+	 * identifier, this implementation will try to find data under <code>
+	 * ${root}/${entity class name}
+	 * </code
+	 * 
+	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
+	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		final Collection<MetaEntity> result = Sets.newHashSet();
-		final File file = new File(root, reference.getEntityClassName());
+		File file = new File(root, reference.getEntityClassName());
 		if (!file.exists()) {
 			return result;
 		}
+		if (reference.isIdentifier()) {
+			File specific = new File(file, reference.getIdentity());
+			if (specific.exists()) {
+				file = specific;
+			}
+		}
 		if (file.isDirectory()) {
-			for (final File f : file.listFiles(new FilenameFilter() {
-
-				@Override
-				public boolean accept(final File dir, final String name) {
-					final int index = name.lastIndexOf('.');
-					if (index >= 0) {
-						final String ext = name.substring(index);
-						return "xml".equalsIgnoreCase(ext) || "json".equalsIgnoreCase(ext);
-					}
-					return true;
-				}
-			})) {
+			for (final File f : file.listFiles(FILTER)) {
 				// for each file, load it
 				Reader reader = null;
 				try {
@@ -132,4 +149,21 @@ public class MetaEntityProviderFileSystem implements MetaEntityProvider {
 		return result;
 	}
 
+	/**
+	 * MetaEntityFilenameFilter implements {@link FilenameFilter}.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	private static class MetaEntityFilenameFilter implements FilenameFilter {
+
+		@Override
+		public boolean accept(final File dir, final String name) {
+			final int index = name.lastIndexOf('.');
+			if (index >= 0) {
+				final String ext = name.substring(index);
+				return "xml".equalsIgnoreCase(ext) || "json".equalsIgnoreCase(ext);
+			}
+			return true;
+		}
+	}
 }

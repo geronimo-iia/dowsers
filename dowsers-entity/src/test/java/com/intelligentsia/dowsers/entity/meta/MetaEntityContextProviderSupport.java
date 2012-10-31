@@ -29,7 +29,7 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityContextProviderSupport implements {@link MetaEntityContextProvider}
- * . TODO better impls.
+ * .
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
@@ -57,7 +57,6 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		}
 		return context;
 	}
-
 
 	/**
 	 * Add default {@link MetaEntityContext} for {@link MetaAttribute},
