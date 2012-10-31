@@ -32,8 +32,9 @@ public enum MetaDataUtil {
 	;
 
 	private final static MetaEntityContextProviderSupport metaEntityContextProviderSupport = new MetaEntityContextProviderSupport().addDefaultMetaEntityContext(). //
-			add(Person.class, MetaEntityContext.builder().definition( // definition
-					Person.META).build());
+			add(Person.class, MetaEntityContext.builder().definition(Person.META).build()). //
+			add(Organization.class, MetaEntityContext.builder().definition(Organization.META).//
+					build());
 
 	public static MetaEntityContextProviderSupport getMetaEntityContextProvider() {
 		return metaEntityContextProviderSupport;

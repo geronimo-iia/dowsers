@@ -42,6 +42,8 @@ import com.intelligentsia.dowsers.entity.reference.References;
  * <li>metaAttributes: entity meta attributes @see {@link MetaAttribute}.</li>
  * <li>version: meta entity version</li>
  * </ul>
+ * A {@link MetaEntity} have a natural order which follow their version
+ * attribute.
  * 
  * <code>
  * 'Tis written: "In the beginning was the Word!"
@@ -66,7 +68,7 @@ import com.intelligentsia.dowsers.entity.reference.References;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntity implements Identified<Reference>, Serializable {
+public class MetaEntity implements Identified<Reference>, Serializable, Comparable<MetaEntity> {
 
 	/**
 	 * serialVersionUID:long
@@ -77,7 +79,7 @@ public class MetaEntity implements Identified<Reference>, Serializable {
 	 */
 	@JsonProperty
 	private final Reference identity;
-	
+
 	/**
 	 * Meta entity name.
 	 */
@@ -283,5 +285,10 @@ public class MetaEntity implements Identified<Reference>, Serializable {
 			return new MetaEntity(identity, name, version, new MetaAttributeCollection(metaAttributes.build()));
 		}
 
+	}
+
+	@Override
+	public int compareTo(MetaEntity o) {
+		return version.compareTo(o.version);
 	}
 }

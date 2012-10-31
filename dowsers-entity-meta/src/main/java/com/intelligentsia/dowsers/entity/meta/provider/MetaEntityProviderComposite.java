@@ -17,12 +17,14 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.meta;
+package com.intelligentsia.dowsers.entity.meta.provider;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -35,6 +37,18 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 public class MetaEntityProviderComposite implements MetaEntityProvider {
 
 	private final Collection<MetaEntityProvider> metaEntityProviders;
+
+	/**
+	 * Build a new instance of <code>MetaEntityProviderComposite</code>.
+	 * 
+	 * @param metaEntityProviders
+	 *            {@link MetaEntityProvider}'s
+	 * @throws NullPointerException
+	 *             if metaEntityProviders is null
+	 */
+	public MetaEntityProviderComposite(final MetaEntityProvider... metaEntityProviders) throws NullPointerException {
+		this(Arrays.asList(metaEntityProviders));
+	}
 
 	/**
 	 * Build a new instance of <code>MetaEntityProviderComposite</code>.

@@ -38,26 +38,5 @@ public interface MetaEntityContextProvider {
 	 *             if reference is null
 	 */
 	MetaEntityContext find(Reference reference) throws IllegalArgumentException, NullPointerException;
-	//
-	// /**
-	// *
-	// * @param clazz
-	// * entity class
-	// * @param identity
-	// * entit
-	// * @return
-	// * @throws IllegalArgumentException
-	// * @throws NullPointerException
-	// */
-	// MetaEntityContext find(Class<?> clazz, String identity) throws
-	// IllegalArgumentException, NullPointerException;
-	//
-	// /**
-	// * @param clazz
-	// * entity class
-	// * @return {@link MetaEntityContext} associated with this reference
-	// * @throws NullPointerException
-	// * if clazz is null
-	// */
-	// MetaEntityContext find(Class<?> clazz) throws NullPointerException;
+
 }

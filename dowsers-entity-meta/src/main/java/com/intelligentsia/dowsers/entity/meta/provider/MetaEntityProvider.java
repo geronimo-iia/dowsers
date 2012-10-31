@@ -17,10 +17,11 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.meta;
+package com.intelligentsia.dowsers.entity.meta.provider;
 
 import java.util.Collection;
 
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**

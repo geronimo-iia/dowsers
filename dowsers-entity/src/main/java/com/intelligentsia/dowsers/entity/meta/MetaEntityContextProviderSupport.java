@@ -58,39 +58,6 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		return context;
 	}
 
-	//
-	// @Override
-	// public MetaEntityContext find(final Class<?> clazz, final String
-	// identity) throws IllegalArgumentException, NullPointerException {
-	// return find(clazz.getName(), identity);
-	// }
-	//
-	// @Override
-	// public MetaEntityContext find(final Class<?> clazz) throws
-	// NullPointerException {
-	// return find(clazz.getName());
-	// }
-
-	// public MetaEntityContext find(final String className, final String
-	// identity) throws IllegalArgumentException, NullPointerException {
-	// if (identity != null) {
-	// final MetaEntityContext context = specificContextEntities.get(identity);
-	// if (context != null) {
-	// return context;
-	// }
-	// }
-	// return find(className);
-	// }
-	//
-	// public MetaEntityContext find(final String className) throws
-	// NullPointerException {
-	// final MetaEntityContext context = contextEntities.get(className);
-	// // check for error
-	// if (context == null) {
-	// throw new IllegalArgumentException("no context found");
-	// }
-	// return context;
-	// }
 
 	/**
 	 * Add default {@link MetaEntityContext} for {@link MetaAttribute},

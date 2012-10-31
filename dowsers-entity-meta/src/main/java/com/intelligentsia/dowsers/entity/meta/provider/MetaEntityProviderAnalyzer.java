@@ -20,7 +20,7 @@
 /**
  * 
  */
-package com.intelligentsia.dowsers.entity.meta;
+package com.intelligentsia.dowsers.entity.meta.provider;
 
 import java.util.Collection;
 
@@ -29,6 +29,7 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -41,24 +42,24 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 
 	/**
-	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
+	 * @see com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
 	 */
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		Preconditions.checkNotNull(reference);
-		Collection<MetaEntity> result = Sets.newHashSet();
+		final Collection<MetaEntity> result = Sets.newHashSet();
 		// obtain class information
-		ClassInformation classInformation = ClassInformation.parse(reference.getEntityClassName());
+		final ClassInformation classInformation = ClassInformation.parse(reference.getEntityClassName());
 		// analyze
-		MetaEntity metaEntity = analyze(classInformation);
+		final MetaEntity metaEntity = analyze(classInformation);
 		if (metaEntity != null) {
 			result.add(metaEntity);
 		}
 		return result;
 	}
 
-	public MetaEntity analyze(ClassInformation classInformation) throws NullPointerException {
-		//TODO implements it
+	public MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
+		// TODO implements it
 		return null;
 	}
 
