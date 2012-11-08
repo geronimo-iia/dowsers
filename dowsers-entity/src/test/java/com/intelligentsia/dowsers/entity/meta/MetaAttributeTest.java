@@ -21,6 +21,7 @@ package com.intelligentsia.dowsers.entity.meta;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNotSame;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
@@ -90,5 +91,12 @@ public class MetaAttributeTest {
 			// ok
 		}
 		MetaEntity.builder().name("test-attribute").version(new Version(1)).build();
+	}
+
+	@Test
+	public void testMetaAttributeEquals() {
+		final MetaAttribute attribute = MetaAttribute.builder().name("identity").valueClass(Reference.class).build();
+		assertTrue(MetaModel.getIdentityAttribute().equals(attribute));
+		assertNotSame(MetaModel.getIdentityAttribute().identity(), attribute.identity());
 	}
 }

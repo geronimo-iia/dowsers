@@ -72,7 +72,7 @@ public enum MetaModel {
 
 		// META ATTRIBUTE DEFINITION
 		identityAttribute = MetaAttribute.builder().identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaAttribute:identity#a3d44fd4-385d-4d09-b11b-21932abe2a25")).//
-				name("identity").valueClass(String.class).build();
+				name("identity").valueClass(Reference.class).build();
 
 		final MetaAttribute name = MetaAttribute.builder().identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaAttribute:identity#c2d720af-55eb-468d-adda-477b824d872c")).//
 				name("name").valueClass(String.class).build();

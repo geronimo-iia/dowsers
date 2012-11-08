@@ -123,6 +123,23 @@ public class MetaAttribute implements Identified<Reference>, Serializable {
 		return Objects.toStringHelper(getClass()).add("identity", identity()).add("name", name()).add("valueClass", valueClass()).toString();
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(name, valueClass);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MetaAttribute other = (MetaAttribute) obj;
+		return Objects.equal(name, other.name) && Objects.equal(valueClass, other.valueClass);
+	}
+
 	/**
 	 * @return a new {@link Builder} instance.
 	 */
