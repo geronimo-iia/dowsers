@@ -66,112 +66,15 @@ Examples: Customer, Order, Organization, Car ...
 Attributes are characteristics of entities
 
 
-h2. Identity
+h2. Identity as Reference
 
 Wikipedia's entry on the philosophical meaning of identity starts:
 
 In philosophy, identity is whatever makes an entity definable and recognizable, in terms of possessing a set of qualities or characteristics that distinguish it from entities of a different type. Or, in layman's terms, identity is whatever makes stuff the same or different.
 
 
-h2. Identity Provider
 
-An Identity provider act as a factory of identifier. It must implements this interface:
-
-
-bc.. 
-	/**
-	 * IdentifierFactory declare methode to generate new identifier.
-	 * 
-	 * <pre>
-	 * IdentifierFactoryProvider.generateNewIdentifier();
-	 * 
-	 * <pre>
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 */
-	public interface IdentifierFactory {
-
-		/**
-		 * @return a new generated identifier.
-		 */
-		public abstract String generateNewIdentifier();
-
-	}
-p. IdentifierFactoryProvider lookup in class path using ServiceLoader in order to find am implementation of IdentifierFactory.
-A default provider is based on UUID scheme:
-
-bc.. 
-	/**
-	 * 
-	 * DefaultIdentifierFactory extends abstract and use UUID class as
-	 * identifier.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 */
-	private class DefaultIdentifierFactory implements IdentifierFactory {
-
-		/**
-		 * @see org.intelligentsia.dowsers.domain.IdentifierFactory#generateNewIdentifier()
-		 */
-		@Override
-		public String generateNewIdentifier() {
-			return UUID.randomUUID().toString();
-		}
-
-	}
-p. You could obtain a new identifier like this:
-
-bc. IdentifierFactoryProvider.generateNewIdentifier();
-
-
-
-
-h2. What is a value object (an attribute) ? 
-
-“A Value Object cannot live on its own without an Entity.”
- 
-Eric Evans:
-“An object that represents a descriptive aspect of the domain with no conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated to represent elements of the design that we care about only for what they are, not who or which they are.” 
-[Evans 2003]
-
-
-Technically, a value class should :
-* be serializable
-* have a default constructor
-* have only getter
-* all member marked as final
-
-
-h2. Interface entity 
-
-Declare methods to :
-* get entity's identity
-* get/set attribute value
-* test if entity contains a specific attribute name
-* get a set of attributes contained in the entity
-
-bc.. 
-public interface Entity {
-
-	String identity();
-
-	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
-
-	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
-
-	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
-
-	public ImmutableSet<String> attributeNames();
-	
-	
-p. Main implementation of this interface is EntityDynamic and EntityProxy.
-
-EntityDynamic is base class for all entities.
-
-EntityProxy implements an InvokerHandler in order to create a proxy dynamic on a EI (entity as interface).
-
-
-h2. Reference and URN
+h3. Reference and URN
 
 URN: http://en.wikipedia.org/wiki/Uniform_resource_name
 
@@ -193,6 +96,118 @@ org.intelligentsia.dowsers.sample.entity.User is the entity part
 6787007f-f424-40b7-b240-64206b1177e2 is the identifier part
 
 Note that an entity reference and a reference on identity entity's attribute is exactly the same thing
+
+
+h3. Reference Provider
+
+p. To obtain a new Reference instance, you must call:
+
+bc. 
+References.newReference(clazz)
+
+p. Reference are created by a provider which implements ReferenceFactory interface.
+The system lookup using ServiceLoader to find one. 
+By default Dowsers use this class: 'com.intelligentsia.dowsers.entity.reference.ReferenceFactoryProvider' 
+
+bc.. 
+public interface ReferenceFactory {
+	/**
+	 * @param clazz
+	 *            entity class name
+	 * @return an new {@link Reference} for specified class name
+	 */
+	Reference newReference(Class<?> clazz);
+}
+
+p. Default implementation use an Identity provider act as a factory of identifier.
+IdentifierFactoryProvider lookup in class path using ServiceLoader in order to find am implementation of IdentifierFactory.
+A default provider is based on UUID scheme:
+
+bc.. 
+	/**
+	 * IdentifierFactory declare methode to generate new identifier.
+	 * 
+	 * <pre>
+	 * IdentifierFactoryProvider.generateNewIdentifier();
+	 * 
+	 * <pre>
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public interface IdentifierFactory {
+
+		/**
+		 * @return a new generated identifier.
+		 */
+		public abstract String generateNewIdentifier();
+
+	}
+ 
+	/**
+	 * 
+	 * DefaultIdentifierFactory extends abstract and use UUID class as
+	 * identifier.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	private class DefaultIdentifierFactory implements IdentifierFactory {
+
+		/**
+		 * @see org.intelligentsia.dowsers.domain.IdentifierFactory#generateNewIdentifier()
+		 */
+		@Override
+		public String generateNewIdentifier() {
+			return UUID.randomUUID().toString();
+		}
+
+	}
+
+
+h2. What is a value object (an attribute) ? 
+
+“A Value Object cannot live on its own without an Entity.”
+ 
+Eric Evans:
+“An object that represents a descriptive aspect of the domain with no conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated to represent elements of the design that we care about only for what they are, not who or which they are.” 
+[Evans 2003]
+
+
+Technically, a value class should :
+* be serializable
+* have a default constructor
+* have only getter
+* all member marked as final
+
+
+
+h2. Interface entity 
+
+Declare methods to :
+* get entity's identity
+* get/set attribute value
+* test if entity contains a specific attribute name
+* get a set of attributes contained in the entity
+
+bc.. 
+public interface Entity extends Identified<Reference>  {
+
+	Reference identity();
+
+	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
+
+	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
+
+	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
+
+	public ImmutableSet<String> attributeNames();
+	
+	public MetaEntityContext metaEntityContext();
+	
+p. Main implementation of this interface is EntityDynamic and EntityProxy.
+
+EntityDynamic is base class for all entities.
+
+EntityProxy implements an InvokerHandler in order to create a proxy dynamic on a EI (entity as interface).
 
 
 h1. Meta Data
