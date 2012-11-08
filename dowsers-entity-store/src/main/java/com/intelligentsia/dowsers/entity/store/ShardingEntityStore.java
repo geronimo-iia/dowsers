@@ -32,11 +32,15 @@ import com.intelligentsia.dowsers.entity.reference.References;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class ShardingEntityStore extends EntityStoreDecorator {
+public class ShardingEntityStore implements EntityStore {
 	/**
 	 * {@link Map} of URI and {@link EntityStore}.
 	 */
-	private Map<Reference, EntityStore> stores = Maps.newHashMap();
+	private final Map<Reference, EntityStore> stores;
+	/**
+	 * Default {@link EntityStore}.
+	 */
+	protected final EntityStore defaultEntityStore;
 
 	/**
 	 * Build a new instance of ShardingEntityStore.java.
@@ -49,7 +53,8 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 	 *             if one of parameters is null
 	 */
 	public ShardingEntityStore(final EntityStore defaultEntityStore, final Map<Reference, EntityStore> stores) throws NullPointerException {
-		super(defaultEntityStore);
+		super();
+		this.defaultEntityStore = Preconditions.checkNotNull(defaultEntityStore);
 		this.stores = Preconditions.checkNotNull(stores);
 	}
 
@@ -84,7 +89,7 @@ public class ShardingEntityStore extends EntityStoreDecorator {
 		if (result == null) {
 			result = stores.get(reference.getEntityClassReference());
 			if (result == null) {
-				result = this.entityStore;
+				result = defaultEntityStore;
 			}
 		}
 		return result;

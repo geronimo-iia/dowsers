@@ -25,6 +25,7 @@ package com.intelligentsia.dowsers.entity.store;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -37,7 +38,12 @@ import com.intelligentsia.dowsers.entity.reference.References;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  * 
  */
-public class CachedEntityStore extends EntityStoreDecorator {
+public class CachedEntityStore implements EntityStore {
+
+	/**
+	 * Delegate {@link EntityStore}.
+	 */
+	protected final EntityStore entityStore;
 
 	private final LoadingCache<KeyCache, Object> entities;
 
@@ -63,7 +69,8 @@ public class CachedEntityStore extends EntityStoreDecorator {
 	 * @param cacheBuilder
 	 */
 	public CachedEntityStore(final EntityStore entityStore, final CacheBuilder<Object, Object> cacheBuilder) {
-		super(entityStore);
+		super();
+		this.entityStore = Preconditions.checkNotNull(entityStore);
 		/**
 		 * Add specific cache loader.
 		 */
@@ -88,19 +95,19 @@ public class CachedEntityStore extends EntityStoreDecorator {
 	@Override
 	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
 		entities.invalidate(new KeyCache(null, References.identify(entity)));
-		super.store(entity);
+		entityStore.store(entity);
 	}
 
 	@Override
 	public <T> void remove(final T entity) throws NullPointerException, IllegalArgumentException {
 		entities.invalidate(new KeyCache(null, References.identify(entity)));
-		super.remove(entity);
+		entityStore.remove(entity);
 	}
 
 	@Override
 	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
 		entities.invalidate(new KeyCache(null, reference));
-		super.remove(reference);
+		entityStore.remove(reference);
 	}
 
 	/**

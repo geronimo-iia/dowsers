@@ -26,6 +26,8 @@ import org.junit.Test;
 import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
+import com.intelligentsia.dowsers.entity.store.fs.FileEntityStore;
+import com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore;
 
 /**
  * <code>ShardingEntityStoreTest</code>.

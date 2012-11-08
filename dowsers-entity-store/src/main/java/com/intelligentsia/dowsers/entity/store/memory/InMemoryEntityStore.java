@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.store;
+package com.intelligentsia.dowsers.entity.store.memory;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,6 +31,9 @@ import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
+import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
+import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
+import com.intelligentsia.dowsers.entity.store.EntityStore;
 
 /**
  * InMemoryEntityStore implements a {@link EntityStore} in memory (only for

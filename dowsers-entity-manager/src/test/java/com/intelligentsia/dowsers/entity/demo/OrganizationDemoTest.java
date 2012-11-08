@@ -41,7 +41,7 @@ import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
-import com.intelligentsia.dowsers.entity.store.InMemoryEntityStore;
+import com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore;
 
 /**
  * <code>OrganizationDemoTest</code>.

@@ -19,6 +19,8 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
+import com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore;
+
 /**
  * <code>InMemoryEntityStoreTest</code>.
  * 

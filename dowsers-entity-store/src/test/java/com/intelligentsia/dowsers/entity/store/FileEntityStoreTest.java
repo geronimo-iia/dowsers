@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.google.common.base.Throwables;
+import com.intelligentsia.dowsers.entity.store.fs.FileEntityStore;
 
 /**
  * <code>FileEntityStoreTest</code>.
