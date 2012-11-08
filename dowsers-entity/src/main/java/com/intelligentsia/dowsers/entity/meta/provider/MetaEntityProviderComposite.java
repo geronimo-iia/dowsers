@@ -37,6 +37,9 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  */
 public class MetaEntityProviderComposite implements MetaEntityProvider {
 
+	/**
+	 * Aggregation of {@link MetaEntityProvider}.
+	 */
 	private final Collection<MetaEntityProvider> metaEntityProviders;
 
 	/**

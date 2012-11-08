@@ -58,6 +58,14 @@ public class MetaEntityContextProviderWithCache implements MetaEntityContextProv
 		this(metaEntityContextProvider, CacheBuilder.newBuilder().maximumSize(5000).expireAfterAccess(1, TimeUnit.HOURS));
 	}
 
+	/**
+	 * Build a new instance of <code>MetaEntityContextProviderWithCache</code>.
+	 * 
+	 * @param metaEntityContextProvider
+	 *            {@link MetaEntityContextProvider} instance
+	 * @param cacheBuilder
+	 *            {@link CacheBuilder} instance
+	 */
 	public MetaEntityContextProviderWithCache(final MetaEntityContextProvider metaEntityContextProvider, final CacheBuilder<Object, Object> cacheBuilder) {
 		super();
 		context = Preconditions.checkNotNull(cacheBuilder).build(new CacheLoader<Reference, MetaEntityContext>() {
