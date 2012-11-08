@@ -369,4 +369,22 @@
 		<module>dowsers-entity-store</module>
 		<module>dowsers-command</module>
 	</modules>
+	<!-- ******************************************************************* -->
+	<!-- PROFILE -->
+	<!-- ******************************************************************* -->
+	<profiles>
+		<profile>
+			<id>mega-international</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<!-- SNAPSHOT ALTERNATIVE DISTRIBUTION MANAGEMENT -->
+			<distributionManagement>
+				<snapshotRepository>
+					<id>nexus-snapshots</id>
+					<url>http://wqa-grc4.fr.mega.com:8081/nexus/content/repositories/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 </project>
