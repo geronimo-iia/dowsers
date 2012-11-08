@@ -52,6 +52,17 @@ public enum Reflection {
 	}
 
 	/**
+	 * UnCapitalize first letter.
+	 * 
+	 * @param name
+	 *            name to uncapitalized
+	 * @return uncapitalized string.
+	 */
+	public static String uncapitalize(final String name) {
+		return new StringBuilder(name.substring(0, 1).toLowerCase()).append(name.substring(1)).toString();
+	}
+
+	/**
 	 * Extract field name from method name according getter/setter pattern.
 	 * 
 	 * @param methodName
