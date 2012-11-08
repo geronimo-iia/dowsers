@@ -55,22 +55,36 @@ public enum References {
 	 * Obtain a {@link Reference} on an {@link Entity} representation
 	 * 
 	 * @param any
+	 *            an {@link Entity} representation
 	 * @return an new {@link Reference} on specified entity
 	 * @throws {@link IllegalArgumentException} if any is not an entity
 	 *         representation
 	 */
 	public static Reference identify(final Object any) throws IllegalArgumentException {
+		return discover(any).identity();
+	}
+
+	/**
+	 * Discover underlying {@link Entity} instance.
+	 * 
+	 * @param any
+	 *            an {@link Entity} representation
+	 * @return an {@link Entity} instance
+	 * @throws IllegalArgumentException
+	 *             if any is not an entity representation
+	 */
+	public static Entity discover(final Object any) throws IllegalArgumentException {
 		if (Proxy.isProxyClass(any.getClass())) {
 			final EntityProxy entityProxy = (EntityProxy) Proxy.getInvocationHandler(any);
-			return entityProxy.identity();
+			return entityProxy;
 		}
 		if (EntityProxy.class.isAssignableFrom(any.getClass())) {
 			final EntityProxy entityProxy = (EntityProxy) any;
-			return entityProxy.identity();
+			return entityProxy;
 		}
 		if (Entity.class.isAssignableFrom(any.getClass())) {
 			final Entity entity = (Entity) any;
-			return entity.identity();
+			return entity;
 		}
 		throw new IllegalArgumentException("Argument is not an entity");
 	}
