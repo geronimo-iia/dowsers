@@ -33,7 +33,7 @@ import org.junit.Test;
 import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.model.Organization;
 import com.intelligentsia.dowsers.entity.reference.Reference;

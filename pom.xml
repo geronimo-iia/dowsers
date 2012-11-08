@@ -364,9 +364,9 @@
 	<modules>
 		<module>dowsers-core</module>
 		<module>dowsers-entity</module>
+		<module>dowsers-entity-meta</module>
 		<module>dowsers-entity-manager</module>
 		<module>dowsers-entity-store</module>
-		<!-- <module>dowsers-entity-meta</module> -->
 		<module>dowsers-command</module>
 	</modules>
 </project>

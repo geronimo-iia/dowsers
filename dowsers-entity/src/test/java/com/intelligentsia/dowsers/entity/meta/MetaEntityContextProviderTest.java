@@ -24,8 +24,6 @@ import static junit.framework.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.EntityDynamic;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -39,7 +37,7 @@ public class MetaEntityContextProviderTest {
 	@Test
 	public void testDefaultMetaData() {
 
-		final MetaEntityContextProvider provider = MetaEntityContextProviderSupport.builder().build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
+		final MetaEntityContextProvider provider = MetaEntityContextProviderSupport.builder().build();
 		assertNotNull(provider);
 
 		final MetaEntityContext context = provider.find(Reference.newReference(EntityDynamic.class));

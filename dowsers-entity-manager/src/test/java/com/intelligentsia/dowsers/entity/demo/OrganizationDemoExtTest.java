@@ -20,8 +20,8 @@
 package com.intelligentsia.dowsers.entity.demo;
 
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.model.Organization;
 

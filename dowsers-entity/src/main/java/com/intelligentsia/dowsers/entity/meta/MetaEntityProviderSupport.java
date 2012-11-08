@@ -20,7 +20,7 @@
 /**
  * 
  */
-package com.intelligentsia.dowsers.entity.meta.provider;
+package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,8 +28,6 @@ import java.util.Collection;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**

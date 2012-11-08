@@ -23,9 +23,8 @@ import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityContextProviderSupport;
-import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -52,7 +51,7 @@ public enum MetaDataUtil {
 					metaAttribute("description", String.class).//
 					metaAttribute("order", Long.class).build()) //
 			.add(Organization.class, Organization.META)//
-			.add(Person.class, Person.META).build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
+			.add(Person.class, Person.META).build();
 
 	public static MetaEntityContextProvider getMetaEntityContextProvider() {
 		return metaEntityContextProviderSupport;

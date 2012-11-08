@@ -26,6 +26,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProviderSupport;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 

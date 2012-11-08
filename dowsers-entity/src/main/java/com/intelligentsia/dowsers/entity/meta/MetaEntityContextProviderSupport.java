@@ -17,27 +17,24 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.meta.provider;
+package com.intelligentsia.dowsers.entity.meta;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.intelligentsia.keystone.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
-import com.intelligentsia.dowsers.entity.meta.MetaAttribute;
-import com.intelligentsia.dowsers.entity.meta.MetaEntity;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
-import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
-import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * MetaEntityContextProviderSupport.
+ * {@link MetaEntityContextProviderSupport} implements
+ * {@link MetaEntityContextProvider} with an optional {@link MetaEntityProvider}
+ * and a {@link Map} of {@link Reference}, {@link MetaEntityContext}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
@@ -47,13 +44,19 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 
 	private final Map<Reference, MetaEntityContext> contextEntities;
 
-	public MetaEntityContextProviderSupport(final MetaEntityProvider metaEntityProvider) {
-		this(metaEntityProvider, new LinkedHashMap<Reference, MetaEntityContext>());
-	}
-
+	/**
+	 * Build a new instance of <code>MetaEntityContextProviderSupport</code>.
+	 * 
+	 * @param metaEntityProvider
+	 *            {@link MetaEntityProvider} instance or null
+	 * @param contextEntities
+	 *            {@link Map} of {@link Reference}, {@link MetaEntityContext}.
+	 * @throws NullPointerException
+	 *             if contextEntities is null
+	 */
 	public MetaEntityContextProviderSupport(final MetaEntityProvider metaEntityProvider, final Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
 		super();
-		this.metaEntityProvider = Preconditions.checkNotNull(metaEntityProvider);
+		this.metaEntityProvider = metaEntityProvider;
 		this.contextEntities = Preconditions.checkNotNull(contextEntities);
 	}
 
@@ -65,10 +68,13 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		// first check in local map
 		final MetaEntityContext metaEntityContext = contextEntities.get(Preconditions.checkNotNull(reference));
 		if (metaEntityContext == null) {
+			if (metaEntityProvider == null) {
+				throw new IllegalArgumentException(StringUtils.format("no context for %s", reference));
+			}
 			// build it
 			final Collection<MetaEntity> metaEntities = metaEntityProvider.find(reference);
 			if (metaEntities.isEmpty()) {
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException(StringUtils.format("no context for %s", reference));
 			}
 			final Iterator<MetaEntity> iterator = metaEntities.iterator();
 			final MetaEntityContext.Builder builder = MetaEntityContext.builder().definition(iterator.next());
@@ -105,8 +111,25 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 					add(EntityDynamic.class, MetaModel.getMetaOfEntitydynamic()); //
 		}
 
+		/**
+		 * build a {@link MetaEntityContextProviderSupport} instance.
+		 * 
+		 * @param metaEntityProvider
+		 * @return a {@link MetaEntityContextProviderSupport} instance.
+		 * @throws NullPointerException
+		 */
 		public MetaEntityContextProviderSupport build(final MetaEntityProvider metaEntityProvider) throws NullPointerException {
 			return new MetaEntityContextProviderSupport(metaEntityProvider, contextEntities);
+		}
+
+		/**
+		 * build a {@link MetaEntityContextProviderSupport} instance.
+		 * 
+		 * @return a {@link MetaEntityContextProviderSupport} instance.
+		 * @throws NullPointerException
+		 */
+		public MetaEntityContextProviderSupport build() throws NullPointerException {
+			return build(null);
 		}
 
 		/**
