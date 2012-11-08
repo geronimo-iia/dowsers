@@ -55,6 +55,13 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 
 	/**
+	 * Build a new instance of MetaEntityProviderAnalyzer.
+	 */
+	public MetaEntityProviderAnalyzer() {
+		super();
+	}
+
+	/**
 	 * @see com.intelligentsia.dowsers.entity.meta.MetaEntityProvider#find(com.intelligentsia.dowsers.entity.reference.Reference)
 	 */
 	@Override
@@ -84,7 +91,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 *             if classInformation is null
 	 */
 	@VisibleForTesting
-	public MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
+	public static MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
 		Preconditions.checkNotNull(classInformation);
 		final Class<?> clazz = classInformation.getType();
 		// init builder with class name and MetaModel version.
@@ -108,7 +115,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 *             if something was wrong with attribute declaration
 	 */
 	@VisibleForTesting
-	public Collection<MetaAttribute> analyzeMetaAttribute(final Class<?> clazz) throws NullPointerException, IllegalArgumentException {
+	static Collection<MetaAttribute> analyzeMetaAttribute(final Class<?> clazz) throws NullPointerException, IllegalArgumentException {
 		final Map<String, MetaAttribute> attributes = Maps.newHashMap();
 		Preconditions.checkNotNull(clazz);
 
@@ -145,7 +152,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 * @return a name
 	 */
 	@VisibleForTesting
-	public String extractName(final Method method) {
+	static String extractName(final Method method) {
 		final String name = method.getName();
 		if (name.startsWith("get") || name.startsWith("set")) {
 			return Reflection.toFieldName(name);
@@ -154,7 +161,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	}
 
 	@VisibleForTesting
-	public Class<?> extractValueClass(final Method method) {
+	static Class<?> extractValueClass(final Method method) {
 		if (Void.TYPE == method.getReturnType()) {
 			return method.getParameterTypes()[0];
 		}
@@ -167,8 +174,9 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 * @param method
 	 * @return true if specified method can be an attribute, false other else.
 	 */
-	private boolean hasAttributeSignature(final Method method, final boolean autoDiscovering) {
-		if (method.getAnnotation(IgnoreAttribute.class) == null) {
+	@VisibleForTesting
+	static boolean hasAttributeSignature(final Method method, final boolean autoDiscovering) {
+		if (method.getAnnotation(IgnoreAttribute.class) != null) {
 			return false;
 		}
 		if (!autoDiscovering && (method.getAnnotation(Attribute.class) == null)) {

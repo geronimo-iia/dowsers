@@ -22,6 +22,7 @@ package org.intelligentsia.dowsers.core.reflection;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -92,6 +93,30 @@ public enum Reflection {
 					field.setAccessible(true);
 				}
 				return field;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Find specified Method name on specified class. Set Method accessible if
+	 * it's necessary.
+	 * 
+	 * @param clazz
+	 *            class where to search
+	 * @param name
+	 *            Method name to search
+	 * @return {@link Method} instance or null if none is found.
+	 */
+	public static Method findMethod(final Class<?> clazz, final String name) {
+		final Method[] methods = clazz.getDeclaredMethods();
+		for (int i = 0; i < methods.length; i++) {
+			final Method method = methods[i];
+			if (name.equals(method.getName())) {
+				if (!method.isAccessible()) {
+					method.setAccessible(true);
+				}
+				return method;
 			}
 		}
 		return null;

@@ -1,0 +1,85 @@
+/**
+ *        Licensed to the Apache Software Foundation (ASF) under one
+ *        or more contributor license agreements.  See the NOTICE file
+ *        distributed with this work for additional information
+ *        regarding copyright ownership.  The ASF licenses this file
+ *        to you under the Apache License, Version 2.0 (the
+ *        "License"); you may not use this file except in compliance
+ *        with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *        Unless required by applicable law or agreed to in writing,
+ *        software distributed under the License is distributed on an
+ *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *        KIND, either express or implied.  See the License for the
+ *        specific language governing permissions and limitations
+ *        under the License.
+ *
+ */
+package com.intelligentsia.dowsers.entity.meta.provider;
+
+import static junit.framework.Assert.*;
+
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+import org.intelligentsia.dowsers.core.reflection.Reflection;
+import org.junit.Test;
+
+/**
+ * MetaEntityProviderAnalyzerTest.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
+public class MetaEntityProviderAnalyzerTest {
+
+	@Test
+	public void testExtractMethodName() {
+		assertEquals("firstName", MetaEntityProviderAnalyzer.extractName(Reflection.findMethod(A.class, "getFirstName")));
+		assertEquals("firstName", MetaEntityProviderAnalyzer.extractName(Reflection.findMethod(A.class, "setFirstName")));
+
+		assertEquals("lastName", MetaEntityProviderAnalyzer.extractName(Reflection.findMethod(A.class, "lastName")));
+		assertEquals("ilastName", MetaEntityProviderAnalyzer.extractName(Reflection.findMethod(A.class, "IlastName")));
+	}
+
+	@Test
+	public void testExtractValueClass() {
+		assertEquals(ClassInformation.toClassInformation(String.class), //
+				ClassInformation.toClassInformation(MetaEntityProviderAnalyzer.extractValueClass(Reflection.findMethod(A.class, "getFirstName"))));
+
+		assertEquals(ClassInformation.toClassInformation(String.class), //
+				ClassInformation.toClassInformation(MetaEntityProviderAnalyzer.extractValueClass(Reflection.findMethod(A.class, "lastName"))));
+
+		assertEquals(ClassInformation.toClassInformation(String.class), //
+				ClassInformation.toClassInformation(MetaEntityProviderAnalyzer.extractValueClass(Reflection.findMethod(A.class, "IlastName"))));
+
+		assertEquals(ClassInformation.toClassInformation(String.class), //
+				ClassInformation.toClassInformation(MetaEntityProviderAnalyzer.extractValueClass(Reflection.findMethod(A.class, "setFirstName"))));
+
+	}
+
+	@Test
+	public void testHasAttributeSignature() {
+		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "getFirstName"), true));
+		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "lastName"), true));
+		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "IlastName"), true));
+		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "setFirstName"), true));
+		assertFalse(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "name"), true));
+	}
+
+	public interface A {
+
+		String getFirstName();
+
+		String lastName();
+
+		String IlastName();
+
+		void setFirstName(String name);
+
+		void lastName(String name);
+
+		void name(String first, String last);
+
+	}
+
+}
