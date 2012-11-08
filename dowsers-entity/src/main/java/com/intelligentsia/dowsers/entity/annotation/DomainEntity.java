@@ -34,5 +34,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface DomainEntity {
-
+	/**
+	 * Set automatic attributes discovery.
+	 */
+	boolean autoDiscovering() default true;
 }
