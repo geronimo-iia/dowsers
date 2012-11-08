@@ -23,7 +23,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>dowsers-entity-meta</artifactId>
+			<artifactId>dowsers-entity-meta-provider</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
