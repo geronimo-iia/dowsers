@@ -64,6 +64,10 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 
 	public MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
 		// TODO implements it
+		
+		
+		
+		
 		return null;
 	}
 
