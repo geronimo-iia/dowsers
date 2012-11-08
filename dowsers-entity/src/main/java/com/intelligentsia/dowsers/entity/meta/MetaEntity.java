@@ -264,7 +264,7 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 		}
 
 		/**
-		 * Add a new instance of <code>MetaAttributeDefinition</code>.
+		 * Add a new instance of <code>MetaAttribute</code>.
 		 * 
 		 * @param name
 		 *            attribute name
@@ -277,10 +277,24 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 		 *             if name is empty
 		 */
 		public Builder metaAttribute(final String name, final Class<?> valueClass) throws NullPointerException, IllegalArgumentException {
-			this.metaAttributes(MetaAttribute.builder().name(name).valueClass(valueClass).build());
+			return metaAttribute(MetaAttribute.builder().name(name).valueClass(valueClass).build());
+		}
+
+		/**
+		 * Add a new instance of <code>MetaAttribute</code>.
+		 * 
+		 * @param metaAttribute
+		 * @return
+		 * @throws NullPointerException
+		 */
+		public Builder metaAttribute(MetaAttribute metaAttribute) throws NullPointerException {
+			this.metaAttributes.add(Preconditions.checkNotNull(metaAttribute));
 			return this;
 		}
 
+		/**
+		 * @return a {@link MetaEntity} instance.
+		 */
 		public MetaEntity build() {
 			return new MetaEntity(identity, name, version, new MetaAttributeCollection(metaAttributes.build()));
 		}
