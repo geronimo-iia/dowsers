@@ -25,6 +25,10 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.junit.Test;
 
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
+import com.intelligentsia.dowsers.entity.meta.MetaModel;
+import com.intelligentsia.dowsers.entity.model.Person;
+
 /**
  * MetaEntityProviderAnalyzerTest.
  * 
@@ -64,6 +68,28 @@ public class MetaEntityProviderAnalyzerTest {
 		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "IlastName"), true));
 		assertTrue(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "setFirstName"), true));
 		assertFalse(MetaEntityProviderAnalyzer.hasAttributeSignature(Reflection.findMethod(A.class, "name"), true));
+	}
+
+	@Test
+	public void testPersonAnalyze() {
+		MetaEntity metaEntity = MetaEntityProviderAnalyzer.analyze(ClassInformation.toClassInformation(Person.class));
+		assertNotNull(metaEntity);
+		assertEquals(Person.class.getName(), metaEntity.name());
+		assertEquals(MetaModel.VERSION, metaEntity.version());
+		assertNotNull(metaEntity.metaAttributes());
+		assertFalse(metaEntity.metaAttributes().isEmpty());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("identity"));
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("firstName"));
+		assertEquals(ClassInformation.toClassInformation(String.class), metaEntity.metaAttributes().metaAttribute("firstName").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("lastName"));
+		assertEquals(ClassInformation.toClassInformation(String.class), metaEntity.metaAttributes().metaAttribute("lastName").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("yearOld"));
+		assertEquals(ClassInformation.toClassInformation(Integer.class), metaEntity.metaAttributes().metaAttribute("yearOld").valueClass());
+
 	}
 
 	public interface A {

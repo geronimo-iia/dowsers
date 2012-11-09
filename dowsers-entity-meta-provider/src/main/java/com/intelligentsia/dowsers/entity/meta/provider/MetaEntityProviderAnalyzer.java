@@ -91,7 +91,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 *             if classInformation is null
 	 */
 	@VisibleForTesting
-	public static MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
+	static MetaEntity analyze(final ClassInformation classInformation) throws NullPointerException {
 		Preconditions.checkNotNull(classInformation);
 		final Class<?> clazz = classInformation.getType();
 		// init builder with class name and MetaModel version.
