@@ -57,31 +57,6 @@ bc..
 	<version>1.0.0</version>
 </dependency>
 
-h2. Configure Your POM
-
-bc.. 
-	<build>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.intelligentsia.keystone</groupId>
-	            <artifactId>plugin</artifactId>
-	            <version>2.5</version>
-	            <executions>
-	                <execution>
-	                    <id>make-assembly</id>
-	                    <phase>package</phase>
-	                    <configuration>
-	                        <mainClass>your.class.Main</mainClass>
-	                    </configuration>
-	                    <goals>
-	                        <goal>custom</goal>
-	                    </goals>
-	                </execution>
-	            </executions>
-	        </plugin>
-	    </plugins>
-	</build>
-
 
 h2. Add some repositories
 
@@ -116,6 +91,7 @@ bc..
 	</pluginRepositories>
 
 
+
 h3. Snapshot Repository
 
 bc.. 
@@ -145,6 +121,7 @@ bc..
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+
 
 
 h1. What is DDD, CQRS and Co ?
