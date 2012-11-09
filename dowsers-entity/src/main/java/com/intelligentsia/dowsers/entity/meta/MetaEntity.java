@@ -68,7 +68,7 @@ import com.intelligentsia.dowsers.entity.reference.References;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaEntity implements Identified<Reference>, Serializable, Comparable<MetaEntity> {
+public class MetaEntity implements Identified<Reference>, Serializable, Comparable<MetaEntity>, Entity {
 
 	/**
 	 * serialVersionUID:long
@@ -287,7 +287,7 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 		 * @return
 		 * @throws NullPointerException
 		 */
-		public Builder metaAttribute(MetaAttribute metaAttribute) throws NullPointerException {
+		public Builder metaAttribute(final MetaAttribute metaAttribute) throws NullPointerException {
 			this.metaAttributes.add(Preconditions.checkNotNull(metaAttribute));
 			return this;
 		}
@@ -304,5 +304,43 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 	@Override
 	public int compareTo(final MetaEntity o) {
 		return version.compareTo(o.version);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
+		if ("identity".endsWith(name)) {
+			return (Value) identity();
+		}
+		if ("name".endsWith(name)) {
+			return (Value) name();
+		}
+		if ("version".endsWith(name)) {
+			return (Value) version();
+		}
+		if ("metaAttributes".endsWith(name)) {
+			return (Value) metaAttributes();
+		}
+		return null;
+	}
+
+	@Override
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
+		throw new IllegalArgumentException("MetaEntity is Immutable");
+	}
+
+	@Override
+	public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
+		return MetaModel.getMetaOfMetaEntity().attributeNames().contains(name);
+	}
+
+	@Override
+	public ImmutableSet<String> attributeNames() {
+		return MetaModel.getMetaEntityContext().definitionAttributeNames();
+	}
+
+	@Override
+	public MetaEntityContext metaEntityContext() {
+		return MetaModel.getMetaEntityContext();
 	}
 }

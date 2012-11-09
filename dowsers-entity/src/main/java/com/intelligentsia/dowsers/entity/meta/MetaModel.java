@@ -88,7 +88,8 @@ public enum MetaModel {
 
 		// META ENTITY DEFINITION
 		metaMetaAttribute = new MetaEntity.Builder(). // definition
-				name(MetaAttribute.class.getName()).version(VERSION).identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaEntity:identity#f45e8827-c619-4b99-a8a2-e5c36d11ee47"))
+				name(MetaAttribute.class.getName()).version(VERSION).//
+				identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaEntity:identity#f45e8827-c619-4b99-a8a2-e5c36d11ee47"))
 				// attributes
 				.metaAttributes(identityAttribute, name, valueClass).build();
 
@@ -136,12 +137,17 @@ public enum MetaModel {
 		return identityAttribute;
 	}
 
-	public static MetaEntityContext getDefaultMetaAttributeContext() {
+	/**
+	 * @return {@link MetaEntityContext} for {@link MetaAttribute}.
+	 */
+	public static MetaEntityContext getMetaAttributeContext() {
 		return metaAttributeContext;
 	}
 
-	public static MetaEntityContext getDefaultMetaEntityContext() {
+	/**
+	 * @return {@link MetaEntityContext} for {@link MetaEntity}.
+	 */
+	public static MetaEntityContext getMetaEntityContext() {
 		return metaEntityContext;
 	}
-
 }

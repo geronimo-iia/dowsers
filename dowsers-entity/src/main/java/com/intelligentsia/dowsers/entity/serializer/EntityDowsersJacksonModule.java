@@ -71,45 +71,31 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	public EntityDowsersJacksonModule(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		super();
 
-		addSerializer(new EntitySerializer<Entity>(Entity.class));
+		/**
+		 * Declare Serializer for all proxified class
+		 */
+		addSerializer(new EntitySerializer<EntityProxyHandler>(EntityProxyHandler.class));
 		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
+
+		/**
+		 * Declare Serializer for all EntityDynamic class
+		 */
+		addSerializer(new EntitySerializer<EntityDynamic>(EntityDynamic.class));
 		addDeserializer(EntityDynamic.class, new EntityDynamicDeSerializer(metaEntityContextProvider));
 
+		/**
+		 * Declare Serializer for all Reference class
+		 */
 		addSerializer(new ReferenceSerializer());
 		addDeserializer(Reference.class, new ReferenceDeSerializer());
 
+		/**
+		 * Declare Serializer for all Version class
+		 */
 		addSerializer(new VersionSerializer());
 		addDeserializer(Version.class, new VersionDeSerializer());
 
-		// declareMetaAttribute(metaEntityContextProvider);
-		// declareMetaEntity(metaEntityContextProvider);
 	}
-
-	// public void declareMetaEntity(final MetaEntityContextProvider
-	// metaEntityContextProvider) {
-	// addDeserializer(MetaEntity.class, new
-	// EntityDeSerializer<MetaEntity>(MetaEntity.class, new
-	// EntityFactory<MetaEntity>() {
-	// @Override
-	// public MetaEntity newInstance(final String identity, final Map<String,
-	// Object> attributes) {
-	// return new MetaEntity(identity, attributes);
-	// }
-	// }, metaEntityContextProvider));
-	// }
-	//
-	// public void declareMetaAttribute(final MetaEntityContextProvider
-	// metaEntityContextProvider) {
-	// addDeserializer(MetaAttribute.class, new
-	// EntityDeSerializer<MetaAttribute>(MetaAttribute.class, new
-	// EntityFactory<MetaAttribute>() {
-	// @Override
-	// public MetaAttribute newInstance(final String identity, final Map<String,
-	// Object> attributes) {
-	// return new MetaAttribute(identity, attributes);
-	// }
-	// }, metaEntityContextProvider));
-	// }
 
 	/**
 	 * EntitySerializer.

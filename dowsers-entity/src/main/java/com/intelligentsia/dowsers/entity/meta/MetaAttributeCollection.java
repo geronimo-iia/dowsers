@@ -22,6 +22,8 @@ package com.intelligentsia.dowsers.entity.meta;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import org.intelligentsia.keystone.api.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,6 +59,26 @@ public class MetaAttributeCollection implements Iterable<MetaAttribute>, Seriali
 	public MetaAttributeCollection(@JsonProperty("items") final ImmutableSet<MetaAttribute> metaAttributes) {
 		super();
 		this.metaAttributes = Preconditions.checkNotNull(metaAttributes);
+	}
+
+	/**
+	 * @param name
+	 * @return a {@link MetaAttribute} with specified name
+	 * @throws NullPointerException
+	 *             if name is null
+	 * @throws IllegalArgumentException
+	 *             if no {@link MetaAttribute} with specified name exists.
+	 */
+	public MetaAttribute metaAttribute(final String name) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkNotNull(name);
+		final Iterator<MetaAttribute> iterator = metaAttributes.iterator();
+		while (iterator.hasNext()) {
+			final MetaAttribute metaAttribute = iterator.next();
+			if (name.equals(metaAttribute.name())) {
+				return metaAttribute;
+			}
+		}
+		throw new IllegalArgumentException(StringUtils.format("MetaAttribute %s not found", name));
 	}
 
 	@Override

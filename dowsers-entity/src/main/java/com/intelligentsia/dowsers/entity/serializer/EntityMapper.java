@@ -57,7 +57,7 @@ public class EntityMapper {
 	 *            {@link EntityMapper#initialize(MetaEntityContextProvider)}
 	 *            before using this instance.
 	 */
-	public EntityMapper(ObjectMapper mapper) {
+	public EntityMapper(final ObjectMapper mapper) {
 		super();
 		this.mapper = mapper;
 	}

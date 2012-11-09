@@ -129,14 +129,17 @@ public class MetaAttribute implements Identified<Reference>, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		MetaAttribute other = (MetaAttribute) obj;
+		}
+		final MetaAttribute other = (MetaAttribute) obj;
 		return Objects.equal(name, other.name) && Objects.equal(valueClass, other.valueClass);
 	}
 
