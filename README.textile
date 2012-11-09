@@ -26,7 +26,7 @@ Many Idea:
 * Adding tool to build administrative web application based on meta
 
 
-h2. 1.0.0 (Coming soon)
+h2. 1.0.0 (Release Coming soon)
 
 
 * Define Entity core (Reference, Attribute, Entity, Dynamic and proxy implementation, Serialization, Meta data, ...)
