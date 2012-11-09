@@ -49,9 +49,7 @@ h1. Maven Stuff
 
 h2. dependency on Dowsers
 
-
-bc.. 
-<dependency>
+bc.	<dependency>
 	<groupId>org.intelligents-ia.dowsers</groupId>
 	<artifactId>dowsers-entity-manager</artifactId>
 	<version>1.0.0</version>
@@ -62,8 +60,7 @@ h2. Add some repositories
 
 h3. Releases Repository
 
-bc.. 
-	<repositories>
+bc. 	<repositories>
 		<repository>
 			<id>intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository</name>
@@ -94,8 +91,7 @@ bc..
 
 h3. Snapshot Repository
 
-bc.. 
-	<repositories>
+bc. <repositories>
 		<repository>
 			<id>intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository</name>
