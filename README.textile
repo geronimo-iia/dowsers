@@ -49,7 +49,7 @@ h1. Maven Stuff
 
 h2. dependency on Dowsers
 
-bc.	<dependency>
+bc. <dependency>
 	<groupId>org.intelligents-ia.dowsers</groupId>
 	<artifactId>dowsers-entity-manager</artifactId>
 	<version>1.0.0</version>
@@ -135,8 +135,8 @@ This project is my personal study on this pattern. If you're interested by this 
 
 h2. CQRS
 
-!docs/cqrs_architecture.jpg!
+!./docs/cqrs_architecture.jpg?raw=true!
 
 h2. Event Store
 
-!docs/DDDDevision_big.jpg! 
+!./docs/DDDDevision_big.jpg?raw=true! 
