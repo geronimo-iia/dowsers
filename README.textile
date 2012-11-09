@@ -1,0 +1,169 @@
+h1.  Dowsers
+
+Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
+
+
+An Introduction on "entities subject":docs/entity.textile
+
+
+h1. Release Notes
+
+
+h2. 1.0.1-SNAPSHOT
+
+Many Idea:
+* Adding View concept:
+** definition with aggregation of attribute, 
+** in memory implementation that follow runtime
+* On Entity  Store:
+** Add Event Store concept with Java Chronicle Implementation, and / or Mongo db
+** Add Entity Store based on mongo db
+** add Json Query language
+* Adding Web Service default implementation for:
+** manage crud entity
+** execute command
+** calling view with filtering, limit, sort and skip methods
+* Adding tool to build administrative web application based on meta
+
+
+h2. 1.0.0 (Coming soon)
+
+
+* Define Entity core (Reference, Attribute, Entity, Dynamic and proxy implementation, Serialization, Meta data, ...)
+* Define Entity Store with few implementation:
+** In memory for testing
+** Json data on File system
+** Sharing pattern
+** Caching with guava
+* Define Meta entity Provider:
+** Annnotation definition support
+** File system definition
+** In memory definition
+** Filter based on meta data version or guava Predicate
+* Define entity Manager
+* Add Command Pattern Implementation
+
+
+
+h1. Maven Stuff
+
+h2. dependency on Dowsers
+
+
+bc.. 
+<dependency>
+	<groupId>org.intelligents-ia.dowsers</groupId>
+	<artifactId>dowsers-entity-manager</artifactId>
+	<version>1.0.0</version>
+</dependency>
+
+h2. Configure Your POM
+
+bc.. 
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.intelligentsia.keystone</groupId>
+	            <artifactId>plugin</artifactId>
+	            <version>2.5</version>
+	            <executions>
+	                <execution>
+	                    <id>make-assembly</id>
+	                    <phase>package</phase>
+	                    <configuration>
+	                        <mainClass>your.class.Main</mainClass>
+	                    </configuration>
+	                    <goals>
+	                        <goal>custom</goal>
+	                    </goals>
+	                </execution>
+	            </executions>
+	        </plugin>
+	    </plugins>
+	</build>
+
+
+h2. Add some repositories
+
+h3. Releases Repository
+
+bc.. 
+	<repositories>
+		<repository>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+h3. Snapshot Repository
+
+bc.. 
+	<repositories>
+		<repository>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+h1. What is DDD, CQRS and Co ?
+
+
+This project is my personal study on this pattern. If you're interested by this subject, you could spend some time on this link:
+
+* Domain-Driven Design and Command-Query Separation example "application":https://github.com/erikrozendaal/cqrs-lottery,  Erik Rozendaal, Xebia
+* From "martinfowler.com":http://martinfowler.com/, "Event Sourcing":http://martinfowler.com/eaaDev/EventSourcing.html
+* "Fohjin.DDD":https://github.com/MarkNijhof/Fohjin/blob/master/Fohjin.DDD/
+* "cqrs-domain-events":http://cre8ivethought.com/blog/2009/11/20/cqrs-domain-events 
+* "axonframework.org":http://www.axonframework.org/
+* "ncqrs":https://raw.github.com/ncqrs/ncqrs
+
+
+h2. CQRS
+
+!docs/cqrs_architecture.jpg!
+
+h2. Event Store
+
+!docs/DDDDevision_big.jpg! 
