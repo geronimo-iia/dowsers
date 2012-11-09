@@ -135,8 +135,8 @@ This project is my personal study on this pattern. If you're interested by this 
 
 h2. CQRS
 
-!./docs/cqrs_architecture.jpg?raw=true!
+!https://github.com/geronimo-iia/dowsers/blob/master/docs/cqrs_architecture.jpg?raw=true!
 
 h2. Event Store
 
-!./docs/DDDDevision_big.jpg?raw=true! 
+!https://github.com/geronimo-iia/dowsers/blob/master/docs/DDDDevision_big.jpg?raw=true! 
