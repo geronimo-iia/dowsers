@@ -46,8 +46,8 @@ public interface EntityManager {
 	 * 
 	 * @param expectedType
 	 *            expected type entity
-	 * @param identity
-	 *            identity what we looking for
+	 * @param reference
+	 *            reference what we looking for
 	 * @return an entity instance of the expected type and identity
 	 * 
 	 * @throws EntityNotFoundException
@@ -55,7 +55,7 @@ public interface EntityManager {
 	 * @throws NullPointerException
 	 *             if expectedType or identity is null
 	 */
-	public <T> T find(Class<T> expectedType, String identity) throws EntityNotFoundException, NullPointerException;
+	public <T> T find(Class<T> expectedType, Reference reference) throws EntityNotFoundException, NullPointerException;
 
 	/**
 	 * Find entity with the specified reference.

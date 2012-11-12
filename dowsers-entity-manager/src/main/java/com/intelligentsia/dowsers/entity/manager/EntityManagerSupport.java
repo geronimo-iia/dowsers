@@ -19,37 +19,58 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import org.intelligentsia.dowsers.core.reflection.ClassInformation;
+
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
+import com.intelligentsia.dowsers.entity.store.EntityStore;
 
+/**
+ * EntityManagerSupport implements {@link EntityManager}.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ */
 public class EntityManagerSupport implements EntityManager {
+	/**
+	 * {@link EntityFactoryProvider} instance.
+	 */
+	private EntityFactoryProvider entityFactoryProvider;
+	/**
+	 * {@link EntityStore} instance.
+	 */
+	private EntityStore entityStore;
+
 
 	@Override
 	public <T> T newInstance(final Class<T> expectedType) throws NullPointerException {
-		return null;
+		return entityFactoryProvider.newInstance(expectedType);
 	}
 
 	@Override
-	public <T> T find(final Class<T> expectedType, final String identity) throws EntityNotFoundException, NullPointerException {
-		return null;
+	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
+		return entityStore.find(expectedType, reference);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
-		return null;
+		return (T) entityStore.find(ClassInformation.parse(reference.getEntityClassName()).getType(), reference);
 	}
 
 	@Override
 	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException {
+		entityStore.store(entity);
 	}
 
 	@Override
 	public <T> void remove(final T entity) throws NullPointerException {
+		entityStore.remove(entity);
 	}
 
 	@Override
 	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
+		entityStore.remove(reference);
 	}
 
 }
