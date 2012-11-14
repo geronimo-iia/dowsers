@@ -20,6 +20,7 @@
 package org.intelligentsia.dowsers.core.reflection;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
@@ -38,6 +39,23 @@ import java.util.Map;
  */
 public enum Reflection {
 	;
+
+	/**
+	 * @param clazz
+	 * @return accessible default constructor or null if none was found.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Constructor<T> findDefaultConstructor(final Class<T> clazz) {
+		for (Constructor<?> constructor : clazz.getConstructors()) {
+			if (constructor.getParameterTypes().length == 0) {
+				if (!constructor.isAccessible()) {
+					constructor.setAccessible(true);
+				}
+				return (Constructor<T>) constructor;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Capitalize first letter.
