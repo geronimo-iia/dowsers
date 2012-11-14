@@ -134,6 +134,15 @@ public class ShardingEntityStore implements EntityStore {
 		}
 
 		/**
+		 * @param collections
+		 * @return this instance
+		 */
+		public Builder addAll(Map<Reference, EntityStore> collections) {
+			stores.putAll(collections);
+			return this;
+		}
+
+		/**
 		 * Build a new instance of {@link ShardingEntityStore}.
 		 * 
 		 * @param defaultEntityStore

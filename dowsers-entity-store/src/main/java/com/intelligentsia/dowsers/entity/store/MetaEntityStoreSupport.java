@@ -39,6 +39,18 @@ public class MetaEntityStoreSupport implements MetaEntityStore {
 	 */
 	private EntityStore entityStore;
 
+	/**
+	 * Build a new instance of MetaEntityStoreSupport.java.
+	 * 
+	 * @param entityStore
+	 * @throws NullPointerException
+	 *             if entityStore is null
+	 */
+	public MetaEntityStoreSupport(EntityStore entityStore) throws NullPointerException {
+		super();
+		this.entityStore = Preconditions.checkNotNull(entityStore);
+	}
+
 	@Override
 	public Collection<MetaEntity> find(Reference reference) throws NullPointerException {
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();

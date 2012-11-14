@@ -228,6 +228,17 @@ public class EntityFactoryProvider {
 		}
 
 		/**
+		 * Set enableDefaultFactory flag>
+		 * 
+		 * @param enableDefaultFactory
+		 * @return this instance
+		 */
+		public Builder setEnableDefaultFactory(boolean enableDefaultFactory) {
+			this.enableDefaultFactory = enableDefaultFactory;
+			return this;
+		}
+
+		/**
 		 * Register a specific factory>
 		 * 
 		 * @param clazz
@@ -240,6 +251,15 @@ public class EntityFactoryProvider {
 		 */
 		public <T> Builder register(final Class<T> clazz, final EntityFactories.EntityFactory<T> factory) throws NullPointerException {
 			factories.put(Preconditions.checkNotNull(clazz), Preconditions.checkNotNull(factory));
+			return this;
+		}
+
+		/**
+		 * @param factories
+		 * @return this instance.
+		 */
+		public Builder setFactories(Map<Class<?>, EntityFactories.EntityFactory<?>> factories) {
+			this.factories = factories;
 			return this;
 		}
 

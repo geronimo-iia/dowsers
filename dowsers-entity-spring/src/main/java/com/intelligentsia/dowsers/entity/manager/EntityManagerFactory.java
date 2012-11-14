@@ -28,15 +28,15 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * EntityManagerFactory implement a {@link FactoryBean} for
  * {@link EntityManager}.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a> *
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public class EntityManagerFactory implements FactoryBean<EntityManager> {
 
 	private EntityManager.Listener entityManagerListener = null;
 
-	private EntityFactoryProvider entityFactoryProvider;
-
 	private EntityStore entityStore;
+
+	private EntityFactoryProvider entityFactoryProvider;
 
 	/**
 	 * Build a new instance of EntityManagerFactory.
@@ -64,24 +64,24 @@ public class EntityManagerFactory implements FactoryBean<EntityManager> {
 		return entityManagerListener;
 	}
 
-	public void setEntityManagerListener(EntityManager.Listener entityManagerListener) {
+	public void setEntityManagerListener(final EntityManager.Listener entityManagerListener) {
 		this.entityManagerListener = entityManagerListener;
-	}
-
-	public EntityFactoryProvider getEntityFactoryProvider() {
-		return entityFactoryProvider;
-	}
-
-	public void setEntityFactoryProvider(EntityFactoryProvider entityFactoryProvider) {
-		this.entityFactoryProvider = entityFactoryProvider;
 	}
 
 	public EntityStore getEntityStore() {
 		return entityStore;
 	}
 
-	public void setEntityStore(EntityStore entityStore) {
+	public void setEntityStore(final EntityStore entityStore) {
 		this.entityStore = entityStore;
+	}
+
+	public EntityFactoryProvider getEntityFactoryProvider() {
+		return entityFactoryProvider;
+	}
+
+	public void setEntityFactoryProvider(final EntityFactoryProvider entityFactoryProvider) {
+		this.entityFactoryProvider = entityFactoryProvider;
 	}
 
 }
