@@ -31,6 +31,7 @@ import java.util.Map;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.intelligentsia.keystone.api.StringUtils;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
@@ -151,7 +152,8 @@ public class EntityFactoryProvider {
 	 * @param expectedType
 	 * @return
 	 */
-	public <T> EntityFactory<T> buildDefaultEntityFactory(final Class<T> expectedType) {
+	@VisibleForTesting
+	<T> EntityFactory<T> buildDefaultEntityFactory(final Class<T> expectedType) {
 		final EntityFactory<T> entityFactory = new EntityFactory<T>() {
 
 			private final Constructor<T> constructor = Preconditions.checkNotNull(Reflection.findDefaultConstructor(expectedType), StringUtils.format("No EntityFactory can be created for %s (No default constructor)", expectedType));
