@@ -35,14 +35,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
-import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactoryProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
- * EntityFactoryProviderSupport implements {@link EntityFactoryProvider}.
+ * EntityFactoryProvider provide {@link EntityFactory} instance.
  * 
  * This implementation manage factory for:
  * <ul>
@@ -64,36 +63,45 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityFactoryProviderSupport implements EntityFactoryProvider {
+public class EntityFactoryProvider {
 
+	/**
+	 * {@link MetaEntityContextProvider} instance.
+	 */
 	private final MetaEntityContextProvider metaEntityContextProvider;
 
+	/**
+	 * {@link Map} of {@link Class}, {@link EntityFactories.EntityFactory}.
+	 */
 	private final Map<Class<?>, EntityFactories.EntityFactory<?>> factories;
 
+	/**
+	 * Flag to enable default factory.
+	 */
 	private final boolean enableDefaultFactory;
 
 	/**
-	 * Build a new instance of EntityFactoryProviderSupport.java.
+	 * Build a new instance of EntityFactoryProvider.
 	 * 
 	 * @param metaEntityContextProvider
 	 *            meta Entity Context Provider instance
 	 * @throws NullPointerException
 	 *             if metaEntityContextProvider is null
 	 */
-	public EntityFactoryProviderSupport(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+	public EntityFactoryProvider(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		this(metaEntityContextProvider, null, Boolean.TRUE);
 
 	}
 
 	/**
-	 * Build a new instance of EntityFactoryProviderSupport.java.
+	 * Build a new instance of EntityFactoryProvider.
 	 * 
 	 * @param metaEntityContextProvider
 	 *            meta Entity Context Provider instance
 	 * @throws NullPointerException
 	 *             if metaEntityContextProvider is null
 	 */
-	public EntityFactoryProviderSupport(final MetaEntityContextProvider metaEntityContextProvider, final Map<Class<?>, EntityFactory<?>> factories, final boolean enableDefaultFactory) {
+	public EntityFactoryProvider(final MetaEntityContextProvider metaEntityContextProvider, final Map<Class<?>, EntityFactory<?>> factories, final boolean enableDefaultFactory) {
 		super();
 		this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 		this.factories = factories == null ? new HashMap<Class<?>, EntityFactories.EntityFactory<?>>() : factories;
@@ -101,14 +109,15 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	}
 
 	/**
-	 * @see com.intelligentsia.dowsers.entity.EntityFactoryProvider#newInstance(java.lang.Class)
-	 * 
+	 * @param expectedType
+	 *            expected Type
+	 * @return a {@link EntityFactory} instance for specified type.
+	 * @throws NullPointerException
+	 *             if expectedType
 	 * @throws IllegalArgumentException
-	 *             if no {@link MetaEntityContext} was found
+	 *             if no factory can be provided
 	 */
-
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> EntityFactory<T> newInstance(final Class<T> expectedType) throws NullPointerException, IllegalArgumentException {
 		// should we use a proxy ?
 		if (expectedType.isInterface() || Modifier.isAbstract(expectedType.getModifiers())) {
@@ -173,14 +182,14 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	}
 
 	/**
-	 * @return a {@link Builder} for {@link EntityFactoryProviderSupport}.
+	 * @return a {@link Builder} for {@link EntityFactoryProvider}.
 	 */
 	public static final Builder builder() {
 		return new Builder();
 	}
 
 	/**
-	 * Builder pattern for {@link EntityFactoryProviderSupport}.
+	 * Builder pattern for {@link EntityFactoryProvider}.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
 	 */
@@ -191,7 +200,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 		boolean enableDefaultFactory = Boolean.TRUE;
 
 		/**
-		 * Build a new instance of EntityFactoryProviderSupport.
+		 * Build a new instance of EntityFactoryProvider.
 		 */
 		public Builder() {
 			super();
@@ -235,12 +244,12 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 
 		/**
 		 * @param metaEntityContextProvider
-		 * @return an {@link EntityFactoryProviderSupport} instance
+		 * @return an {@link EntityFactoryProvider} instance
 		 * @throws NullPointerException
 		 *             if metaEntityContextProvider is null
 		 */
-		public EntityFactoryProviderSupport build(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
-			return new EntityFactoryProviderSupport(metaEntityContextProvider);
+		public EntityFactoryProvider build(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+			return new EntityFactoryProvider(metaEntityContextProvider);
 		}
 	}
 
