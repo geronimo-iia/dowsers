@@ -62,6 +62,25 @@ public enum EntityFactories {
 	}
 
 	/**
+	 * EntityFactoryProvider provide {@link EntityFactory} instance.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public interface EntityFactoryProvider {
+
+		/**
+		 * @param expectedType
+		 *            expected Type
+		 * @return a {@link EntityFactory} instance for specified type.
+		 * @throws NullPointerException
+		 *             if expectedType
+		 * @throws IllegalArgumentException
+		 *             if no factory can be provided
+		 */
+		public <T> EntityFactory<T> newInstance(final Class<T> expectedType) throws NullPointerException, IllegalArgumentException;
+	}
+
+	/**
 	 * @return an {@link EntityFactory} of {@link EntityDynamic}.
 	 */
 	public static EntityFactory<EntityDynamic> newEntityDynamicFactory(final MetaEntityContext metaEntityContext) {

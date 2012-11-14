@@ -21,6 +21,7 @@ package com.intelligentsia.dowsers.entity.manager;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
+import com.intelligentsia.dowsers.entity.EntityFactoryProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
@@ -44,7 +45,7 @@ public class EntityManagerSupport implements EntityManager {
 
 	@Override
 	public <T> T newInstance(final Class<T> expectedType) throws NullPointerException {
-		return entityFactoryProvider.newInstance(expectedType);
+		return entityFactoryProvider.newInstance(expectedType).newInstance();
 	}
 
 	@Override

@@ -78,7 +78,8 @@ public interface Entity extends Identified<Reference> {
 	 * @throws NullPointerException
 	 *             if name is null
 	 * @throws IllegalArgumentException
-	 *             if argument is invalid
+	 *             if argument is invalid (like trying to set 'identity'
+	 *             attribute)
 	 * @param <Value>
 	 *            Object value class
 	 * @return this {@link Entity} instance.

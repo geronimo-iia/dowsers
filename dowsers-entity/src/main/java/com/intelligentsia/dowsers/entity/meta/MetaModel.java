@@ -59,6 +59,11 @@ public enum MetaModel {
 	private static final MetaEntityContext metaEntityContext;
 
 	/**
+	 * Default {@link MetaEntityContext} for {@link EntityDynamic}.
+	 */
+	private static final MetaEntityContext entityDynamicContext;
+
+	/**
 	 * META DEFINITION for {@link EntityDynamic}.
 	 */
 	private static final MetaEntity metaEntityDynamic;
@@ -87,18 +92,18 @@ public enum MetaModel {
 				name("metaAttributes").valueClass(MetaAttributeCollection.class).build();
 
 		// META ENTITY DEFINITION
-		metaMetaAttribute = new MetaEntity.Builder(). // definition
+		metaMetaAttribute = MetaEntity.builder(). // definition
 				name(MetaAttribute.class.getName()).version(VERSION).//
 				identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaEntity:identity#f45e8827-c619-4b99-a8a2-e5c36d11ee47"))
 				// attributes
 				.metaAttributes(identityAttribute, name, valueClass).build();
 
-		metaMetaEntity = new MetaEntity.Builder(). // definition
+		metaMetaEntity = MetaEntity.builder(). // definition
 				name(MetaEntity.class.getName()).version(VERSION).identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaEntity:identity#fbdff898-07c0-4933-9751-667c308831d6"))
 				// attributes
 				.metaAttributes(identityAttribute, name, version, metaAttributes).build();
 
-		metaEntityDynamic = new MetaEntity.Builder(). // definition
+		metaEntityDynamic = MetaEntity.builder(). // definition
 				name(EntityDynamic.class.getName()).version(VERSION).identity(Reference.parseString("urn:dowsers:com.intelligentsia.dowsers.entity.meta.MetaEntity:identity#f3506e0b-e726-4924-9835-072ada7b8d29"))
 				// attributes
 				.metaAttributes(identityAttribute).build();
@@ -107,6 +112,8 @@ public enum MetaModel {
 		metaAttributeContext = MetaEntityContext.builder().definition(metaMetaAttribute).build();
 
 		metaEntityContext = MetaEntityContext.builder().definition(metaMetaEntity).build();
+
+		entityDynamicContext = MetaEntityContext.builder().definition(metaEntityDynamic).build();
 	}
 
 	/**
@@ -149,5 +156,12 @@ public enum MetaModel {
 	 */
 	public static MetaEntityContext getMetaEntityContext() {
 		return metaEntityContext;
+	}
+
+	/**
+	 * @return {@link MetaEntityContext} for {@link EntityDynamic}.
+	 */
+	public static MetaEntityContext getEntityDynamicContext() {
+		return entityDynamicContext;
 	}
 }

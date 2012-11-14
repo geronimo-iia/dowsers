@@ -106,8 +106,9 @@ public class EntityDynamic implements Entity, Comparable<Entity>, Serializable, 
 	}
 
 	@Override
-	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException {
-		attributes.put(Preconditions.checkNotNull(name), value);
+	public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkArgument(!"identity".equals(Preconditions.checkNotNull(name)), "Identity is immutable");
+		attributes.put(name, value);
 		return this;
 	}
 
