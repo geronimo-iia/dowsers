@@ -30,6 +30,7 @@ import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
 public interface EntityManager {
+
 	/**
 	 * Create a new entity instance
 	 * 
@@ -103,4 +104,40 @@ public interface EntityManager {
 	 *             if reference is not an identifier
 	 */
 	public void remove(Reference reference) throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Listener.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public interface Listener {
+
+		/**
+		 * Call after an entity was instantiated
+		 * 
+		 * @param entity
+		 */
+		<T> void entityInstantiated(T entity);
+
+		/**
+		 * Call after loading specified entity
+		 * 
+		 * @param entity
+		 */
+		<T> void entityFinded(T entity);
+
+		/**
+		 * Call after store specified entity
+		 * 
+		 * @param entity
+		 */
+		<T> void entityStored(T entity);
+
+		/**
+		 * Call after remove specified entity
+		 * 
+		 * @param entity
+		 */
+		<T> void entityRemoved(T entity);
+	}
 }

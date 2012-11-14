@@ -120,32 +120,31 @@ public class EntityFactoryProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> EntityFactory<T> newInstance(final Class<T> expectedType) throws NullPointerException, IllegalArgumentException {
-		// should we use a proxy ?
-		if (expectedType.isInterface() || Modifier.isAbstract(expectedType.getModifiers())) {
-			final MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReference(expectedType));
-			return EntityFactories.newEntityProxyDynamicFactory(expectedType, metaEntityContext);
-		}
-		// EntityDynamic
-		if (EntityDynamic.class.getName().equals(expectedType.getName())) {
-			return (EntityFactory<T>) EntityFactories.newEntityDynamicFactory(MetaModel.getEntityDynamicContext());
-		}
 		// in a registered factory ?
-		final EntityFactories.EntityFactory<?> factory = factories.get(expectedType);
-		if (factory != null) {
-			return (EntityFactory<T>) factory;
+		EntityFactories.EntityFactory<?> factory = factories.get(expectedType);
+		if (factory == null) {
+			// should we use a proxy ?
+			if (expectedType.isInterface() || Modifier.isAbstract(expectedType.getModifiers())) {
+				final MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReference(expectedType));
+				factory = EntityFactories.newEntityProxyDynamicFactory(expectedType, metaEntityContext);
+			} else // EntityDynamic
+			if (EntityDynamic.class.getName().equals(expectedType.getName())) {
+				// build factory for class
+				factory = (EntityFactory<T>) EntityFactories.newEntityDynamicFactory(MetaModel.getEntityDynamicContext());
+			} else // default Factory ?
+			{
+				if (!enableDefaultFactory) {
+					throw new IllegalArgumentException(StringUtils.format("No EntityFactory for %s", expectedType));
+				}
+				if (!Entity.class.isAssignableFrom(expectedType)) {
+					throw new IllegalArgumentException(StringUtils.format("No EntityFactory can be created for %s (Not assignable to Entity interface)", expectedType));
+				}
+				factory = buildDefaultEntityFactory(expectedType);
+			}
+			// register for later
+			factories.put(expectedType, factory);
 		}
-		if (!enableDefaultFactory) {
-			throw new IllegalArgumentException(StringUtils.format("No EntityFactory for %s", expectedType));
-		}
-		// other
-		if (!Entity.class.isAssignableFrom(expectedType)) {
-			throw new IllegalArgumentException(StringUtils.format("No EntityFactory can be created for %s (Not assignable to Entity interface)", expectedType));
-		}
-		final EntityFactory<T> entityFactory = buildDefaultEntityFactory(expectedType);
-		// register for later
-		factories.put(expectedType, entityFactory);
-		// return result
-		return entityFactory;
+		return (EntityFactory<T>) factory;
 	}
 
 	/**

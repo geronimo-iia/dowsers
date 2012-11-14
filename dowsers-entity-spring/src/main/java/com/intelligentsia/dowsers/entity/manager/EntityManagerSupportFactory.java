@@ -19,22 +19,36 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
-import com.intelligentsia.dowsers.entity.Entity;
+import org.springframework.beans.factory.FactoryBean;
 
-public interface EntityListener {
-	
-	void entityAccessed(Entity entity);
+/**
+ * EntityManagerSupportFactory implement a Factory for
+ * {@link EntityManagerSupport}.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a> *
+ */
+public class EntityManagerSupportFactory implements FactoryBean<EntityManagerSupport> {
 
-	void entityCreated(Entity entity);
+	/**
+	 * Build a new instance of EntityManagerSupportFactory.java.
+	 */
+	public EntityManagerSupportFactory() {
+		super();
+	}
 
-	void entityLoaded(Entity entity);
+	@Override
+	public Class<EntityManagerSupport> getObjectType() {
+		return EntityManagerSupport.class;
+	}
 
-	void entitySaving(Entity entity);
+	@Override
+	public boolean isSingleton() {
+		return true;
+	}
 
-	void entitySaved(Entity entity);
-
-	void entityRemoving(Entity entity);
-
-	void entityRemoved(Entity entity);
+	@Override
+	public EntityManagerSupport getObject() throws Exception {
+		return null;
+	}
 
 }

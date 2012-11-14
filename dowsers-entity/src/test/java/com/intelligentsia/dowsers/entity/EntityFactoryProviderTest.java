@@ -131,6 +131,7 @@ public class EntityFactoryProviderTest {
 
 		assertNotNull(entityFactoryProvider);
 		assertNotNull(entityFactoryProvider.newInstance(BPP.class));
+		assertNotNull(entityFactoryProvider.newInstance(BPP.class).newInstance());
 
 	}
 

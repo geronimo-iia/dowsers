@@ -21,8 +21,10 @@ package com.intelligentsia.dowsers.entity.manager;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 
+import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.EntityFactoryProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
@@ -36,42 +38,94 @@ public class EntityManagerSupport implements EntityManager {
 	/**
 	 * {@link EntityFactoryProvider} instance.
 	 */
-	private EntityFactoryProvider entityFactoryProvider;
+	private final EntityFactoryProvider entityFactoryProvider;
 	/**
 	 * {@link EntityStore} instance.
 	 */
-	private EntityStore entityStore;
+	private final EntityStore entityStore;
 
+	private final Listener listener;
+
+	/**
+	 * Build a new instance of EntityManagerSupport.java.
+	 * 
+	 * @param entityFactoryProvider
+	 * @param entityStore
+	 * @throws NullPointerException
+	 *             if entityFactoryProvider or entityStore is null
+	 */
+	public EntityManagerSupport(EntityFactoryProvider entityFactoryProvider, EntityStore entityStore) throws NullPointerException {
+		this(entityFactoryProvider, entityStore, null);
+	}
+
+	/**
+	 * 
+	 * Build a new instance of EntityManagerSupport.java.
+	 * 
+	 * @param entityFactoryProvider
+	 * @param entityStore
+	 * @param listener
+	 * @throws NullPointerException
+	 *             if entityFactoryProvider or entityStore is null
+	 */
+	public EntityManagerSupport(EntityFactoryProvider entityFactoryProvider, EntityStore entityStore, Listener listener) throws NullPointerException {
+		super();
+		this.entityFactoryProvider = Preconditions.checkNotNull(entityFactoryProvider);
+		this.entityStore = Preconditions.checkNotNull(entityStore);
+		this.listener = listener;
+	}
 
 	@Override
 	public <T> T newInstance(final Class<T> expectedType) throws NullPointerException {
-		return entityFactoryProvider.newInstance(expectedType).newInstance();
+		T entity = entityFactoryProvider.newInstance(expectedType).newInstance();
+		if (listener != null) {
+			listener.entityInstantiated(entity);
+		}
+		return entity;
 	}
 
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
-		return entityStore.find(expectedType, reference);
+		return notifyFind(entityStore.find(expectedType, reference));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
-		return (T) entityStore.find(ClassInformation.parse(reference.getEntityClassName()).getType(), reference);
+		return notifyFind((T) entityStore.find(ClassInformation.parse(reference.getEntityClassName()).getType(), reference));
 	}
 
 	@Override
 	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException {
 		entityStore.store(entity);
+		if (listener != null) {
+			listener.entityStored(entity);
+		}
 	}
 
 	@Override
 	public <T> void remove(final T entity) throws NullPointerException {
 		entityStore.remove(entity);
+		notifyRemove(References.identify(entity));
 	}
 
 	@Override
 	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
 		entityStore.remove(reference);
+		notifyRemove(reference);
+	}
+
+	private <T> T notifyFind(T entity) {
+		if (listener != null) {
+			listener.entityFinded(entity);
+		}
+		return entity;
+	}
+
+	private void notifyRemove(Reference reference) {
+		if (listener != null) {
+			listener.entityRemoved(reference);
+		}
 	}
 
 }
