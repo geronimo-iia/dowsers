@@ -80,7 +80,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	 * @throws NullPointerException
 	 *             if metaEntityContextProvider is null
 	 */
-	public EntityFactoryProviderSupport(MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+	public EntityFactoryProviderSupport(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 		this(metaEntityContextProvider, null, Boolean.TRUE);
 
 	}
@@ -93,7 +93,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	 * @throws NullPointerException
 	 *             if metaEntityContextProvider is null
 	 */
-	public EntityFactoryProviderSupport(MetaEntityContextProvider metaEntityContextProvider, Map<Class<?>, EntityFactory<?>> factories, final boolean enableDefaultFactory) {
+	public EntityFactoryProviderSupport(final MetaEntityContextProvider metaEntityContextProvider, final Map<Class<?>, EntityFactory<?>> factories, final boolean enableDefaultFactory) {
 		super();
 		this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 		this.factories = factories == null ? new HashMap<Class<?>, EntityFactories.EntityFactory<?>>() : factories;
@@ -112,7 +112,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	public <T> EntityFactory<T> newInstance(final Class<T> expectedType) throws NullPointerException, IllegalArgumentException {
 		// should we use a proxy ?
 		if (expectedType.isInterface() || Modifier.isAbstract(expectedType.getModifiers())) {
-			MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReference(expectedType));
+			final MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReference(expectedType));
 			return EntityFactories.newEntityProxyDynamicFactory(expectedType, metaEntityContext);
 		}
 		// EntityDynamic
@@ -120,7 +120,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 			return (EntityFactory<T>) EntityFactories.newEntityDynamicFactory(MetaModel.getEntityDynamicContext());
 		}
 		// in a registered factory ?
-		EntityFactories.EntityFactory<?> factory = factories.get(expectedType);
+		final EntityFactories.EntityFactory<?> factory = factories.get(expectedType);
 		if (factory != null) {
 			return (EntityFactory<T>) factory;
 		}
@@ -131,7 +131,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 		if (!Entity.class.isAssignableFrom(expectedType)) {
 			throw new IllegalArgumentException(StringUtils.format("No EntityFactory can be created for %s (Not assignable to Entity interface)", expectedType));
 		}
-		EntityFactory<T> entityFactory = buildDefaultEntityFactory(expectedType);
+		final EntityFactory<T> entityFactory = buildDefaultEntityFactory(expectedType);
 		// register for later
 		factories.put(expectedType, entityFactory);
 		// return result
@@ -143,7 +143,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 	 * @return
 	 */
 	public <T> EntityFactory<T> buildDefaultEntityFactory(final Class<T> expectedType) {
-		EntityFactory<T> entityFactory = new EntityFactory<T>() {
+		final EntityFactory<T> entityFactory = new EntityFactory<T>() {
 
 			private final Constructor<T> constructor = Preconditions.checkNotNull(Reflection.findDefaultConstructor(expectedType), StringUtils.format("No EntityFactory can be created for %s (No default constructor)", expectedType));
 			private final Field identity = Preconditions.checkNotNull(Reflection.findField(expectedType, "identity"), StringUtils.format("No EntityFactory can be created for %s (Not identity field)", expectedType));
@@ -152,19 +152,19 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 			public T newInstance() {
 				try {
 					return constructor.newInstance();
-				} catch (Throwable e) {
+				} catch (final Throwable e) {
 					throw Throwables.propagate(e);
 				}
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public T newInstance(Reference identifier) throws NullPointerException, IllegalArgumentException {
+			public T newInstance(final Reference identifier) throws NullPointerException, IllegalArgumentException {
 				try {
-					Entity entity = (Entity) newInstance();
+					final Entity entity = (Entity) newInstance();
 					identity.set(entity, identifier);
 					return (T) entity;
-				} catch (Throwable e) {
+				} catch (final Throwable e) {
 					throw Throwables.propagate(e);
 				}
 			}
@@ -228,7 +228,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 		 * @throws NullPointerException
 		 *             if clazz or factory is null
 		 */
-		public <T> Builder register(Class<T> clazz, EntityFactories.EntityFactory<T> factory) throws NullPointerException {
+		public <T> Builder register(final Class<T> clazz, final EntityFactories.EntityFactory<T> factory) throws NullPointerException {
 			factories.put(Preconditions.checkNotNull(clazz), Preconditions.checkNotNull(factory));
 			return this;
 		}
@@ -239,7 +239,7 @@ public class EntityFactoryProviderSupport implements EntityFactoryProvider {
 		 * @throws NullPointerException
 		 *             if metaEntityContextProvider is null
 		 */
-		public EntityFactoryProviderSupport build(MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
+		public EntityFactoryProviderSupport build(final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 			return new EntityFactoryProviderSupport(metaEntityContextProvider);
 		}
 	}
