@@ -11,7 +11,7 @@ h1. Release Notes
 
 h2. 1.0.1-SNAPSHOT
 
-Many Idea:
+Some idea:
 * Adding View concept:
 ** definition with aggregation of attribute, 
 ** in memory implementation that follow runtime
@@ -24,6 +24,10 @@ Many Idea:
 ** execute command
 ** calling view with filtering, limit, sort and skip methods
 * Adding tool to build administrative web application based on meta
+
+Currently in progress:
+* finalize entity Manager
+* add spring factory support
 
 
 h2. 1.0.0
