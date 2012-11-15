@@ -162,7 +162,7 @@ public class ClassInformation implements Serializable {
 		}
 	}
 
-	public static ClassInformation toClassInformation(Class<?> type) {
+	public static ClassInformation toClassInformation(final Class<?> type) {
 		return new ClassInformation(type);
 	}
 

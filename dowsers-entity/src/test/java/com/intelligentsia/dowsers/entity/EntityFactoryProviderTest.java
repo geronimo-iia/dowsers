@@ -19,7 +19,8 @@
  */
 package com.intelligentsia.dowsers.entity;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class EntityFactoryProviderTest {
 		try {
 			EntityFactoryProvider.builder().build(null);
 			fail();
-		} catch (NullPointerException exception) {
+		} catch (final NullPointerException exception) {
 			// ok
 		}
 		assertNotNull(EntityFactoryProvider.builder().build(MetaDataUtil.getMetaEntityContextProvider()));
@@ -52,19 +53,19 @@ public class EntityFactoryProviderTest {
 
 	@Test
 	public void testProxyEntity() {
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().build(MetaDataUtil.getMetaEntityContextProvider());
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().build(MetaDataUtil.getMetaEntityContextProvider());
 		assertNotNull(entityFactoryProvider.newInstance(Person.class));
 		try {
 			entityFactoryProvider.newInstance(EntityFactoryProviderTest.class);
 			fail();
-		} catch (IllegalArgumentException argumentException) {
+		} catch (final IllegalArgumentException argumentException) {
 			// ok
 		}
 	}
 
 	@Test
 	public void testEntityDynamic() {
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().build(MetaDataUtil.getMetaEntityContextProvider());
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().build(MetaDataUtil.getMetaEntityContextProvider());
 		assertNotNull(entityFactoryProvider.newInstance(EntityDynamic.class));
 	}
 
@@ -72,7 +73,7 @@ public class EntityFactoryProviderTest {
 	public void testEntityRegistered() {
 
 		final MetaEntityContext aContext = MetaEntityContext.builder().definition(A.META).build();
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
 				register(//
 						A.class,//
 						EntityFactories.newEntityProxyDynamicFactory(A.class, aContext)//
@@ -85,7 +86,7 @@ public class EntityFactoryProviderTest {
 	@Test
 	public void testDefaultEntityFactoryFailureNotImplementEntity() {
 		final MetaEntityContext aContext = MetaEntityContext.builder().definition(B.META).build();
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
 				register(//
 						B.class,//
 						EntityFactories.newEntityProxyDynamicFactory(B.class, aContext)//
@@ -95,7 +96,7 @@ public class EntityFactoryProviderTest {
 		try {
 			assertNotNull(entityFactoryProvider.newInstance(B.class));
 			fail();
-		} catch (IllegalArgumentException argumentException) {
+		} catch (final IllegalArgumentException argumentException) {
 			// ok
 		}
 
@@ -104,7 +105,7 @@ public class EntityFactoryProviderTest {
 	@Test
 	public void testDefaultEntityFactoryFailureHaveNoIdentityField() {
 		final MetaEntityContext aContext = MetaEntityContext.builder().definition(BP.META).build();
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
 				register(//
 						BP.class,//
 						EntityFactories.newEntityProxyDynamicFactory(BP.class, aContext)//
@@ -114,7 +115,7 @@ public class EntityFactoryProviderTest {
 		try {
 			assertNotNull(entityFactoryProvider.newInstance(BP.class));
 			fail();
-		} catch (NullPointerException argumentException) {
+		} catch (final NullPointerException argumentException) {
 			// ok
 		}
 
@@ -123,7 +124,7 @@ public class EntityFactoryProviderTest {
 	@Test
 	public void testDefaultEntityFactory() {
 		final MetaEntityContext aContext = MetaEntityContext.builder().definition(BPP.META).build();
-		EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
+		final EntityFactoryProvider entityFactoryProvider = EntityFactoryProvider.builder().//
 				register(//
 						BPP.class,//
 						EntityFactories.newEntityProxyDynamicFactory(BPP.class, aContext)//
@@ -158,7 +159,7 @@ public class EntityFactoryProviderTest {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -179,7 +180,7 @@ public class EntityFactoryProviderTest {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -189,17 +190,17 @@ public class EntityFactoryProviderTest {
 		}
 
 		@Override
-		public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException {
+		public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
 			return null;
 		}
 
 		@Override
-		public <Value> Entity attribute(String name, Value value) throws NullPointerException, IllegalArgumentException {
+		public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
 			return null;
 		}
 
 		@Override
-		public boolean contains(String name) throws NullPointerException, IllegalArgumentException {
+		public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
 			return false;
 		}
 
@@ -231,7 +232,7 @@ public class EntityFactoryProviderTest {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -241,17 +242,17 @@ public class EntityFactoryProviderTest {
 		}
 
 		@Override
-		public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException {
+		public <Value> Value attribute(final String name) throws NullPointerException, IllegalArgumentException {
 			return null;
 		}
 
 		@Override
-		public <Value> Entity attribute(String name, Value value) throws NullPointerException, IllegalArgumentException {
+		public <Value> Entity attribute(final String name, final Value value) throws NullPointerException, IllegalArgumentException {
 			return null;
 		}
 
 		@Override
-		public boolean contains(String name) throws NullPointerException, IllegalArgumentException {
+		public boolean contains(final String name) throws NullPointerException, IllegalArgumentException {
 			return false;
 		}
 

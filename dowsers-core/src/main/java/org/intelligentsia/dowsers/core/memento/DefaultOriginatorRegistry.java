@@ -20,7 +20,6 @@
 package org.intelligentsia.dowsers.core.memento;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
@@ -28,6 +27,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 
 /**
  * DefaultOriginatorRegistry implements a default OriginatorRegistry with a
@@ -97,8 +97,8 @@ public class DefaultOriginatorRegistry implements OriginatorRegistry {
 	@Override
 	public <T> Originator find(final Class<T> entity) {
 		try {
-			return cache.get(entity.getClass());
-		} catch (final ExecutionException e) {
+			return cache.getUnchecked(entity.getClass());
+		} catch (final UncheckedExecutionException e) {
 			return defaultOriginator;
 		}
 	}

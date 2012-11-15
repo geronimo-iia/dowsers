@@ -19,7 +19,10 @@
  */
 package com.intelligentsia.dowsers.entity.meta.provider;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
@@ -72,7 +75,7 @@ public class MetaEntityProviderAnalyzerTest {
 
 	@Test
 	public void testPersonAnalyze() {
-		MetaEntity metaEntity = MetaEntityProviderAnalyzer.analyze(ClassInformation.toClassInformation(Person.class));
+		final MetaEntity metaEntity = MetaEntityProviderAnalyzer.analyze(ClassInformation.toClassInformation(Person.class));
 		assertNotNull(metaEntity);
 		assertEquals(Person.class.getName(), metaEntity.name());
 		assertEquals(MetaModel.VERSION, metaEntity.version());

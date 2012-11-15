@@ -37,7 +37,7 @@ public class MetaEntityStoreSupport implements MetaEntityStore {
 	/**
 	 * Underlying {@link EntityStore}.
 	 */
-	private EntityStore entityStore;
+	private final EntityStore entityStore;
 
 	/**
 	 * Build a new instance of MetaEntityStoreSupport.java.
@@ -46,34 +46,34 @@ public class MetaEntityStoreSupport implements MetaEntityStore {
 	 * @throws NullPointerException
 	 *             if entityStore is null
 	 */
-	public MetaEntityStoreSupport(EntityStore entityStore) throws NullPointerException {
+	public MetaEntityStoreSupport(final EntityStore entityStore) throws NullPointerException {
 		super();
 		this.entityStore = Preconditions.checkNotNull(entityStore);
 	}
 
 	@Override
-	public Collection<MetaEntity> find(Reference reference) throws NullPointerException {
+	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
 		try {
 			result.add(entityStore.find(MetaEntity.class, Preconditions.checkNotNull(reference)));
-		} catch (EntityNotFoundException entityNotFoundException) {
+		} catch (final EntityNotFoundException entityNotFoundException) {
 			// oups
 		}
 		return result;
 	}
 
 	@Override
-	public void store(MetaEntity entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
+	public void store(final MetaEntity entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
 		entityStore.store(entity);
 	}
 
 	@Override
-	public void remove(MetaEntity entity) throws NullPointerException, IllegalArgumentException {
+	public void remove(final MetaEntity entity) throws NullPointerException, IllegalArgumentException {
 		entityStore.remove(entity);
 	}
 
 	@Override
-	public void remove(Reference reference) throws NullPointerException, IllegalArgumentException {
+	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(MetaEntity.class.getSimpleName().equals(Preconditions.checkNotNull(reference).getEntityClassName()));
 		entityStore.remove(reference);
 	}

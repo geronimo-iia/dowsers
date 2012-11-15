@@ -26,7 +26,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.dowsers.core.DowsersException;
@@ -38,6 +37,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.Closeables;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
@@ -188,12 +188,12 @@ public class FileEntityStore implements EntityStore {
 
 	public File getFile(final Reference urn, final boolean create) {
 		try {
-			final File file = files.get(urn);
+			final File file = files.getUnchecked(urn);
 			if (create) {
 				file.getParentFile().mkdirs();
 			}
 			return file;
-		} catch (final ExecutionException e) {
+		} catch (final UncheckedExecutionException e) {
 			throw Throwables.propagate(e);
 		}
 	}

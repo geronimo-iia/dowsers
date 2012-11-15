@@ -19,13 +19,13 @@
  */
 package com.intelligentsia.dowsers.entity.store;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 
@@ -83,8 +83,8 @@ public class CachedEntityStore implements EntityStore {
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
 		try {
-			return (T) entities.get(new KeyCache(expectedType, reference));
-		} catch (final ExecutionException e) {
+			return (T) entities.getUnchecked(new KeyCache(expectedType, reference));
+		} catch (final UncheckedExecutionException e) {
 			throw new EntityNotFoundException(e);
 		}
 	}

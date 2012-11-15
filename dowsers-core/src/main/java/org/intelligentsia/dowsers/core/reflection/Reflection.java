@@ -46,7 +46,7 @@ public enum Reflection {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Constructor<T> findDefaultConstructor(final Class<T> clazz) {
-		for (Constructor<?> constructor : clazz.getConstructors()) {
+		for (final Constructor<?> constructor : clazz.getConstructors()) {
 			if (constructor.getParameterTypes().length == 0) {
 				if (!constructor.isAccessible()) {
 					constructor.setAccessible(true);

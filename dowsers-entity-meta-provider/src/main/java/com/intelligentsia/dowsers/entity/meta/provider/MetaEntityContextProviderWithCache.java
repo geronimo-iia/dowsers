@@ -22,7 +22,6 @@
  */
 package com.intelligentsia.dowsers.entity.meta.provider;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Preconditions;
@@ -30,6 +29,7 @@ import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
@@ -79,8 +79,8 @@ public class MetaEntityContextProviderWithCache implements MetaEntityContextProv
 	@Override
 	public MetaEntityContext find(final Reference reference) throws IllegalArgumentException, NullPointerException {
 		try {
-			return context.get(Preconditions.checkNotNull(Preconditions.checkNotNull(reference).isIdentifier() ? reference.getEntityClassReference() : reference));
-		} catch (final ExecutionException e) {
+			return context.getUnchecked(Preconditions.checkNotNull(Preconditions.checkNotNull(reference).isIdentifier() ? reference.getEntityClassReference() : reference));
+		} catch (final UncheckedExecutionException e) {
 			throw new IllegalArgumentException(Throwables.getRootCause(e));
 		}
 	}

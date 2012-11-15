@@ -130,7 +130,7 @@ public class EntityFactoryProvider {
 			} else // EntityDynamic
 			if (EntityDynamic.class.getName().equals(expectedType.getName())) {
 				// build factory for class
-				factory = (EntityFactory<T>) EntityFactories.newEntityDynamicFactory(MetaModel.getEntityDynamicContext());
+				factory = EntityFactories.newEntityDynamicFactory(MetaModel.getEntityDynamicContext());
 			} else // default Factory ?
 			{
 				if (!enableDefaultFactory) {
@@ -233,7 +233,7 @@ public class EntityFactoryProvider {
 		 * @param enableDefaultFactory
 		 * @return this instance
 		 */
-		public Builder setEnableDefaultFactory(boolean enableDefaultFactory) {
+		public Builder setEnableDefaultFactory(final boolean enableDefaultFactory) {
 			this.enableDefaultFactory = enableDefaultFactory;
 			return this;
 		}
@@ -258,7 +258,7 @@ public class EntityFactoryProvider {
 		 * @param factories
 		 * @return this instance.
 		 */
-		public Builder setFactories(Map<Class<?>, EntityFactories.EntityFactory<?>> factories) {
+		public Builder setFactories(final Map<Class<?>, EntityFactories.EntityFactory<?>> factories) {
 			this.factories = factories;
 			return this;
 		}

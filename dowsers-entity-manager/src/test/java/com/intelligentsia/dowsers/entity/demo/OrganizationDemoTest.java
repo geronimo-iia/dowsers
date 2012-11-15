@@ -111,7 +111,7 @@ public class OrganizationDemoTest {
 		final Organization organization2 = entityMapper.readValue(new StringReader(result), Organization.class);
 
 		assertEquals(organization.name(), organization2.name());
-		for (String name : organization.attributeNames()) {
+		for (final String name : organization.attributeNames()) {
 			assertEquals(organization.attribute(name), organization2.attribute(name));
 		}
 
@@ -131,7 +131,7 @@ public class OrganizationDemoTest {
 		assertNotNull(organization2);
 		assertEquals(id, References.identify(organization2));
 		assertEquals(organization.name(), organization2.name());
-		for (String name : organization.attributeNames()) {
+		for (final String name : organization.attributeNames()) {
 			assertEquals(organization.attribute(name), organization2.attribute(name));
 		}
 		// Update
@@ -140,7 +140,7 @@ public class OrganizationDemoTest {
 		entityStore.store(organization);
 		organization2 = entityStore.find(Organization.class, id);
 		assertEquals(organization.name(), organization2.name());
-		for (String name : organization.attributeNames()) {
+		for (final String name : organization.attributeNames()) {
 			assertEquals(organization.attribute(name), organization2.attribute(name));
 		}
 		// delete

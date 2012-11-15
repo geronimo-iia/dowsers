@@ -54,7 +54,7 @@ public class EntityManagerSupport implements EntityManager {
 	 * @throws NullPointerException
 	 *             if entityFactoryProvider or entityStore is null
 	 */
-	public EntityManagerSupport(EntityFactoryProvider entityFactoryProvider, EntityStore entityStore) throws NullPointerException {
+	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore) throws NullPointerException {
 		this(entityFactoryProvider, entityStore, null);
 	}
 
@@ -68,7 +68,7 @@ public class EntityManagerSupport implements EntityManager {
 	 * @throws NullPointerException
 	 *             if entityFactoryProvider or entityStore is null
 	 */
-	public EntityManagerSupport(EntityFactoryProvider entityFactoryProvider, EntityStore entityStore, Listener listener) throws NullPointerException {
+	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore, final Listener listener) throws NullPointerException {
 		super();
 		this.entityFactoryProvider = Preconditions.checkNotNull(entityFactoryProvider);
 		this.entityStore = Preconditions.checkNotNull(entityStore);
@@ -77,7 +77,7 @@ public class EntityManagerSupport implements EntityManager {
 
 	@Override
 	public <T> T newInstance(final Class<T> expectedType) throws NullPointerException {
-		T entity = entityFactoryProvider.newInstance(expectedType).newInstance();
+		final T entity = entityFactoryProvider.newInstance(expectedType).newInstance();
 		if (listener != null) {
 			listener.entityInstantiated(entity);
 		}
@@ -115,14 +115,14 @@ public class EntityManagerSupport implements EntityManager {
 		notifyRemove(reference);
 	}
 
-	private <T> T notifyFind(T entity) {
+	private <T> T notifyFind(final T entity) {
 		if (listener != null) {
 			listener.entityFinded(entity);
 		}
 		return entity;
 	}
 
-	private void notifyRemove(Reference reference) {
+	private void notifyRemove(final Reference reference) {
 		if (listener != null) {
 			listener.entityRemoved(reference);
 		}

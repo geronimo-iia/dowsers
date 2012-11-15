@@ -9,5 +9,44 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd ">
 
+	<bean id="metaEntityContextProvider"
+		class="com.intelligentsia.dowsers.entity.manager.MetaEntityContextProviderFactory">
+		<property name="enableCache" value="true" />
+		<property name="metaEntityProvider">
+			<bean
+				class="com.intelligentsia.dowsers.entity.manager.MetaEntityProviderFactory">
+				<property name="enableDynamicAnalyzer" value="true" />
+				<!-- <property name="metaEntityProvider"></property> -->
+			</bean>
+		</property>
+	</bean>
 
+	<bean id="entityManager"
+		class="com.intelligentsia.dowsers.entity.manager.EntityManagerFactory">
+		<property name="entityStore">
+			<bean class="com.intelligentsia.dowsers.entity.manager.EntityStoreFactory">
+				<property name="enableCachedEntities" value="true" />
+				<property name="entityStore">
+					<bean
+						class="com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore">
+						<constructor-arg index="0">
+							<bean
+								class="com.intelligentsia.dowsers.entity.manager.EntityMapperFactory">
+								<property name="metaEntityContextProvider" ref="metaEntityContextProvider" />
+							</bean>
+						</constructor-arg>
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="entityFactoryProvider">
+			<bean
+				class="com.intelligentsia.dowsers.entity.manager.EntityFactoryProviderFactory">
+				<property name="enableDefaultFactory" value="true" />
+				<property name="metaEntityContextProvider" ref="metaEntityContextProvider" />
+				<!-- factories -->
+			</bean>
+		</property>
+	</bean>
+ 
 </beans>
