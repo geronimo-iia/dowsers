@@ -17,9 +17,6 @@
  *        under the License.
  *
  */
-/**
- * 
- */
 package com.intelligentsia.dowsers.entity.store;
 
 import java.util.concurrent.ExecutionException;
