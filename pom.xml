@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>intelligents-ia</artifactId>
-		<version>1.4.2</version>
+		<version>1.4.3</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.intelligents-ia.dowsers</groupId>
@@ -31,6 +31,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/geronimo-iia/dowsers.git</connection>
 		<url>https://github.com/geronimo-iia/dowsers.git</url>
+		<developerConnection>scm:git:https://github.com/geronimo-iia/dowsers.git </developerConnection>
 	</scm>
 	<inceptionYear>2012</inceptionYear>
 	<organization>
