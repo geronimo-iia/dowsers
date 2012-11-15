@@ -15,6 +15,7 @@
 		<groupId>org.intelligents-ia.dowsers</groupId>
 		<artifactId>dowsers</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dowsers-entity-spring</artifactId>
@@ -32,6 +33,6 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<header.path>${basedir}/../header.txt</header.path>
+		<license.header.path>${basedir}/../header.txt</license.header.path>
 	</properties>
 </project>
