@@ -35,7 +35,8 @@ public interface Person {
 			metaAttributes(MetaModel.getIdentityAttribute()).//
 			metaAttribute("firstName", String.class).//
 			metaAttribute("lastName", String.class).//
-			metaAttribute("yearOld", Integer.class)//
+			metaAttribute("yearOld", Integer.class).//
+			metaAttribute("bot", Boolean.class)//
 			.build();
 
 	String getFirstName();
@@ -49,5 +50,9 @@ public interface Person {
 	void setLastName(String name);
 
 	void setYearOld(Integer years);
+
+	Boolean isBot();
+
+	void bot(Boolean bot);
 
 }

@@ -108,6 +108,8 @@ public class EntityProxy implements InvocationHandler, EntityProxyHandler {
 		} else if (methodName.startsWith("set")) {
 			entity.attribute(Reflection.toFieldName(methodName), args[0]);
 			return proxy;
+		} else if (methodName.startsWith("is")) {
+			return entity.attribute(Reflection.toFieldName(methodName, "is"));
 		}
 
 		// properties pattern without get/set prefix

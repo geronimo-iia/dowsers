@@ -28,6 +28,7 @@ import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
  */
 @MetaCompliant
 public interface Person {
+	
 	String getFirstName();
 
 	String getLastName();

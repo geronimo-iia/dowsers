@@ -69,9 +69,11 @@ public class PersonTest {
 		person.setFirstName("Mario");
 		person.setLastName("Fusco");
 		person.setYearOld(35);
+		person.bot(Boolean.TRUE);
 		assertEquals("Mario", person.getFirstName());
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());
+		assertEquals(Boolean.TRUE, person.isBot());
 	}
 
 	@Test
@@ -80,6 +82,7 @@ public class PersonTest {
 		person.setFirstName("Mario");
 		person.setLastName("Fusco");
 		person.setYearOld(35);
+
 		assertEquals("Mario", person.getFirstName());
 		assertEquals("Fusco", person.getLastName());
 		assertEquals((Integer) 35, person.getYearOld());

@@ -93,6 +93,23 @@ public enum Reflection {
 	}
 
 	/**
+	 * Extract field name from method name by removing specified prefix if
+	 * exists and lower first char.
+	 * 
+	 * @param methodName
+	 * @param prefix
+	 *            prefix to remove
+	 * @return name
+	 */
+	public static String toFieldName(final String methodName, String prefix) {
+		if (methodName.startsWith(prefix)) {
+			final String name = methodName.substring(prefix.length());
+			return name.substring(0, 1).toLowerCase() + name.substring(1);
+		}
+		return methodName.substring(0, 1).toLowerCase();
+	}
+
+	/**
 	 * Find specified field name on specified class. Set field accessible if
 	 * it's necessary.
 	 * 
