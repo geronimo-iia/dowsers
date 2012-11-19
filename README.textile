@@ -3,13 +3,11 @@ h1.  Dowsers
 Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
 
 
-An Introduction on "entities subject":docs/entity.textile
+An Introduction on "entities subject":https://github.com/geronimo-iia/dowsers/blob/master/docs/entity.textile
 
 
 h1. Release Notes
 
-
-h2. 1.0.1-SNAPSHOT
 
 Some idea:
 * Adding View concept:
@@ -25,13 +23,18 @@ Some idea:
 ** calling view with filtering, limit, sort and skip methods
 * Adding tool to build administrative web application based on meta
 
-Currently in progress:
-* finalize entity Manager
+h2. 1.0.2-SNAPSHOT
+
+Done:
+ * add utility methods on entity Manager
+ * change some methods name on Reference to avoid error
+
+h2. 1.0.1
+
 * add spring factory support
 
 
 h2. 1.0.0
-
 
 * Define Entity core (Reference, Attribute, Entity, Dynamic and proxy implementation, Serialization, Meta data, ...)
 * Define Entity Store with few implementation:
@@ -56,7 +59,7 @@ h2. dependency on Dowsers
 bc. <dependency>
 	<groupId>org.intelligents-ia.dowsers</groupId>
 	<artifactId>dowsers-entity-manager</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 </dependency>
 
 
@@ -77,51 +80,6 @@ bc. 	<repositories>
 			</snapshots>
 		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
-
-
-h3. Snapshot Repository
-
-bc. <repositories>
-		<repository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
 
 
 h1. What is DDD, CQRS and Co ?
