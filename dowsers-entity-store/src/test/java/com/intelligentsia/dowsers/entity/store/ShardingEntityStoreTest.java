@@ -45,7 +45,7 @@ public class ShardingEntityStoreTest extends StoreBaseTest {
 		personStore = new InMemoryEntityStore(entityMapper);
 		defaultEntityStore = new FileEntityStore(FileEntityStoreTest.getRoot(), entityMapper);
 		return ShardingEntityStore.builder().// person
-				add(Reference.newReference(Person.class), personStore).build(defaultEntityStore);
+				add(Reference.newReferenceOnEntityClass(Person.class), personStore).build(defaultEntityStore);
 	}
 
 	@Test

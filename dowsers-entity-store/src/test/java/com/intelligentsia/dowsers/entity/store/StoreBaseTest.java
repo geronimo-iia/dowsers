@@ -49,7 +49,7 @@ public abstract class StoreBaseTest {
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(Person.class)));
 		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider());
 		entityStore = instanciateEntityStore();
 	}

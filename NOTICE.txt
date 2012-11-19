@@ -30,8 +30,6 @@
    This software contains code derived from the Hibernate, Relational Persistence 
    for Idiomatic Java (Lesser General Public License).
 
-
-
   From http://www.artima.com/weblogs/viewpost.jsp?thread=208860: generic type discovery
   
   

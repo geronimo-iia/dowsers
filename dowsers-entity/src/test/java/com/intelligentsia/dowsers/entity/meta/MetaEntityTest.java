@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;

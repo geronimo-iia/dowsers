@@ -89,17 +89,21 @@ public final class Reference implements Comparable<Reference>, Serializable {
 	public volatile String value = null;
 
 	/**
+	 * Create a {@link Reference} on entity type.
+	 * 
 	 * @param clazz
 	 *            entity class
 	 * @return a {@link Reference} instance of entity class
 	 * @throws NullPointerException
 	 *             if clazz is null
 	 */
-	public static Reference newReference(final Class<?> clazz) throws NullPointerException {
+	public static Reference newReferenceOnEntityClass(final Class<?> clazz) throws NullPointerException {
 		return new Reference(clazz);
 	}
 
 	/**
+	 * Create a {@link Reference} on specific entity instance.
+	 * 
 	 * @param clazz
 	 *            entity class
 	 * @param identity

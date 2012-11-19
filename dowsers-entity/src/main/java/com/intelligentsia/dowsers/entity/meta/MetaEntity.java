@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.intelligentsia.dowsers.core.Identified;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

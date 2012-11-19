@@ -24,7 +24,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.keystone.kernel.api.artifacts.Version;
+ 
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;

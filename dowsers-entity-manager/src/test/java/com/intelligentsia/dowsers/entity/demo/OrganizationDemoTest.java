@@ -69,7 +69,7 @@ public class OrganizationDemoTest {
 
 		entityStore = new InMemoryEntityStore(entityMapper);
 
-		factory = EntityFactories.newEntityProxyDynamicFactory(Organization.class, metaEntityContextProvider.find(Reference.newReference(Organization.class)));
+		factory = EntityFactories.newEntityProxyDynamicFactory(Organization.class, metaEntityContextProvider.find(Reference.newReferenceOnEntityClass(Organization.class)));
 
 	}
 
@@ -96,7 +96,7 @@ public class OrganizationDemoTest {
 		final Organization organization = newOrganization();
 		final Reference urn = References.identify(organization);
 		assertNotNull(urn);
-		assertEquals(Reference.newReference(Organization.class), urn.getEntityClassReference());
+		assertEquals(Reference.newReferenceOnEntityClass(Organization.class), urn.getEntityClassReference());
 	}
 
 	@Test

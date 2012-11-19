@@ -22,7 +22,7 @@ package com.intelligentsia.dowsers.entity.meta;
 import java.io.Serializable;
 import java.util.Iterator;
 
-import org.intelligentsia.keystone.api.StringUtils;
+import org.intelligentsia.keystone.kernel.api.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

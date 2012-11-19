@@ -41,25 +41,25 @@ public class EntityTest {
 	@Test
 	public void testIdentityOfFullProxyEntity() {
 		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, //
-				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(SampleEntity.class)));
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(SampleEntity.class)));
 		final SampleEntity entity = factory.newInstance();
 
-		assertEquals(Reference.newReference(SampleEntity.class), References.identify(entity).getEntityClassReference());
+		assertEquals(Reference.newReferenceOnEntityClass(SampleEntity.class), References.identify(entity).getEntityClassReference());
 	}
 
 	@Test
 	public void testIdentityOfProxyEntity() {
 		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, //
-				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(CustomizableSampleEntity.class)));
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(CustomizableSampleEntity.class)));
 		final CustomizableSampleEntity entity = factory.newInstance();
 
-		assertEquals(Reference.newReference(CustomizableSampleEntity.class), entity.identity().getEntityClassReference());
+		assertEquals(Reference.newReferenceOnEntityClass(CustomizableSampleEntity.class), entity.identity().getEntityClassReference());
 	}
 
 	@Test
 	public void testSampleEntity() {
 		final EntityFactory<SampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(SampleEntity.class, //
-				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(SampleEntity.class)));
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(SampleEntity.class)));
 		final SampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");
@@ -71,7 +71,7 @@ public class EntityTest {
 	@Test
 	public void testCustomizableSampleEntity() {
 		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, //
-				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(CustomizableSampleEntity.class)));
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(CustomizableSampleEntity.class)));
 		final CustomizableSampleEntity sampleEntity = factory.newInstance();
 		assertNotNull(sampleEntity);
 		sampleEntity.setName("Hello John");

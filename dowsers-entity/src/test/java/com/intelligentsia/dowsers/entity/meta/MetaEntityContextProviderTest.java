@@ -40,7 +40,7 @@ public class MetaEntityContextProviderTest {
 		final MetaEntityContextProvider provider = MetaEntityContextProviderSupport.builder().build();
 		assertNotNull(provider);
 
-		final MetaEntityContext context = provider.find(Reference.newReference(EntityDynamic.class));
+		final MetaEntityContext context = provider.find(Reference.newReferenceOnEntityClass(EntityDynamic.class));
 		assertNotNull(context);
 
 	}

@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.intelligentsia.dowsers.core.reflection.Reflection;
-import org.intelligentsia.keystone.api.StringUtils;
+import org.intelligentsia.keystone.kernel.api.StringUtils;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -125,7 +125,7 @@ public class EntityFactoryProvider {
 		if (factory == null) {
 			// should we use a proxy ?
 			if (expectedType.isInterface() || Modifier.isAbstract(expectedType.getModifiers())) {
-				final MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReference(expectedType));
+				final MetaEntityContext metaEntityContext = metaEntityContextProvider.find(Reference.newReferenceOnEntityClass(expectedType));
 				factory = EntityFactories.newEntityProxyDynamicFactory(expectedType, metaEntityContext);
 			} else // EntityDynamic
 			if (EntityDynamic.class.getName().equals(expectedType.getName())) {

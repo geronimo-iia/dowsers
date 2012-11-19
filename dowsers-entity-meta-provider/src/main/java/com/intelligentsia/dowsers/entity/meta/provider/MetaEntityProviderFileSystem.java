@@ -26,7 +26,7 @@ import java.io.FilenameFilter;
 import java.io.Reader;
 import java.util.Collection;
 
-import org.intelligentsia.keystone.api.StringUtils;
+import org.intelligentsia.keystone.kernel.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;

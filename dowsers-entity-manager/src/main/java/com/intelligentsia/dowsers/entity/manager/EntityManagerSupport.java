@@ -85,6 +85,16 @@ public class EntityManagerSupport implements EntityManager {
 	}
 
 	@Override
+	public <T> T newInstance(Class<T> expectedType, Reference reference) throws NullPointerException, IllegalArgumentException {
+		Preconditions.checkArgument(Reference.newReferenceOnEntityClass(expectedType).equals(Preconditions.checkNotNull(reference).getEntityClassReference()));
+		final T entity = entityFactoryProvider.newInstance(expectedType).newInstance(reference);
+		if (listener != null) {
+			listener.entityInstantiated(entity);
+		}
+		return entity;
+	}
+
+	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
 		return notifyFind(entityStore.find(expectedType, reference));
 	}

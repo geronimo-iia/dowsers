@@ -43,6 +43,21 @@ public interface EntityManager {
 	public <T> T newInstance(Class<T> expectedType) throws NullPointerException;
 
 	/**
+	 * Create a new entity instance
+	 * 
+	 * @param expectedType
+	 *            expected type entity
+	 * @param reference
+	 *            identity of expected entity
+	 * @return an entity instance of the expected type
+	 * @throws NullPointerException
+	 *             if expectedType is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not a reference on expected type entity
+	 */
+	public <T> T newInstance(Class<T> expectedType, Reference reference) throws NullPointerException, IllegalArgumentException;
+
+	/**
 	 * Find entity with the specified identity.
 	 * 
 	 * @param expectedType

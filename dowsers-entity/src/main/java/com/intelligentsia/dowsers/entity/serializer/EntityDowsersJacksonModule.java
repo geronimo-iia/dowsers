@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;

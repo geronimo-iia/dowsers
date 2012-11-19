@@ -24,7 +24,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
-import org.intelligentsia.keystone.api.artifacts.Version;
+import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity;

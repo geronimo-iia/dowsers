@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.intelligentsia.keystone.api.StringUtils;
+import org.intelligentsia.keystone.kernel.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -160,7 +160,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 		 * @return this instance.
 		 */
 		public Builder add(final Class<?> clazz, final MetaEntityContext metaEntityContext) throws NullPointerException {
-			contextEntities.put(Reference.newReference(clazz), Preconditions.checkNotNull(metaEntityContext));
+			contextEntities.put(Reference.newReferenceOnEntityClass(clazz), Preconditions.checkNotNull(metaEntityContext));
 			return this;
 		}
 
@@ -179,7 +179,7 @@ public class MetaEntityContextProviderSupport implements MetaEntityContextProvid
 					builder.addExtendedDefinition(metaEntity);
 				}
 			}
-			contextEntities.put(Reference.newReference(clazz), builder.build());
+			contextEntities.put(Reference.newReferenceOnEntityClass(clazz), builder.build());
 			return this;
 		}
 

@@ -48,7 +48,7 @@ public class PersonValidationTest {
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(Person.class)));
 	}
 
 	@Test

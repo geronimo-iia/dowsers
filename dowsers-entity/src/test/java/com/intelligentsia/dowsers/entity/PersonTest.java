@@ -59,7 +59,7 @@ public class PersonTest {
 
 	@Before
 	public void initialize() {
-		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReference(Person.class)));
+		factory = EntityFactories.newEntityProxyDynamicFactory(Person.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(Person.class)));
 		entityMapper = new EntityMapper(MetaDataUtil.getMetaEntityContextProvider());
 	}
 
@@ -89,7 +89,7 @@ public class PersonTest {
 
 		final Reference urn = References.identify(person);
 		assertNotNull(urn);
-		assertEquals(Reference.newReference(Person.class), urn.getEntityClassReference());
+		assertEquals(Reference.newReferenceOnEntityClass(Person.class), urn.getEntityClassReference());
 	}
 
 	@Test

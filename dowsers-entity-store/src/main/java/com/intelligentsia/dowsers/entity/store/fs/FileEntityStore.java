@@ -29,7 +29,7 @@ import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.dowsers.core.DowsersException;
-import org.intelligentsia.keystone.api.StringUtils;
+import org.intelligentsia.keystone.kernel.api.StringUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
