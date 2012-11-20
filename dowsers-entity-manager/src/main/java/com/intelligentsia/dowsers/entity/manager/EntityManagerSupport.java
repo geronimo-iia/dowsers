@@ -94,6 +94,18 @@ public class EntityManagerSupport implements EntityManager {
 		return entity;
 	}
 
+	/**
+	 * Find {@link Reference} entity with the specified type.
+	 * 
+	 * @param expectedType
+	 * @return an {@link Iterable} {@link Reference}.
+	 * @throws NullPointerException
+	 *             if expectedType is null
+	 */
+	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+		return entityStore.find(expectedType);
+	}
+
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
 		return notifyFind(entityStore.find(expectedType, reference));

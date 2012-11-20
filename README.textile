@@ -30,6 +30,8 @@ Done:
  * change some methods name on Reference to avoid error
  * fix analyzer bug with Entity interface
  * rename core.Version to Sequence 
+ * extends EntityStore and EntityManager: adding a way to find all Reference on a specific entities collection
+  
 
 h2. 1.0.1
 

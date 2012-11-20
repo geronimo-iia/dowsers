@@ -108,12 +108,12 @@ public abstract class StoreBaseTest {
 	@Test
 	public void testCollection() {
 		Set<Reference> references = Sets.newHashSet();
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 2; i++) {
 			Person mario = getMario();
 			references.add(References.identify(mario));
 			entityStore.store(mario);
 		}
-		assertEquals(50, references.size());
+		assertEquals(2, references.size());
 		for (Reference reference : entityStore.find(Person.class)) {
 			assertTrue(references.contains(reference));
 		}

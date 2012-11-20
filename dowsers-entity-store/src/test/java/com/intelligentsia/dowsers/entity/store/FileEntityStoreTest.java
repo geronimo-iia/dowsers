@@ -20,10 +20,11 @@
 package com.intelligentsia.dowsers.entity.store;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.Test;
+import org.apache.commons.io.FileUtils;
 
 import com.google.common.base.Throwables;
 import com.intelligentsia.dowsers.entity.store.fs.FileEntityStore;
@@ -52,15 +53,15 @@ public class FileEntityStoreTest extends StoreBaseTest {
 		final String path = new File(uri.getPath()).getAbsolutePath();
 		final String subPath = "\\target\\test-classes\\com\\intelligentsia\\dowsers\\entity\\store\\FileEntityStoreTest.class";
 		final File root = new File(new File(path.substring(0, path.length() - subPath.length())), File.separator + "target" + File.separator + "output");
+
+		if (root.exists()) {
+			try {
+				FileUtils.deleteDirectory(root);
+			} catch (IOException e) {
+			}
+		}
+
 		return root;
 	}
 
-	@Test
-	public void testCollection() {
-		try {
-			super.testCollection();
-		} catch (IllegalStateException exception) {
-			//ok
-		}
-	}
 }

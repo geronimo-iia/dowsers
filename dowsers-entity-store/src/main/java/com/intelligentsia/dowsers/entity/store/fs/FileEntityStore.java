@@ -26,8 +26,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.intelligentsia.dowsers.core.DowsersException;
 import org.intelligentsia.keystone.kernel.api.StringUtils;
 
@@ -79,6 +84,11 @@ public class FileEntityStore implements EntityStore {
 	private final LoadingCache<Reference, File> files;
 
 	/**
+	 * {@link File} root;
+	 */
+	private final File root;
+
+	/**
 	 * Build a new instance of FileEntityStore with default cache:
 	 * <ul>
 	 * <li>Maximum size : 1000 elements</li>
@@ -114,7 +124,7 @@ public class FileEntityStore implements EntityStore {
 	 */
 	public FileEntityStore(final File root, final EntityMapper entityMapper, final CacheBuilder<Object, Object> cacheBuilder) throws NullPointerException, IllegalStateException {
 		super();
-		Preconditions.checkNotNull(root);
+		this.root = Preconditions.checkNotNull(root);
 		this.entityMapper = Preconditions.checkNotNull(entityMapper);
 		// check root
 		if (!root.exists()) {
@@ -141,9 +151,32 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	@Override
-	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
-		// TODO
-		throw new IllegalStateException("Not yet Implemented");
+	public Iterable<Reference> find(final Class<?> expectedType) throws NullPointerException {
+		final Collection<File> files = FileUtils.listFiles(root, new RegexFileFilter("^(.*?)"), DirectoryFileFilter.DIRECTORY);
+		final Iterator<File> iterator = files.iterator();
+		return new Iterable<Reference>() {
+			
+			@Override
+			public Iterator<Reference> iterator() {
+				return new Iterator<Reference>() {
+					
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+					
+					@Override
+					public Reference next() {
+						return Reference.newReference(expectedType, iterator.next().getName());
+					}
+					
+					@Override
+					public boolean hasNext() {
+						return iterator.hasNext();
+					}
+				};
+			}
+		};
 	}
 
 	@Override
