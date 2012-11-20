@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 /**
  * ClassInformation.
@@ -94,7 +95,11 @@ public class ClassInformation implements Serializable {
 				if (notFirst) {
 					builder.append(",");
 				}
-				builder.append(generic.getName());
+				if (generic == null) {
+					builder.append(Object.class.getName());
+				} else {
+					builder.append(generic.getName());
+				}
 				notFirst = true;
 			}
 			builder.append(">");
@@ -152,11 +157,22 @@ public class ClassInformation implements Serializable {
 		if (!tokenizer.hasMoreTokens()) {
 			throw new IllegalArgumentException("invalid format");
 		}
-		final String className = tokenizer.nextToken();
 
 		try {
+			final String className = tokenizer.nextToken();
 			final Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
-			return new ClassInformation(clazz);
+			if (!tokenizer.hasMoreTokens()) {
+				return new ClassInformation(clazz);
+			}
+			List<Class<?>> classes = Lists.newArrayList();
+			String list = tokenizer.nextToken();
+			list = list.substring(0, list.length()-1);
+			final StringTokenizer parameters = new StringTokenizer(list, ",");
+			while(parameters.hasMoreTokens()) {
+				String parameter = parameters.nextToken();
+				classes.add(Class.forName(parameter, true, Thread.currentThread().getContextClassLoader()));
+			}
+			return new ClassInformation(clazz, classes);
 		} catch (final ClassNotFoundException e) {
 			throw new IllegalStateException(e);
 		}

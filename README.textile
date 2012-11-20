@@ -28,6 +28,8 @@ h2. 1.0.2-SNAPSHOT
 Done:
  * add utility methods on entity Manager
  * change some methods name on Reference to avoid error
+ * fix analyzer bug with Entity interface
+ * rename core.Version to Sequence 
 
 h2. 1.0.1
 

@@ -30,6 +30,7 @@ import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.annotation.Attribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
@@ -142,6 +143,16 @@ public class MetaEntityProviderAnalyzerTest {
 		result = MetaEntityProviderAnalyzer.extractValueClass(method);
 		assertNotNull(result);
 		assertEquals(ClassInformation.toClassInformation(String.class), ClassInformation.toClassInformation(result));
+	}
+
+	@Test
+	public void testGenericAnalyze() {
+		Method method = Reflection.findMethod(C.class, "attributeNames");
+		assertNotNull("Method identity not found", method);
+		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		assertNotNull(result);
+		ClassInformation reference = ClassInformation.parse(ImmutableSet.class.getName() + "<" + Object.class.getName() + ">");
+		assertEquals(reference, ClassInformation.toClassInformation(result));
 	}
 
 	public interface C extends Entity {
