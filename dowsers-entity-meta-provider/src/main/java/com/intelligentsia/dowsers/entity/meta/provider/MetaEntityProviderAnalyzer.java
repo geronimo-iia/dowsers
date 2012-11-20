@@ -60,7 +60,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 * {@link Logger} instance.
 	 */
 	private final static Logger logger = LoggerFactory.getLogger(MetaEntityProviderAnalyzer.class);
-	
+
 	/**
 	 * Build a new instance of MetaEntityProviderAnalyzer.
 	 */
@@ -169,17 +169,23 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 		return Reflection.uncapitalize(name);
 	}
 
+	/**
+	 * @param method
+	 * @return class type
+	 */
 	@VisibleForTesting
 	static Class<?> extractValueClass(final Method method) {
+		Attribute attribute = method.getAnnotation(Attribute.class);
+		if (attribute != null) {
+			if (null != attribute.type()) {
+				if (Void.TYPE != attribute.type()) {
+					return attribute.type();
+				}
+			}
+		}
 		if (Void.TYPE == method.getReturnType()) {
 			return method.getParameterTypes()[0];
 		}
-//		Type returnType = method.getGenericReturnType();
-//		 
-//		System.err.println(returnType);
-//		System.err.println(Reflection.findClass(returnType));
-//		Class<?> noop =method.getReturnType(); 
-//		List<Class<?>> list = Reflection.findGenericClass(noop);
 		return method.getReturnType();
 	}
 

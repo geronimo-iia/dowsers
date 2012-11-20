@@ -31,6 +31,7 @@ import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.junit.Test;
 
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.annotation.Attribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
 import com.intelligentsia.dowsers.entity.model.Contact;
@@ -125,7 +126,36 @@ public class MetaEntityProviderAnalyzerTest {
 		assertNotNull("Method identity not found", method);
 		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
 		assertNotNull(result);
-		assertEquals(ClassInformation.toClassInformation(result), ClassInformation.toClassInformation(Reference.class));
+		assertEquals(ClassInformation.toClassInformation(Reference.class), ClassInformation.toClassInformation(result));
+	}
+
+	@Test
+	public void testAttributeTypeOverride() {
+		Method method = Reflection.findMethod(C.class, "name");
+		assertNotNull("Method identity not found", method);
+		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		assertNotNull(result);
+		assertEquals(ClassInformation.toClassInformation(String.class), ClassInformation.toClassInformation(result));
+
+		method = Reflection.findMethod(D.class, "name");
+		assertNotNull("Method identity not found", method);
+		result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		assertNotNull(result);
+		assertEquals(ClassInformation.toClassInformation(String.class), ClassInformation.toClassInformation(result));
+	}
+
+	public interface C extends Entity {
+
+		@Attribute(type = String.class)
+		public Object name();
+
+	}
+
+	public interface D extends Entity {
+
+		@Attribute(type = String.class)
+		public void name(Object name);
+
 	}
 
 	public interface B extends Entity {

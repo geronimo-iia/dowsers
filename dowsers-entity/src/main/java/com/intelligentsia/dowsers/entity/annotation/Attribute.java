@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
 public @interface Attribute {
 
 	/**
-	 * @return name of {@link Class} of target attribute
+	 * @return {@link Class} of target attribute
 	 */
-	String type() default "";
+	Class<?> type() default void.class;
 }
