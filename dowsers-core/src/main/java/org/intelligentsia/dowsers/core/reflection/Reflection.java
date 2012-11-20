@@ -144,7 +144,7 @@ public enum Reflection {
 	 * @return {@link Method} instance or null if none is found.
 	 */
 	public static Method findMethod(final Class<?> clazz, final String name) {
-		final Method[] methods = clazz.getDeclaredMethods();
+		final Method[] methods = clazz.getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			final Method method = methods[i];
 			if (name.equals(method.getName())) {
