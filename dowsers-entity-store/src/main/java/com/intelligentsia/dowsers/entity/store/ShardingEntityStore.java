@@ -59,6 +59,11 @@ public class ShardingEntityStore implements EntityStore {
 	}
 
 	@Override
+	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+		return find(Reference.newReferenceOnEntityClass(expectedType)).find(expectedType);
+	}
+
+	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
 		return find(reference).find(expectedType, reference);
 	}

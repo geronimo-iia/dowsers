@@ -20,13 +20,17 @@
 package com.intelligentsia.dowsers.entity.store;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import com.intelligentsia.dowsers.entity.EntityFactories;
 import com.intelligentsia.dowsers.entity.EntityFactories.EntityFactory;
 import com.intelligentsia.dowsers.entity.model.MetaDataUtil;
@@ -101,4 +105,17 @@ public abstract class StoreBaseTest {
 		}
 	}
 
+	@Test
+	public void testCollection() {
+		Set<Reference> references = Sets.newHashSet();
+		for (int i = 0; i < 50; i++) {
+			Person mario = getMario();
+			references.add(References.identify(mario));
+			entityStore.store(mario);
+		}
+		assertEquals(50, references.size());
+		for (Reference reference : entityStore.find(Person.class)) {
+			assertTrue(references.contains(reference));
+		}
+	}
 }

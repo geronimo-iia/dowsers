@@ -141,6 +141,12 @@ public class FileEntityStore implements EntityStore {
 	}
 
 	@Override
+	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+		// TODO
+		throw new IllegalStateException("Not yet Implemented");
+	}
+
+	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException {
 		final File file = getFile(reference, false);
 		if (!file.exists()) {

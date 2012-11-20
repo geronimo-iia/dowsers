@@ -24,8 +24,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
 import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.reference.Reference;
@@ -55,6 +58,25 @@ public class InMemoryEntityStore implements EntityStore {
 	public InMemoryEntityStore(final EntityMapper entityMapper) throws NullPointerException {
 		super();
 		this.entityMapper = Preconditions.checkNotNull(entityMapper);
+	}
+
+	@Override
+	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+		final Reference reference = Reference.newReferenceOnEntityClass(expectedType);
+		Set<Reference> references = entities.keySet();
+
+		Collections2.filter(references, new Predicate<Reference>() {
+
+			@Override
+			public boolean apply(Reference input) {
+				if (input != null) {
+					return reference.equals(input.getEntityClassReference());
+				}
+				return false;
+			}
+
+		});
+		return references;
 	}
 
 	@Override

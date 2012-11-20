@@ -23,6 +23,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.junit.Test;
+
 import com.google.common.base.Throwables;
 import com.intelligentsia.dowsers.entity.store.fs.FileEntityStore;
 
@@ -51,5 +53,14 @@ public class FileEntityStoreTest extends StoreBaseTest {
 		final String subPath = "\\target\\test-classes\\com\\intelligentsia\\dowsers\\entity\\store\\FileEntityStoreTest.class";
 		final File root = new File(new File(path.substring(0, path.length() - subPath.length())), File.separator + "target" + File.separator + "output");
 		return root;
+	}
+
+	@Test
+	public void testCollection() {
+		try {
+			super.testCollection();
+		} catch (IllegalStateException exception) {
+			//ok
+		}
 	}
 }

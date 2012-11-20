@@ -30,6 +30,16 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 public interface EntityStore {
 
 	/**
+	 * Find {@link Reference} entity with the specified type.
+	 * 
+	 * @param expectedType
+	 * @return an {@link Iterable} {@link Reference}.
+	 * @throws NullPointerException
+	 *             if expectedType is null
+	 */
+	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException;
+
+	/**
 	 * Find entity with the specified identity.
 	 * 
 	 * @param expectedType
