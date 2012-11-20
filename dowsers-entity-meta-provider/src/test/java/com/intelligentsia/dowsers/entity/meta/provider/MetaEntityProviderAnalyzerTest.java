@@ -24,13 +24,18 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.lang.reflect.Method;
+
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
 import org.junit.Test;
 
+import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaModel;
+import com.intelligentsia.dowsers.entity.model.Contact;
 import com.intelligentsia.dowsers.entity.model.Person;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityProviderAnalyzerTest.
@@ -92,6 +97,38 @@ public class MetaEntityProviderAnalyzerTest {
 
 		assertNotNull(metaEntity.metaAttributes().metaAttribute("yearOld"));
 		assertEquals(ClassInformation.toClassInformation(Integer.class), metaEntity.metaAttributes().metaAttribute("yearOld").valueClass());
+
+	}
+
+	@Test
+	public void testContactAnalyze() {
+		final MetaEntity metaEntity = MetaEntityProviderAnalyzer.analyze(ClassInformation.toClassInformation(Contact.class));
+		assertNotNull(metaEntity);
+		assertEquals(Contact.class.getName(), metaEntity.name());
+		assertEquals(MetaModel.VERSION, metaEntity.version());
+		assertNotNull(metaEntity.metaAttributes());
+		assertFalse(metaEntity.metaAttributes().isEmpty());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("identity"));
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("email"));
+		assertEquals(ClassInformation.toClassInformation(String.class), metaEntity.metaAttributes().metaAttribute("email").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("belongingOrg"));
+		assertEquals(ClassInformation.toClassInformation(Reference.class), metaEntity.metaAttributes().metaAttribute("belongingOrg").valueClass());
+
+	}
+
+	@Test
+	public void extractValueClassTest() {
+		Method method = Reflection.findMethod(B.class, "identity");
+		assertNotNull("Method identity not found", method);
+		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		assertNotNull(result);
+		assertEquals(ClassInformation.toClassInformation(result), ClassInformation.toClassInformation(Reference.class));
+	}
+
+	public interface B extends Entity {
 
 	}
 

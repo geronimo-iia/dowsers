@@ -194,7 +194,7 @@ public enum Reflection {
 			while (resolvedTypes.containsKey(baseType)) {
 				baseType = resolvedTypes.get(baseType);
 			}
-			typeArgumentsAsClasses.add(getClass(baseType));
+			typeArgumentsAsClasses.add(findClass(baseType));
 		}
 		return typeArgumentsAsClasses;
 	}
@@ -218,14 +218,14 @@ public enum Reflection {
 	 *            the type
 	 * @return the underlying class
 	 */
-	private static Class<?> getClass(final Type type) {
+	public static Class<?> findClass(final Type type) {
 		if (type instanceof Class) {
 			return (Class<?>) type;
 		} else if (type instanceof ParameterizedType) {
-			return getClass(((ParameterizedType) type).getRawType());
+			return findClass(((ParameterizedType) type).getRawType());
 		} else if (type instanceof GenericArrayType) {
 			final Type componentType = ((GenericArrayType) type).getGenericComponentType();
-			final Class<?> componentClass = getClass(componentType);
+			final Class<?> componentClass = findClass(componentType);
 			if (componentClass != null) {
 				return Array.newInstance(componentClass, 0).getClass();
 			} else {

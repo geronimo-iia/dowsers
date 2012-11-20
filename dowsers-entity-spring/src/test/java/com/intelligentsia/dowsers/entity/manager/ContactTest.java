@@ -19,18 +19,47 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import static junit.framework.Assert.assertNotNull;
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-/**
- * SampleTest.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
- */
-public class SampleTest extends SpringBaseTest {
+import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.model.Contact;
 
-	@Override
+/**
+ * ContactTest: {@link Contact} extends {@link Entity}
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
+public class ContactTest {
+	protected DefaultListableBeanFactory registry = null;
+	protected XmlBeanDefinitionReader reader = null;
+
+	@Before
+	public void initialize() {
+		registry = new DefaultListableBeanFactory();
+		reader = new XmlBeanDefinitionReader(registry);
+
+	}
+
 	public Resource getResource() {
 		return new ClassPathResource("dowsers-context-sample1.xml");
 	}
+
+	@Test
+	public void loadConfiguration() {
+		reader.loadBeanDefinitions(getResource());
+		final EntityManager entityManager = registry.getBean("entityManager", EntityManager.class);
+		assertNotNull(entityManager);
+
+		Assert.assertNotNull(entityManager.newInstance(Contact.class));
+
+	}
+
 }

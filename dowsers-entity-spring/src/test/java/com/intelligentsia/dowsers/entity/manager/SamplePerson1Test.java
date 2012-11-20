@@ -17,26 +17,20 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.annotation;
+package com.intelligentsia.dowsers.entity.manager;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 /**
- * Attribute annotation tag.
+ * SamplePerson1Test.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface Attribute {
+public class SamplePerson1Test extends PersonSpringBaseTest {
 
-	/**
-	 * @return name of {@link Class} of target attribute
-	 */
-	String type() default "";
+	@Override
+	public Resource getResource() {
+		return new ClassPathResource("dowsers-context-sample1.xml");
+	}
 }

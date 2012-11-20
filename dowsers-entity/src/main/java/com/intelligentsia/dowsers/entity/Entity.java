@@ -22,6 +22,7 @@ package com.intelligentsia.dowsers.entity;
 import org.intelligentsia.dowsers.core.Identified;
 
 import com.google.common.collect.ImmutableSet;
+import com.intelligentsia.dowsers.entity.annotation.IgnoreAttribute;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
@@ -52,6 +53,15 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface Entity extends Identified<Reference> {
+
+	/**
+	 * This over declaration enable type discovering on generic return type of
+	 * {@link Identified} interface.
+	 * 
+	 * @see org.intelligentsia.dowsers.core.Identified#identity()
+	 */
+	@Override
+	public Reference identity();
 
 	/**
 	 * Return typed value of specified attribute name.
@@ -95,16 +105,19 @@ public interface Entity extends Identified<Reference> {
 	 * @throws IllegalArgumentException
 	 *             if name is empty
 	 */
+	@IgnoreAttribute
 	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
 
 	/**
 	 * @return a {@link ImmutableSet} on attribute name.
 	 */
+	@IgnoreAttribute
 	public ImmutableSet<String> attributeNames();
 
 	/**
 	 * @return a {@link MetaEntityContext} instance associated with this
 	 *         {@link Entity}.
 	 */
+	@IgnoreAttribute
 	public MetaEntityContext metaEntityContext();
 }

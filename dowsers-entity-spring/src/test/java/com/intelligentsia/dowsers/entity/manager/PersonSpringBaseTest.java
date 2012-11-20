@@ -35,7 +35,7 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
-public abstract class SpringBaseTest {
+public abstract class PersonSpringBaseTest {
 
 	protected DefaultListableBeanFactory registry = null;
 	protected XmlBeanDefinitionReader reader = null;

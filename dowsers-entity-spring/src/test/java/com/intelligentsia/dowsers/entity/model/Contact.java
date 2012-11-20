@@ -17,26 +17,49 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.annotation;
+package com.intelligentsia.dowsers.entity.model;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
 
 /**
- * Attribute annotation tag.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * Entity representing {@link com.mega.gp.portal.service.userprofile.api.model.User} contact informations. 
+ *
+ * @author LRI
+ *
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface Attribute {
+@MetaCompliant
+public interface Contact extends Entity {
 
 	/**
-	 * @return name of {@link Class} of target attribute
+	 * @return the phoneNumber
 	 */
-	String type() default "";
+	public String getPhoneNumber();
+
+	/**
+	 * @param phoneNumber the phoneNumber to set
+	 */
+	public void setPhoneNumber(String phoneNumber);
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail();
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email);
+
+	/**
+	 * @return the belongingOrg
+	 */
+	public Reference getBelongingOrg();
+
+	/**
+	 * @param belongingOrg the belongingOrg to set
+	 */
+	public void setBelongingOrg(Reference belongingOrg);
+
 }

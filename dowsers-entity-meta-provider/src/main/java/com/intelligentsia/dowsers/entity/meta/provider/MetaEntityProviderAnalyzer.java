@@ -30,6 +30,8 @@ import java.util.Map;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -54,6 +56,11 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  */
 public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 
+	/**
+	 * {@link Logger} instance.
+	 */
+	private final static Logger logger = LoggerFactory.getLogger(MetaEntityProviderAnalyzer.class);
+	
 	/**
 	 * Build a new instance of MetaEntityProviderAnalyzer.
 	 */
@@ -128,7 +135,9 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 			if (hasAttributeSignature(method, autoDiscovering)) {
 				final String name = extractName(method);
 				if (!attributes.containsKey(name)) {
-					attributes.put(name, MetaAttribute.builder().name(name).valueClass(extractValueClass(method)).build());
+					Class<?> valueClass = extractValueClass(method);
+					logger.debug("Find attribute {}:{}", name, valueClass.getName());
+					attributes.put(name, MetaAttribute.builder().name(name).valueClass(valueClass).build());
 				}
 			}
 		}
@@ -165,6 +174,12 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 		if (Void.TYPE == method.getReturnType()) {
 			return method.getParameterTypes()[0];
 		}
+//		Type returnType = method.getGenericReturnType();
+//		 
+//		System.err.println(returnType);
+//		System.err.println(Reflection.findClass(returnType));
+//		Class<?> noop =method.getReturnType(); 
+//		List<Class<?>> list = Reflection.findGenericClass(noop);
 		return method.getReturnType();
 	}
 
