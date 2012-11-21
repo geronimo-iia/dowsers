@@ -253,6 +253,7 @@
 		<module>dowsers-entity-store</module>
 		<module>dowsers-entity-manager</module>
 		<module>dowsers-entity-spring</module>
+		<module>dowsers-entity-view</module>
 		<module>dowsers-command</module>
 	</modules>
 	<!-- ******************************************************************* -->
