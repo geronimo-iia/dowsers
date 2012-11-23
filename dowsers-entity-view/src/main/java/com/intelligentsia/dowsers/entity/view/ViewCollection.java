@@ -19,30 +19,15 @@
  */
 package com.intelligentsia.dowsers.entity.view;
 
+import org.intelligentsia.dowsers.core.Identified;
+
+import com.intelligentsia.dowsers.entity.reference.Reference;
+
 /**
- * ViewStore store a kind of view. 
- *
+ * ViewCollection specify a collection of same kind of view identified by an {@link Reference}.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public interface ViewStore {
-
-	/**
-	 * Insert or update specified view
-	 * 
-	 * @param view
-	 */
-	void store(View view);
-
-	/**
-	 * Delete specified view
-	 * 
-	 * @param view
-	 */
-	void delete(View view);
-
-	/**
-	 * Drop all view in this {@link ViewStore}.
-	 */
-	void drop();
+public interface ViewCollection extends Identified<Reference>{
 
 }
