@@ -10,9 +10,7 @@ h1. Release Notes
 
 
 Some idea:
-* Adding View concept:
-** definition with aggregation of attribute, 
-** in memory implementation that follow runtime
+
 * On Entity  Store:
 ** Add Event Store concept with Java Chronicle Implementation, and / or Mongo db
 ** Add Entity Store based on mongo db
@@ -23,7 +21,18 @@ Some idea:
 ** calling view with filtering, limit, sort and skip methods
 * Adding tool to build administrative web application based on meta
 
-h2. 1.0.2-SNAPSHOT
+
+h2. 1.0.3 SNAPSHOT
+
+In progress:
+* Adding View concept:
+** definition with aggregation of attribute, 
+** in memory implementation that follow runtime
+
+Done:
+ * add possibility to register meta information from spring configuration
+
+h2. 1.0.2
 
 Done:
  * add utility methods on entity Manager

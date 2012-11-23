@@ -19,11 +19,19 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.springframework.beans.factory.FactoryBean;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.intelligentsia.dowsers.entity.meta.MetaEntity;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityProvider;
+import com.intelligentsia.dowsers.entity.meta.MetaEntityProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * MetaEntityProviderFactory implements {@link FactoryBean} of
@@ -38,16 +46,32 @@ public class MetaEntityProviderFactory implements FactoryBean<MetaEntityProvider
 
 	private MetaEntityProvider metaEntityProvider;
 
+	private Map<Reference, MetaEntity> metaEntities = Maps.newHashMap();
+
 	public MetaEntityProviderFactory() {
 		super();
 	}
 
 	@Override
 	public MetaEntityProvider getObject() throws Exception {
-		if (enableDynamicAnalyzer) {
-			return metaEntityProvider != null ? MetaEntityProviders.newMetaEntityProvider(MetaEntityProviders.newMetaEntityProviderAnalyzer(), metaEntityProvider) : MetaEntityProviders.newMetaEntityProviderAnalyzer();
+		final Collection<MetaEntityProvider> entityProviders = new ArrayList<MetaEntityProvider>(3);
+		// local definition
+		if ((metaEntities != null) && !metaEntities.isEmpty()) {
+			final MetaEntityProviderSupport.Builder builder = MetaEntityProviderSupport.builder();
+			for (final Entry<Reference, MetaEntity> entry : metaEntities.entrySet()) {
+				builder.add(entry.getKey(), entry.getValue());
+			}
+			entityProviders.add(builder.build());
 		}
-		return Preconditions.checkNotNull(metaEntityProvider);
+		// dynamic class analyzer
+		if (enableDynamicAnalyzer) {
+			entityProviders.add(MetaEntityProviders.newMetaEntityProviderAnalyzer());
+		}
+		// other
+		if (metaEntityProvider != null) {
+			entityProviders.add(metaEntityProvider);
+		}
+		return MetaEntityProviders.newMetaEntityProvider(entityProviders);
 	}
 
 	@Override
@@ -74,6 +98,14 @@ public class MetaEntityProviderFactory implements FactoryBean<MetaEntityProvider
 
 	public void setMetaEntityProvider(final MetaEntityProvider metaEntityProvider) {
 		this.metaEntityProvider = metaEntityProvider;
+	}
+
+	public Map<Reference, MetaEntity> getMetaEntities() {
+		return metaEntities;
+	}
+
+	public void setMetaEntities(final Map<Reference, MetaEntity> metaEntities) {
+		this.metaEntities = metaEntities;
 	}
 
 }
