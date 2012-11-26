@@ -24,7 +24,9 @@ import java.util.List;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.view.processor.Item;
 import com.intelligentsia.dowsers.entity.view.processor.Processor;
 
 /**
@@ -41,6 +43,8 @@ public final class View {
 
 	private final ImmutableList<Reference> entities;
 
+	private final ViewStore viewStore;
+
 	/**
 	 * Build a new instance of View.java.
 	 * 
@@ -52,12 +56,25 @@ public final class View {
 	 * @throws IllegalArgumentException
 	 *             if entities is empty
 	 */
-	public View(final String name, final Processor processor, final ImmutableList<Reference> entities) throws NullPointerException, IllegalArgumentException {
+	public View(final String name, final Processor processor, final ImmutableList<Reference> entities, final ViewStore viewStore) throws NullPointerException, IllegalArgumentException {
 		super();
 		this.name = Preconditions.checkNotNull(name);
 		this.processor = Preconditions.checkNotNull(processor);
 		this.entities = Preconditions.checkNotNull(entities);
 		Preconditions.checkArgument(!entities.isEmpty());
+		this.viewStore = Preconditions.checkNotNull(viewStore);
+	}
+
+	/**
+	 * Compute view for specified entity.
+	 * 
+	 * @param entity
+	 */
+	public void compute(Entity entity) {
+		// build item
+		Item item = processor.apply(entity);
+		// update store
+		viewStore.update(entity.identity(), item);
 	}
 
 	/**
@@ -72,6 +89,13 @@ public final class View {
 	 */
 	public Processor processor() {
 		return processor;
+	}
+
+	/**
+	 * @return {@link ViewStore} instance.
+	 */
+	public ViewStore viewStore() {
+		return viewStore;
 	}
 
 	/**
