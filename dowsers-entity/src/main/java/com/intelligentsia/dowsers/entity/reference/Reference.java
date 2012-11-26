@@ -70,11 +70,23 @@ import com.intelligentsia.dowsers.entity.Entity;
 public final class Reference implements Comparable<Reference>, Serializable {
 
 	private static final long serialVersionUID = -385235333185254142L;
+	/**
+	 * URN IDENTIFIER ('#').
+	 */
+	public static final transient char URN_IDENTIFIER_SEPARATOR = '#';
+	/**
+	 * URN SEPARATOR (':').
+	 */
+	public static final transient char URN_SEPARATOR = ':';
+	
+	/**
+	 * URN DOWSERS ('urn:dowsers:').
+	 */
+	public static final transient String URN_DOWSERS = "urn:dowsers:";
 
-	private static final transient char URN_IDENTIFIER_SEPARATOR = '#';
-	private static final transient char URN_SEPARATOR = ':';
-	private static final transient String URN_DOWSERS = "urn:dowsers:";
-
+	/**
+	 * Attribute Identity.
+	 */
 	public static final transient String IDENTITY = "identity";
 
 	private final transient String className;
