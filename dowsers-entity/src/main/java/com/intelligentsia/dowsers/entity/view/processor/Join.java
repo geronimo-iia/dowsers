@@ -24,7 +24,6 @@ import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.manager.EntityManager;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
-import com.intelligentsia.dowsers.entity.view.Processor;
 
 /**
  * Join an Item with another {@link Entity}.
@@ -39,7 +38,7 @@ public class Join extends ProcessorUnit {
 
 	private final Class<? extends Entity> expectedType;
 
-	private final Source source;
+	private final Processor source;
 
 	/**
 	 * Build a new instance of Join.
@@ -49,7 +48,7 @@ public class Join extends ProcessorUnit {
 	 * @param entityManager
 	 *            {@link EntityManager} instance
 	 * @param joinAttribute
-	 *            join attribute ('take car eof alias')
+	 *            join attribute ('take care of alias')
 	 * @param expectedType
 	 *            expected type of joined {@link Entity}
 	 * @param source
@@ -57,7 +56,7 @@ public class Join extends ProcessorUnit {
 	 * @throws NullPointerException
 	 *             if one of parameters is null
 	 */
-	public Join(final Processor processor, final EntityManager entityManager, final String joinAttribute, final Class<? extends Entity> expectedType, final Source source) throws NullPointerException {
+	public Join(final Processor processor, final EntityManager entityManager, final String joinAttribute, final Class<? extends Entity> expectedType, final Processor source) throws NullPointerException {
 		super(processor);
 		this.entityManager = Preconditions.checkNotNull(entityManager);
 		this.joinAttribute = Preconditions.checkNotNull(joinAttribute);
@@ -85,4 +84,9 @@ public class Join extends ProcessorUnit {
 		return item;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("(join ").append(super.toString()).append(" ").append(joinAttribute);
+		return builder.append(" ").append(source.toString()).append(")").toString();
+	}
 }

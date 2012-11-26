@@ -22,7 +22,6 @@ package com.intelligentsia.dowsers.entity.view.processor;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.view.Processor;
 
 /**
  * Filter apple a {@link Predicate} on specified item and let process continue
@@ -30,7 +29,7 @@ import com.intelligentsia.dowsers.entity.view.Processor;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class Filter extends ProcessorUnit {
+public final class Filter extends ProcessorUnit {
 
 	private final Predicate<Item> predicate;
 
@@ -54,4 +53,11 @@ public class Filter extends ProcessorUnit {
 		final Item item = super.apply(input);
 		return predicate.apply(item) ? item : null;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("(filter ").append(super.toString()).append(" ");
+		return builder.append(predicate).append(")").toString();
+	}
+
 }

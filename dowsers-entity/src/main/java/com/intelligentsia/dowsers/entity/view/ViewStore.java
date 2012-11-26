@@ -36,12 +36,12 @@ public interface ViewStore {
 	 * @param reference
 	 *            identity of entity which initiate this update.
 	 * @param item
-	 *            computed item
+	 *            computed item, could be null
 	 */
 	void update(Reference reference, Item item);
 
 	/**
-	 * Drop all view in this {@link ViewStore}.
+	 * Drop all item in this {@link ViewStore}.
 	 */
 	void drop();
 

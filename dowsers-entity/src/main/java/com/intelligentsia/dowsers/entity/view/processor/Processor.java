@@ -17,11 +17,10 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.view;
+package com.intelligentsia.dowsers.entity.view.processor;
 
 import com.google.common.base.Function;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.view.processor.Item;
 
 /**
  * Processor.

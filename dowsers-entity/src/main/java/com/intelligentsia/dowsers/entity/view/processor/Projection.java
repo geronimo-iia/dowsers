@@ -25,16 +25,22 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.view.Processor;
 
 /**
  * Projection.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Projection extends ProcessorUnit {
+public final class Projection extends ProcessorUnit {
 
 	private final ImmutableSet<String> attributeNames;
+
+	/**
+	 * The string form of this {@link Projection}.
+	 * 
+	 * @serial
+	 */
+	public volatile String value = null;
 
 	/**
 	 * Build a new instance of Projection.
@@ -45,10 +51,14 @@ public class Projection extends ProcessorUnit {
 	 *            set of attribute name
 	 * @throws NullPointerException
 	 *             if one of parameters is null
+	 * @throws IllegalStateException
+	 *             if no output attribute was specified
 	 */
-	public Projection(final Processor processor, final ImmutableSet<String> attributeNames) throws NullPointerException {
+	public Projection(final Processor processor, final ImmutableSet<String> attributeNames) throws NullPointerException, IllegalStateException {
 		super(processor);
 		this.attributeNames = Preconditions.checkNotNull(attributeNames);
+		Preconditions.checkState(!attributeNames.isEmpty());
+		defineString();
 	}
 
 	@Override
@@ -64,4 +74,25 @@ public class Projection extends ProcessorUnit {
 		return item;
 	}
 
+	@Override
+	public String toString() {
+		return defineString();
+	}
+
+	/**
+	 * Build inner value.
+	 */
+	private String defineString() {
+		if (value != null) {
+			return value;
+		}
+		StringBuilder builder = new StringBuilder("(projection ").append(super.toString()).append(" ");
+		Iterator<String> iterator = attributeNames.iterator();
+		while (iterator.hasNext()) {
+			builder.append(iterator.next()).append(" ");
+		}
+		value = builder.append(")").toString();
+		return value;
+
+	}
 }

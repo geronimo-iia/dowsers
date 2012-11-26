@@ -21,7 +21,6 @@ package com.intelligentsia.dowsers.entity.view.processor;
 
 import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.view.Processor;
 
 /**
  * ProcessorUnit implements decorator pattern on {@link Processor}.
@@ -42,4 +41,8 @@ public class ProcessorUnit implements Processor {
 		return processor.apply(input);
 	}
 
+	@Override
+	public String toString() {
+		return processor.toString();
+	}
 }
