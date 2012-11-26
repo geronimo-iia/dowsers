@@ -147,7 +147,7 @@ public class ReferenceTest {
 	}
 
 	@Test
-	public void testParseString() {
+	public void testParseStringFull() {
 		try {
 			Reference.parseString(null);
 			fail();
@@ -173,9 +173,18 @@ public class ReferenceTest {
 		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", reference.getEntityClassName());
 		assertEquals("name", reference.getAttributeName());
 		assertEquals("4c8b03dd-908a-4cad-8d48-3c7277d44ac9", reference.getIdentity());
-
 	}
 
+	@Test
+	public void testParseStringForClass() {
+		final String urn = "urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:";
+		final Reference reference = Reference.parseString(urn);
+		assertNotNull(reference);
+		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", reference.getEntityClassName());
+	}
+	
+	
+	
 	@Test
 	public void testParseURI() throws URISyntaxException {
 		try {

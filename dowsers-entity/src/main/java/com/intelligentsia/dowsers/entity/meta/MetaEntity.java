@@ -27,6 +27,7 @@ import org.intelligentsia.dowsers.core.Identified;
 import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -157,6 +158,14 @@ public class MetaEntity implements Identified<Reference>, Serializable, Comparab
 	 */
 	public MetaAttributeCollection metaAttributes() {
 		return metaAttributes;
+	}
+
+	/**
+	 * @return a {@link Reference} on entity class.
+	 */
+	@JsonIgnore
+	public Reference getEntityClassReference() {
+		return Reference.parseString(Reference.URN_DOWSERS + name + Reference.URN_SEPARATOR);
 	}
 
 	@Override

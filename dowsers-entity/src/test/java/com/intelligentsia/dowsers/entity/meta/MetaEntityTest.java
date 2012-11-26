@@ -27,6 +27,7 @@ import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.intelligentsia.dowsers.entity.model.Person;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
@@ -57,4 +58,12 @@ public class MetaEntityTest {
 
 	}
 
+	@Test
+	public void testMetaEntityNameAndClass() {
+		final MetaEntity definition = MetaEntity.builder().name(Person.class.getName()).version(new Version(1)) // attributes
+				.metaAttribute("test-attribute", String.class).build();
+		Reference reference = definition.getEntityClassReference();
+		assertNotNull(reference);
+		assertEquals(Person.class.getName(), reference.getEntityClassName());
+	}
 }
