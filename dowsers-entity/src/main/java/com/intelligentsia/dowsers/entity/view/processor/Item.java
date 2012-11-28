@@ -25,6 +25,8 @@ import java.util.Set;
 
 import org.intelligentsia.keystone.kernel.api.Preconditions;
 
+import com.google.common.base.Objects;
+
 /**
  * Item.
  * 
@@ -41,6 +43,28 @@ public class Item {
 	public Item(final Map<String, Object> attributes) throws NullPointerException {
 		super();
 		this.attributes = Preconditions.checkNotNull(attributes);
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(getClass()).add("attributes", attributes).toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(attributes);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		return Objects.equal(attributes, other.attributes);
 	}
 
 	public Map<String, Object> getAttributes() {

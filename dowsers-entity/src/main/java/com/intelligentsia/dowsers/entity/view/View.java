@@ -24,8 +24,11 @@ import java.util.List;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.intelligentsia.dowsers.entity.Entity;
+import com.intelligentsia.dowsers.entity.manager.EntityManager;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.view.processor.AbstractProcessorBuilder;
 import com.intelligentsia.dowsers.entity.view.processor.Item;
 import com.intelligentsia.dowsers.entity.view.processor.Processor;
 
@@ -94,13 +97,6 @@ public final class View {
 	}
 
 	/**
-	 * @return {@link Processor} instance to build each items.
-	 */
-	public Processor processor() {
-		return processor;
-	}
-
-	/**
 	 * @return {@link ViewStore} instance.
 	 */
 	public ViewStore viewStore() {
@@ -140,4 +136,108 @@ public final class View {
 		return Objects.toStringHelper(getClass()).add("name", name).add("processor", processor).add("entities", entities).toString();
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	/**
+	 * Builder.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public static class Builder {
+
+		private String name;
+
+		Processor processor;
+
+		ImmutableList.Builder<Reference> entities = ImmutableList.builder();
+
+		private ViewStore viewStore;
+
+		public Builder() {
+			super();
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder viewStore(ViewStore viewStore) {
+			this.viewStore = viewStore;
+			return this;
+		}
+
+		/**
+		 * @return a {@link ViewProcessorBuilder}.
+		 */
+		public ViewProcessorBuilder processor(final Class<? extends Entity> entityType, final String alias) {
+			return new ViewProcessorBuilder(this, entityType, alias);
+		}
+
+		/**
+		 * @return a {@link ViewProcessorBuilder}.
+		 */
+		public ViewProcessorBuilder processor(final Class<? extends Entity> entityType, final String alias, final ImmutableSet<String> attributeNames) {
+			return new ViewProcessorBuilder(this, entityType, alias, attributeNames);
+		}
+
+		/**
+		 * @return a {@link ViewProcessorBuilder}.
+		 */
+		public ViewProcessorBuilder processor(final Class<? extends Entity> entityType, final String alias, final String... names) {
+			return new ViewProcessorBuilder(this, entityType, alias, names);
+		}
+
+		public View build() {
+			return new View(name, processor, entities.build(), viewStore);
+		}
+	}
+
+	/**
+	 * ViewProcessorBuilder.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+	 */
+	public static class ViewProcessorBuilder extends AbstractProcessorBuilder<Builder> {
+
+		private final Builder builder;
+
+		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias) {
+			super(entityType, alias);
+			this.builder = builder;
+			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
+		}
+
+		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias, ImmutableSet<String> attributeNames) {
+			super(entityType, alias, attributeNames);
+			this.builder = builder;
+			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
+		}
+
+		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias, String... names) {
+			super(entityType, alias, names);
+			this.builder = builder;
+			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
+		}
+
+		public Builder build() {
+			builder.processor = processor;
+			return builder;
+		}
+
+		@Override
+		public AbstractProcessorBuilder<Builder> join(EntityManager entityManager, String joinAttribute, Class<? extends Entity> expectedType, Processor source) throws NullPointerException {
+			this.builder.entities.add(Reference.newReferenceOnEntityClass(expectedType));
+			return super.join(entityManager, joinAttribute, expectedType, source);
+		}
+
+		@Override
+		public AbstractProcessorBuilder<Builder> join(String joinAttribute, Class<? extends Entity> expectedType, Processor source) throws NullPointerException {
+			this.builder.entities.add(Reference.newReferenceOnEntityClass(expectedType));
+			return super.join(joinAttribute, expectedType, source);
+		}
+
+	}
 }

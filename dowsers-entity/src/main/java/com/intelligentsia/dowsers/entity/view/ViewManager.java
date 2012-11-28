@@ -76,8 +76,17 @@ public class ViewManager {
 		}
 	}
 
+	/**
+	 * @param reference
+	 * @return a Collection<View> for specified reference.
+	 */
+	public Collection<View> getViews(Reference reference) {
+		return views.get(reference);
+	}
+
 	protected <T extends Entity> void entityStored(final T entity) {
-		for (final View view : views.get(entity.identity())) {
+		final Reference id = entity.identity().getEntityClassReference();
+		for (final View view : views.get(id)) {
 			try {
 				view.compute(entity);
 			} catch (final Throwable throwable) {
@@ -89,7 +98,7 @@ public class ViewManager {
 	}
 
 	protected <T extends Entity> void entityRemoved(final T entity) {
-		final Reference id = entity.identity();
+		final Reference id = entity.identity().getEntityClassReference();
 		for (final View view : views.get(id)) {
 			try {
 				view.remove(id);
