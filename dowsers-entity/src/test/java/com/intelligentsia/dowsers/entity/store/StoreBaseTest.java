@@ -106,6 +106,43 @@ public abstract class StoreBaseTest {
 	}
 
 	@Test
+	public void testIdentityHijack() {
+		final Person mario = getMario();
+		assertEquals("Mario", mario.getFirstName());
+		assertEquals("Fusco", mario.getLastName());
+		assertEquals((Integer) 35, mario.getYearOld());
+		final Reference id = References.identify(mario);
+		// create
+		entityStore.store(mario);
+		assertEquals("Mario", mario.getFirstName());
+		assertEquals("Fusco", mario.getLastName());
+		assertEquals((Integer) 35, mario.getYearOld());
+		// Read
+		Person person = entityStore.find(Person.class, id);
+		assertNotNull(person);
+		assertEquals(id, References.identify(person));
+		assertEquals(mario.getFirstName(), person.getFirstName());
+		assertEquals(mario.getLastName(), person.getLastName());
+		assertEquals(mario.getYearOld(), person.getYearOld());
+		// Update
+		mario.setFirstName("Bob");
+		assertNotSame(mario.getFirstName(), person.getFirstName());
+		entityStore.store(mario);
+		person = entityStore.find(Person.class, id);
+		assertEquals(mario.getFirstName(), person.getFirstName());
+		assertEquals(mario.getLastName(), person.getLastName());
+		assertEquals(mario.getYearOld(), person.getYearOld());
+		// delete
+		entityStore.remove(mario);
+		try {
+			entityStore.find(Person.class, id);
+			fail();
+		} catch (final EntityNotFoundException e) {
+			// ok
+		}
+	}
+	
+	@Test
 	public void testCollection() {
 		Set<Reference> references = Sets.newHashSet();
 		for (int i = 0; i < 2; i++) {

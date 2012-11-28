@@ -78,6 +78,15 @@ public final class View {
 	}
 
 	/**
+	 * Remove specified entry.
+	 * 
+	 * @param identity
+	 */
+	public void remove(Reference identity) {
+		viewStore.update(identity, null);
+	}
+
+	/**
 	 * @return view name
 	 */
 	public String name() {

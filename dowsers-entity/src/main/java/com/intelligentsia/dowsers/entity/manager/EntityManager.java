@@ -57,7 +57,6 @@ public interface EntityManager {
 	 */
 	public <T> T newInstance(Class<T> expectedType, Reference reference) throws NullPointerException, IllegalArgumentException;
 
-	
 	/**
 	 * Find {@link Reference} entity with the specified type.
 	 * 
@@ -67,7 +66,7 @@ public interface EntityManager {
 	 *             if expectedType is null
 	 */
 	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException;
-	
+
 	/**
 	 * Find entity with the specified identity.
 	 * 
@@ -130,6 +129,20 @@ public interface EntityManager {
 	 *             if reference is not an identifier
 	 */
 	public void remove(Reference reference) throws NullPointerException, IllegalArgumentException;
+
+	/**
+	 * Add {@link Listener} instance.
+	 * 
+	 * @param listener
+	 */
+	public void addListener(Listener listener);
+
+	/**
+	 * Remove specified {@link Listener}.
+	 * 
+	 * @param listener
+	 */
+	public void removeListener(Listener listener);
 
 	/**
 	 * Listener.

@@ -44,7 +44,7 @@ public class EntityManagerSupport implements EntityManager {
 	 */
 	private final EntityStore entityStore;
 
-	private final Listener listener;
+	private Listener listener;
 
 	/**
 	 * Build a new instance of EntityManagerSupport.java.
@@ -85,7 +85,7 @@ public class EntityManagerSupport implements EntityManager {
 	}
 
 	@Override
-	public <T> T newInstance(Class<T> expectedType, Reference reference) throws NullPointerException, IllegalArgumentException {
+	public <T> T newInstance(final Class<T> expectedType, final Reference reference) throws NullPointerException, IllegalArgumentException {
 		Preconditions.checkArgument(Reference.newReferenceOnEntityClass(expectedType).equals(Preconditions.checkNotNull(reference).getEntityClassReference()));
 		final T entity = entityFactoryProvider.newInstance(expectedType).newInstance(reference);
 		if (listener != null) {
@@ -102,7 +102,8 @@ public class EntityManagerSupport implements EntityManager {
 	 * @throws NullPointerException
 	 *             if expectedType is null
 	 */
-	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+	@Override
+	public Iterable<Reference> find(final Class<?> expectedType) throws NullPointerException {
 		return entityStore.find(expectedType);
 	}
 
@@ -135,6 +136,16 @@ public class EntityManagerSupport implements EntityManager {
 	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
 		entityStore.remove(reference);
 		notifyRemove(reference);
+	}
+
+	@Override
+	public void addListener(final Listener listener) {
+		this.listener = listener;
+	}
+
+	@Override
+	public void removeListener(final Listener listener) {
+		this.listener = null;
 	}
 
 	private <T> T notifyFind(final T entity) {
