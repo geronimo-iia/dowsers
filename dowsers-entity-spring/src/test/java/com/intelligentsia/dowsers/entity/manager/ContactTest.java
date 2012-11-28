@@ -19,8 +19,10 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import junit.framework.Assert;
+
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,7 @@ import org.springframework.core.io.Resource;
 
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.model.Contact;
+import com.intelligentsia.dowsers.entity.reference.Reference;
 
 /**
  * ContactTest: {@link Contact} extends {@link Entity}
@@ -58,8 +61,29 @@ public class ContactTest {
 		final EntityManager entityManager = registry.getBean("entityManager", EntityManager.class);
 		assertNotNull(entityManager);
 
-		Assert.assertNotNull(entityManager.newInstance(Contact.class));
-
+		Contact contact= entityManager.newInstance(Contact.class);
+		assertNotNull(contact);
+		Reference id = contact.identity();
+		
+		contact.setEmail("jguibert@intelligents-ia.com");
+		contact.setPhoneNumber("123456");
+		contact.setYearInteger(10);
+		contact.setYearLong(666666L);
+		contact.setBot(Boolean.TRUE);
+		Date date = new Date();
+		contact.dob(date);
+		
+		entityManager.store(contact);
+		
+		Contact contact2 = entityManager.find(Contact.class, id);
+		assertNotNull(contact2);
+		assertEquals(contact.getEmail(), contact2.getEmail());
+		assertEquals(contact.getPhoneNumber(), contact2.getPhoneNumber());
+		assertEquals(contact.getYearInteger(), contact2.getYearInteger());
+		assertEquals(contact.getYearLong(), contact2.getYearLong());
+		assertEquals(contact.isBot(), contact2.isBot());
+		assertEquals(contact.dob(), contact2.dob());
+		
 	}
 
 }

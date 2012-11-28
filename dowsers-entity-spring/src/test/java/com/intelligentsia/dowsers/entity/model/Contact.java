@@ -19,47 +19,54 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
+import java.net.URL;
+import java.util.Date;
+
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
 
 /**
- * Entity representing {@link com.mega.gp.portal.service.userprofile.api.model.User} contact informations. 
- *
+ * Entity representing
+ * {@link com.mega.gp.portal.service.userprofile.api.model.User} contact
+ * informations.
+ * 
  * @author LRI
- *
+ * 
  */
 @MetaCompliant
 public interface Contact extends Entity {
 
-	/**
-	 * @return the phoneNumber
-	 */
 	public String getPhoneNumber();
 
-	/**
-	 * @param phoneNumber the phoneNumber to set
-	 */
 	public void setPhoneNumber(String phoneNumber);
 
-	/**
-	 * @return the email
-	 */
 	public String getEmail();
 
-	/**
-	 * @param email the email to set
-	 */
 	public void setEmail(String email);
 
-	/**
-	 * @return the belongingOrg
-	 */
 	public Reference getBelongingOrg();
 
-	/**
-	 * @param belongingOrg the belongingOrg to set
-	 */
 	public void setBelongingOrg(Reference belongingOrg);
+
+	public URL getAvatarUrl();
+
+	public void setAvatarUrl(URL avatar);
+
+	public Long getYearLong();
+
+	public void setYearLong(Long y);
+
+	public Integer getYearInteger();
+
+	public void setYearInteger(Integer y);
+
+	public Boolean isBot();
+
+	public void setBot(Boolean y);
+
+	public Date dob();
+
+	public void dob(Date dob);
 
 }
