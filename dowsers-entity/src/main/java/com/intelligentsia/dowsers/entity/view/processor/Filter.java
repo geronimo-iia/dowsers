@@ -56,7 +56,7 @@ public final class Filter extends ProcessorUnit {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("(filter ").append(super.toString()).append(" ");
+		final StringBuilder builder = new StringBuilder("(filter ").append(super.toString()).append(" ");
 		return builder.append(predicate).append(")").toString();
 	}
 

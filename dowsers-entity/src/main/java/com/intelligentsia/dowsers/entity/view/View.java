@@ -70,9 +70,9 @@ public final class View {
 	 * 
 	 * @param entity
 	 */
-	public void compute(Entity entity) {
+	public void compute(final Entity entity) {
 		// build item
-		Item item = processor.apply(entity);
+		final Item item = processor.apply(entity);
 		// update store
 		viewStore.update(entity.identity(), item);
 	}
@@ -82,7 +82,7 @@ public final class View {
 	 * 
 	 * @param identity
 	 */
-	public void remove(Reference identity) {
+	public void remove(final Reference identity) {
 		viewStore.update(identity, null);
 	}
 
@@ -121,14 +121,17 @@ public final class View {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		View other = (View) obj;
+		}
+		final View other = (View) obj;
 		return Objects.equal(other.name(), name());
 	}
 

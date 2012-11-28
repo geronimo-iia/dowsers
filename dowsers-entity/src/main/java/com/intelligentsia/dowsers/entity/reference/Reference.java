@@ -78,7 +78,7 @@ public final class Reference implements Comparable<Reference>, Serializable {
 	 * URN SEPARATOR (':').
 	 */
 	public static final transient char URN_SEPARATOR = ':';
-	
+
 	/**
 	 * URN DOWSERS ('urn:dowsers:').
 	 */

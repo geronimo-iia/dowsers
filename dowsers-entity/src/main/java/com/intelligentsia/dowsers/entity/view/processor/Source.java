@@ -84,7 +84,7 @@ public final class Source implements Processor {
 		this.entityType = Preconditions.checkNotNull(entityType);
 		this.attributeNames = attributeNames;
 
-		StringBuilder builder = new StringBuilder("(source ");
+		final StringBuilder builder = new StringBuilder("(source ");
 
 		if ((alias == null) || "".equals(alias)) {
 			this.alias = "";
@@ -95,7 +95,7 @@ public final class Source implements Processor {
 		}
 		if (attributeNames != null) {
 			builder.append(" ");
-			Iterator<String> iterator = attributeNames.iterator();
+			final Iterator<String> iterator = attributeNames.iterator();
 			while (iterator.hasNext()) {
 				builder.append(iterator.next()).append(" ");
 			}
@@ -124,7 +124,7 @@ public final class Source implements Processor {
 	 * @return true if we must include this attribute.
 	 */
 	protected boolean include(final String name) {
-		return attributeNames == null || attributeNames.contains(name);
+		return (attributeNames == null) || attributeNames.contains(name);
 	}
 
 	@Override

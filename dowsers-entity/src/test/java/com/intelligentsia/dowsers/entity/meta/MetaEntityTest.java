@@ -62,7 +62,7 @@ public class MetaEntityTest {
 	public void testMetaEntityNameAndClass() {
 		final MetaEntity definition = MetaEntity.builder().name(Person.class.getName()).version(new Version(1)) // attributes
 				.metaAttribute("test-attribute", String.class).build();
-		Reference reference = definition.getEntityClassReference();
+		final Reference reference = definition.getEntityClassReference();
 		assertNotNull(reference);
 		assertEquals(Person.class.getName(), reference.getEntityClassName());
 	}

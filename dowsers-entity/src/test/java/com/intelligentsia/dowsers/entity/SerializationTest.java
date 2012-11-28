@@ -72,7 +72,7 @@ public class SerializationTest {
 		assertNotNull(result);
 		assertEquals("{\"" + //
 				"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," + //
-				"\"@meta\":{\"name\":{\"classInformation\":\"java.lang.String\"},\"idea\":{\"classInformation\":\"java.lang.String\"},\"dob\":{\"classInformation\":\"java.util.Date\"}}," +
+				"\"@meta\":{\"name\":{\"classInformation\":\"java.lang.String\"},\"idea\":{\"classInformation\":\"java.lang.String\"},\"dob\":{\"classInformation\":\"java.util.Date\"}}," + //
 				"\"@attributes\":{" + //
 				"\"name\":\"Steve\"," + //
 				"\"idea\":\"Sweet apple\"," + //

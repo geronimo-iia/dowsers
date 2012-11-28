@@ -54,6 +54,7 @@ public class EntityManagerListener implements EntityManager.Listener {
 		this(Executors.newCachedThreadPool(new ThreadFactory() {
 			private final ThreadFactory delegate = Executors.defaultThreadFactory();
 
+			@Override
 			public Thread newThread(final Runnable runnable) {
 				final Thread thread = delegate.newThread(runnable);
 				thread.setDaemon(true);

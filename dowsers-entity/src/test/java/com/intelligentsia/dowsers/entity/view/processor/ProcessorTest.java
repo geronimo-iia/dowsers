@@ -52,15 +52,15 @@ public class ProcessorTest {
 
 		// silly join
 		assertEquals("(join (source (com.intelligentsia.dowsers.entity.model.Contact c) identity email ) c.identity (source (com.intelligentsia.dowsers.entity.model.Contact o)))", //
-				ProcessorBuilder.builder(Contact.class, "c" , "identity", "email")//
-				.join(getEntityManager(), "c.identity", Contact.class, ProcessorBuilder.builder(Contact.class, "o").build()).build().toString());
+				ProcessorBuilder.builder(Contact.class, "c", "identity", "email")//
+						.join(getEntityManager(), "c.identity", Contact.class, ProcessorBuilder.builder(Contact.class, "o").build()).build().toString());
 	}
 
 	public EntityManager getEntityManager() {
-		MetaEntityContextProviderSupport metaEntityContextProvider = MetaEntityContextProviderSupport.builder().build();
-		EntityMapper entityMapper = new EntityMapper();
+		final MetaEntityContextProviderSupport metaEntityContextProvider = MetaEntityContextProviderSupport.builder().build();
+		final EntityMapper entityMapper = new EntityMapper();
 		entityMapper.initialize(metaEntityContextProvider);
-		EntityStore entityStore = new InMemoryEntityStore(entityMapper);
+		final EntityStore entityStore = new InMemoryEntityStore(entityMapper);
 		return new EntityManagerSupport(EntityFactoryProvider.builder().enableDefaultFactory().build(metaEntityContextProvider), entityStore);
 	}
 }

@@ -40,7 +40,7 @@ import com.intelligentsia.dowsers.entity.reference.References;
  */
 public class ViewManager {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final Multimap<Reference, View> views;
 
@@ -80,7 +80,7 @@ public class ViewManager {
 		for (final View view : views.get(entity.identity())) {
 			try {
 				view.compute(entity);
-			} catch (Throwable throwable) {
+			} catch (final Throwable throwable) {
 				if (logger.isWarnEnabled()) {
 					logger.warn(new StringBuilder("Compute view '").append(view.name()).append("', entity '").append(entity.identity()).append("': ").append(throwable.getMessage()).toString(), throwable);
 				}
@@ -93,7 +93,7 @@ public class ViewManager {
 		for (final View view : views.get(id)) {
 			try {
 				view.remove(id);
-			} catch (Throwable throwable) {
+			} catch (final Throwable throwable) {
 				if (logger.isWarnEnabled()) {
 					logger.warn(new StringBuilder("Remove view '").append(view.name()).append("', entity '").append(entity.identity()).append("': ").append(throwable.getMessage()).toString(), throwable);
 				}

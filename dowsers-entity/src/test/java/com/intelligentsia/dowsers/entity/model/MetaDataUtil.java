@@ -58,7 +58,8 @@ public enum MetaDataUtil {
 	}
 
 	public static CustomizableSampleEntity getCustomizableSampleEntity() {
-		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class, MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(CustomizableSampleEntity.class)));
+		final EntityFactory<CustomizableSampleEntity> factory = EntityFactories.newEntityProxyDynamicFactory(CustomizableSampleEntity.class,
+				MetaDataUtil.getMetaEntityContextProvider().find(Reference.newReferenceOnEntityClass(CustomizableSampleEntity.class)));
 		final CustomizableSampleEntity entity = factory.newInstance(MetaDataUtil.IDENTIFIER);
 		entity.setName(MetaDataUtil.NAME);
 		entity.setDescription(MetaDataUtil.DESCRIPTION);

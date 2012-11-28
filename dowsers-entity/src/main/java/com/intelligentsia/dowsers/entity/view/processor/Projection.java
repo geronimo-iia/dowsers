@@ -86,8 +86,8 @@ public final class Projection extends ProcessorUnit {
 		if (value != null) {
 			return value;
 		}
-		StringBuilder builder = new StringBuilder("(projection ").append(super.toString()).append(" ");
-		Iterator<String> iterator = attributeNames.iterator();
+		final StringBuilder builder = new StringBuilder("(projection ").append(super.toString()).append(" ");
+		final Iterator<String> iterator = attributeNames.iterator();
 		while (iterator.hasNext()) {
 			builder.append(iterator.next()).append(" ");
 		}

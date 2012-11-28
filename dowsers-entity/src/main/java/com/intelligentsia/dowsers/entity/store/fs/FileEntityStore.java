@@ -155,21 +155,21 @@ public class FileEntityStore implements EntityStore {
 		final Collection<File> files = FileUtils.listFiles(root, new RegexFileFilter("^(.*?)"), DirectoryFileFilter.DIRECTORY);
 		final Iterator<File> iterator = files.iterator();
 		return new Iterable<Reference>() {
-			
+
 			@Override
 			public Iterator<Reference> iterator() {
 				return new Iterator<Reference>() {
-					
+
 					@Override
 					public void remove() {
 						throw new UnsupportedOperationException();
 					}
-					
+
 					@Override
 					public Reference next() {
 						return Reference.newReference(expectedType, iterator.next().getName());
 					}
-					
+
 					@Override
 					public boolean hasNext() {
 						return iterator.hasNext();

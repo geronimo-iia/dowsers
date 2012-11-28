@@ -154,11 +154,11 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 			jgen.writeObjectField("@identity", value.identity());
 			// WRITE META IF NECESSARY
 			// CHECK META NOT IN CONTEXT
-			MetaEntityContext context = metaEntityContextProvider.find(value.identity());
+			final MetaEntityContext context = metaEntityContextProvider.find(value.identity());
 			if (context == null) {
 				writeExtendedMeta(value, jgen, value.attributeNames());
 			} else {
-				Set<String> extendedAttribute = Sets.difference(value.attributeNames(), context.attributeNames());
+				final Set<String> extendedAttribute = Sets.difference(value.attributeNames(), context.attributeNames());
 				if (!extendedAttribute.isEmpty()) {
 					writeExtendedMeta(value, jgen, extendedAttribute);
 				}
@@ -175,13 +175,13 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 
 		}
 
-		protected void writeExtendedMeta(final T value, final JsonGenerator jgen, Set<String> attributeNames) throws JsonGenerationException, IOException {
+		protected void writeExtendedMeta(final T value, final JsonGenerator jgen, final Set<String> attributeNames) throws JsonGenerationException, IOException {
 			jgen.writeFieldName("@meta");
 			jgen.writeStartObject();
 			final Iterator<String> iterator = attributeNames.iterator();
 			while (iterator.hasNext()) {
 				final String name = iterator.next();
-				Object attribute = value.attribute(name);
+				final Object attribute = value.attribute(name);
 				if (name != null) {
 					jgen.writeObjectField(name, ClassInformation.toClassInformation(attribute.getClass()));
 				}
@@ -237,7 +237,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
 							name = jp.getText();
 							jp.nextToken();
-							ClassInformation classInformation = jp.readValueAs(ClassInformation.class);
+							final ClassInformation classInformation = jp.readValueAs(ClassInformation.class);
 							extraMeta.put(name, classInformation);
 						}
 					}
@@ -251,7 +251,7 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 							jp.nextToken();
 							// find class information
 							final MetaAttribute attribute = context.metaAttribute(name);
-							ClassInformation classInformation = attribute != null ? attribute.valueClass() : extraMeta.get(name);
+							final ClassInformation classInformation = attribute != null ? attribute.valueClass() : extraMeta.get(name);
 							// load attribute
 							final Object value = jp.readValueAs(classInformation != null ? classInformation.getType() : Object.class);
 							attributes.put(name, value);

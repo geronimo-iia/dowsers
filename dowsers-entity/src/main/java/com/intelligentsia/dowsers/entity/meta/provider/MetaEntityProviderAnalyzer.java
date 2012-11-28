@@ -135,7 +135,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 			if (hasAttributeSignature(method, autoDiscovering)) {
 				final String name = extractName(method);
 				if (!attributes.containsKey(name)) {
-					Class<?> valueClass = extractValueClass(method);
+					final Class<?> valueClass = extractValueClass(method);
 					logger.debug("Find attribute {}:{}", name, valueClass.getName());
 					attributes.put(name, MetaAttribute.builder().name(name).valueClass(valueClass).build());
 				}
@@ -175,7 +175,7 @@ public class MetaEntityProviderAnalyzer implements MetaEntityProvider {
 	 */
 	@VisibleForTesting
 	static Class<?> extractValueClass(final Method method) {
-		Attribute attribute = method.getAnnotation(Attribute.class);
+		final Attribute attribute = method.getAnnotation(Attribute.class);
 		if (attribute != null) {
 			if (null != attribute.type()) {
 				if (Void.TYPE != attribute.type()) {

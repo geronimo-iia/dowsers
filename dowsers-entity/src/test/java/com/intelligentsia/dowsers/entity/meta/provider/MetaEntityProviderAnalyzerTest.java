@@ -139,9 +139,9 @@ public class MetaEntityProviderAnalyzerTest {
 
 	@Test
 	public void extractValueClassTest() {
-		Method method = Reflection.findMethod(B.class, "identity");
+		final Method method = Reflection.findMethod(B.class, "identity");
 		assertNotNull("Method identity not found", method);
-		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		final Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
 		assertNotNull(result);
 		assertEquals(ClassInformation.toClassInformation(Reference.class), ClassInformation.toClassInformation(result));
 	}
@@ -163,11 +163,11 @@ public class MetaEntityProviderAnalyzerTest {
 
 	@Test
 	public void testGenericAnalyze() {
-		Method method = Reflection.findMethod(C.class, "attributeNames");
+		final Method method = Reflection.findMethod(C.class, "attributeNames");
 		assertNotNull("Method identity not found", method);
-		Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
+		final Class<?> result = MetaEntityProviderAnalyzer.extractValueClass(method);
 		assertNotNull(result);
-		ClassInformation reference = ClassInformation.parse(ImmutableSet.class.getName() + "<" + Object.class.getName() + ">");
+		final ClassInformation reference = ClassInformation.parse(ImmutableSet.class.getName() + "<" + Object.class.getName() + ">");
 		assertEquals(reference, ClassInformation.toClassInformation(result));
 	}
 

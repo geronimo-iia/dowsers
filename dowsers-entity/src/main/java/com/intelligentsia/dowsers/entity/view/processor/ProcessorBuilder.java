@@ -40,21 +40,21 @@ public final class ProcessorBuilder {
 	/**
 	 * @return a {@link ProcessBuilder}.
 	 */
-	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, String alias) {
+	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, final String alias) {
 		return new ProcessorBuilder(entityType, alias);
 	}
 
 	/**
 	 * @return a {@link ProcessBuilder}.
 	 */
-	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, String alias, final ImmutableSet<String> attributeNames) {
+	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, final String alias, final ImmutableSet<String> attributeNames) {
 		return new ProcessorBuilder(entityType, alias, attributeNames);
 	}
 
 	/**
 	 * @return a {@link ProcessBuilder}.
 	 */
-	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, String alias, final String... names) {
+	public static ProcessorBuilder builder(final Class<? extends Entity> entityType, final String alias, final String... names) {
 		return new ProcessorBuilder(entityType, alias, names);
 	}
 
@@ -64,7 +64,7 @@ public final class ProcessorBuilder {
 	 * @param alias
 	 *            alias used to qualify entity source.
 	 */
-	public ProcessorBuilder(final Class<? extends Entity> entityType, String alias) {
+	public ProcessorBuilder(final Class<? extends Entity> entityType, final String alias) {
 		processor = new Source(entityType, alias);
 	}
 
@@ -74,7 +74,7 @@ public final class ProcessorBuilder {
 	 * @param alias
 	 *            alias used to qualify entity source.
 	 */
-	public ProcessorBuilder(final Class<? extends Entity> entityType, String alias, final ImmutableSet<String> attributeNames) {
+	public ProcessorBuilder(final Class<? extends Entity> entityType, final String alias, final ImmutableSet<String> attributeNames) {
 		processor = new Source(entityType, alias, attributeNames);
 	}
 
@@ -84,8 +84,8 @@ public final class ProcessorBuilder {
 	 * @param alias
 	 *            alias used to qualify entity source.
 	 */
-	public ProcessorBuilder(final Class<? extends Entity> entityType, String alias, final String... names) {
-		ImmutableSet.Builder<String> attributeNames = ImmutableSet.builder();
+	public ProcessorBuilder(final Class<? extends Entity> entityType, final String alias, final String... names) {
+		final ImmutableSet.Builder<String> attributeNames = ImmutableSet.builder();
 		attributeNames.addAll(Arrays.asList(names));
 		processor = new Source(entityType, alias, attributeNames.build());
 	}
@@ -100,7 +100,7 @@ public final class ProcessorBuilder {
 	}
 
 	public ProcessorBuilder projection(final String... names) throws NullPointerException, IllegalStateException {
-		ImmutableSet.Builder<String> attributeNames = ImmutableSet.builder();
+		final ImmutableSet.Builder<String> attributeNames = ImmutableSet.builder();
 		attributeNames.addAll(Arrays.asList(names));
 		return projection(attributeNames.build());
 	}

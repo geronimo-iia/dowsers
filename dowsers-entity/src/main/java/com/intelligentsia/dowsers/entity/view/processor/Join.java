@@ -86,7 +86,7 @@ public class Join extends ProcessorUnit {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("(join ").append(super.toString()).append(" ").append(joinAttribute);
+		final StringBuilder builder = new StringBuilder("(join ").append(super.toString()).append(" ").append(joinAttribute);
 		return builder.append(" ").append(source.toString()).append(")").toString();
 	}
 }

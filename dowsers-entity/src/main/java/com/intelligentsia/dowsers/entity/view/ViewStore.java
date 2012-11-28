@@ -1,4 +1,5 @@
 package com.intelligentsia.dowsers.entity.view;
+
 /**
  *        Licensed to the Apache Software Foundation (ASF) under one
  *        or more contributor license agreements.  See the NOTICE file
@@ -18,7 +19,6 @@ package com.intelligentsia.dowsers.entity.view;
  *        under the License.
  *
  */
-
 
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.view.processor.Item;

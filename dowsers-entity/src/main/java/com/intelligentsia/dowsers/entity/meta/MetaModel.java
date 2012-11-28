@@ -18,7 +18,7 @@
  *
  */
 package com.intelligentsia.dowsers.entity.meta;
- 
+
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.keystone.kernel.api.artifacts.Version;
 

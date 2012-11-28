@@ -182,9 +182,7 @@ public class ReferenceTest {
 		assertNotNull(reference);
 		assertEquals("com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity", reference.getEntityClassName());
 	}
-	
-	
-	
+
 	@Test
 	public void testParseURI() throws URISyntaxException {
 		try {

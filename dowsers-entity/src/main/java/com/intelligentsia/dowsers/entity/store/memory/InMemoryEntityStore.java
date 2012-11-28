@@ -61,14 +61,14 @@ public class InMemoryEntityStore implements EntityStore {
 	}
 
 	@Override
-	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException {
+	public Iterable<Reference> find(final Class<?> expectedType) throws NullPointerException {
 		final Reference reference = Reference.newReferenceOnEntityClass(expectedType);
-		Set<Reference> references = entities.keySet();
+		final Set<Reference> references = entities.keySet();
 
 		Collections2.filter(references, new Predicate<Reference>() {
 
 			@Override
-			public boolean apply(Reference input) {
+			public boolean apply(final Reference input) {
 				if (input != null) {
 					return reference.equals(input.getEntityClassReference());
 				}

@@ -57,7 +57,7 @@ public class FileEntityStoreTest extends StoreBaseTest {
 		if (root.exists()) {
 			try {
 				FileUtils.deleteDirectory(root);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 			}
 		}
 

@@ -45,7 +45,7 @@ public class InMemoryViewStore implements ViewStore, Iterable<Item> {
 	}
 
 	@Override
-	public void update(Reference reference, Item item) {
+	public void update(final Reference reference, final Item item) {
 		if (item == null) {
 			items.remove(reference);
 		} else {
