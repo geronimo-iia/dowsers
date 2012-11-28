@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Date;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.junit.Before;
@@ -62,6 +63,7 @@ public class SerializationTest {
 		final EntityDynamic dynamic = new EntityDynamic(Reference.newReference(EntityDynamic.class, "6787007f-f424-40b7-b240-64206b1177e2"), MetaEntityContext.builder().definition(MetaModel.getMetaOfEntitydynamic()).build());
 		dynamic.attribute("name", "Steve");
 		dynamic.attribute("idea", "Sweet apple");
+		dynamic.attribute("dob", new Date(1354100382746L));
 		assertEquals("Steve", dynamic.attribute("name"));
 		assertEquals("Sweet apple", dynamic.attribute("idea"));
 
@@ -70,15 +72,18 @@ public class SerializationTest {
 		assertNotNull(result);
 		assertEquals("{\"" + //
 				"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," + //
+				"\"@meta\":{\"name\":{\"classInformation\":\"java.lang.String\"},\"idea\":{\"classInformation\":\"java.lang.String\"},\"dob\":{\"classInformation\":\"java.util.Date\"}}," +
 				"\"@attributes\":{" + //
 				"\"name\":\"Steve\"," + //
-				"\"idea\":\"Sweet apple\"}}", result);
+				"\"idea\":\"Sweet apple\"," + //
+				"\"dob\":1354100382746}}", result);
 
 		final EntityDynamic entityDynamic = entityMapper.readValue(new StringReader(result), EntityDynamic.class);
 
 		assertEquals(dynamic.identity(), entityDynamic.identity());
 		assertEquals(dynamic.attribute("name"), entityDynamic.attribute("name"));
 		assertEquals(dynamic.attribute("idea"), entityDynamic.attribute("idea"));
+		assertEquals(dynamic.attribute("dob"), entityDynamic.attribute("dob"));
 	}
 
 	@Test

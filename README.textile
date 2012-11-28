@@ -29,8 +29,11 @@ In progress:
 ** definition with aggregation of attribute, 
 ** in memory implementation that follow runtime
 
+
 Done:
  * add possibility to register meta information from spring configuration
+ * add more test case on meta analyzer
+ * add possibility to add meta attribute dynamically even if meta attribute is not registered (or provided by meta context).
 
 h2. 1.0.2
 

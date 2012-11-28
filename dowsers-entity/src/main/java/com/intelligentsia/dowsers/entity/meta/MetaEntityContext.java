@@ -25,13 +25,14 @@ import java.util.Iterator;
 
 import org.intelligentsia.dowsers.core.ReadOnlyIterator;
 import org.intelligentsia.keystone.kernel.api.artifacts.Version;
- 
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Sets.SetView;
 import com.intelligentsia.dowsers.entity.Entity;
 
 /**
@@ -218,6 +219,13 @@ public class MetaEntityContext implements Iterable<MetaAttribute> {
 	 */
 	public ImmutableSet<String> allExtendedAttributeNames() {
 		return extendedAttributeNames;
+	}
+
+	/**
+	 * @return all attributes names.
+	 */
+	public SetView<String> attributeNames() {
+		return Sets.union(definitionAttributeNames, extendedAttributeNames);
 	}
 
 	/**

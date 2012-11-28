@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
@@ -41,6 +42,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.EntityDynamic;
 import com.intelligentsia.dowsers.entity.EntityProxy;
@@ -74,13 +76,13 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		/**
 		 * Declare Serializer for all proxified class
 		 */
-		addSerializer(new EntitySerializer<EntityProxyHandler>(EntityProxyHandler.class));
+		addSerializer(new EntitySerializer<EntityProxyHandler>(EntityProxyHandler.class, metaEntityContextProvider));
 		addDeserializer(EntityProxy.class, new EntityProxyDeSerializer());
 
 		/**
 		 * Declare Serializer for all EntityDynamic class
 		 */
-		addSerializer(new EntitySerializer<EntityDynamic>(EntityDynamic.class));
+		addSerializer(new EntitySerializer<EntityDynamic>(EntityDynamic.class, metaEntityContextProvider));
 		addDeserializer(EntityDynamic.class, new EntityDynamicDeSerializer(metaEntityContextProvider));
 
 		/**
@@ -104,8 +106,22 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 */
 	public static class EntitySerializer<T extends Entity> extends StdSerializer<T> {
 
-		public EntitySerializer(final Class<T> className) {
+		/**
+		 * {@link MetaEntityContextProvider} instance.
+		 */
+		private final MetaEntityContextProvider metaEntityContextProvider;
+
+		/**
+		 * Build a new instance of EntitySerializer.
+		 * 
+		 * @param className
+		 * @param metaEntityContextProvider
+		 * @throws NullPointerException
+		 *             if metaEntityContextProvider is null
+		 */
+		public EntitySerializer(final Class<T> className, final MetaEntityContextProvider metaEntityContextProvider) throws NullPointerException {
 			super(className);
+			this.metaEntityContextProvider = Preconditions.checkNotNull(metaEntityContextProvider);
 		}
 
 		@Override
@@ -134,13 +150,41 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 		}
 
 		public void serializeEntity(final T value, final JsonGenerator jgen) throws IOException, JsonProcessingException, JsonGenerationException {
+			// WRITE IDENTITY
 			jgen.writeObjectField("@identity", value.identity());
+			// WRITE META IF NECESSARY
+			// CHECK META NOT IN CONTEXT
+			MetaEntityContext context = metaEntityContextProvider.find(value.identity());
+			if (context == null) {
+				writeExtendedMeta(value, jgen, value.attributeNames());
+			} else {
+				Set<String> extendedAttribute = Sets.difference(value.attributeNames(), context.attributeNames());
+				if (!extendedAttribute.isEmpty()) {
+					writeExtendedMeta(value, jgen, extendedAttribute);
+				}
+			}
+			// WRITE ATTRIBUTES
 			jgen.writeFieldName("@attributes");
 			jgen.writeStartObject();
 			final Iterator<String> iterator = value.attributeNames().iterator();
 			while (iterator.hasNext()) {
 				final String name = iterator.next();
 				jgen.writeObjectField(name, value.attribute(name));
+			}
+			jgen.writeEndObject();
+
+		}
+
+		protected void writeExtendedMeta(final T value, final JsonGenerator jgen, Set<String> attributeNames) throws JsonGenerationException, IOException {
+			jgen.writeFieldName("@meta");
+			jgen.writeStartObject();
+			final Iterator<String> iterator = attributeNames.iterator();
+			while (iterator.hasNext()) {
+				final String name = iterator.next();
+				Object attribute = value.attribute(name);
+				if (name != null) {
+					jgen.writeObjectField(name, ClassInformation.toClassInformation(attribute.getClass()));
+				}
 			}
 			jgen.writeEndObject();
 		}
@@ -177,6 +221,8 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 			final Map<String, Object> attributes = Maps.newLinkedHashMap();
 			Reference identity = null;
 			MetaEntityContext context = null;
+			final Map<String, ClassInformation> extraMeta = Maps.newHashMap();
+
 			while (jp.nextToken() != JsonToken.END_OBJECT) {
 				final String fieldname = jp.getCurrentName();
 				if ("@identity".equals(fieldname)) {
@@ -184,15 +230,30 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 					identity = jp.readValueAs(Reference.class);
 					context = metaEntityContextProvider.find(identity);
 				}
+				if ("@meta".equals(fieldname)) {
+					jp.nextToken();
+					String name = null;
+					while (jp.nextToken() != JsonToken.END_OBJECT) {
+						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
+							name = jp.getText();
+							jp.nextToken();
+							ClassInformation classInformation = jp.readValueAs(ClassInformation.class);
+							extraMeta.put(name, classInformation);
+						}
+					}
+				}
 				if ("@attributes".equals(fieldname)) {
 					jp.nextToken();
 					String name = null;
 					while (jp.nextToken() != JsonToken.END_OBJECT) {
 						if (jp.getCurrentToken().equals(JsonToken.FIELD_NAME)) {
 							name = jp.getText();
-							final MetaAttribute attribute = context.metaAttribute(name);
 							jp.nextToken();
-							final Object value = jp.readValueAs(attribute != null ? attribute.valueClass().getType() : Object.class);
+							// find class information
+							final MetaAttribute attribute = context.metaAttribute(name);
+							ClassInformation classInformation = attribute != null ? attribute.valueClass() : extraMeta.get(name);
+							// load attribute
+							final Object value = jp.readValueAs(classInformation != null ? classInformation.getType() : Object.class);
 							attributes.put(name, value);
 						}
 					}
