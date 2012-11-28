@@ -25,6 +25,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Date;
 
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.reflection.Reflection;
@@ -119,6 +121,20 @@ public class MetaEntityProviderAnalyzerTest {
 		assertNotNull(metaEntity.metaAttributes().metaAttribute("belongingOrg"));
 		assertEquals(ClassInformation.toClassInformation(Reference.class), metaEntity.metaAttributes().metaAttribute("belongingOrg").valueClass());
 
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("avatarUrl"));
+		assertEquals(ClassInformation.toClassInformation(URL.class), metaEntity.metaAttributes().metaAttribute("avatarUrl").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("yearLong"));
+		assertEquals(ClassInformation.toClassInformation(Long.class), metaEntity.metaAttributes().metaAttribute("yearLong").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("yearInteger"));
+		assertEquals(ClassInformation.toClassInformation(Integer.class), metaEntity.metaAttributes().metaAttribute("yearInteger").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("bot"));
+		assertEquals(ClassInformation.toClassInformation(Boolean.class), metaEntity.metaAttributes().metaAttribute("bot").valueClass());
+
+		assertNotNull(metaEntity.metaAttributes().metaAttribute("dob"));
+		assertEquals(ClassInformation.toClassInformation(Date.class), metaEntity.metaAttributes().metaAttribute("dob").valueClass());
 	}
 
 	@Test
