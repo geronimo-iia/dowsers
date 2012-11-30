@@ -238,7 +238,41 @@ h2. Json/XML Format
 h2. Register Custom Jackson Module
 
 
+Under package: com.intelligentsia.dowsers.entity.serializer
 
+EntityMapper need an instance of MetaEntityContextProvider, and expose two method:
+
+	/**
+	 * Method that can be used to serialize any Java value as JSON output, using
+	 * Writer provided.
+	 * 
+	 * @param writer
+	 * @param value
+	 * @throws DowsersException
+	 */
+	public void writeValue(final Writer writer, final Object value) throws DowsersException {
+		. . . 
+	}
+
+	/**
+	 * Method that can be used to parse JSON to specified Java value, using
+	 * reader provided.
+	 * 
+	 * @param reader
+	 * @param valueType
+	 * @return
+	 * @throws DowsersException
+	 */
+	public <T> T readValue(final Reader reader, final Class<T> valueType) throws DowsersException {
+		. . . 
+	}
+
+
+Dowsers module for Jackson project: com.intelligentsia.dowsers.entity.serializer.EntityDowsersJacksonModule
+
+ObjectMapper mapper;
+
+mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider))
 
 
 

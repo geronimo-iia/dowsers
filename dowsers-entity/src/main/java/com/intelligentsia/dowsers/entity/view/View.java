@@ -169,6 +169,11 @@ public final class View {
 			return this;
 		}
 
+		public Builder processor(Processor processor) {
+			this.processor = processor;
+			return this;
+		}
+
 		/**
 		 * @return a {@link ViewProcessorBuilder}.
 		 */

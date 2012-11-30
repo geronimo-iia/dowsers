@@ -42,7 +42,7 @@ public class ViewManager {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final Multimap<Reference, View> views;
+	private final Multimap<Reference, View> views = ArrayListMultimap.create();
 
 	/**
 	 * Build a new instance of ViewManager. If a {@link EntityManager} instance
@@ -54,26 +54,33 @@ public class ViewManager {
 	 *            {@link EntityManager} instance to listen
 	 * @param asynch
 	 *            if true all event will be processed asynchronously
-	 * @throws NullPointerException
-	 *             if collection is null
 	 */
-	public ViewManager(final Collection<View> collection, final EntityManager entityManager, final boolean asynch) throws NullPointerException {
+	public ViewManager(final Collection<View> collection, final EntityManager entityManager, final boolean asynch) {
 		super();
-		Preconditions.checkNotNull(collection);
-		views = ArrayListMultimap.create();
-		for (final View view : collection) {
-			if (!view.entities().isEmpty()) {
-				views.put(view.entities().get(0), view);
+		if (collection != null) {
+			for (final View view : collection) {
+				add(view);
 			}
 		}
-		// register listener
 		if (entityManager != null) {
-			if (asynch) {
-				entityManager.addListener(new EntityManagerListener(new ViewManagerListener(this)));
-			} else {
-				entityManager.addListener(new ViewManagerListener(this));
-			}
+			register(entityManager, asynch);
 		}
+	}
+
+	/**
+	 * Build a new instance of ViewManager.
+	 * 
+	 * @param collection
+	 */
+	public ViewManager(final Collection<View> collection) {
+		this(collection, null, false);
+	}
+
+	/**
+	 * Build a new instance of ViewManager.
+	 */
+	public ViewManager() {
+		this(null);
 	}
 
 	/**
@@ -82,6 +89,67 @@ public class ViewManager {
 	 */
 	public Collection<View> getViews(Reference reference) {
 		return views.get(reference);
+	}
+
+	/**
+	 * @return a {@link Collection} of {@link Reference} which used to build
+	 *         each {@link View}.
+	 */
+	public Collection<Reference> getEntities() {
+		return views.keySet();
+	}
+
+	/**
+	 * Add a view onto this {@link ViewManager}.
+	 * 
+	 * @param view
+	 * @throws NullPointerException
+	 */
+	public void add(View view) throws NullPointerException {
+		Preconditions.checkNotNull(view);
+		if (!view.entities().isEmpty()) {
+			views.put(view.entities().get(0), view);
+		}
+	}
+
+	/**
+	 * Register this {@link ViewManager} instance onto specified
+	 * {@link EntityManager}.
+	 * 
+	 * @param entityManager
+	 * @param asynch
+	 *            if true view process will be asynchrony
+	 * @throws NullPointerException
+	 *             if entityManager is null
+	 */
+	public void register(final EntityManager entityManager, final boolean asynch) throws NullPointerException {
+		Preconditions.checkNotNull(entityManager);
+		// register listener
+		if (asynch) {
+			entityManager.addListener(new EntityManagerListener(new ViewManagerListener(this)));
+		} else {
+			entityManager.addListener(new ViewManagerListener(this));
+		}
+	}
+
+	/**
+	 * Dropped by {@link ViewManagerControler}.
+	 * 
+	 * @param entityClassReference
+	 */
+	void drop(Reference entityClassReference) {
+		for (final View view : views.get(entityClassReference)) {
+			view.viewStore().drop();
+		}
+	}
+
+	/**
+	 * Called by {@link ViewManagerControler}.
+	 * 
+	 * @param entity
+	 */
+	<T extends Entity> void update(final T entity) {
+		entityStored(entity);
 	}
 
 	protected <T extends Entity> void entityStored(final T entity) {

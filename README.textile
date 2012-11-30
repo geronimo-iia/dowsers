@@ -14,6 +14,7 @@ Some idea:
 * On Entity  Store:
 ** Add Event Store concept with Java Chronicle Implementation, and / or Mongo db
 ** Add Entity Store based on mongo db
+** Ehcache memory store implementation
 ** add Json Query language
 * Adding Web Service default implementation for:
 ** manage crud entity
@@ -26,23 +27,28 @@ h2. 1.0.3 SNAPSHOT
 
 In progress:
 * Adding View concept:
-** definition with aggregation of attribute, 
-** in memory implementation that follow runtime
+** strategy to initialize view on start:
+*** do nothing
+*** wait to feed all view
+*** feed all view in background
 
 
 Done:
- * add possibility to register meta information from spring configuration
- * add more test case on meta analyzer
- * add possibility to add meta attribute dynamically even if meta attribute is not registered (or provided by meta context).
+* Adding View concept:
+** definition with aggregation of attribute, filter and join
+** in memory implementation that follow runtime
+* add possibility to register meta information from spring configuration
+* add more test case on meta analyzer
+* add possibility to add meta attribute dynamically even if meta attribute is not registered (or provided by meta context).
 
 h2. 1.0.2
 
 Done:
- * add utility methods on entity Manager
- * change some methods name on Reference to avoid error
- * fix analyzer bug with Entity interface
- * rename core.Version to Sequence 
- * extends EntityStore and EntityManager: adding a way to find all Reference on a specific entities collection
+* add utility methods on entity Manager
+* change some methods name on Reference to avoid error
+* fix analyzer bug with Entity interface
+* rename core.Version to Sequence 
+* extends EntityStore and EntityManager: adding a way to find all Reference on a specific entities collection
   
 
 h2. 1.0.1
