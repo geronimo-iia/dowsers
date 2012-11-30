@@ -17,38 +17,20 @@
  *        under the License.
  *
  */
-package com.intelligentsia.dowsers.entity.model;
+package com.intelligentsia.dowsers.entity.manager;
 
-import java.util.Date;
-
-import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 /**
- * Person.
+ * SamplePerson1Test.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-@MetaCompliant
-public interface Person extends Entity{
+public class SamplePerson2Test extends PersonSpringBaseTest {
 
-	String getFirstName();
-
-	String getLastName();
-
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
-
-	public String getEmail();
-
-	public void setEmail(String email);
-
-	public Date dob();
-
-	public void dob(Date dob);
+	@Override
+	public Resource getResource() {
+		return new ClassPathResource("dowsers-context-sample2.xml");
+	}
 }

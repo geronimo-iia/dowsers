@@ -48,30 +48,35 @@ public class MetaEntityProviderFactory implements FactoryBean<MetaEntityProvider
 
 	private Map<Reference, MetaEntity> metaEntities = Maps.newHashMap();
 
+	private MetaEntityProvider provider = null;
+
 	public MetaEntityProviderFactory() {
 		super();
 	}
 
 	@Override
 	public MetaEntityProvider getObject() throws Exception {
-		final Collection<MetaEntityProvider> entityProviders = new ArrayList<MetaEntityProvider>(3);
-		// local definition
-		if ((metaEntities != null) && !metaEntities.isEmpty()) {
-			final MetaEntityProviderSupport.Builder builder = MetaEntityProviderSupport.builder();
-			for (final Entry<Reference, MetaEntity> entry : metaEntities.entrySet()) {
-				builder.add(entry.getKey(), entry.getValue());
+		if (provider == null) {
+			final Collection<MetaEntityProvider> entityProviders = new ArrayList<MetaEntityProvider>(3);
+			// local definition
+			if ((metaEntities != null) && !metaEntities.isEmpty()) {
+				final MetaEntityProviderSupport.Builder builder = MetaEntityProviderSupport.builder();
+				for (final Entry<Reference, MetaEntity> entry : metaEntities.entrySet()) {
+					builder.add(entry.getKey(), entry.getValue());
+				}
+				entityProviders.add(builder.build());
 			}
-			entityProviders.add(builder.build());
+			// dynamic class analyzer
+			if (enableDynamicAnalyzer) {
+				entityProviders.add(MetaEntityProviders.newMetaEntityProviderAnalyzer());
+			}
+			// other
+			if (metaEntityProvider != null) {
+				entityProviders.add(metaEntityProvider);
+			}
+			provider = MetaEntityProviders.newMetaEntityProvider(entityProviders);
 		}
-		// dynamic class analyzer
-		if (enableDynamicAnalyzer) {
-			entityProviders.add(MetaEntityProviders.newMetaEntityProviderAnalyzer());
-		}
-		// other
-		if (metaEntityProvider != null) {
-			entityProviders.add(metaEntityProvider);
-		}
-		return MetaEntityProviders.newMetaEntityProvider(entityProviders);
+		return provider;
 	}
 
 	@Override
@@ -81,7 +86,7 @@ public class MetaEntityProviderFactory implements FactoryBean<MetaEntityProvider
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	public boolean isEnableDynamicAnalyzer() {

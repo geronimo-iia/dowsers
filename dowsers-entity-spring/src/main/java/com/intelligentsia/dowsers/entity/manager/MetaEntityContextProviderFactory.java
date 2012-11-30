@@ -22,6 +22,9 @@ package com.intelligentsia.dowsers.entity.manager;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
@@ -37,7 +40,7 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityContextProvider> {
+public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityContextProvider>, BeanFactoryAware {
 
 	private boolean enableCache = Boolean.TRUE;
 
@@ -45,20 +48,30 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 
 	private Map<Reference, MetaEntityContext> contextEntities;
 
+	private BeanFactory beanFactory;
+
+	private MetaEntityContextProvider metaEntityContextProvider = null;
+
 	public MetaEntityContextProviderFactory() {
 		super();
 	}
 
 	@Override
 	public MetaEntityContextProvider getObject() throws Exception {
-		final MetaEntityContextProviderSupport.Builder builder = MetaEntityContextProviderSupport.builder();
-		if (contextEntities != null) {
-			for (final Entry<Reference, MetaEntityContext> entry : contextEntities.entrySet()) {
-				builder.add(entry.getKey(), entry.getValue());
+		if (metaEntityContextProvider == null) {
+			final MetaEntityContextProviderSupport.Builder builder = MetaEntityContextProviderSupport.builder();
+			if (contextEntities != null) {
+				for (final Entry<Reference, MetaEntityContext> entry : contextEntities.entrySet()) {
+					builder.add(entry.getKey(), entry.getValue());
+				}
 			}
+			if (metaEntityProvider == null) {
+				metaEntityProvider = beanFactory.getBean(MetaEntityProvider.class);
+			}
+			metaEntityContextProvider = builder.build(metaEntityProvider);
+			metaEntityContextProvider = enableCache ? new MetaEntityContextProviderWithCache(metaEntityContextProvider) : metaEntityContextProvider;
 		}
-		final MetaEntityContextProvider metaEntityContextProvider = builder.build(metaEntityProvider);
-		return enableCache ? new MetaEntityContextProviderWithCache(metaEntityContextProvider) : metaEntityContextProvider;
+		return metaEntityContextProvider;
 	}
 
 	@Override
@@ -68,7 +81,7 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	public boolean isEnableCache() {
@@ -95,4 +108,8 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 		this.contextEntities = contextEntities;
 	}
 
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd ">
+
+	<bean
+		class="com.intelligentsia.dowsers.entity.manager.MetaEntityProviderFactory">
+		<property name="enableDynamicAnalyzer" value="true" />
+		<!-- <property name="metaEntityProvider"></property> -->
+	</bean>
+
+
+	<bean
+		class="com.intelligentsia.dowsers.entity.manager.MetaEntityContextProviderFactory">
+		<property name="enableCache" value="true" />
+	</bean>
+
+	<bean
+		class="com.intelligentsia.dowsers.entity.manager.EntityFactoryProviderFactory">
+		<property name="enableDefaultFactory" value="true" />
+		<!-- factories -->
+	</bean>
+
+	<bean class="com.intelligentsia.dowsers.entity.manager.EntityStoreFactory">
+		<property name="enableCachedEntities" value="true" />
+		<property name="entityStore">
+			<bean
+				class="com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore">
+				<constructor-arg index="0">
+					<bean
+						class="com.intelligentsia.dowsers.entity.manager.EntityMapperFactory" />
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="entityManager"
+		class="com.intelligentsia.dowsers.entity.manager.EntityManagerFactory" />
+
+	<bean class="com.intelligentsia.dowsers.entity.manager.ViewManagerFactory">
+		<property name="views">
+			<bean id="personView" class="com.intelligentsia.dowsers.entity.model.ViewFactory"
+				factory-method="viewPerson" />
+		</property>
+		<property name="asynch" value="false" />
+		<!-- <property name="behavior" value="FOREGROUND" /> -->
+	</bean>
+
+	
+
+</beans>

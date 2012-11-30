@@ -43,14 +43,18 @@ public class EntityStoreFactory implements FactoryBean<EntityStore> {
 
 	private boolean enableCachedEntities = Boolean.TRUE;
 
+	private EntityStore store = null;
+
 	public EntityStoreFactory() {
 	}
 
 	@Override
 	public EntityStore getObject() throws Exception {
-		final EntityStore store = enableCachedEntities ? new CachedEntityStore(entityStore) : entityStore;
-		if (stores != null) {
-			return ShardingEntityStore.builder().addAll(stores).build(store);
+		if (store == null) {
+			store = enableCachedEntities ? new CachedEntityStore(entityStore) : entityStore;
+			if (stores != null) {
+				store = ShardingEntityStore.builder().addAll(stores).build(store);
+			}
 		}
 		return store;
 	}
@@ -62,7 +66,7 @@ public class EntityStoreFactory implements FactoryBean<EntityStore> {
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	public Map<Reference, EntityStore> getStores() {

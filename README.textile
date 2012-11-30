@@ -25,18 +25,15 @@ Some idea:
 
 h2. 1.0.3 SNAPSHOT
 
-In progress:
+Done:
+* Simplify Spring configuration
 * Adding View concept:
+** definition with aggregation of attribute, filter and join
+** in memory implementation that follow runtime
 ** strategy to initialize view on start:
 *** do nothing
 *** wait to feed all view
 *** feed all view in background
-
-
-Done:
-* Adding View concept:
-** definition with aggregation of attribute, filter and join
-** in memory implementation that follow runtime
 * add possibility to register meta information from spring configuration
 * add more test case on meta analyzer
 * add possibility to add meta attribute dynamically even if meta attribute is not registered (or provided by meta context).

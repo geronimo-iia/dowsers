@@ -21,6 +21,9 @@ package com.intelligentsia.dowsers.entity.manager;
 
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 
 import com.intelligentsia.dowsers.entity.EntityFactories;
@@ -33,13 +36,17 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryProvider> {
+public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryProvider>, BeanFactoryAware {
 
 	private boolean enableDefaultFactory = Boolean.TRUE;
 
 	private MetaEntityContextProvider metaEntityContextProvider;
 
 	private Map<Class<?>, EntityFactories.EntityFactory<?>> factories;
+
+	private BeanFactory beanFactory;
+
+	private EntityFactoryProvider entityFactoryProvider = null;
 
 	/**
 	 * Build a new instance of EntityFactoryProviderFactory.java.
@@ -50,7 +57,13 @@ public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryPr
 
 	@Override
 	public EntityFactoryProvider getObject() throws Exception {
-		return EntityFactoryProvider.builder().setFactories(factories).setEnableDefaultFactory(enableDefaultFactory).build(metaEntityContextProvider);
+		if (entityFactoryProvider == null) {
+			if (metaEntityContextProvider == null) {
+				metaEntityContextProvider = beanFactory.getBean(MetaEntityContextProvider.class);
+			}
+			entityFactoryProvider = EntityFactoryProvider.builder().setFactories(factories).setEnableDefaultFactory(enableDefaultFactory).build(metaEntityContextProvider);
+		}
+		return entityFactoryProvider;
 	}
 
 	@Override
@@ -60,7 +73,7 @@ public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryPr
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	public boolean isEnableDefaultFactory() {
@@ -87,4 +100,8 @@ public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryPr
 		this.factories = factories;
 	}
 
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
 }

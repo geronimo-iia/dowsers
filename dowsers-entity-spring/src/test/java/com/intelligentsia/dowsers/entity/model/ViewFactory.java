@@ -19,36 +19,20 @@
  */
 package com.intelligentsia.dowsers.entity.model;
 
-import java.util.Date;
-
-import com.intelligentsia.dowsers.entity.Entity;
-import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
+import com.intelligentsia.dowsers.entity.view.InMemoryViewStore;
+import com.intelligentsia.dowsers.entity.view.View;
 
 /**
- * Person.
+ * ViewFactory define some {@link View}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@MetaCompliant
-public interface Person extends Entity{
+public final class ViewFactory {
 
-	String getFirstName();
+	public static View viewPerson() {
+		return View.builder().name("viewPerson"). //
+				processor(Person.class, "", "identity", "firstName", "lastName").build().//
+				viewStore(new InMemoryViewStore()).build();
+	}
 
-	String getLastName();
-
-	Integer getYearOld();
-
-	void setFirstName(String name);
-
-	void setLastName(String name);
-
-	void setYearOld(Integer years);
-
-	public String getEmail();
-
-	public void setEmail(String email);
-
-	public Date dob();
-
-	public void dob(Date dob);
 }

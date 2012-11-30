@@ -19,6 +19,9 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
 
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
@@ -29,9 +32,13 @@ import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityMapperFactory implements FactoryBean<EntityMapper> {
+public class EntityMapperFactory implements FactoryBean<EntityMapper>, BeanFactoryAware {
 
 	private MetaEntityContextProvider metaEntityContextProvider;
+
+	private BeanFactory beanFactory;
+
+	private EntityMapper entityMapper = null;
 
 	public EntityMapperFactory() {
 		super();
@@ -39,7 +46,13 @@ public class EntityMapperFactory implements FactoryBean<EntityMapper> {
 
 	@Override
 	public EntityMapper getObject() throws Exception {
-		return new EntityMapper(metaEntityContextProvider);
+		if (entityMapper == null) {
+			if (metaEntityContextProvider == null) {
+				metaEntityContextProvider = beanFactory.getBean(MetaEntityContextProvider.class);
+			}
+			entityMapper = new EntityMapper(metaEntityContextProvider);
+		}
+		return entityMapper;
 	}
 
 	@Override
@@ -49,7 +62,7 @@ public class EntityMapperFactory implements FactoryBean<EntityMapper> {
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	public MetaEntityContextProvider getMetaEntityContextProvider() {
@@ -60,4 +73,8 @@ public class EntityMapperFactory implements FactoryBean<EntityMapper> {
 		this.metaEntityContextProvider = metaEntityContextProvider;
 	}
 
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
 }

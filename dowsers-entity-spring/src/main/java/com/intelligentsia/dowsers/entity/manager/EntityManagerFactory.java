@@ -19,7 +19,11 @@
  */
 package com.intelligentsia.dowsers.entity.manager;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import com.intelligentsia.dowsers.entity.EntityFactoryProvider;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
@@ -30,13 +34,17 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class EntityManagerFactory implements FactoryBean<EntityManager> {
+public class EntityManagerFactory implements FactoryBean<EntityManager>, BeanFactoryAware {
 
 	private EntityManager.Listener entityManagerListener = null;
 
 	private EntityStore entityStore;
 
 	private EntityFactoryProvider entityFactoryProvider;
+
+	private BeanFactory beanFactory;
+
+	private EntityManager entityManager = null;
 
 	/**
 	 * Build a new instance of EntityManagerFactory.
@@ -52,12 +60,28 @@ public class EntityManagerFactory implements FactoryBean<EntityManager> {
 
 	@Override
 	public boolean isSingleton() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public EntityManager getObject() throws Exception {
-		return new EntityManagerSupport(entityFactoryProvider, entityStore, entityManagerListener);
+		if (entityManager == null) {
+			if (entityFactoryProvider == null) {
+				entityFactoryProvider = beanFactory.getBean(EntityFactoryProvider.class);
+			}
+			if (entityStore == null) {
+				entityStore = beanFactory.getBean(EntityStore.class);
+			}
+			if (entityManagerListener == null) {
+				try {
+					entityManagerListener = beanFactory.getBean(EntityManager.Listener.class);
+				} catch (NoSuchBeanDefinitionException exception) {
+					// do nothing
+				}
+			}
+			entityManager = new EntityManagerSupport(entityFactoryProvider, entityStore, entityManagerListener);
+		}
+		return entityManager;
 	}
 
 	public EntityManager.Listener getEntityManagerListener() {
@@ -84,4 +108,8 @@ public class EntityManagerFactory implements FactoryBean<EntityManager> {
 		this.entityFactoryProvider = entityFactoryProvider;
 	}
 
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
+	}
 }
