@@ -95,15 +95,11 @@ public class SerializationTest {
 		entityMapper.writeValue(writer, entity);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"" + //
-				"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
+		assertEquals("{\"@interface\":\"com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity\"," + //
 				"\"@support\":\"com.intelligentsia.dowsers.entity.EntityDynamic\"," + //
-				"\"@entity\":{" + //
-				"\"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
-				"\"@attributes\":{" + //
-				"\"name\":\"Hello John\"," + //
-				"\"description\":\"a blablablabalbablbalablabb\"," + //
-				"\"order\":1}}}", result);
+				"\"@entity\":{\"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.model.CustomizableSampleEntity:identity#4c8b03dd-908a-4cad-8d48-3c7277d44ac9\"," + //
+				"\"@meta\":{\"order\":{\"classInformation\":\"java.lang.Long\"}}," + //
+				"\"@attributes\":{\"name\":\"Hello John\",\"description\":\"a blablablabalbablbalablabb\",\"order\":1}}}", result);
 
 		final Entity entity2 = entityMapper.readValue(new StringReader(result), EntityProxy.class);
 		assertNotNull(entity2);

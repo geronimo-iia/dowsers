@@ -48,8 +48,7 @@ public enum MetaDataUtil {
 					metaAttribute("description", String.class).build()) //
 			.add(CustomizableSampleEntity.class, MetaEntity.builder().name(CustomizableSampleEntity.class.getName()).version(MetaModel.VERSION). // attributes
 					metaAttribute("name", String.class).//
-					metaAttribute("description", String.class).//
-					metaAttribute("order", Long.class).build()) //
+					metaAttribute("description", String.class).build()) //
 			.add(Organization.class, Organization.META)//
 			.add(Person.class, Person.META).build();
 
