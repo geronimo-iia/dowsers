@@ -64,19 +64,16 @@ public class SerializationTest {
 		dynamic.attribute("name", "Steve");
 		dynamic.attribute("idea", "Sweet apple");
 		dynamic.attribute("dob", new Date(1354100382746L));
+		dynamic.attribute("year", 1L);
 		assertEquals("Steve", dynamic.attribute("name"));
 		assertEquals("Sweet apple", dynamic.attribute("idea"));
 
 		entityMapper.writeValue(writer, dynamic);
 		final String result = writer.toString();
 		assertNotNull(result);
-		assertEquals("{\"" + //
-				"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\"," + //
-				"\"@meta\":{\"name\":{\"classInformation\":\"java.lang.String\"},\"idea\":{\"classInformation\":\"java.lang.String\"},\"dob\":{\"classInformation\":\"java.util.Date\"}}," + //
-				"\"@attributes\":{" + //
-				"\"name\":\"Steve\"," + //
-				"\"idea\":\"Sweet apple\"," + //
-				"\"dob\":1354100382746}}", result);
+		assertEquals(
+				"{\"@identity\":\"urn:dowsers:com.intelligentsia.dowsers.entity.EntityDynamic:identity#6787007f-f424-40b7-b240-64206b1177e2\",\"@meta\":{\"name\":{\"classInformation\":\"java.lang.String\"},\"idea\":{\"classInformation\":\"java.lang.String\"},\"dob\":{\"classInformation\":\"java.util.Date\"},\"year\":{\"classInformation\":\"java.lang.Long\"}},\"@attributes\":{\"name\":\"Steve\",\"idea\":\"Sweet apple\",\"dob\":1354100382746,\"year\":1}}",
+				result);
 
 		final EntityDynamic entityDynamic = entityMapper.readValue(new StringReader(result), EntityDynamic.class);
 
@@ -84,6 +81,7 @@ public class SerializationTest {
 		assertEquals(dynamic.attribute("name"), entityDynamic.attribute("name"));
 		assertEquals(dynamic.attribute("idea"), entityDynamic.attribute("idea"));
 		assertEquals(dynamic.attribute("dob"), entityDynamic.attribute("dob"));
+		assertEquals(dynamic.attribute("year"), entityDynamic.attribute("year"));
 	}
 
 	@Test
@@ -108,6 +106,13 @@ public class SerializationTest {
 		assertEquals(entity.attribute("description"), entity2.attribute("description"));
 		assertEquals(entity.attribute("order"), entity2.attribute("order"));
 
+		final CustomizableSampleEntity sampleEntity = entityMapper.readValue(new StringReader(result), CustomizableSampleEntity.class);
+		assertNotNull(sampleEntity);
+		assertEquals(entity.identity(), sampleEntity.identity());
+		assertEquals(entity.attribute("name"), sampleEntity.attribute("name"));
+		assertEquals(entity.attribute("description"), sampleEntity.attribute("description"));
+		assertEquals(entity.attribute("order"), sampleEntity.attribute("order"));
+		assertEquals(Long.class.getName(), sampleEntity.attribute("order").getClass().getName());
 	}
 
 	@Test

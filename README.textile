@@ -35,7 +35,7 @@ Done:
 *** wait to feed all view
 *** feed all view in background
 * add possibility to register meta information from spring configuration
-* add more test case on meta analyzer
+* add more test case on meta analyzer, entity serializer
 * add possibility to add meta attribute dynamically even if meta attribute is not registered (or provided by meta context).
 
 h2. 1.0.2

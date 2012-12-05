@@ -61,10 +61,10 @@ public class ContactTest {
 		final EntityManager entityManager = registry.getBean("entityManager", EntityManager.class);
 		assertNotNull(entityManager);
 
-		Contact contact= entityManager.newInstance(Contact.class);
+		Contact contact = entityManager.newInstance(Contact.class);
 		assertNotNull(contact);
 		Reference id = contact.identity();
-		
+
 		contact.setEmail("jguibert@intelligents-ia.com");
 		contact.setPhoneNumber("123456");
 		contact.setYearInteger(10);
@@ -72,9 +72,10 @@ public class ContactTest {
 		contact.setBot(Boolean.TRUE);
 		Date date = new Date();
 		contact.dob(date);
-		
+		contact.attribute("extra", 1L);
+
 		entityManager.store(contact);
-		
+
 		Contact contact2 = entityManager.find(Contact.class, id);
 		assertNotNull(contact2);
 		assertEquals(contact.getEmail(), contact2.getEmail());
@@ -83,7 +84,8 @@ public class ContactTest {
 		assertEquals(contact.getYearLong(), contact2.getYearLong());
 		assertEquals(contact.isBot(), contact2.isBot());
 		assertEquals(contact.dob(), contact2.dob());
-		
+		assertEquals(contact.attribute("extra"), contact2.attribute("extra"));
+
 	}
 
 }

@@ -29,6 +29,8 @@ import java.util.Set;
 import org.intelligentsia.dowsers.core.reflection.ClassInformation;
 import org.intelligentsia.dowsers.core.serializers.jackson.DowsersJacksonModule;
 import org.intelligentsia.keystone.kernel.api.artifacts.Version;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -63,6 +65,10 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = -5511198331164987259L;
+	/**
+	 * Logger instance.
+	 */
+	private static Logger logger = LoggerFactory.getLogger(EntityDowsersJacksonModule.class);
 
 	/**
 	 * Build a new instance of EntityDowsersJacksonModule.java.
@@ -253,7 +259,13 @@ public class EntityDowsersJacksonModule extends DowsersJacksonModule {
 							final MetaAttribute attribute = context.metaAttribute(name);
 							final ClassInformation classInformation = attribute != null ? attribute.valueClass() : extraMeta.get(name);
 							// load attribute
-							final Object value = jp.readValueAs(classInformation != null ? classInformation.getType() : Object.class);
+							Object value = null;
+							if (classInformation != null) {
+								value = jp.readValueAs(classInformation.getType());
+							} else {
+								logger.warn("No class information on attribute '{}'", name);
+								value = jp.readValueAs(Object.class);
+							}
 							attributes.put(name, value);
 						}
 					}
