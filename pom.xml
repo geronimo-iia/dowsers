@@ -9,7 +9,7 @@
 	<artifactId>dowsers</artifactId>
 	<packaging>pom</packaging>
 	<name>dowsers</name>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<description>
 		Dowsers provide framework related on Domain Driven Development, Command Queries Request Segregation, Event Sourcing stuff. 
 	</description>
