@@ -25,6 +25,7 @@ import com.google.common.base.Preconditions;
 import com.intelligentsia.dowsers.entity.EntityFactoryProvider;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
@@ -43,19 +44,26 @@ public class EntityManagerSupport implements EntityManager {
 	 * {@link EntityStore} instance.
 	 */
 	private final EntityStore entityStore;
-
+	/**
+	 * {@link Listener} instance.
+	 */
 	private Listener listener;
+	/**
+	 * {@link EntityMapper} instance;
+	 */
+	private final EntityMapper entityMapper;
 
 	/**
 	 * Build a new instance of EntityManagerSupport.java.
 	 * 
 	 * @param entityFactoryProvider
 	 * @param entityStore
+	 * @param entityMapper
 	 * @throws NullPointerException
 	 *             if entityFactoryProvider or entityStore is null
 	 */
-	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore) throws NullPointerException {
-		this(entityFactoryProvider, entityStore, null);
+	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore, final EntityMapper entityMapper) throws NullPointerException {
+		this(entityFactoryProvider, entityStore, entityMapper, null);
 	}
 
 	/**
@@ -64,15 +72,17 @@ public class EntityManagerSupport implements EntityManager {
 	 * 
 	 * @param entityFactoryProvider
 	 * @param entityStore
+	 * @param entityMapper
 	 * @param listener
 	 * @throws NullPointerException
 	 *             if entityFactoryProvider or entityStore is null
 	 */
-	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore, final Listener listener) throws NullPointerException {
+	public EntityManagerSupport(final EntityFactoryProvider entityFactoryProvider, final EntityStore entityStore, final EntityMapper entityMapper, final Listener listener) throws NullPointerException {
 		super();
 		this.entityFactoryProvider = Preconditions.checkNotNull(entityFactoryProvider);
 		this.entityStore = Preconditions.checkNotNull(entityStore);
 		this.listener = listener;
+		this.entityMapper = entityMapper;
 	}
 
 	@Override
@@ -146,6 +156,11 @@ public class EntityManagerSupport implements EntityManager {
 	@Override
 	public void removeListener(final Listener listener) {
 		this.listener = null;
+	}
+
+	@Override
+	public EntityMapper getEntityMapper() {
+		return entityMapper;
 	}
 
 	private <T> T notifyFind(final T entity) {

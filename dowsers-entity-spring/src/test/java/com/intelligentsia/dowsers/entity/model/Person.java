@@ -30,7 +30,7 @@ import com.intelligentsia.dowsers.entity.validation.MetaCompliant;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 @MetaCompliant
-public interface Person extends Entity{
+public interface Person extends Entity {
 
 	String getFirstName();
 

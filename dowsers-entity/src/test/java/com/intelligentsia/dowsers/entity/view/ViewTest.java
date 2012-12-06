@@ -57,15 +57,15 @@ public class ViewTest {
 	@Before
 	public void initialize() {
 
-		EntityMapper entityMapper = new EntityMapper();
+		final EntityMapper entityMapper = new EntityMapper();
 		metaEntityContextProvider = MetaEntityContextProviderSupport.builder().build(MetaEntityProviders.newMetaEntityProviderAnalyzer());
 		entityMapper.initialize(metaEntityContextProvider);
 
-		EntityStore entityStore = new InMemoryEntityStore(entityMapper);
+		final EntityStore entityStore = new InMemoryEntityStore(entityMapper);
 
-		EntityFactoryProvider entityFactoryProvider = new EntityFactoryProvider(metaEntityContextProvider);
+		final EntityFactoryProvider entityFactoryProvider = new EntityFactoryProvider(metaEntityContextProvider);
 
-		entityManager = new EntityManagerSupport(entityFactoryProvider, entityStore);
+		entityManager = new EntityManagerSupport(entityFactoryProvider, entityStore, entityMapper);
 
 	}
 
@@ -77,11 +77,11 @@ public class ViewTest {
 
 	@Test
 	public void testInstanciateViewManager() {
-		List<View> views = new ArrayList<View>();
+		final List<View> views = new ArrayList<View>();
 
-		View.Builder builder = View.builder().name("ContactView").viewStore(new InMemoryViewStore());
+		final View.Builder builder = View.builder().name("ContactView").viewStore(new InMemoryViewStore());
 		builder.processor(Contact.class, "c", "identity", "email").build();
-		View view = builder.build();
+		final View view = builder.build();
 		assertNotNull(view);
 		views.add(view);
 
@@ -93,12 +93,12 @@ public class ViewTest {
 
 	@Test
 	public void testViewManager() {
-		List<View> views = new ArrayList<View>();
-		View view = View.builder().name("ContactView").viewStore(new InMemoryViewStore()).processor(Contact.class, "c", "identity", "email").build().build();
+		final List<View> views = new ArrayList<View>();
+		final View view = View.builder().name("ContactView").viewStore(new InMemoryViewStore()).processor(Contact.class, "c", "identity", "email").build().build();
 		views.add(view);
 		viewManager = new ViewManager(views, entityManager, false);
 
-		Contact contact = entityManager.newInstance(Contact.class);
+		final Contact contact = entityManager.newInstance(Contact.class);
 		assertNotNull(contact);
 
 		contact.setEmail("jguibert@intelligents-ia.com");
@@ -106,16 +106,16 @@ public class ViewTest {
 		contact.setYearInteger(10);
 		contact.setYearLong(666666L);
 		contact.setBot(Boolean.TRUE);
-		Date date = new Date();
+		final Date date = new Date();
 		contact.dob(date);
 
 		entityManager.store(contact);
 
-		InMemoryViewStore viewStore = (InMemoryViewStore) view.viewStore();
+		final InMemoryViewStore viewStore = (InMemoryViewStore) view.viewStore();
 
 		assertTrue(!viewStore.items().isEmpty());
 
-		Item item = viewStore.items().iterator().next();
+		final Item item = viewStore.items().iterator().next();
 		assertNotNull(item);
 		assertNotNull(item.getAttributes());
 		assertEquals(contact.identity(), item.get("c.identity"));

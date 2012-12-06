@@ -26,6 +26,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import com.intelligentsia.dowsers.entity.EntityFactoryProvider;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
 
 /**
@@ -43,6 +44,8 @@ public class EntityManagerFactory implements FactoryBean<EntityManager>, BeanFac
 	private EntityFactoryProvider entityFactoryProvider;
 
 	private BeanFactory beanFactory;
+
+	private EntityMapper entityMapper;
 
 	private EntityManager entityManager = null;
 
@@ -75,11 +78,18 @@ public class EntityManagerFactory implements FactoryBean<EntityManager>, BeanFac
 			if (entityManagerListener == null) {
 				try {
 					entityManagerListener = beanFactory.getBean(EntityManager.Listener.class);
-				} catch (NoSuchBeanDefinitionException exception) {
+				} catch (final NoSuchBeanDefinitionException exception) {
 					// do nothing
 				}
 			}
-			entityManager = new EntityManagerSupport(entityFactoryProvider, entityStore, entityManagerListener);
+			if (entityMapper == null) {
+				try {
+					entityMapper = beanFactory.getBean(EntityMapper.class);
+				} catch (final NoSuchBeanDefinitionException exception) {
+					// do nothing
+				}
+			}
+			entityManager = new EntityManagerSupport(entityFactoryProvider, entityStore, entityMapper, entityManagerListener);
 		}
 		return entityManager;
 	}
@@ -108,8 +118,16 @@ public class EntityManagerFactory implements FactoryBean<EntityManager>, BeanFac
 		this.entityFactoryProvider = entityFactoryProvider;
 	}
 
+	public EntityMapper getEntityMapper() {
+		return entityMapper;
+	}
+
+	public void setEntityMapper(final EntityMapper entityMapper) {
+		this.entityMapper = entityMapper;
+	}
+
 	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+	public void setBeanFactory(final BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
 }

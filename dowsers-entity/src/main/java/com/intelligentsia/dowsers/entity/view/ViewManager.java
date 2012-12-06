@@ -87,7 +87,7 @@ public class ViewManager {
 	 * @param reference
 	 * @return a Collection<View> for specified reference.
 	 */
-	public Collection<View> getViews(Reference reference) {
+	public Collection<View> getViews(final Reference reference) {
 		return views.get(reference);
 	}
 
@@ -105,7 +105,7 @@ public class ViewManager {
 	 * @param view
 	 * @throws NullPointerException
 	 */
-	public void add(View view) throws NullPointerException {
+	public void add(final View view) throws NullPointerException {
 		Preconditions.checkNotNull(view);
 		if (!view.entities().isEmpty()) {
 			views.put(view.entities().get(0), view);
@@ -137,7 +137,7 @@ public class ViewManager {
 	 * 
 	 * @param entityClassReference
 	 */
-	void drop(Reference entityClassReference) {
+	void drop(final Reference entityClassReference) {
 		for (final View view : views.get(entityClassReference)) {
 			view.viewStore().drop();
 		}

@@ -76,20 +76,20 @@ public class ViewManagerTest {
 		final EntityManager entityManager = registry.getBean("entityManager", EntityManager.class);
 		assertNotNull(entityManager);
 
-		ViewManager viewManager = registry.getBean(ViewManager.class);
+		final ViewManager viewManager = registry.getBean(ViewManager.class);
 		assertNotNull(viewManager);
 
 		// check config
-		Collection<View> views = viewManager.getViews(Reference.newReferenceOnEntityClass(Person.class));
+		final Collection<View> views = viewManager.getViews(Reference.newReferenceOnEntityClass(Person.class));
 		assertNotNull(viewManager);
 		assertFalse(views.isEmpty());
-		View view = views.iterator().next();
+		final View view = views.iterator().next();
 		assertNotNull(view);
-		InMemoryViewStore store = (InMemoryViewStore) view.viewStore();
+		final InMemoryViewStore store = (InMemoryViewStore) view.viewStore();
 		assertNotNull(store);
 
 		// store person
-		Person person = getMario(entityManager);
+		final Person person = getMario(entityManager);
 		assertNotNull(person);
 		entityManager.store(person);
 
@@ -106,8 +106,8 @@ public class ViewManagerTest {
 		store.drop();
 		assertTrue(store.items().isEmpty());
 
-		//rebuild
-		ViewManagerControler controler = new ViewManagerControler(entityManager, viewManager, Behavior.FOREGROUND);
+		// rebuild
+		final ViewManagerControler controler = new ViewManagerControler(entityManager, viewManager, Behavior.FOREGROUND);
 		controler.process();
 
 		// check view

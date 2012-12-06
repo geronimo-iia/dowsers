@@ -159,17 +159,17 @@ public final class View {
 			super();
 		}
 
-		public Builder name(String name) {
+		public Builder name(final String name) {
 			this.name = name;
 			return this;
 		}
 
-		public Builder viewStore(ViewStore viewStore) {
+		public Builder viewStore(final ViewStore viewStore) {
 			this.viewStore = viewStore;
 			return this;
 		}
 
-		public Builder processor(Processor processor) {
+		public Builder processor(final Processor processor) {
 			this.processor = processor;
 			return this;
 		}
@@ -209,37 +209,38 @@ public final class View {
 
 		private final Builder builder;
 
-		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias) {
+		public ViewProcessorBuilder(final Builder builder, final Class<? extends Entity> entityType, final String alias) {
 			super(entityType, alias);
 			this.builder = builder;
 			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
 		}
 
-		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias, ImmutableSet<String> attributeNames) {
+		public ViewProcessorBuilder(final Builder builder, final Class<? extends Entity> entityType, final String alias, final ImmutableSet<String> attributeNames) {
 			super(entityType, alias, attributeNames);
 			this.builder = builder;
 			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
 		}
 
-		public ViewProcessorBuilder(Builder builder, Class<? extends Entity> entityType, String alias, String... names) {
+		public ViewProcessorBuilder(final Builder builder, final Class<? extends Entity> entityType, final String alias, final String... names) {
 			super(entityType, alias, names);
 			this.builder = builder;
 			this.builder.entities.add(Reference.newReferenceOnEntityClass(entityType));
 		}
 
+		@Override
 		public Builder build() {
 			builder.processor = processor;
 			return builder;
 		}
 
 		@Override
-		public AbstractProcessorBuilder<Builder> join(EntityManager entityManager, String joinAttribute, Class<? extends Entity> expectedType, Processor source) throws NullPointerException {
+		public AbstractProcessorBuilder<Builder> join(final EntityManager entityManager, final String joinAttribute, final Class<? extends Entity> expectedType, final Processor source) throws NullPointerException {
 			this.builder.entities.add(Reference.newReferenceOnEntityClass(expectedType));
 			return super.join(entityManager, joinAttribute, expectedType, source);
 		}
 
 		@Override
-		public AbstractProcessorBuilder<Builder> join(String joinAttribute, Class<? extends Entity> expectedType, Processor source) throws NullPointerException {
+		public AbstractProcessorBuilder<Builder> join(final String joinAttribute, final Class<? extends Entity> expectedType, final Processor source) throws NullPointerException {
 			this.builder.entities.add(Reference.newReferenceOnEntityClass(expectedType));
 			return super.join(joinAttribute, expectedType, source);
 		}

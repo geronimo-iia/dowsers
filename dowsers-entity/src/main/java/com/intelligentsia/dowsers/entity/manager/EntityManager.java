@@ -21,6 +21,7 @@ package com.intelligentsia.dowsers.entity.manager;
 
 import com.intelligentsia.dowsers.entity.Entity;
 import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 
@@ -179,4 +180,9 @@ public interface EntityManager {
 		 */
 		<T> void entityRemoved(T entity);
 	}
+
+	/**
+	 * @return {@link EntityMapper}.
+	 */
+	EntityMapper getEntityMapper();
 }

@@ -61,22 +61,22 @@ public class ContactTest {
 		final EntityManager entityManager = registry.getBean("entityManager", EntityManager.class);
 		assertNotNull(entityManager);
 
-		Contact contact = entityManager.newInstance(Contact.class);
+		final Contact contact = entityManager.newInstance(Contact.class);
 		assertNotNull(contact);
-		Reference id = contact.identity();
+		final Reference id = contact.identity();
 
 		contact.setEmail("jguibert@intelligents-ia.com");
 		contact.setPhoneNumber("123456");
 		contact.setYearInteger(10);
 		contact.setYearLong(666666L);
 		contact.setBot(Boolean.TRUE);
-		Date date = new Date();
+		final Date date = new Date();
 		contact.dob(date);
 		contact.attribute("extra", 1L);
 
 		entityManager.store(contact);
 
-		Contact contact2 = entityManager.find(Contact.class, id);
+		final Contact contact2 = entityManager.find(Contact.class, id);
 		assertNotNull(contact2);
 		assertEquals(contact.getEmail(), contact2.getEmail());
 		assertEquals(contact.getPhoneNumber(), contact2.getPhoneNumber());

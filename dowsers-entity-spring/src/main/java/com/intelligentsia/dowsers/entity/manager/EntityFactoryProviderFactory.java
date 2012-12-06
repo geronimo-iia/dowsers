@@ -101,7 +101,7 @@ public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryPr
 	}
 
 	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+	public void setBeanFactory(final BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
 }

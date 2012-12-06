@@ -80,6 +80,7 @@ public final class ProcessorBuilder extends AbstractProcessorBuilder<Processor> 
 		super(entityType, alias, names);
 	}
 
+	@Override
 	public Processor build() {
 		return processor;
 	}

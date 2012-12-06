@@ -106,5 +106,5 @@ public abstract class AbstractProcessorBuilder<T> {
 		return this;
 	}
 
-	public  abstract T build();
+	public abstract T build();
 }

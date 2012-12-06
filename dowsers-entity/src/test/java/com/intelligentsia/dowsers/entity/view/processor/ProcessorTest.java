@@ -61,6 +61,6 @@ public class ProcessorTest {
 		final EntityMapper entityMapper = new EntityMapper();
 		entityMapper.initialize(metaEntityContextProvider);
 		final EntityStore entityStore = new InMemoryEntityStore(entityMapper);
-		return new EntityManagerSupport(EntityFactoryProvider.builder().enableDefaultFactory().build(metaEntityContextProvider), entityStore);
+		return new EntityManagerSupport(EntityFactoryProvider.builder().enableDefaultFactory().build(metaEntityContextProvider), entityStore, entityMapper);
 	}
 }

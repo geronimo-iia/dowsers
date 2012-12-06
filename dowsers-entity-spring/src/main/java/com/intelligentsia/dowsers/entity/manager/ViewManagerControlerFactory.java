@@ -32,7 +32,6 @@ public class ViewManagerControlerFactory implements FactoryBean<ViewManagerContr
 
 	private BeanFactory beanFactory;
 
-
 	private Behavior behavior = Behavior.NO_FEED;
 	private ViewManager viewManager;
 
@@ -60,7 +59,7 @@ public class ViewManagerControlerFactory implements FactoryBean<ViewManagerContr
 	}
 
 	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+	public void setBeanFactory(final BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}
 
@@ -68,7 +67,7 @@ public class ViewManagerControlerFactory implements FactoryBean<ViewManagerContr
 		return behavior;
 	}
 
-	public void setBehavior(Behavior behavior) {
+	public void setBehavior(final Behavior behavior) {
 		this.behavior = behavior;
 	}
 
@@ -76,7 +75,7 @@ public class ViewManagerControlerFactory implements FactoryBean<ViewManagerContr
 		return entityManager;
 	}
 
-	public void setEntityManager(EntityManager entityManager) {
+	public void setEntityManager(final EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
@@ -84,7 +83,7 @@ public class ViewManagerControlerFactory implements FactoryBean<ViewManagerContr
 		return viewManager;
 	}
 
-	public void setViewManager(ViewManager viewManager) {
+	public void setViewManager(final ViewManager viewManager) {
 		this.viewManager = viewManager;
 	}
 
