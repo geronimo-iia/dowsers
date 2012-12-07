@@ -23,10 +23,10 @@ Some idea:
 * Adding tool to build administrative web application based on meta
 
 
-h2. 1.0.3 SNAPSHOT
+h2. 1.0.3
 
-Done:
 * Simplify Spring configuration
+* add access on EntityMapper from EntityManager (no deep knowledge of dowsers his required) 
 * Adding View concept:
 ** definition with aggregation of attribute, filter and join
 ** in memory implementation that follow runtime
@@ -40,7 +40,6 @@ Done:
 
 h2. 1.0.2
 
-Done:
 * add utility methods on entity Manager
 * change some methods name on Reference to avoid error
 * fix analyzer bug with Entity interface
@@ -78,7 +77,7 @@ h2. dependency on Dowsers
 bc. <dependency>
 	<groupId>org.intelligents-ia.dowsers</groupId>
 	<artifactId>dowsers-entity-manager</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 </dependency>
 
 
@@ -121,3 +120,20 @@ h2. CQRS
 h2. Event Store
 
 !https://github.com/geronimo-iia/dowsers/blob/master/docs/DDDDevision_big.jpg?raw=true! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
