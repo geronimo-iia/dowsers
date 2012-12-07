@@ -1,4 +1,3 @@
-
 h1. Dowsers Entity
 
 
@@ -321,43 +320,6 @@ bc..
 		class="com.intelligentsia.dowsers.entity.manager.EntityManagerFactory" />
 
 
-p. 
+p. todo
 
 
-bc.. 
-	<bean
-		class="com.intelligentsia.dowsers.entity.manager.MetaEntityProviderFactory">
-		<property name="enableDynamicAnalyzer" value="true" />
-		<!-- <property name="metaEntityProvider"></property> -->
-	</bean>
-
-
-	<bean 
-		class="com.intelligentsia.dowsers.entity.manager.MetaEntityContextProviderFactory">
-		<property name="enableCache" value="true" />
-	</bean>
-
-	<bean
-		class="com.intelligentsia.dowsers.entity.manager.EntityFactoryProviderFactory">
-		<property name="enableDefaultFactory" value="true" />
-		<!-- factories -->
-	</bean>
-
-	<bean class="com.intelligentsia.dowsers.entity.manager.EntityStoreFactory">
-		<property name="enableCachedEntities" value="true" />
-		<property name="entityStore">
-			<bean
-				class="com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore">
-				<constructor-arg index="0">
-					<bean
-						class="com.intelligentsia.dowsers.entity.manager.EntityMapperFactory" />
-				</constructor-arg>
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="entityManager"
-		class="com.intelligentsia.dowsers.entity.manager.EntityManagerFactory" />
-
-
-p. 
