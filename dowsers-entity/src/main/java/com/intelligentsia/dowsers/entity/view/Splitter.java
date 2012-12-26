@@ -1,5 +1,3 @@
-package com.intelligentsia.dowsers.entity.view;
-
 /**
  *        Licensed to the Apache Software Foundation (ASF) under one
  *        or more contributor license agreements.  See the NOTICE file
@@ -19,49 +17,19 @@ package com.intelligentsia.dowsers.entity.view;
  *        under the License.
  *
  */
+package com.intelligentsia.dowsers.entity.view;
 
 import java.util.List;
 
-import com.intelligentsia.dowsers.entity.reference.Reference;
+import com.google.common.base.Function;
 import com.intelligentsia.dowsers.entity.view.processor.Item;
 
 /**
- * ViewStore store a kind of view.
  * 
- * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
+ * Splitter split an item in several (one item per locale for example).
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ViewStore {
-
-	/**
-	 * Update a item in view.
-	 * 
-	 * @param reference
-	 *            identity of entity which initiate this update.
-	 * @param item
-	 *            computed item, could be null
-	 */
-	void update(Reference reference, Item item);
-
-	/**
-	 * Update items in view.
-	 * 
-	 * @param reference
-	 *            identity of entity which initiate this update.
-	 * @param items
-	 *            computed items, could be null
-	 */
-	void update(Reference reference, List<Item> items);
-
-	/**
-	 * Drop all item in this {@link ViewStore}.
-	 */
-	void drop();
-
-	/**
-	 * Remove all associated reference.
-	 * 
-	 * @param identity
-	 */
-	void remove(Reference identity);
+public interface Splitter extends Function<Item, List<Item>> {
 
 }

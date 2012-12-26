@@ -26,6 +26,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,8 @@ import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
 import com.intelligentsia.dowsers.entity.meta.provider.MetaEntityProviders;
 import com.intelligentsia.dowsers.entity.model.Contact;
+import com.intelligentsia.dowsers.entity.model.Description;
+import com.intelligentsia.dowsers.entity.model.Organization;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
 import com.intelligentsia.dowsers.entity.store.memory.InMemoryEntityStore;
@@ -120,6 +123,35 @@ public class ViewTest {
 		assertNotNull(item.getAttributes());
 		assertEquals(contact.identity(), item.get("c.identity"));
 		assertEquals(contact.getEmail(), item.get("c.email"));
+
+	}
+
+	@Test
+	public void testViewWithSplitter() {
+		final List<View> views = new ArrayList<View>();
+		final View view = View.builder().name("OrganizationView").//
+				viewStore(new InMemoryViewStore()).//
+				processor(Organization.class, "c", "identity", "name", "annotation").build().//
+				splitter("c.annotation"). //
+				build();
+		views.add(view);
+		viewManager = new ViewManager(views, entityManager, false);
+
+		final Organization organization = entityManager.newInstance(Organization.class);
+		organization.name("Intelligents-ia");
+		organization.annotation(new Description());
+		organization.annotation().add(Locale.FRANCE, "une note").add(Locale.ENGLISH, "a note");
+
+		entityManager.store(organization);
+
+		final InMemoryViewStore viewStore = (InMemoryViewStore) view.viewStore();
+
+		assertTrue(!viewStore.items().isEmpty());
+		assertTrue(viewStore.items().size() == 2);
+
+		// for(Item item : viewStore.items()) {
+		// System.err.println(item);
+		// }
 
 	}
 

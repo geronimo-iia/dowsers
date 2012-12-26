@@ -44,6 +44,8 @@ public final class View {
 
 	private final Processor processor;
 
+	private final Splitter splitter;
+
 	private final ImmutableList<Reference> entities;
 
 	private final ViewStore viewStore;
@@ -60,9 +62,25 @@ public final class View {
 	 *             if entities is empty
 	 */
 	public View(final String name, final Processor processor, final ImmutableList<Reference> entities, final ViewStore viewStore) throws NullPointerException, IllegalArgumentException {
+		this(name, processor, null, entities, viewStore);
+	}
+
+	/**
+	 * Build a new instance of View.java.
+	 * 
+	 * @param name
+	 * @param processor
+	 * @param entities
+	 * @throws NullPointerException
+	 *             if one of parameters is null
+	 * @throws IllegalArgumentException
+	 *             if entities is empty
+	 */
+	public View(final String name, final Processor processor, final Splitter splitter, final ImmutableList<Reference> entities, final ViewStore viewStore) throws NullPointerException, IllegalArgumentException {
 		super();
 		this.name = Preconditions.checkNotNull(name);
 		this.processor = Preconditions.checkNotNull(processor);
+		this.splitter = splitter;
 		this.entities = Preconditions.checkNotNull(entities);
 		Preconditions.checkArgument(!entities.isEmpty());
 		this.viewStore = Preconditions.checkNotNull(viewStore);
@@ -76,8 +94,15 @@ public final class View {
 	public void compute(final Entity entity) {
 		// build item
 		final Item item = processor.apply(entity);
-		// update store
-		viewStore.update(entity.identity(), item);
+		if (splitter != null) {
+			final List<Item> items = splitter.apply(item);
+			for (final Item item2 : items) {
+				viewStore.update(entity.identity(), item2);
+			}
+		} else {
+			// update store
+			viewStore.update(entity.identity(), item);
+		}
 	}
 
 	/**
@@ -86,7 +111,7 @@ public final class View {
 	 * @param identity
 	 */
 	public void remove(final Reference identity) {
-		viewStore.update(identity, null);
+		viewStore.remove(identity);
 	}
 
 	/**
@@ -149,6 +174,8 @@ public final class View {
 
 		private String name;
 
+		private Splitter splitter;
+
 		Processor processor;
 
 		ImmutableList.Builder<Reference> entities = ImmutableList.builder();
@@ -166,6 +193,21 @@ public final class View {
 
 		public Builder viewStore(final ViewStore viewStore) {
 			this.viewStore = viewStore;
+			return this;
+		}
+
+		public Builder splitter(final Splitter splitter) {
+			this.splitter = splitter;
+			return this;
+		}
+
+		public Builder splitter(final String attributeName) {
+			this.splitter = new SplitterAttribute(attributeName);
+			return this;
+		}
+
+		public Builder splitter(final String attributeName, final boolean ignoreEmpty) {
+			this.splitter = new SplitterAttribute(attributeName, ignoreEmpty);
 			return this;
 		}
 
@@ -196,7 +238,7 @@ public final class View {
 		}
 
 		public View build() {
-			return new View(name, processor, entities.build(), viewStore);
+			return new View(name, processor, splitter, entities.build(), viewStore);
 		}
 	}
 

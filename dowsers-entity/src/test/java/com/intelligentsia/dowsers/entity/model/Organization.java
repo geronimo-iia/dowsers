@@ -27,10 +27,14 @@ public interface Organization extends Entity {
 
 	public static MetaEntity META = MetaEntity.builder().name(Organization.class.getName()).version(MetaModel.VERSION). //
 			metaAttributes(MetaModel.getIdentityAttribute()).//
-			metaAttribute("name", String.class).build();
+			metaAttribute("name", String.class).//
+			metaAttribute("annotation", Description.class).build();
 
 	public String name();
 
 	public void name(String name);
 
+	public Description annotation();
+
+	public void annotation(Description description);
 }

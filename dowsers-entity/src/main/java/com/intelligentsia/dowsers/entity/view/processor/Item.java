@@ -26,6 +26,7 @@ import java.util.Set;
 import org.intelligentsia.keystone.kernel.api.Preconditions;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Maps;
 
 /**
  * Item.
@@ -110,4 +111,7 @@ public class Item {
 		attributes.putAll(m);
 	}
 
+	public Item dump() {
+		return new Item(Maps.newHashMap(attributes));
+	}
 }

@@ -21,9 +21,10 @@ package com.intelligentsia.dowsers.entity.view;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.view.processor.Item;
 
@@ -35,7 +36,7 @@ import com.intelligentsia.dowsers.entity.view.processor.Item;
  */
 public class InMemoryViewStore implements ViewStore, Iterable<Item> {
 
-	private final Map<Reference, Item> items = Maps.newHashMap();
+	private final Multimap<Reference, Item> store = ArrayListMultimap.create();
 
 	/**
 	 * Build a new instance of InMemoryViewStore.
@@ -47,23 +48,37 @@ public class InMemoryViewStore implements ViewStore, Iterable<Item> {
 	@Override
 	public void update(final Reference reference, final Item item) {
 		if (item == null) {
-			items.remove(reference);
+			remove(reference);
 		} else {
-			items.put(reference, item);
+			store.put(reference, item);
+		}
+	}
+
+	@Override
+	public void update(final Reference reference, final List<Item> items) {
+		if (items == null) {
+			remove(reference);
+		} else {
+			store.putAll(reference, items);
 		}
 	}
 
 	@Override
 	public void drop() {
-		items.clear();
+		store.clear();
 	}
 
 	@Override
 	public Iterator<Item> iterator() {
-		return items.values().iterator();
+		return store.values().iterator();
 	}
 
 	public Collection<Item> items() {
-		return items.values();
+		return store.values();
+	}
+
+	@Override
+	public void remove(final Reference identity) {
+		store.removeAll(identity);
 	}
 }
