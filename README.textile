@@ -23,6 +23,13 @@ Some idea:
 * Adding tool to build administrative web application based on meta
 
 
+h2. 1.0.4-SNAPSHOT
+
+* View concept:
+** add split operator on a item
+** define a splitter based on iterable attribute 
+* Update doc
+
 h2. 1.0.3
 
 * Simplify Spring configuration
