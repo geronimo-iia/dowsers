@@ -1,59 +1,4 @@
-h1. Dowsers Entity
-
-
-
-
-
-h1. Terminology
-
-Adapted from JSR 351
-
-**Entity**
-An object that may be identified or described by a collection of Attributes.
-
-**Attribute**
-A named value.
-
-**Attribute Value**
-A quantitative or existential representation of the property or characteristic conveyed by the Attribute. A value may be empty (as distinct from the Attribute being undefined), a scalar, an Object, or a collection of Objects.
-
-**Identity Attribute**
-An Attribute that identify a specific instance of an entity.
-
-**Attribute Meta-data**
-A uniform taxonomy of characteristics that may be associated with an Attribute and where such characteristics are deemed necessary or appropriate to effect or enable the use of the value. Such information may establish its validity period, or more generally define constraints or tags that effect the use of the value.
-
-**Entity Meta-data**
-A collection of Attribute Meta-data which apply on a specific entity version.  
-
-**Entity Meta-data Context**
-A collection of Attribute Meta-data which apply on a specific entity. Generally its an instance of entity meta-data.
-But, it could be an aggregation of entity meta-data.
-
-
-**Meta Entity Reference**
-An attribute that identify or describe a meta entity/ entity class name
-
-urn:dowsers:{entity class name}
-
-**Entity Reference**
-A collection of Attributes that identify or describe an Entity. 
-
-urn:dowsers:{meta entity reference}:identity@{identity attribute}
-
-**Attribute Reference**
-A representation of an Attribute that does not convey the value of the associated Attribute, that may be communicated between Entities without exposing the Attribute value.
-
-urn:dowsers:{meta entity reference}:{attribute name}@{entity identity attribute}
-
-**Meta Entity Context Provider**
-A service which build meta entity context from meta entity provider.
-
-**Meta Entity Repository**
-A service or data store that contains meta data on Entity and Attribute values.
-
-
-h1. Entity
+h1. I. Entity
 
 
 An entity is defined by:
@@ -64,8 +9,52 @@ Examples: Customer, Order, Organization, Car ...
  
 Attributes are characteristics of entities
 
+h2. A. What is a value object (an attribute) ? 
 
-h2. Identity as Reference
+“A Value Object cannot live on its own without an Entity.”
+ 
+Eric Evans:
+“An object that represents a descriptive aspect of the domain with no conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated to represent elements of the design that we care about only for what they are, not who or which they are.” 
+[Evans 2003]
+
+
+Technically, a value class should :
+* be serializable
+* have a default constructor
+* have only getter
+* all member marked as final
+
+
+h2. B. Interface entity 
+
+Declare methods to :
+* get entity's identity
+* get/set attribute value
+* test if entity contains a specific attribute name
+* get a set of attributes contained in the entity
+
+bc.. 
+public interface Entity extends Identified<Reference>  {
+
+	Reference identity();
+
+	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
+
+	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
+
+	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
+
+	public ImmutableSet<String> attributeNames();
+	
+	public MetaEntityContext metaEntityContext();
+	
+p. Main implementation of this interface is EntityDynamic and EntityProxy.
+
+EntityDynamic is base class for all entities.
+
+EntityProxy implements an InvokerHandler in order to create a proxy dynamic on a EI (entity as interface).
+
+h2. C. Identity as Reference
 
 Wikipedia's entry on the philosophical meaning of identity starts:
 
@@ -124,7 +113,7 @@ A default provider is based on UUID scheme:
 
 bc.. 
 	/**
-	 * IdentifierFactory declare methode to generate new identifier.
+	 * IdentifierFactory declare method to generate new identifier.
 	 * 
 	 * <pre>
 	 * IdentifierFactoryProvider.generateNewIdentifier();
@@ -162,126 +151,80 @@ bc..
 	}
 
 
-h2. What is a value object (an attribute) ? 
-
-“A Value Object cannot live on its own without an Entity.”
- 
-Eric Evans:
-“An object that represents a descriptive aspect of the domain with no conceptual identity is called a VALUE OBJECT. VALUE OBJECTS are instantiated to represent elements of the design that we care about only for what they are, not who or which they are.” 
-[Evans 2003]
 
 
-Technically, a value class should :
-* be serializable
-* have a default constructor
-* have only getter
-* all member marked as final
+h1. II. Meta Data
+
+
+h2. A. Meta Attribute
+
+
+A MetaAttribute is composed of:
+* name: attribute's name
+* valueClass: attribute's class name
+
+
+h2. B. Meta Entity
+
+A MetaEntity define a set of meta attributes:
+* name: an entity class name
+* metaAttributes: entity meta attributes
+* version: meta entity version
+
+h2. C. Meta data Extension mechanism
+
+Meta data of an entity is known as MetaEntityContext
+A MetaEntityContext is a MetaEntity composite of MetaEntity. Each component is an extends of meta data given by super MetaEntity instance.
+We call version of MetaEntity definition the first and initial MetaEntity set to a MetaEntityContext.
+
+All meta data are provided by MetaEntityContextProvider. See classes under package com.intelligentsia.dowsers.entity.meta.provider.
+With basic configuration all meta data are discovered at runtime.
 
 
 
-h2. Interface entity 
+h1. III. Use case
 
-Declare methods to :
-* get entity's identity
-* get/set attribute value
-* test if entity contains a specific attribute name
-* get a set of attributes contained in the entity
+h2. A. Organization entity
 
 bc.. 
-public interface Entity extends Identified<Reference>  {
+public interface Organization extends Entity {
 
-	Reference identity();
+	public String name();
 
-	public <Value> Value attribute(String name) throws NullPointerException, IllegalArgumentException;
+	public void name(String name);
 
-	public <Value> Entity attribute(String name, final Value value) throws NullPointerException, IllegalArgumentException;
+	public Description annotation();
 
-	public boolean contains(String name) throws NullPointerException, IllegalArgumentException;
+	public void annotation(Description description);
 
-	public ImmutableSet<String> attributeNames();
-	
-	public MetaEntityContext metaEntityContext();
-	
-p. Main implementation of this interface is EntityDynamic and EntityProxy.
-
-EntityDynamic is base class for all entities.
-
-EntityProxy implements an InvokerHandler in order to create a proxy dynamic on a EI (entity as interface).
+}
 
 
-h1. Meta Data
+p. Basically, we define two attributes:
+* name
+* annotation
+Identity attribute is herited from Entity.
+
+Note that we could define our Organization without extending Entity interface. In this case:
+* A proxy will be generated for us
+* Methods References.identify must be used to obtain identity of our Organization. 
 
 
-h2. Meta Attribute
 
+h2. B. Customization of Organization
 
-h2. Meta Entity
-
-
-h2. Meta data Extension mechanism
-
-
-h1. Use case
-
-h2. Organization entity
-
-h2. Customization of Organization
-
-
-h1. Entity Serialization
-
-h2. Technology
-
-h2. Json/XML Format
-
-h2. Register Custom Jackson Module
-
-
-Under package: com.intelligentsia.dowsers.entity.serializer
-
-EntityMapper need an instance of MetaEntityContextProvider, and expose two method:
-
-	/**
-	 * Method that can be used to serialize any Java value as JSON output, using
-	 * Writer provided.
-	 * 
-	 * @param writer
-	 * @param value
-	 * @throws DowsersException
-	 */
-	public void writeValue(final Writer writer, final Object value) throws DowsersException {
-		. . . 
-	}
-
-	/**
-	 * Method that can be used to parse JSON to specified Java value, using
-	 * reader provided.
-	 * 
-	 * @param reader
-	 * @param valueType
-	 * @return
-	 * @throws DowsersException
-	 */
-	public <T> T readValue(final Reader reader, final Class<T> valueType) throws DowsersException {
-		. . . 
-	}
-
-
-Dowsers module for Jackson project: com.intelligentsia.dowsers.entity.serializer.EntityDowsersJacksonModule
-
-ObjectMapper mapper;
-
-mapper.registerModule(new EntityDowsersJacksonModule(metaEntityContextProvider))
+We could do this in several way:
+# By extending Organization interface and adding attribute. 
+# By calling method "attribute(name, value)" on Entity. In this case, all serialized entity will contains attribute definition.
+# By declaring an extra attribute in another MetaEntity and set it in our Organization Entity Context. No meta data will be saved in serialized entities.
 
 
 
 
-
-h1. Spring integration
-
+h1. IV. Spring integration
 
 
-h2. Configuration sample
+h2. A. Configuration sample
 
 
 bc.. 
@@ -320,6 +263,60 @@ bc..
 		class="com.intelligentsia.dowsers.entity.manager.EntityManagerFactory" />
 
 
-p. todo
+p. To run we must define:
+
+* MetaEntityProviderFactory build a MetaEntityProvider. This class control were and how meta data are retrieved. 
+* MetaEntityContextProviderFactory build a MetaEntityContextProvider. This class provide Meta Entity context for each kind of entity.
+* EntityFactoryProviderFactory build a EntityFactoryProvider which be used to do a "new XXX" what ever XXX is.
+* EntityStoreFactory build a EntityStore which store entities. In this configuration we define an InMemoryEntityStore so all is memory resident. You could implement simple entity store on mongo db, Jackrabbit, fiule system, or a relational database... EntityMapperFactory build an EntityMapper which be used to serialize entities (based on Jackson framework). 
+* EntityManagerFactory build EntityManager. This class will be used to perform all CRUD and "new" operation on entities.
 
 
+
+h1. Terminology
+
+Adapted from JSR 351
+
+**Entity**
+An object that may be identified or described by a collection of Attributes.
+
+**Attribute**
+A named value.
+
+**Attribute Value**
+A quantitative or existential representation of the property or characteristic conveyed by the Attribute. A value may be empty (as distinct from the Attribute being undefined), a scalar, an Object, or a collection of Objects.
+
+**Identity Attribute**
+An Attribute that identify a specific instance of an entity.
+
+**Attribute Meta-data**
+A uniform taxonomy of characteristics that may be associated with an Attribute and where such characteristics are deemed necessary or appropriate to effect or enable the use of the value. Such information may establish its validity period, or more generally define constraints or tags that effect the use of the value.
+
+**Entity Meta-data**
+A collection of Attribute Meta-data which apply on a specific entity version.  
+
+**Entity Meta-data Context**
+A collection of Attribute Meta-data which apply on a specific entity. Generally its an instance of entity meta-data.
+But, it could be an aggregation of entity meta-data.
+
+
+**Meta Entity Reference**
+An attribute that identify or describe a meta entity/ entity class name
+
+urn:dowsers:{entity class name}
+
+**Entity Reference**
+A collection of Attributes that identify or describe an Entity. 
+
+urn:dowsers:{meta entity reference}:identity@{identity attribute}
+
+**Attribute Reference**
+A representation of an Attribute that does not convey the value of the associated Attribute, that may be communicated between Entities without exposing the Attribute value.
+
+urn:dowsers:{meta entity reference}:{attribute name}@{entity identity attribute}
+
+**Meta Entity Context Provider**
+A service which build meta entity context from meta entity provider.
+
+**Meta Entity Repository**
+A service or data store that contains meta data on Entity and Attribute values.

@@ -43,7 +43,7 @@ import com.intelligentsia.dowsers.entity.Entity;
  * {@link MetaEntity}. Each component is an extends of meta data given by super
  * {@link MetaEntity} instance.
  * 
- * We call version of {@link MetaEntity} definition the fisrst and initial
+ * We call version of {@link MetaEntity} definition the first and initial
  * {@link MetaEntity} set to a {@link MetaEntityContext}.
  * 
  * 
