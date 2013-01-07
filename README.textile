@@ -29,6 +29,8 @@ h2. 1.0.4-SNAPSHOT
 ** add split operator on a item
 ** define a splitter based on iterable attribute 
 * Update doc
+* Extends Spring Configuration:
+** permit lazy initialization of MetaEntityContextProvider
 
 h2. 1.0.3
 

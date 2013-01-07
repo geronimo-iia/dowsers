@@ -40,9 +40,9 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  */
 public class MetaEntityContextProviderSupport implements MetaEntityContextProvider {
 
-	private final MetaEntityProvider metaEntityProvider;
+	protected MetaEntityProvider metaEntityProvider;
 
-	private final Map<Reference, MetaEntityContext> contextEntities;
+	protected final Map<Reference, MetaEntityContext> contextEntities;
 
 	/**
 	 * Build a new instance of <code>MetaEntityContextProviderSupport</code>.

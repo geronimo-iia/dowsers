@@ -46,6 +46,9 @@ public class MetaEntityStoreFactory implements FactoryBean<MetaEntityStore> {
 
 	@Override
 	public MetaEntityStore getObject() throws Exception {
+		if (entityStore==null) {
+			throw new IllegalStateException("No entity store defined");
+		}
 		return new MetaEntityStoreSupport(entityStore);
 	}
 

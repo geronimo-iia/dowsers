@@ -47,7 +47,7 @@ public class EntityMapperFactory implements FactoryBean<EntityMapper>, BeanFacto
 	@Override
 	public EntityMapper getObject() throws Exception {
 		if (entityMapper == null) {
-			if (metaEntityContextProvider == null) {
+			if (metaEntityContextProvider == null && beanFactory != null) {
 				metaEntityContextProvider = beanFactory.getBean(MetaEntityContextProvider.class);
 			}
 			entityMapper = new EntityMapper(metaEntityContextProvider);

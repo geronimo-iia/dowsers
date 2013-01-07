@@ -26,7 +26,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
+import com.google.common.collect.Maps;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContext;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProvider;
 import com.intelligentsia.dowsers.entity.meta.MetaEntityContextProviderSupport;
@@ -40,17 +43,21 @@ import com.intelligentsia.dowsers.entity.reference.Reference;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com">Jerome Guibert</a>
  */
-public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityContextProvider>, BeanFactoryAware {
+public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityContextProvider>, BeanFactoryAware, InitializingBean {
 
 	private boolean enableCache = Boolean.TRUE;
 
-	private MetaEntityProvider metaEntityProvider;
+	private MetaEntityProvider metaEntityProvider = null;
 
-	private Map<Reference, MetaEntityContext> contextEntities;
+	private String metaEntityProviderName = null;
+
+	private Map<Reference, MetaEntityContext> contextEntities = Maps.newLinkedHashMap();
 
 	private BeanFactory beanFactory;
 
 	private MetaEntityContextProvider metaEntityContextProvider = null;
+
+	private MetaEntityContextProviderLazyInitialization contextProviderLazyInitialization = null;
 
 	public MetaEntityContextProviderFactory() {
 		super();
@@ -60,15 +67,18 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 	public MetaEntityContextProvider getObject() throws Exception {
 		if (metaEntityContextProvider == null) {
 			final MetaEntityContextProviderSupport.Builder builder = MetaEntityContextProviderSupport.builder();
-			if (contextEntities != null) {
+			// try to find metaEntityProvider 
+			if (findMetaEntityProvider() == null) {
+				contextProviderLazyInitialization = new MetaEntityContextProviderLazyInitialization(contextEntities);
+				metaEntityContextProvider = contextProviderLazyInitialization;
+				// afterPropertiesSet will do the job
+			} else {
+				// build metaEntityContextProvider in one call
 				for (final Entry<Reference, MetaEntityContext> entry : contextEntities.entrySet()) {
 					builder.add(entry.getKey(), entry.getValue());
 				}
+				metaEntityContextProvider = builder.build(metaEntityProvider);
 			}
-			if (metaEntityProvider == null) {
-				metaEntityProvider = beanFactory.getBean(MetaEntityProvider.class);
-			}
-			metaEntityContextProvider = builder.build(metaEntityProvider);
 			metaEntityContextProvider = enableCache ? new MetaEntityContextProviderWithCache(metaEntityContextProvider) : metaEntityContextProvider;
 		}
 		return metaEntityContextProvider;
@@ -111,5 +121,36 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 	@Override
 	public void setBeanFactory(final BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
+	}
+
+	public String getMetaEntityProviderName() {
+		return metaEntityProviderName;
+	}
+
+	public void setMetaEntityProviderName(String metaEntityProviderName) {
+		this.metaEntityProviderName = metaEntityProviderName;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if (contextProviderLazyInitialization != null) {
+			contextProviderLazyInitialization.setMetaEntityProvider(findMetaEntityProvider());
+		}
+	}
+
+	/**
+	 * @throws BeansException
+	 */
+	protected MetaEntityProvider findMetaEntityProvider() throws BeansException {
+		if (metaEntityProvider == null && beanFactory != null) {
+			try {
+				metaEntityProvider = beanFactory.getBean(MetaEntityProvider.class);
+			} catch (NoSuchBeanDefinitionException beanDefinitionException) {
+				if (metaEntityProviderName != null) {
+					metaEntityProvider = beanFactory.getBean(metaEntityProviderName, MetaEntityProvider.class);
+				}
+			}
+		}
+		return metaEntityProvider;
 	}
 }
