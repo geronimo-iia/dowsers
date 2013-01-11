@@ -31,6 +31,8 @@ h2. 1.0.4-SNAPSHOT
 * Update doc
 * Extends Spring Configuration:
 ** permit lazy initialization of MetaEntityContextProvider
+* Extends find capability on EntityStore (see Issue #1). Now we can make some basic search like "find all entity reference of type X with attribute Y equal to Z"
+
 
 h2. 1.0.3
 
