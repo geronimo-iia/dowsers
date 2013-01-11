@@ -54,8 +54,13 @@ public class MetaEntityStoreSupport implements MetaEntityStore {
 	@Override
 	public Collection<MetaEntity> find(final Reference reference) throws NullPointerException {
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
+		// we are looking for MetaEntity with attribute 'name' equals to
+		// EntityClassName in reference parameter.
+		Reference target = new Reference(MetaEntity.class, "name", Preconditions.checkNotNull(reference).getEntityClassName());
 		try {
-			result.add(entityStore.find(MetaEntity.class, Preconditions.checkNotNull(reference)));
+			for (Reference ref : entityStore.find(target)) {
+				result.add(entityStore.find(MetaEntity.class, ref));
+			}
 		} catch (final EntityNotFoundException entityNotFoundException) {
 			// oups
 		}
