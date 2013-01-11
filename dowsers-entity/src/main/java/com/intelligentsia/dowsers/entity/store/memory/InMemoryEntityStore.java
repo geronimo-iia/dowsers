@@ -34,6 +34,7 @@ import com.google.common.io.Closeables;
 import com.intelligentsia.dowsers.entity.reference.Reference;
 import com.intelligentsia.dowsers.entity.reference.References;
 import com.intelligentsia.dowsers.entity.serializer.EntityMapper;
+import com.intelligentsia.dowsers.entity.store.AbstractEntityStore;
 import com.intelligentsia.dowsers.entity.store.ConcurrencyException;
 import com.intelligentsia.dowsers.entity.store.EntityNotFoundException;
 import com.intelligentsia.dowsers.entity.store.EntityStore;
@@ -44,7 +45,7 @@ import com.intelligentsia.dowsers.entity.store.EntityStore;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class InMemoryEntityStore implements EntityStore {
+public class InMemoryEntityStore extends AbstractEntityStore implements EntityStore {
 
 	private final Map<Reference, String> entities = Maps.newHashMap();
 	/**

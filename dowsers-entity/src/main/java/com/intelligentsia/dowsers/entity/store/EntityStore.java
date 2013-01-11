@@ -40,12 +40,41 @@ public interface EntityStore {
 	public Iterable<Reference> find(Class<?> expectedType) throws NullPointerException;
 
 	/**
-	 * Find entity with the specified identity.
+	 * Find entities with the specified attribute value.
+	 * 
+	 * Reference contains
+	 * <ul>
+	 * <li>entity class name that we looking for</li>
+	 * <li>attribute name to filter on</li>
+	 * <li>value</li>
+	 * </ul>
+	 * This look for all entity of type {@link Reference#getEntityClassName()}
+	 * with attribute name {@link Reference#getAttributeName()} equals to
+	 * {@link Reference#getIdentity()}.
 	 * 
 	 * @param expectedType
 	 *            expected type entity
 	 * @param reference
 	 *            reference what we looking for
+	 * 
+	 * @return an entity instance of the expected type and identity
+	 * 
+	 * @throws EntityNotFoundException
+	 *             if no entity with specified identity and type exists.
+	 * @throws NullPointerException
+	 *             if expectedType or identity is null
+	 * @throws IllegalArgumentException
+	 *             if reference is not an identifier
+	 */
+	public Iterable<Reference> find(Reference reference) throws NullPointerException;
+
+	/**
+	 * Find entity with the specified identity.
+	 * 
+	 * @param expectedType
+	 *            expected type entity
+	 * @param reference
+	 *            reference what we looking for.
 	 * @return an entity instance of the expected type and identity
 	 * 
 	 * @throws EntityNotFoundException

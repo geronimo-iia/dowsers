@@ -60,27 +60,32 @@ public class ShardingEntityStore implements EntityStore {
 
 	@Override
 	public Iterable<Reference> find(final Class<?> expectedType) throws NullPointerException {
-		return find(Reference.newReferenceOnEntityClass(expectedType)).find(expectedType);
+		return findEntityStore(Reference.newReferenceOnEntityClass(expectedType)).find(expectedType);
+	}
+
+	@Override
+	public Iterable<Reference> find(Reference reference) throws NullPointerException {
+		return findEntityStore(reference.getEntityClassReference()).find(reference);
 	}
 
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
-		return find(reference).find(expectedType, reference);
+		return findEntityStore(reference).find(expectedType, reference);
 	}
 
 	@Override
 	public <T> void store(final T entity) throws NullPointerException, ConcurrencyException, IllegalArgumentException {
-		find(References.identify(entity)).store(entity);
+		findEntityStore(References.identify(entity)).store(entity);
 	}
 
 	@Override
 	public <T> void remove(final T entity) throws NullPointerException, IllegalArgumentException {
-		find(References.identify(entity)).remove(entity);
+		findEntityStore(References.identify(entity)).remove(entity);
 	}
 
 	@Override
 	public void remove(final Reference reference) throws NullPointerException, IllegalArgumentException {
-		find(reference).remove(reference);
+		findEntityStore(reference).remove(reference);
 	}
 
 	/**
@@ -89,7 +94,7 @@ public class ShardingEntityStore implements EntityStore {
 	 * @param reference
 	 * @return {@link EntityStore} instance.
 	 */
-	public EntityStore find(final Reference reference) {
+	public EntityStore findEntityStore(final Reference reference) {
 		EntityStore result = stores.get(reference);
 		if (result == null) {
 			result = stores.get(reference.getEntityClassReference());

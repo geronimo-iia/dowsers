@@ -84,6 +84,11 @@ public class CachedEntityStore implements EntityStore {
 		return entityStore.find(expectedType);
 	}
 
+	@Override
+	public Iterable<Reference> find(Reference reference) throws NullPointerException {
+		return entityStore.find(reference);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T find(final Class<T> expectedType, final Reference reference) throws EntityNotFoundException, NullPointerException, IllegalArgumentException {
