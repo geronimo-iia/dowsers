@@ -64,7 +64,7 @@ public class ShardingEntityStore implements EntityStore {
 	}
 
 	@Override
-	public Iterable<Reference> find(Reference reference) throws NullPointerException {
+	public Iterable<Reference> find(final Reference reference) throws NullPointerException {
 		return findEntityStore(reference.getEntityClassReference()).find(reference);
 	}
 

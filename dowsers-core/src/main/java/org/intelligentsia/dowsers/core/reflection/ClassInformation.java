@@ -164,12 +164,12 @@ public class ClassInformation implements Serializable {
 			if (!tokenizer.hasMoreTokens()) {
 				return new ClassInformation(clazz);
 			}
-			List<Class<?>> classes = Lists.newArrayList();
+			final List<Class<?>> classes = Lists.newArrayList();
 			String list = tokenizer.nextToken();
-			list = list.substring(0, list.length()-1);
+			list = list.substring(0, list.length() - 1);
 			final StringTokenizer parameters = new StringTokenizer(list, ",");
-			while(parameters.hasMoreTokens()) {
-				String parameter = parameters.nextToken();
+			while (parameters.hasMoreTokens()) {
+				final String parameter = parameters.nextToken();
 				classes.add(Class.forName(parameter, true, Thread.currentThread().getContextClassLoader()));
 			}
 			return new ClassInformation(clazz, classes);

@@ -188,7 +188,7 @@ public abstract class StoreBaseTest {
 		assertEquals(4, count);
 	}
 
-	public Person getMario(String lastName) {
+	public Person getMario(final String lastName) {
 		final Person person = factory.newInstance();
 		person.setFirstName("Mario");
 		person.setLastName(lastName);

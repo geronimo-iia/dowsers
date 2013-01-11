@@ -42,11 +42,12 @@ public abstract class AbstractEntityStore implements EntityStore {
 		final Class<?> expectedType = ClassInformation.parse(reference.getEntityClassName()).getType();
 		// filtering result from find(final Class<?> expectedType)
 		final Iterator<Reference> iterator = Iterators.filter(find(expectedType).iterator(), new Predicate<Reference>() {
-			public boolean apply(Reference input) {
-				Object object = find(expectedType, input);
+			@Override
+			public boolean apply(final Reference input) {
+				final Object object = find(expectedType, input);
 				if (object != null) {
-					Entity entity = References.discover(object);
-					Object attribute = entity.attribute(reference.getAttributeName());
+					final Entity entity = References.discover(object);
+					final Object attribute = entity.attribute(reference.getAttributeName());
 					if (attribute != null) {
 						return attribute.equals(reference.getIdentity());
 					}

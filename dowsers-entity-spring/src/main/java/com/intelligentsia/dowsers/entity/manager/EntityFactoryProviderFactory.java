@@ -58,7 +58,7 @@ public class EntityFactoryProviderFactory implements FactoryBean<EntityFactoryPr
 	@Override
 	public EntityFactoryProvider getObject() throws Exception {
 		if (entityFactoryProvider == null) {
-			if (metaEntityContextProvider == null && beanFactory != null) {
+			if ((metaEntityContextProvider == null) && (beanFactory != null)) {
 				metaEntityContextProvider = beanFactory.getBean(MetaEntityContextProvider.class);
 			}
 			entityFactoryProvider = EntityFactoryProvider.builder().setFactories(factories).setEnableDefaultFactory(enableDefaultFactory).build(metaEntityContextProvider);

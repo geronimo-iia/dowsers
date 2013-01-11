@@ -101,7 +101,7 @@ public enum Reflection {
 	 *            prefix to remove
 	 * @return name
 	 */
-	public static String toFieldName(final String methodName, String prefix) {
+	public static String toFieldName(final String methodName, final String prefix) {
 		if (methodName.startsWith(prefix)) {
 			final String name = methodName.substring(prefix.length());
 			return name.substring(0, 1).toLowerCase() + name.substring(1);

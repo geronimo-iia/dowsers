@@ -85,7 +85,7 @@ public class CachedEntityStore implements EntityStore {
 	}
 
 	@Override
-	public Iterable<Reference> find(Reference reference) throws NullPointerException {
+	public Iterable<Reference> find(final Reference reference) throws NullPointerException {
 		return entityStore.find(reference);
 	}
 

@@ -69,20 +69,20 @@ public class EntityManagerFactory implements FactoryBean<EntityManager>, BeanFac
 	@Override
 	public EntityManager getObject() throws Exception {
 		if (entityManager == null) {
-			if (entityFactoryProvider == null && beanFactory != null) {
+			if ((entityFactoryProvider == null) && (beanFactory != null)) {
 				entityFactoryProvider = beanFactory.getBean(EntityFactoryProvider.class);
 			}
-			if (entityStore == null && beanFactory != null) {
+			if ((entityStore == null) && (beanFactory != null)) {
 				entityStore = beanFactory.getBean(EntityStore.class);
 			}
-			if (entityManagerListener == null && beanFactory != null) {
+			if ((entityManagerListener == null) && (beanFactory != null)) {
 				try {
 					entityManagerListener = beanFactory.getBean(EntityManager.Listener.class);
 				} catch (final NoSuchBeanDefinitionException exception) {
 					// do nothing
 				}
 			}
-			if (entityMapper == null && beanFactory != null) {
+			if ((entityMapper == null) && (beanFactory != null)) {
 				try {
 					entityMapper = beanFactory.getBean(EntityMapper.class);
 				} catch (final NoSuchBeanDefinitionException exception) {

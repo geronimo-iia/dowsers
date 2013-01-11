@@ -56,9 +56,9 @@ public class MetaEntityStoreSupport implements MetaEntityStore {
 		final Collection<MetaEntity> result = Sets.newLinkedHashSet();
 		// we are looking for MetaEntity with attribute 'name' equals to
 		// EntityClassName in reference parameter.
-		Reference target = new Reference(MetaEntity.class, "name", Preconditions.checkNotNull(reference).getEntityClassName());
+		final Reference target = new Reference(MetaEntity.class, "name", Preconditions.checkNotNull(reference).getEntityClassName());
 		try {
-			for (Reference ref : entityStore.find(target)) {
+			for (final Reference ref : entityStore.find(target)) {
 				result.add(entityStore.find(MetaEntity.class, ref));
 			}
 		} catch (final EntityNotFoundException entityNotFoundException) {

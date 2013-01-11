@@ -41,14 +41,14 @@ public class MetaEntityContextProviderLazyInitialization extends MetaEntityConte
 	 * @param contextEntities
 	 * @throws NullPointerException
 	 */
-	public MetaEntityContextProviderLazyInitialization(Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
+	public MetaEntityContextProviderLazyInitialization(final Map<Reference, MetaEntityContext> contextEntities) throws NullPointerException {
 		super(null, contextEntities);
 	}
 
 	/**
 	 * @param metaEntityProvider
 	 */
-	void setMetaEntityProvider(MetaEntityProvider metaEntityProvider) {
+	void setMetaEntityProvider(final MetaEntityProvider metaEntityProvider) {
 		super.metaEntityProvider = metaEntityProvider;
 	}
 

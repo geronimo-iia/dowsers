@@ -67,7 +67,7 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 	public MetaEntityContextProvider getObject() throws Exception {
 		if (metaEntityContextProvider == null) {
 			final MetaEntityContextProviderSupport.Builder builder = MetaEntityContextProviderSupport.builder();
-			// try to find metaEntityProvider 
+			// try to find metaEntityProvider
 			if (findMetaEntityProvider() == null) {
 				contextProviderLazyInitialization = new MetaEntityContextProviderLazyInitialization(contextEntities);
 				metaEntityContextProvider = contextProviderLazyInitialization;
@@ -127,7 +127,7 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 		return metaEntityProviderName;
 	}
 
-	public void setMetaEntityProviderName(String metaEntityProviderName) {
+	public void setMetaEntityProviderName(final String metaEntityProviderName) {
 		this.metaEntityProviderName = metaEntityProviderName;
 	}
 
@@ -142,10 +142,10 @@ public class MetaEntityContextProviderFactory implements FactoryBean<MetaEntityC
 	 * @throws BeansException
 	 */
 	protected MetaEntityProvider findMetaEntityProvider() throws BeansException {
-		if (metaEntityProvider == null && beanFactory != null) {
+		if ((metaEntityProvider == null) && (beanFactory != null)) {
 			try {
 				metaEntityProvider = beanFactory.getBean(MetaEntityProvider.class);
-			} catch (NoSuchBeanDefinitionException beanDefinitionException) {
+			} catch (final NoSuchBeanDefinitionException beanDefinitionException) {
 				if (metaEntityProviderName != null) {
 					metaEntityProvider = beanFactory.getBean(metaEntityProviderName, MetaEntityProvider.class);
 				}
