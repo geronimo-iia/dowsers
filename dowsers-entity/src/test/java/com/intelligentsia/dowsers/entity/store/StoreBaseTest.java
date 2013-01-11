@@ -151,8 +151,48 @@ public abstract class StoreBaseTest {
 			entityStore.store(mario);
 		}
 		assertEquals(2, references.size());
+		int count = 0;
 		for (final Reference reference : entityStore.find(Person.class)) {
 			assertTrue(references.contains(reference));
+			count++;
 		}
+		assertEquals(2, count);
+	}
+
+	@Test
+	public void testFindAndFilter() {
+		entityStore.store(getMario("A"));
+		entityStore.store(getMario("A"));
+		entityStore.store(getMario("B"));
+		entityStore.store(getMario("C"));
+		// filter on lastName == A
+		int count = 0;
+		for (final Reference reference : entityStore.find(new Reference(Person.class, "lastName", "A"))) {
+			assertTrue(entityStore.find(Person.class, reference).getLastName().equals("A"));
+			count++;
+		}
+		assertEquals(2, count);
+		// filter on lastName == B
+		count = 0;
+		for (final Reference reference : entityStore.find(new Reference(Person.class, "lastName", "B"))) {
+			assertTrue(entityStore.find(Person.class, reference).getLastName().equals("B"));
+			count++;
+		}
+		assertEquals(1, count);
+		// filter on firstName == Mario
+		count = 0;
+		for (final Reference reference : entityStore.find(new Reference(Person.class, "firstName", "Mario"))) {
+			assertTrue(entityStore.find(Person.class, reference).getFirstName().equals("Mario"));
+			count++;
+		}
+		assertEquals(4, count);
+	}
+
+	public Person getMario(String lastName) {
+		final Person person = factory.newInstance();
+		person.setFirstName("Mario");
+		person.setLastName(lastName);
+		person.setYearOld(35);
+		return person;
 	}
 }
